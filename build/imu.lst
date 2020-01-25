@@ -1,4 +1,4 @@
-ARM GAS  C:\Temp\cceNM1vl.s 			page 1
+ARM GAS  C:\Temp\ccEQ5mMF.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,7 +58,7 @@ ARM GAS  C:\Temp\cceNM1vl.s 			page 1
   27:Src/imu.c     **** static uint8_t	imu_value[13];			// value[0]はダミーデータが入るため注意
   28:Src/imu.c     **** 
   29:Src/imu.c     **** static int16_t	accel_x_value;			// X軸加速度計の生データ
-ARM GAS  C:\Temp\cceNM1vl.s 			page 2
+ARM GAS  C:\Temp\ccEQ5mMF.s 			page 2
 
 
   30:Src/imu.c     **** static int16_t	accel_x_reference;		// X軸加速度計のリファレンス
@@ -118,7 +118,7 @@ ARM GAS  C:\Temp\cceNM1vl.s 			page 1
   69 002e 0123     		movs	r3, #1
   70 0030 1A46     		mov	r2, r3
   71 0032 0DF10701 		add	r1, sp, #7
-ARM GAS  C:\Temp\cceNM1vl.s 			page 3
+ARM GAS  C:\Temp\ccEQ5mMF.s 			page 3
 
 
   72 0036 2846     		mov	r0, r5
@@ -178,7 +178,7 @@ ARM GAS  C:\Temp\cceNM1vl.s 			page 1
  119              		.cfi_def_cfa_offset 24
   54:Src/imu.c     **** 	uint8_t address = addr | 0x80;//read設定(MSB=0)　+ アドレス7bit
  120              		.loc 1 54 2 is_stmt 1 view .LVU13
-ARM GAS  C:\Temp\cceNM1vl.s 			page 4
+ARM GAS  C:\Temp\ccEQ5mMF.s 			page 4
 
 
  121              		.loc 1 54 10 is_stmt 0 view .LVU14
@@ -238,7 +238,7 @@ ARM GAS  C:\Temp\cceNM1vl.s 			page 1
  166 004c 00040240 		.word	1073873920
  167 0050 00000000 		.word	hspi2
  168              		.cfi_endproc
-ARM GAS  C:\Temp\cceNM1vl.s 			page 5
+ARM GAS  C:\Temp\ccEQ5mMF.s 			page 5
 
 
  169              	.LFE134:
@@ -298,7 +298,7 @@ ARM GAS  C:\Temp\cceNM1vl.s 			page 1
   75:Src/imu.c     **** --------------------------------------------------------------- */
   76:Src/imu.c     **** void IMU_Initialize( void )
   77:Src/imu.c     **** {
-ARM GAS  C:\Temp\cceNM1vl.s 			page 6
+ARM GAS  C:\Temp\ccEQ5mMF.s 			page 6
 
 
  214              		.loc 1 77 1 is_stmt 1 view -0
@@ -358,7 +358,7 @@ ARM GAS  C:\Temp\cceNM1vl.s 			page 1
  251 001c 6420     		movs	r0, #100
  252              	.LVL20:
  253              		.loc 1 93 2 is_stmt 0 view .LVU39
-ARM GAS  C:\Temp\cceNM1vl.s 			page 7
+ARM GAS  C:\Temp\ccEQ5mMF.s 			page 7
 
 
  254 001e FFF7FEFF 		bl	HAL_Delay
@@ -418,7 +418,7 @@ ARM GAS  C:\Temp\cceNM1vl.s 			page 1
  293 005a 0D21     		movs	r1, #13
  294 005c 1420     		movs	r0, #20
  295 005e FFF7FEFF 		bl	IMU_Write1byte
-ARM GAS  C:\Temp\cceNM1vl.s 			page 8
+ARM GAS  C:\Temp\ccEQ5mMF.s 			page 8
 
 
  296              	.LVL30:
@@ -478,7 +478,7 @@ ARM GAS  C:\Temp\cceNM1vl.s 			page 1
  340              		.thumb
  341              		.thumb_func
  342              		.fpu fpv4-sp-d16
-ARM GAS  C:\Temp\cceNM1vl.s 			page 9
+ARM GAS  C:\Temp\ccEQ5mMF.s 			page 9
 
 
  344              	HAL_SPI_TxRxCpltCallback:
@@ -538,7 +538,7 @@ ARM GAS  C:\Temp\cceNM1vl.s 			page 1
  129:Src/imu.c     **** 	HAL_GPIO_WritePin( gyro_CS_GPIO_Port, gyro_CS_Pin, GPIO_PIN_RESET );//CSpinをLoに、SPI通信開
  389              		.loc 1 129 2 is_stmt 1 view .LVU69
  390 002a 0022     		movs	r2, #0
-ARM GAS  C:\Temp\cceNM1vl.s 			page 10
+ARM GAS  C:\Temp\ccEQ5mMF.s 			page 10
 
 
  391 002c 4FF48051 		mov	r1, #4096
@@ -598,7 +598,7 @@ ARM GAS  C:\Temp\cceNM1vl.s 			page 1
  436              		.loc 1 140 2 view .LVU74
  437              	.LVL41:
  438              		.loc 1 140 8 is_stmt 0 view .LVU75
-ARM GAS  C:\Temp\cceNM1vl.s 			page 11
+ARM GAS  C:\Temp\ccEQ5mMF.s 			page 11
 
 
  439 0002 0024     		movs	r4, #0
@@ -658,7 +658,7 @@ ARM GAS  C:\Temp\cceNM1vl.s 			page 1
  484 003a DB17     		asrs	r3, r3, #31
  485 003c C3EBA013 		rsb	r3, r3, r0, asr #6
  486 0040 0B80     		strh	r3, [r1]	@ movhi
-ARM GAS  C:\Temp\cceNM1vl.s 			page 12
+ARM GAS  C:\Temp\ccEQ5mMF.s 			page 12
 
 
  146:Src/imu.c     **** 	gyro_z_reference /= REFFERENCE_NUM;
@@ -718,7 +718,7 @@ ARM GAS  C:\Temp\cceNM1vl.s 			page 1
  534 001a 67EE807A 		vmul.f32	s15, s15, s0
  155:Src/imu.c     **** }
  535              		.loc 1 155 1 view .LVU97
-ARM GAS  C:\Temp\cceNM1vl.s 			page 13
+ARM GAS  C:\Temp\ccEQ5mMF.s 			page 13
 
 
  536 001e 9FED050A 		vldr.32	s0, .L29+12
@@ -778,7 +778,7 @@ ARM GAS  C:\Temp\cceNM1vl.s 			page 1
  584 0030 00000000 		.word	.LANCHOR3
  585 0034 00000000 		.word	.LANCHOR5
  586 0038 19048641 		.word	1099301913
-ARM GAS  C:\Temp\cceNM1vl.s 			page 14
+ARM GAS  C:\Temp\ccEQ5mMF.s 			page 14
 
 
  587 003c 00003443 		.word	1127481344
@@ -838,7 +838,7 @@ ARM GAS  C:\Temp\cceNM1vl.s 			page 1
  651              		.file 18 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h"
  652              		.file 19 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h"
  653              		.file 20 "Inc/adc.h"
-ARM GAS  C:\Temp\cceNM1vl.s 			page 15
+ARM GAS  C:\Temp\ccEQ5mMF.s 			page 15
 
 
  654              		.file 21 "Inc/spi.h"
@@ -847,46 +847,46 @@ ARM GAS  C:\Temp\cceNM1vl.s 			page 1
  657              		.file 24 "Inc/index.h"
  658              		.file 25 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h"
  659              		.file 26 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\stdio.h"
-ARM GAS  C:\Temp\cceNM1vl.s 			page 16
+ARM GAS  C:\Temp\ccEQ5mMF.s 			page 16
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 imu.c
-  C:\Temp\cceNM1vl.s:18     .text.IMU_Write1byte:00000000 $t
-  C:\Temp\cceNM1vl.s:26     .text.IMU_Write1byte:00000000 IMU_Write1byte
-  C:\Temp\cceNM1vl.s:90     .text.IMU_Write1byte:0000004c $d
-  C:\Temp\cceNM1vl.s:96     .text.IMU_Read1byte:00000000 $t
-  C:\Temp\cceNM1vl.s:103    .text.IMU_Read1byte:00000000 IMU_Read1byte
-  C:\Temp\cceNM1vl.s:166    .text.IMU_Read1byte:0000004c $d
-  C:\Temp\cceNM1vl.s:172    .text.IMU_CheckWHOAMI:00000000 $t
-  C:\Temp\cceNM1vl.s:179    .text.IMU_CheckWHOAMI:00000000 IMU_CheckWHOAMI
-  C:\Temp\cceNM1vl.s:201    .rodata.IMU_Initialize.str1.4:00000000 $d
-  C:\Temp\cceNM1vl.s:205    .text.IMU_Initialize:00000000 $t
-  C:\Temp\cceNM1vl.s:212    .text.IMU_Initialize:00000000 IMU_Initialize
-  C:\Temp\cceNM1vl.s:328    .text.IMU_Initialize:00000090 $d
-  C:\Temp\cceNM1vl.s:337    .text.HAL_SPI_TxRxCpltCallback:00000000 $t
-  C:\Temp\cceNM1vl.s:344    .text.HAL_SPI_TxRxCpltCallback:00000000 HAL_SPI_TxRxCpltCallback
-  C:\Temp\cceNM1vl.s:407    .text.HAL_SPI_TxRxCpltCallback:00000044 $d
-  C:\Temp\cceNM1vl.s:417    .text.IMU_ResetReference:00000000 $t
-  C:\Temp\cceNM1vl.s:424    .text.IMU_ResetReference:00000000 IMU_ResetReference
-  C:\Temp\cceNM1vl.s:500    .text.IMU_ResetReference:00000058 $d
-  C:\Temp\cceNM1vl.s:509    .text.IMU_GetAccel_X:00000000 $t
-  C:\Temp\cceNM1vl.s:516    .text.IMU_GetAccel_X:00000000 IMU_GetAccel_X
-  C:\Temp\cceNM1vl.s:542    .text.IMU_GetAccel_X:00000028 $d
-  C:\Temp\cceNM1vl.s:550    .text.IMU_GetGyro_Z:00000000 $t
-  C:\Temp\cceNM1vl.s:557    .text.IMU_GetGyro_Z:00000000 IMU_GetGyro_Z
-  C:\Temp\cceNM1vl.s:584    .text.IMU_GetGyro_Z:00000030 $d
-  C:\Temp\cceNM1vl.s:593    .bss.accel_x_reference:00000000 $d
-  C:\Temp\cceNM1vl.s:597    .bss.accel_x_reference:00000000 accel_x_reference
-  C:\Temp\cceNM1vl.s:600    .bss.accel_x_value:00000000 $d
-  C:\Temp\cceNM1vl.s:604    .bss.accel_x_value:00000000 accel_x_value
-  C:\Temp\cceNM1vl.s:607    .bss.gyro_z_reference:00000000 $d
-  C:\Temp\cceNM1vl.s:611    .bss.gyro_z_reference:00000000 gyro_z_reference
-  C:\Temp\cceNM1vl.s:614    .bss.gyro_z_value:00000000 $d
-  C:\Temp\cceNM1vl.s:618    .bss.gyro_z_value:00000000 gyro_z_value
-  C:\Temp\cceNM1vl.s:621    .bss.imu_value:00000000 $d
-  C:\Temp\cceNM1vl.s:625    .bss.imu_value:00000000 imu_value
-  C:\Temp\cceNM1vl.s:631    .data.imu_address:00000000 imu_address
+  C:\Temp\ccEQ5mMF.s:18     .text.IMU_Write1byte:00000000 $t
+  C:\Temp\ccEQ5mMF.s:26     .text.IMU_Write1byte:00000000 IMU_Write1byte
+  C:\Temp\ccEQ5mMF.s:90     .text.IMU_Write1byte:0000004c $d
+  C:\Temp\ccEQ5mMF.s:96     .text.IMU_Read1byte:00000000 $t
+  C:\Temp\ccEQ5mMF.s:103    .text.IMU_Read1byte:00000000 IMU_Read1byte
+  C:\Temp\ccEQ5mMF.s:166    .text.IMU_Read1byte:0000004c $d
+  C:\Temp\ccEQ5mMF.s:172    .text.IMU_CheckWHOAMI:00000000 $t
+  C:\Temp\ccEQ5mMF.s:179    .text.IMU_CheckWHOAMI:00000000 IMU_CheckWHOAMI
+  C:\Temp\ccEQ5mMF.s:201    .rodata.IMU_Initialize.str1.4:00000000 $d
+  C:\Temp\ccEQ5mMF.s:205    .text.IMU_Initialize:00000000 $t
+  C:\Temp\ccEQ5mMF.s:212    .text.IMU_Initialize:00000000 IMU_Initialize
+  C:\Temp\ccEQ5mMF.s:328    .text.IMU_Initialize:00000090 $d
+  C:\Temp\ccEQ5mMF.s:337    .text.HAL_SPI_TxRxCpltCallback:00000000 $t
+  C:\Temp\ccEQ5mMF.s:344    .text.HAL_SPI_TxRxCpltCallback:00000000 HAL_SPI_TxRxCpltCallback
+  C:\Temp\ccEQ5mMF.s:407    .text.HAL_SPI_TxRxCpltCallback:00000044 $d
+  C:\Temp\ccEQ5mMF.s:417    .text.IMU_ResetReference:00000000 $t
+  C:\Temp\ccEQ5mMF.s:424    .text.IMU_ResetReference:00000000 IMU_ResetReference
+  C:\Temp\ccEQ5mMF.s:500    .text.IMU_ResetReference:00000058 $d
+  C:\Temp\ccEQ5mMF.s:509    .text.IMU_GetAccel_X:00000000 $t
+  C:\Temp\ccEQ5mMF.s:516    .text.IMU_GetAccel_X:00000000 IMU_GetAccel_X
+  C:\Temp\ccEQ5mMF.s:542    .text.IMU_GetAccel_X:00000028 $d
+  C:\Temp\ccEQ5mMF.s:550    .text.IMU_GetGyro_Z:00000000 $t
+  C:\Temp\ccEQ5mMF.s:557    .text.IMU_GetGyro_Z:00000000 IMU_GetGyro_Z
+  C:\Temp\ccEQ5mMF.s:584    .text.IMU_GetGyro_Z:00000030 $d
+  C:\Temp\ccEQ5mMF.s:593    .bss.accel_x_reference:00000000 $d
+  C:\Temp\ccEQ5mMF.s:597    .bss.accel_x_reference:00000000 accel_x_reference
+  C:\Temp\ccEQ5mMF.s:600    .bss.accel_x_value:00000000 $d
+  C:\Temp\ccEQ5mMF.s:604    .bss.accel_x_value:00000000 accel_x_value
+  C:\Temp\ccEQ5mMF.s:607    .bss.gyro_z_reference:00000000 $d
+  C:\Temp\ccEQ5mMF.s:611    .bss.gyro_z_reference:00000000 gyro_z_reference
+  C:\Temp\ccEQ5mMF.s:614    .bss.gyro_z_value:00000000 $d
+  C:\Temp\ccEQ5mMF.s:618    .bss.gyro_z_value:00000000 gyro_z_value
+  C:\Temp\ccEQ5mMF.s:621    .bss.imu_value:00000000 $d
+  C:\Temp\ccEQ5mMF.s:625    .bss.imu_value:00000000 imu_value
+  C:\Temp\ccEQ5mMF.s:631    .data.imu_address:00000000 imu_address
 
 UNDEFINED SYMBOLS
 HAL_GPIO_WritePin

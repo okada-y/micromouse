@@ -1,4 +1,4 @@
-ARM GAS  C:\Temp\ccX8cZaM.s 			page 1
+ARM GAS  C:\Temp\ccPeizZ9.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,7 +58,7 @@ ARM GAS  C:\Temp\ccX8cZaM.s 			page 1
   28:Src/encoder.c **** float speed_r_max = 0;// m最大右タイヤ速度（デバッグ用
   29:Src/encoder.c **** float speed_r_min = 0;// m最小右タイヤ速度（デバッグ用
   30:Src/encoder.c **** float speed_l = 0;//m 左タイヤ速度[ m/s]
-ARM GAS  C:\Temp\ccX8cZaM.s 			page 2
+ARM GAS  C:\Temp\ccPeizZ9.s 			page 2
 
 
   31:Src/encoder.c **** float speed_l_max = 0;// m最大左タイヤ速度（デバッグ用
@@ -118,7 +118,7 @@ ARM GAS  C:\Temp\ccX8cZaM.s 			page 1
   42 000a 00BF     		.align	2
   43              	.L2:
   44 000c 00040040 		.word	1073742848
-ARM GAS  C:\Temp\ccX8cZaM.s 			page 3
+ARM GAS  C:\Temp\ccPeizZ9.s 			page 3
 
 
   45              		.cfi_endproc
@@ -178,7 +178,7 @@ ARM GAS  C:\Temp\ccX8cZaM.s 			page 1
   93 0002 3C21     		movs	r1, #60
   94 0004 0A48     		ldr	r0, .L7
   95 0006 FFF7FEFF 		bl	HAL_TIM_Encoder_Start
-ARM GAS  C:\Temp\ccX8cZaM.s 			page 4
+ARM GAS  C:\Temp\ccPeizZ9.s 			page 4
 
 
   96              	.LVL0:
@@ -238,7 +238,7 @@ ARM GAS  C:\Temp\ccX8cZaM.s 			page 1
  141              		.fpu fpv4-sp-d16
  143              	Encoder_GetAngle_Left:
  144              	.LFB136:
-ARM GAS  C:\Temp\ccX8cZaM.s 			page 5
+ARM GAS  C:\Temp\ccPeizZ9.s 			page 5
 
 
   80:Src/encoder.c **** 
@@ -298,7 +298,7 @@ ARM GAS  C:\Temp\ccX8cZaM.s 			page 1
  187              		.cfi_startproc
  188              		@ args = 0, pretend = 0, frame = 0
  189              		@ frame_needed = 0, uses_anonymous_args = 0
-ARM GAS  C:\Temp\ccX8cZaM.s 			page 6
+ARM GAS  C:\Temp\ccPeizZ9.s 			page 6
 
 
  190              		@ link register save eliminated.
@@ -358,7 +358,7 @@ ARM GAS  C:\Temp\ccX8cZaM.s 			page 1
  106:Src/encoder.c **** 	int32_t		sl_delta_cnt_l;	//m　左タイヤのカウント [/ms]
  234              		.loc 1 106 2 view .LVU38
  107:Src/encoder.c **** 	float 		delta_angle_tire_r;	//m　右タイヤの角速度	[rad/s]
-ARM GAS  C:\Temp\ccX8cZaM.s 			page 7
+ARM GAS  C:\Temp\ccPeizZ9.s 			page 7
 
 
  235              		.loc 1 107 2 view .LVU39
@@ -418,7 +418,7 @@ ARM GAS  C:\Temp\ccX8cZaM.s 			page 1
  133:Src/encoder.c **** 
  134:Src/encoder.c **** 
  135:Src/encoder.c **** 	if((ENC_CNT_SR_L & 0x0001) == 0x0000)//overflowがないとき(UIF=0)
-ARM GAS  C:\Temp\ccX8cZaM.s 			page 8
+ARM GAS  C:\Temp\ccPeizZ9.s 			page 8
 
 
  264              		.loc 1 135 2 is_stmt 1 view .LVU53
@@ -478,7 +478,7 @@ ARM GAS  C:\Temp\ccX8cZaM.s 			page 1
  293 0048 B8EEC77A 		vcvt.f32.s32	s14, s14
  294              	.LVL8:
  295              		.loc 1 160 42 view .LVU65
-ARM GAS  C:\Temp\ccX8cZaM.s 			page 9
+ARM GAS  C:\Temp\ccPeizZ9.s 			page 9
 
 
  296 004c DFED486A 		vldr.32	s13, .L38+20
@@ -538,7 +538,7 @@ ARM GAS  C:\Temp\ccX8cZaM.s 			page 1
  336              		.loc 1 174 3 is_stmt 1 view .LVU81
  337              		.loc 1 174 15 is_stmt 0 view .LVU82
  338 0098 C3ED007A 		vstr.32	s15, [r3]
-ARM GAS  C:\Temp\ccX8cZaM.s 			page 10
+ARM GAS  C:\Temp\ccPeizZ9.s 			page 10
 
 
  339              	.L26:
@@ -598,7 +598,7 @@ ARM GAS  C:\Temp\ccX8cZaM.s 			page 1
  373 00d6 1980     		strh	r1, [r3]	@ movhi
  195:Src/encoder.c **** 	enc_cnt_l_old	=	enc_cnt_l_new;	//m 左タイヤのカウント値を更新
  374              		.loc 1 195 2 is_stmt 1 view .LVU98
-ARM GAS  C:\Temp\ccX8cZaM.s 			page 11
+ARM GAS  C:\Temp\ccPeizZ9.s 			page 11
 
 
  375              		.loc 1 195 16 is_stmt 0 view .LVU99
@@ -658,7 +658,7 @@ ARM GAS  C:\Temp\ccX8cZaM.s 			page 1
  126:Src/encoder.c **** 			sl_delta_cnt_r = 1 * (int32_t)uss_delta_cnt_r;
  414              		.loc 1 126 20 is_stmt 0 view .LVU114
  415 00fe CB1A     		subs	r3, r1, r3
-ARM GAS  C:\Temp\ccX8cZaM.s 			page 12
+ARM GAS  C:\Temp\ccPeizZ9.s 			page 12
 
 
  416 0100 9BB2     		uxth	r3, r3
@@ -718,7 +718,7 @@ ARM GAS  C:\Temp\ccX8cZaM.s 			page 1
  148:Src/encoder.c **** 			sl_delta_cnt_l = 1 * (int32_t)uss_delta_cnt_l;
  456              		.loc 1 148 4 is_stmt 1 view .LVU129
  148:Src/encoder.c **** 			sl_delta_cnt_l = 1 * (int32_t)uss_delta_cnt_l;
-ARM GAS  C:\Temp\ccX8cZaM.s 			page 13
+ARM GAS  C:\Temp\ccPeizZ9.s 			page 13
 
 
  457              		.loc 1 148 20 is_stmt 0 view .LVU130
@@ -778,7 +778,7 @@ ARM GAS  C:\Temp\ccX8cZaM.s 			page 1
  499 016c 00C07F44 		.word	1149222912
  500 0170 7B59C445 		.word	1170495867
  501 0174 398E8340 		.word	1082363449
-ARM GAS  C:\Temp\ccX8cZaM.s 			page 14
+ARM GAS  C:\Temp\ccPeizZ9.s 			page 14
 
 
  502 0178 00000000 		.word	.LANCHOR2
@@ -838,7 +838,7 @@ ARM GAS  C:\Temp\ccX8cZaM.s 			page 1
  206:Src/encoder.c **** 	uint16_t j = 0;
  550              		.loc 1 206 2 view .LVU146
  207:Src/encoder.c **** 
-ARM GAS  C:\Temp\ccX8cZaM.s 			page 15
+ARM GAS  C:\Temp\ccPeizZ9.s 			page 15
 
 
  208:Src/encoder.c **** 	float l_ave_speed_m = 0;	//m 並進方向速度平均
@@ -898,7 +898,7 @@ ARM GAS  C:\Temp\ccX8cZaM.s 			page 1
  591              		.loc 1 219 2 is_stmt 0 discriminator 1 view .LVU164
  592 003a 092B     		cmp	r3, #9
  593 003c 0DD8     		bhi	.L51
-ARM GAS  C:\Temp\ccX8cZaM.s 			page 16
+ARM GAS  C:\Temp\ccPeizZ9.s 			page 16
 
 
  220:Src/encoder.c **** 	{
@@ -958,7 +958,7 @@ ARM GAS  C:\Temp\ccX8cZaM.s 			page 1
  634              	.LVL37:
  635              		.loc 1 229 24 discriminator 2 view .LVU182
  636 0074 B4EEE78A 		vcmpe.f32	s16, s15
-ARM GAS  C:\Temp\ccX8cZaM.s 			page 17
+ARM GAS  C:\Temp\ccPeizZ9.s 			page 17
 
 
  637 0078 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
@@ -1018,7 +1018,7 @@ ARM GAS  C:\Temp\ccX8cZaM.s 			page 1
  681              		.loc 1 239 2 is_stmt 1 view .LVU193
  682              		.loc 1 239 16 is_stmt 0 view .LVU194
  683 00be 134B     		ldr	r3, .L53+36
-ARM GAS  C:\Temp\ccX8cZaM.s 			page 18
+ARM GAS  C:\Temp\ccPeizZ9.s 			page 18
 
 
  684 00c0 83ED008A 		vstr.32	s16, [r3]
@@ -1078,7 +1078,7 @@ ARM GAS  C:\Temp\ccX8cZaM.s 			page 1
  731              	.LFE139:
  733              		.global	delta_angle_motor_l
  734              		.global	delta_angle_motor_r
-ARM GAS  C:\Temp\ccX8cZaM.s 			page 19
+ARM GAS  C:\Temp\ccPeizZ9.s 			page 19
 
 
  735              		.global	speed_rad
@@ -1138,7 +1138,7 @@ ARM GAS  C:\Temp\ccX8cZaM.s 			page 1
  801              		.section	.bss.speed_l,"aw",%nobits
  802              		.align	2
  803              		.set	.LANCHOR5,. + 0
-ARM GAS  C:\Temp\ccX8cZaM.s 			page 20
+ARM GAS  C:\Temp\ccPeizZ9.s 			page 20
 
 
  806              	speed_l:
@@ -1198,74 +1198,74 @@ ARM GAS  C:\Temp\ccX8cZaM.s 			page 1
  874              		.file 17 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h"
  875              		.file 18 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h"
  876              		.file 19 "Inc/adc.h"
-ARM GAS  C:\Temp\ccX8cZaM.s 			page 21
+ARM GAS  C:\Temp\ccPeizZ9.s 			page 21
 
 
  877              		.file 20 "Inc/spi.h"
  878              		.file 21 "Inc/tim.h"
  879              		.file 22 "Inc/usart.h"
  880              		.file 23 "Inc/index.h"
-ARM GAS  C:\Temp\ccX8cZaM.s 			page 22
+ARM GAS  C:\Temp\ccPeizZ9.s 			page 22
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 encoder.c
-  C:\Temp\ccX8cZaM.s:18     .text.Encoder_ResetCount_Left:00000000 $t
-  C:\Temp\ccX8cZaM.s:26     .text.Encoder_ResetCount_Left:00000000 Encoder_ResetCount_Left
-  C:\Temp\ccX8cZaM.s:44     .text.Encoder_ResetCount_Left:0000000c $d
-  C:\Temp\ccX8cZaM.s:49     .text.Encoder_ResetCount_Right:00000000 $t
-  C:\Temp\ccX8cZaM.s:56     .text.Encoder_ResetCount_Right:00000000 Encoder_ResetCount_Right
-  C:\Temp\ccX8cZaM.s:74     .text.Encoder_Initialize:00000000 $t
-  C:\Temp\ccX8cZaM.s:81     .text.Encoder_Initialize:00000000 Encoder_Initialize
-  C:\Temp\ccX8cZaM.s:127    .text.Encoder_Initialize:00000030 $d
-  C:\Temp\ccX8cZaM.s:136    .text.Encoder_GetAngle_Left:00000000 $t
-  C:\Temp\ccX8cZaM.s:143    .text.Encoder_GetAngle_Left:00000000 Encoder_GetAngle_Left
-  C:\Temp\ccX8cZaM.s:170    .text.Encoder_GetAngle_Left:00000024 $d
-  C:\Temp\ccX8cZaM.s:177    .text.Encoder_GetAngle_Right:00000000 $t
-  C:\Temp\ccX8cZaM.s:184    .text.Encoder_GetAngle_Right:00000000 Encoder_GetAngle_Right
-  C:\Temp\ccX8cZaM.s:211    .text.Encoder_GetAngle_Right:00000028 $d
-  C:\Temp\ccX8cZaM.s:217    .text.Get_speed:00000000 $t
-  C:\Temp\ccX8cZaM.s:224    .text.Get_speed:00000000 Get_speed
-  C:\Temp\ccX8cZaM.s:495    .text.Get_speed:0000015c $d
-  C:\Temp\ccX8cZaM.s:522    .text.speed_m_average:00000000 $t
-  C:\Temp\ccX8cZaM.s:529    .text.speed_m_average:00000000 speed_m_average
-  C:\Temp\ccX8cZaM.s:720    .text.speed_m_average:000000e8 $d
-  C:\Temp\ccX8cZaM.s:757    .bss.delta_angle_motor_l:00000000 delta_angle_motor_l
-  C:\Temp\ccX8cZaM.s:764    .bss.delta_angle_motor_r:00000000 delta_angle_motor_r
-  C:\Temp\ccX8cZaM.s:855    .bss.speed_rad:00000000 speed_rad
-  C:\Temp\ccX8cZaM.s:785    .bss.g_ave_accel_m:00000000 g_ave_accel_m
-  C:\Temp\ccX8cZaM.s:792    .bss.g_ave_speed_m:00000000 g_ave_speed_m
-  C:\Temp\ccX8cZaM.s:827    .bss.speed_m:00000000 speed_m
-  C:\Temp\ccX8cZaM.s:820    .bss.speed_l_min:00000000 speed_l_min
-  C:\Temp\ccX8cZaM.s:813    .bss.speed_l_max:00000000 speed_l_max
-  C:\Temp\ccX8cZaM.s:806    .bss.speed_l:00000000 speed_l
-  C:\Temp\ccX8cZaM.s:848    .bss.speed_r_min:00000000 speed_r_min
-  C:\Temp\ccX8cZaM.s:841    .bss.speed_r_max:00000000 speed_r_max
-  C:\Temp\ccX8cZaM.s:834    .bss.speed_r:00000000 speed_r
-  C:\Temp\ccX8cZaM.s:746    .bss.ave_store:00000000 $d
-  C:\Temp\ccX8cZaM.s:750    .bss.ave_store:00000000 ave_store
-  C:\Temp\ccX8cZaM.s:753    .bss.delta_angle_motor_l:00000000 $d
-  C:\Temp\ccX8cZaM.s:760    .bss.delta_angle_motor_r:00000000 $d
-  C:\Temp\ccX8cZaM.s:767    .bss.enc_cnt_l_old:00000000 $d
-  C:\Temp\ccX8cZaM.s:771    .bss.enc_cnt_l_old:00000000 enc_cnt_l_old
-  C:\Temp\ccX8cZaM.s:774    .bss.enc_cnt_r_old:00000000 $d
-  C:\Temp\ccX8cZaM.s:778    .bss.enc_cnt_r_old:00000000 enc_cnt_r_old
-  C:\Temp\ccX8cZaM.s:781    .bss.g_ave_accel_m:00000000 $d
-  C:\Temp\ccX8cZaM.s:788    .bss.g_ave_speed_m:00000000 $d
-  C:\Temp\ccX8cZaM.s:795    .bss.l_ave_counter.10212:00000000 $d
-  C:\Temp\ccX8cZaM.s:799    .bss.l_ave_counter.10212:00000000 l_ave_counter.10212
-  C:\Temp\ccX8cZaM.s:802    .bss.speed_l:00000000 $d
-  C:\Temp\ccX8cZaM.s:809    .bss.speed_l_max:00000000 $d
-  C:\Temp\ccX8cZaM.s:816    .bss.speed_l_min:00000000 $d
-  C:\Temp\ccX8cZaM.s:823    .bss.speed_m:00000000 $d
-  C:\Temp\ccX8cZaM.s:830    .bss.speed_r:00000000 $d
-  C:\Temp\ccX8cZaM.s:837    .bss.speed_r_max:00000000 $d
-  C:\Temp\ccX8cZaM.s:844    .bss.speed_r_min:00000000 $d
-  C:\Temp\ccX8cZaM.s:851    .bss.speed_rad:00000000 $d
+  C:\Temp\ccPeizZ9.s:18     .text.Encoder_ResetCount_Left:00000000 $t
+  C:\Temp\ccPeizZ9.s:26     .text.Encoder_ResetCount_Left:00000000 Encoder_ResetCount_Left
+  C:\Temp\ccPeizZ9.s:44     .text.Encoder_ResetCount_Left:0000000c $d
+  C:\Temp\ccPeizZ9.s:49     .text.Encoder_ResetCount_Right:00000000 $t
+  C:\Temp\ccPeizZ9.s:56     .text.Encoder_ResetCount_Right:00000000 Encoder_ResetCount_Right
+  C:\Temp\ccPeizZ9.s:74     .text.Encoder_Initialize:00000000 $t
+  C:\Temp\ccPeizZ9.s:81     .text.Encoder_Initialize:00000000 Encoder_Initialize
+  C:\Temp\ccPeizZ9.s:127    .text.Encoder_Initialize:00000030 $d
+  C:\Temp\ccPeizZ9.s:136    .text.Encoder_GetAngle_Left:00000000 $t
+  C:\Temp\ccPeizZ9.s:143    .text.Encoder_GetAngle_Left:00000000 Encoder_GetAngle_Left
+  C:\Temp\ccPeizZ9.s:170    .text.Encoder_GetAngle_Left:00000024 $d
+  C:\Temp\ccPeizZ9.s:177    .text.Encoder_GetAngle_Right:00000000 $t
+  C:\Temp\ccPeizZ9.s:184    .text.Encoder_GetAngle_Right:00000000 Encoder_GetAngle_Right
+  C:\Temp\ccPeizZ9.s:211    .text.Encoder_GetAngle_Right:00000028 $d
+  C:\Temp\ccPeizZ9.s:217    .text.Get_speed:00000000 $t
+  C:\Temp\ccPeizZ9.s:224    .text.Get_speed:00000000 Get_speed
+  C:\Temp\ccPeizZ9.s:495    .text.Get_speed:0000015c $d
+  C:\Temp\ccPeizZ9.s:522    .text.speed_m_average:00000000 $t
+  C:\Temp\ccPeizZ9.s:529    .text.speed_m_average:00000000 speed_m_average
+  C:\Temp\ccPeizZ9.s:720    .text.speed_m_average:000000e8 $d
+  C:\Temp\ccPeizZ9.s:757    .bss.delta_angle_motor_l:00000000 delta_angle_motor_l
+  C:\Temp\ccPeizZ9.s:764    .bss.delta_angle_motor_r:00000000 delta_angle_motor_r
+  C:\Temp\ccPeizZ9.s:855    .bss.speed_rad:00000000 speed_rad
+  C:\Temp\ccPeizZ9.s:785    .bss.g_ave_accel_m:00000000 g_ave_accel_m
+  C:\Temp\ccPeizZ9.s:792    .bss.g_ave_speed_m:00000000 g_ave_speed_m
+  C:\Temp\ccPeizZ9.s:827    .bss.speed_m:00000000 speed_m
+  C:\Temp\ccPeizZ9.s:820    .bss.speed_l_min:00000000 speed_l_min
+  C:\Temp\ccPeizZ9.s:813    .bss.speed_l_max:00000000 speed_l_max
+  C:\Temp\ccPeizZ9.s:806    .bss.speed_l:00000000 speed_l
+  C:\Temp\ccPeizZ9.s:848    .bss.speed_r_min:00000000 speed_r_min
+  C:\Temp\ccPeizZ9.s:841    .bss.speed_r_max:00000000 speed_r_max
+  C:\Temp\ccPeizZ9.s:834    .bss.speed_r:00000000 speed_r
+  C:\Temp\ccPeizZ9.s:746    .bss.ave_store:00000000 $d
+  C:\Temp\ccPeizZ9.s:750    .bss.ave_store:00000000 ave_store
+  C:\Temp\ccPeizZ9.s:753    .bss.delta_angle_motor_l:00000000 $d
+  C:\Temp\ccPeizZ9.s:760    .bss.delta_angle_motor_r:00000000 $d
+  C:\Temp\ccPeizZ9.s:767    .bss.enc_cnt_l_old:00000000 $d
+  C:\Temp\ccPeizZ9.s:771    .bss.enc_cnt_l_old:00000000 enc_cnt_l_old
+  C:\Temp\ccPeizZ9.s:774    .bss.enc_cnt_r_old:00000000 $d
+  C:\Temp\ccPeizZ9.s:778    .bss.enc_cnt_r_old:00000000 enc_cnt_r_old
+  C:\Temp\ccPeizZ9.s:781    .bss.g_ave_accel_m:00000000 $d
+  C:\Temp\ccPeizZ9.s:788    .bss.g_ave_speed_m:00000000 $d
+  C:\Temp\ccPeizZ9.s:795    .bss.l_ave_counter.10212:00000000 $d
+  C:\Temp\ccPeizZ9.s:799    .bss.l_ave_counter.10212:00000000 l_ave_counter.10212
+  C:\Temp\ccPeizZ9.s:802    .bss.speed_l:00000000 $d
+  C:\Temp\ccPeizZ9.s:809    .bss.speed_l_max:00000000 $d
+  C:\Temp\ccPeizZ9.s:816    .bss.speed_l_min:00000000 $d
+  C:\Temp\ccPeizZ9.s:823    .bss.speed_m:00000000 $d
+  C:\Temp\ccPeizZ9.s:830    .bss.speed_r:00000000 $d
+  C:\Temp\ccPeizZ9.s:837    .bss.speed_r_max:00000000 $d
+  C:\Temp\ccPeizZ9.s:844    .bss.speed_r_min:00000000 $d
+  C:\Temp\ccPeizZ9.s:851    .bss.speed_rad:00000000 $d
 
 UNDEFINED SYMBOLS
 HAL_TIM_Encoder_Start
-ARM GAS  C:\Temp\ccX8cZaM.s 			page 23
+ARM GAS  C:\Temp\ccPeizZ9.s 			page 23
 
 
 htim2

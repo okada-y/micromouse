@@ -1,4 +1,4 @@
-ARM GAS  C:\Temp\ccwE4PWa.s 			page 1
+ARM GAS  C:\Temp\cc3gr8dk.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,7 +58,7 @@ ARM GAS  C:\Temp\ccwE4PWa.s 			page 1
   27:Src/ir_sensor.c **** 	front_right	= 3,
   28:Src/ir_sensor.c **** } t_sensor_dir;
   29:Src/ir_sensor.c **** 
-ARM GAS  C:\Temp\ccwE4PWa.s 			page 2
+ARM GAS  C:\Temp\cc3gr8dk.s 			page 2
 
 
   30:Src/ir_sensor.c **** typedef struct {	//a センサ情報用構造体
@@ -118,7 +118,7 @@ ARM GAS  C:\Temp\ccwE4PWa.s 			page 1
   48 0010 0B4B     		ldr	r3, .L6+4
   49 0012 83FB0213 		smull	r1, r3, r3, r2
   50 0016 03EB4303 		add	r3, r3, r3, lsl #1
-ARM GAS  C:\Temp\ccwE4PWa.s 			page 3
+ARM GAS  C:\Temp\cc3gr8dk.s 			page 3
 
 
   51 001a D31A     		subs	r3, r2, r3
@@ -178,7 +178,7 @@ ARM GAS  C:\Temp\ccwE4PWa.s 			page 1
   96              		.fpu fpv4-sp-d16
   98              	Sensor_StartADC:
   99              	.LFB135:
-ARM GAS  C:\Temp\ccwE4PWa.s 			page 4
+ARM GAS  C:\Temp\cc3gr8dk.s 			page 4
 
 
   67:Src/ir_sensor.c **** 
@@ -238,7 +238,7 @@ ARM GAS  C:\Temp\ccwE4PWa.s 			page 1
  125 0014 6FF00102 		mvn	r2, #1
  126 0018 1A61     		str	r2, [r3, #16]
   96:Src/ir_sensor.c **** 	HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);
-ARM GAS  C:\Temp\ccwE4PWa.s 			page 5
+ARM GAS  C:\Temp\cc3gr8dk.s 			page 5
 
 
  127              		.loc 1 96 2 view .LVU24
@@ -298,7 +298,7 @@ ARM GAS  C:\Temp\ccwE4PWa.s 			page 1
  178 0008 A06A     		ldr	r0, [r4, #40]
  179 000a FFF7FEFF 		bl	HAL_DMA_RegisterCallback
  180              	.LVL4:
-ARM GAS  C:\Temp\ccwE4PWa.s 			page 6
+ARM GAS  C:\Temp\cc3gr8dk.s 			page 6
 
 
   74:Src/ir_sensor.c **** 	HAL_DMA_Start_IT(htim1.hdma[TIM_DMA_ID_CC2], (uint32_t)&sensor_off_pattern, (uint32_t)(&(GPIOA->OD
@@ -358,7 +358,7 @@ ARM GAS  C:\Temp\ccwE4PWa.s 			page 1
  226 0060 00000000 		.word	.LANCHOR3
  227 0064 00000000 		.word	hadc1
  228              		.cfi_endproc
-ARM GAS  C:\Temp\ccwE4PWa.s 			page 7
+ARM GAS  C:\Temp\cc3gr8dk.s 			page 7
 
 
  229              	.LFE134:
@@ -418,7 +418,7 @@ ARM GAS  C:\Temp\ccwE4PWa.s 			page 1
  111:Src/ir_sensor.c **** 	SENSOR_ALL_OFF();
  274              		.loc 1 111 2 view .LVU45
  275 0028 0022     		movs	r2, #0
-ARM GAS  C:\Temp\ccwE4PWa.s 			page 8
+ARM GAS  C:\Temp\cc3gr8dk.s 			page 8
 
 
  276 002a F021     		movs	r1, #240
@@ -478,7 +478,7 @@ ARM GAS  C:\Temp\ccwE4PWa.s 			page 1
  321 001a 03B1     		cbz	r3, .L24
  322              	.L20:
  123:Src/ir_sensor.c **** 	case sensor_all_off_mode:
-ARM GAS  C:\Temp\ccwE4PWa.s 			page 9
+ARM GAS  C:\Temp\cc3gr8dk.s 			page 9
 
 
  124:Src/ir_sensor.c **** 		battery_value 					= adc_value[0];
@@ -538,7 +538,7 @@ ARM GAS  C:\Temp\ccwE4PWa.s 			page 1
  127:Src/ir_sensor.c **** 		sensor_value[front_right].off 	= adc_value[4];
  344              		.loc 1 127 3 is_stmt 1 view .LVU62
  127:Src/ir_sensor.c **** 		sensor_value[front_right].off 	= adc_value[4];
-ARM GAS  C:\Temp\ccwE4PWa.s 			page 10
+ARM GAS  C:\Temp\cc3gr8dk.s 			page 10
 
 
  345              		.loc 1 127 44 is_stmt 0 view .LVU63
@@ -598,7 +598,7 @@ ARM GAS  C:\Temp\ccwE4PWa.s 			page 1
  140:Src/ir_sensor.c **** 		//HAL_GPIO_WritePin(GPIOA,LED4_Pin,GPIO_PIN_SET);
  382              		.loc 1 140 32 view .LVU81
  383 0052 5A81     		strh	r2, [r3, #10]	@ movhi
-ARM GAS  C:\Temp\ccwE4PWa.s 			page 11
+ARM GAS  C:\Temp\cc3gr8dk.s 			page 11
 
 
  142:Src/ir_sensor.c **** 
@@ -658,7 +658,7 @@ ARM GAS  C:\Temp\ccwE4PWa.s 			page 1
  431              		.fpu fpv4-sp-d16
  433              	Sensor_GetValue:
  434              	.LVL16:
-ARM GAS  C:\Temp\ccwE4PWa.s 			page 12
+ARM GAS  C:\Temp\cc3gr8dk.s 			page 12
 
 
  435              	.LFB139:
@@ -718,7 +718,7 @@ ARM GAS  C:\Temp\ccwE4PWa.s 			page 1
  171:Src/ir_sensor.c **** 
  172:Src/ir_sensor.c **** /* ---------------------------------------------------------------
  173:Src/ir_sensor.c **** 	赤外センサの偏差値から距離に変換する関数
-ARM GAS  C:\Temp\ccwE4PWa.s 			page 13
+ARM GAS  C:\Temp\cc3gr8dk.s 			page 13
 
 
  174:Src/ir_sensor.c **** --------------------------------------------------------------- */
@@ -778,7 +778,7 @@ ARM GAS  C:\Temp\ccwE4PWa.s 			page 1
  188:Src/ir_sensor.c **** 
  189:Src/ir_sensor.c **** else{
  190:Src/ir_sensor.c **** 
-ARM GAS  C:\Temp\ccwE4PWa.s 			page 14
+ARM GAS  C:\Temp\cc3gr8dk.s 			page 14
 
 
  191:Src/ir_sensor.c **** 	//m 左前
@@ -838,7 +838,7 @@ ARM GAS  C:\Temp\ccwE4PWa.s 			page 1
  554              		.loc 1 205 2 is_stmt 1 view .LVU116
  555              		.loc 1 205 4 is_stmt 0 view .LVU117
  556 004a 0022     		movs	r2, #0
-ARM GAS  C:\Temp\ccwE4PWa.s 			page 15
+ARM GAS  C:\Temp\cc3gr8dk.s 			page 15
 
 
  557              	.LVL28:
@@ -898,7 +898,7 @@ ARM GAS  C:\Temp\ccwE4PWa.s 			page 1
  215:Src/ir_sensor.c **** }
  596              		.loc 1 215 1 view .LVU128
  597 007e B0EE480A 		vmov.f32	s0, s16
-ARM GAS  C:\Temp\ccwE4PWa.s 			page 16
+ARM GAS  C:\Temp\cc3gr8dk.s 			page 16
 
 
  598 0082 F0EE680A 		vmov.f32	s1, s17
@@ -958,7 +958,7 @@ ARM GAS  C:\Temp\ccwE4PWa.s 			page 1
  638              		@ args = 0, pretend = 0, frame = 0
  639              		@ frame_needed = 0, uses_anonymous_args = 0
  640 0000 F0B5     		push	{r4, r5, r6, r7, lr}
-ARM GAS  C:\Temp\ccwE4PWa.s 			page 17
+ARM GAS  C:\Temp\cc3gr8dk.s 			page 17
 
 
  641              	.LCFI6:
@@ -1018,7 +1018,7 @@ ARM GAS  C:\Temp\ccwE4PWa.s 			page 1
  687 0036 0BB0     		add	sp, sp, #44
  688              	.LCFI8:
  689              		.cfi_def_cfa_offset 20
-ARM GAS  C:\Temp\ccwE4PWa.s 			page 18
+ARM GAS  C:\Temp\cc3gr8dk.s 			page 18
 
 
  690              		@ sp needed
@@ -1078,7 +1078,7 @@ ARM GAS  C:\Temp\ccwE4PWa.s 			page 1
  754              		.file 7 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\_stdint.h"
  755              		.file 8 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\math.h"
  756              		.file 9 "Drivers/CMSIS/Include/core_cm4.h"
-ARM GAS  C:\Temp\ccwE4PWa.s 			page 19
+ARM GAS  C:\Temp\cc3gr8dk.s 			page 19
 
 
  757              		.file 10 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h"
@@ -1097,53 +1097,53 @@ ARM GAS  C:\Temp\ccwE4PWa.s 			page 1
  770              		.file 23 "Inc/usart.h"
  771              		.file 24 "Inc/index.h"
  772              		.file 25 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\stdio.h"
-ARM GAS  C:\Temp\ccwE4PWa.s 			page 20
+ARM GAS  C:\Temp\cc3gr8dk.s 			page 20
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 ir_sensor.c
-  C:\Temp\ccwE4PWa.s:18     .text.TIM1_CC2_Callback:00000000 $t
-  C:\Temp\ccwE4PWa.s:26     .text.TIM1_CC2_Callback:00000000 TIM1_CC2_Callback
-  C:\Temp\ccwE4PWa.s:84     .text.TIM1_CC2_Callback:0000003c $d
-  C:\Temp\ccwE4PWa.s:91     .text.Sensor_StartADC:00000000 $t
-  C:\Temp\ccwE4PWa.s:98     .text.Sensor_StartADC:00000000 Sensor_StartADC
-  C:\Temp\ccwE4PWa.s:146    .text.Sensor_StartADC:00000034 $d
-  C:\Temp\ccwE4PWa.s:154    .text.Sensor_Initialize:00000000 $t
-  C:\Temp\ccwE4PWa.s:161    .text.Sensor_Initialize:00000000 Sensor_Initialize
-  C:\Temp\ccwE4PWa.s:221    .text.Sensor_Initialize:0000004c $d
-  C:\Temp\ccwE4PWa.s:232    .text.Sensor_StopADC:00000000 $t
-  C:\Temp\ccwE4PWa.s:239    .text.Sensor_StopADC:00000000 Sensor_StopADC
-  C:\Temp\ccwE4PWa.s:285    .text.Sensor_StopADC:00000034 $d
-  C:\Temp\ccwE4PWa.s:291    .text.HAL_ADC_ConvCpltCallback:00000000 $t
-  C:\Temp\ccwE4PWa.s:298    .text.HAL_ADC_ConvCpltCallback:00000000 HAL_ADC_ConvCpltCallback
-  C:\Temp\ccwE4PWa.s:390    .text.HAL_ADC_ConvCpltCallback:00000058 $d
-  C:\Temp\ccwE4PWa.s:399    .text.Sensor_GetBatteryValue:00000000 $t
-  C:\Temp\ccwE4PWa.s:406    .text.Sensor_GetBatteryValue:00000000 Sensor_GetBatteryValue
-  C:\Temp\ccwE4PWa.s:421    .text.Sensor_GetBatteryValue:00000008 $d
-  C:\Temp\ccwE4PWa.s:426    .text.Sensor_GetValue:00000000 $t
-  C:\Temp\ccwE4PWa.s:433    .text.Sensor_GetValue:00000000 Sensor_GetValue
-  C:\Temp\ccwE4PWa.s:458    .text.Sensor_GetValue:00000014 $d
-  C:\Temp\ccwE4PWa.s:467    .text.SensorValue2length:00000000 $t
-  C:\Temp\ccwE4PWa.s:474    .text.SensorValue2length:00000000 SensorValue2length
-  C:\Temp\ccwE4PWa.s:608    .text.SensorValue2length:00000090 $d
-  C:\Temp\ccwE4PWa.s:622    .rodata.Sensor_DebugPrintf.str1.4:00000000 $d
-  C:\Temp\ccwE4PWa.s:627    .text.Sensor_DebugPrintf:00000000 $t
-  C:\Temp\ccwE4PWa.s:634    .text.Sensor_DebugPrintf:00000000 Sensor_DebugPrintf
-  C:\Temp\ccwE4PWa.s:695    .text.Sensor_DebugPrintf:0000003c $d
-  C:\Temp\ccwE4PWa.s:718    .bss.mode_number_int:00000000 mode_number_int
-  C:\Temp\ccwE4PWa.s:702    .bss.adc_value:00000000 $d
-  C:\Temp\ccwE4PWa.s:706    .bss.adc_value:00000000 adc_value
-  C:\Temp\ccwE4PWa.s:709    .bss.battery_value:00000000 $d
-  C:\Temp\ccwE4PWa.s:713    .bss.battery_value:00000000 battery_value
-  C:\Temp\ccwE4PWa.s:719    .bss.mode_number_int:00000000 $d
-  C:\Temp\ccwE4PWa.s:724    .bss.sensor_mode:00000000 sensor_mode
-  C:\Temp\ccwE4PWa.s:725    .bss.sensor_mode:00000000 $d
-  C:\Temp\ccwE4PWa.s:727    .bss.sensor_off_pattern:00000000 $d
-  C:\Temp\ccwE4PWa.s:731    .bss.sensor_off_pattern:00000000 sensor_off_pattern
-  C:\Temp\ccwE4PWa.s:734    .bss.sensor_on_pattern:00000000 $d
-  C:\Temp\ccwE4PWa.s:738    .bss.sensor_on_pattern:00000000 sensor_on_pattern
-  C:\Temp\ccwE4PWa.s:741    .bss.sensor_value:00000000 $d
-  C:\Temp\ccwE4PWa.s:745    .bss.sensor_value:00000000 sensor_value
+  C:\Temp\cc3gr8dk.s:18     .text.TIM1_CC2_Callback:00000000 $t
+  C:\Temp\cc3gr8dk.s:26     .text.TIM1_CC2_Callback:00000000 TIM1_CC2_Callback
+  C:\Temp\cc3gr8dk.s:84     .text.TIM1_CC2_Callback:0000003c $d
+  C:\Temp\cc3gr8dk.s:91     .text.Sensor_StartADC:00000000 $t
+  C:\Temp\cc3gr8dk.s:98     .text.Sensor_StartADC:00000000 Sensor_StartADC
+  C:\Temp\cc3gr8dk.s:146    .text.Sensor_StartADC:00000034 $d
+  C:\Temp\cc3gr8dk.s:154    .text.Sensor_Initialize:00000000 $t
+  C:\Temp\cc3gr8dk.s:161    .text.Sensor_Initialize:00000000 Sensor_Initialize
+  C:\Temp\cc3gr8dk.s:221    .text.Sensor_Initialize:0000004c $d
+  C:\Temp\cc3gr8dk.s:232    .text.Sensor_StopADC:00000000 $t
+  C:\Temp\cc3gr8dk.s:239    .text.Sensor_StopADC:00000000 Sensor_StopADC
+  C:\Temp\cc3gr8dk.s:285    .text.Sensor_StopADC:00000034 $d
+  C:\Temp\cc3gr8dk.s:291    .text.HAL_ADC_ConvCpltCallback:00000000 $t
+  C:\Temp\cc3gr8dk.s:298    .text.HAL_ADC_ConvCpltCallback:00000000 HAL_ADC_ConvCpltCallback
+  C:\Temp\cc3gr8dk.s:390    .text.HAL_ADC_ConvCpltCallback:00000058 $d
+  C:\Temp\cc3gr8dk.s:399    .text.Sensor_GetBatteryValue:00000000 $t
+  C:\Temp\cc3gr8dk.s:406    .text.Sensor_GetBatteryValue:00000000 Sensor_GetBatteryValue
+  C:\Temp\cc3gr8dk.s:421    .text.Sensor_GetBatteryValue:00000008 $d
+  C:\Temp\cc3gr8dk.s:426    .text.Sensor_GetValue:00000000 $t
+  C:\Temp\cc3gr8dk.s:433    .text.Sensor_GetValue:00000000 Sensor_GetValue
+  C:\Temp\cc3gr8dk.s:458    .text.Sensor_GetValue:00000014 $d
+  C:\Temp\cc3gr8dk.s:467    .text.SensorValue2length:00000000 $t
+  C:\Temp\cc3gr8dk.s:474    .text.SensorValue2length:00000000 SensorValue2length
+  C:\Temp\cc3gr8dk.s:608    .text.SensorValue2length:00000090 $d
+  C:\Temp\cc3gr8dk.s:622    .rodata.Sensor_DebugPrintf.str1.4:00000000 $d
+  C:\Temp\cc3gr8dk.s:627    .text.Sensor_DebugPrintf:00000000 $t
+  C:\Temp\cc3gr8dk.s:634    .text.Sensor_DebugPrintf:00000000 Sensor_DebugPrintf
+  C:\Temp\cc3gr8dk.s:695    .text.Sensor_DebugPrintf:0000003c $d
+  C:\Temp\cc3gr8dk.s:718    .bss.mode_number_int:00000000 mode_number_int
+  C:\Temp\cc3gr8dk.s:702    .bss.adc_value:00000000 $d
+  C:\Temp\cc3gr8dk.s:706    .bss.adc_value:00000000 adc_value
+  C:\Temp\cc3gr8dk.s:709    .bss.battery_value:00000000 $d
+  C:\Temp\cc3gr8dk.s:713    .bss.battery_value:00000000 battery_value
+  C:\Temp\cc3gr8dk.s:719    .bss.mode_number_int:00000000 $d
+  C:\Temp\cc3gr8dk.s:724    .bss.sensor_mode:00000000 sensor_mode
+  C:\Temp\cc3gr8dk.s:725    .bss.sensor_mode:00000000 $d
+  C:\Temp\cc3gr8dk.s:727    .bss.sensor_off_pattern:00000000 $d
+  C:\Temp\cc3gr8dk.s:731    .bss.sensor_off_pattern:00000000 sensor_off_pattern
+  C:\Temp\cc3gr8dk.s:734    .bss.sensor_on_pattern:00000000 $d
+  C:\Temp\cc3gr8dk.s:738    .bss.sensor_on_pattern:00000000 sensor_on_pattern
+  C:\Temp\cc3gr8dk.s:741    .bss.sensor_value:00000000 $d
+  C:\Temp\cc3gr8dk.s:745    .bss.sensor_value:00000000 sensor_value
 
 UNDEFINED SYMBOLS
 HAL_TIM_PWM_Start
@@ -1157,7 +1157,7 @@ HAL_TIM_PWM_Stop
 HAL_DMA_Abort_IT
 HAL_GPIO_WritePin
 __aeabi_i2d
-ARM GAS  C:\Temp\ccwE4PWa.s 			page 21
+ARM GAS  C:\Temp\cc3gr8dk.s 			page 21
 
 
 __aeabi_ddiv
