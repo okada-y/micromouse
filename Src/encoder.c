@@ -134,7 +134,7 @@ void Get_speed(void)
 
 	if((ENC_CNT_SR_L & 0x0001) == 0x0000)//overflowがないとき(UIF=0)
 	{
-		sl_delta_cnt_l = (int32_t)enc_cnt_l_new - (int32_t)enc_cnt_l_old;	//m　右タイヤのカウント値を取得(/1ms)
+		sl_delta_cnt_l = (int32_t)enc_cnt_l_new - (int32_t)enc_cnt_l_old;	//m　左タイヤのカウント値を取得(/1ms)
 	}
 	else//overflow　or underflowがあるとき(UIF=1)
 	{
