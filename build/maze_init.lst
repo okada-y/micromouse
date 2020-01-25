@@ -1,0 +1,437 @@
+ARM GAS  C:\Temp\cco5PjcG.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"maze_init.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.maze_init,"ax",%progbits
+  18              		.align	1
+  19              		.global	maze_init
+  20              		.arch armv7e-m
+  21              		.syntax unified
+  22              		.thumb
+  23              		.thumb_func
+  24              		.fpu fpv4-sp-d16
+  26              	maze_init:
+  27              	.LVL0:
+  28              	.LFB133:
+  29              		.file 1 "Src/maze_init.c"
+   1:Src/maze_init.c **** /*
+   2:Src/maze_init.c ****  * Sponsored License - for use in support of a program or activity
+   3:Src/maze_init.c ****  * sponsored by MathWorks.  Not for government, commercial or other
+   4:Src/maze_init.c ****  * non-sponsored organizational use.
+   5:Src/maze_init.c ****  * File: maze_init.c
+   6:Src/maze_init.c ****  *
+   7:Src/maze_init.c ****  * MATLAB Coder version            : 4.2
+   8:Src/maze_init.c ****  * C/C++ source code generated on  : 18-Nov-2019 23:53:15
+   9:Src/maze_init.c ****  */
+  10:Src/maze_init.c **** 
+  11:Src/maze_init.c **** /* Include Files */
+  12:Src/maze_init.c **** #include <string.h>
+  13:Src/maze_init.c **** #include "maze_init.h"
+  14:Src/maze_init.c **** #include "maze_solve.h"
+  15:Src/maze_init.c **** 
+  16:Src/maze_init.c **** /* Include Original*/
+  17:Src/maze_init.c **** #include "index.h"
+  18:Src/maze_init.c **** 
+  19:Src/maze_init.c **** /* Function Definitions */
+  20:Src/maze_init.c **** 
+  21:Src/maze_init.c **** /*
+  22:Src/maze_init.c ****  * maze_init 迷路情報の初期化
+  23:Src/maze_init.c ****  * 入力 迷路横サイズ, 迷路縦サイズ
+  24:Src/maze_init.c ****  * 出力 迷路壁情報,迷路壁探索済み情報
+  25:Src/maze_init.c ****  * Arguments    : unsigned char maze_row_size
+  26:Src/maze_init.c ****  *                unsigned char maze_col_size
+  27:Src/maze_init.c ****  *                unsigned char maze_wall[1024]
+  28:Src/maze_init.c ****  *                unsigned char maze_wall_search[1024]
+  29:Src/maze_init.c ****  * Return Type  : void
+ARM GAS  C:\Temp\cco5PjcG.s 			page 2
+
+
+  30:Src/maze_init.c ****  */
+  31:Src/maze_init.c **** void maze_init(unsigned char maze_row_size, unsigned char maze_col_size,
+  32:Src/maze_init.c ****                unsigned char maze_wall[1024], unsigned char maze_wall_search
+  33:Src/maze_init.c ****                [1024])
+  34:Src/maze_init.c **** {
+  30              		.loc 1 34 1 view -0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              		.loc 1 34 1 is_stmt 0 view .LVU1
+  35 0000 2DE9F843 		push	{r3, r4, r5, r6, r7, r8, r9, lr}
+  36              	.LCFI0:
+  37              		.cfi_def_cfa_offset 32
+  38              		.cfi_offset 3, -32
+  39              		.cfi_offset 4, -28
+  40              		.cfi_offset 5, -24
+  41              		.cfi_offset 6, -20
+  42              		.cfi_offset 7, -16
+  43              		.cfi_offset 8, -12
+  44              		.cfi_offset 9, -8
+  45              		.cfi_offset 14, -4
+  46 0004 0446     		mov	r4, r0
+  47 0006 8846     		mov	r8, r1
+  48 0008 1746     		mov	r7, r2
+  49 000a 9946     		mov	r9, r3
+  35:Src/maze_init.c ****   unsigned int qY;
+  50              		.loc 1 35 3 is_stmt 1 view .LVU2
+  36:Src/maze_init.c ****   int i0;
+  51              		.loc 1 36 3 view .LVU3
+  37:Src/maze_init.c ****   int i;
+  52              		.loc 1 37 3 view .LVU4
+  38:Src/maze_init.c ****   int i1;
+  53              		.loc 1 38 3 view .LVU5
+  39:Src/maze_init.c ****   int n;
+  54              		.loc 1 39 3 view .LVU6
+  40:Src/maze_init.c ****   int maze_wall_tmp;
+  55              		.loc 1 40 3 view .LVU7
+  41:Src/maze_init.c **** 
+  42:Src/maze_init.c ****   /* 方角定義 */
+  43:Src/maze_init.c ****   /* 迷路情報、探索済情報初期化 */
+  44:Src/maze_init.c ****   /*  maze_wall = uint8(zeros(maze_col_size-1,maze_row_size-1)); */
+  45:Src/maze_init.c ****   /*  maze_wall_search = uint8(zeros(maze_col_size-1,maze_row_size-1)); */
+  46:Src/maze_init.c ****   memset(&maze_wall[0], 0, sizeof(unsigned char) << 10);
+  56              		.loc 1 46 3 view .LVU8
+  57 000c 4FF48062 		mov	r2, #1024
+  58              	.LVL1:
+  59              		.loc 1 46 3 is_stmt 0 view .LVU9
+  60 0010 0021     		movs	r1, #0
+  61              	.LVL2:
+  62              		.loc 1 46 3 view .LVU10
+  63 0012 3846     		mov	r0, r7
+  64              	.LVL3:
+  65              		.loc 1 46 3 view .LVU11
+  66 0014 FFF7FEFF 		bl	memset
+  67              	.LVL4:
+  47:Src/maze_init.c **** 
+  48:Src/maze_init.c ****   /* 既知となる外周4辺の壁情報を入力、探索済みとする。 */
+ARM GAS  C:\Temp\cco5PjcG.s 			page 3
+
+
+  49:Src/maze_init.c ****   qY = maze_row_size - 1U;
+  68              		.loc 1 49 3 is_stmt 1 view .LVU12
+  69              		.loc 1 49 6 is_stmt 0 view .LVU13
+  70 0018 611E     		subs	r1, r4, #1
+  71              	.LVL5:
+  50:Src/maze_init.c ****   if (qY > maze_row_size) {
+  72              		.loc 1 50 3 is_stmt 1 view .LVU14
+  73              		.loc 1 50 6 is_stmt 0 view .LVU15
+  74 001a 8C42     		cmp	r4, r1
+  75 001c 00D2     		bcs	.L2
+  76              	.LVL6:
+  51:Src/maze_init.c ****     qY = 0U;
+  77              		.loc 1 51 8 view .LVU16
+  78 001e 0021     		movs	r1, #0
+  79              	.LVL7:
+  80              	.L2:
+  52:Src/maze_init.c ****   }
+  53:Src/maze_init.c **** 
+  54:Src/maze_init.c ****   i0 = (int)qY;
+  81              		.loc 1 54 3 is_stmt 1 view .LVU17
+  55:Src/maze_init.c ****   for (i = 0; i < i0; i++) {
+  82              		.loc 1 55 3 view .LVU18
+  83              		.loc 1 55 10 is_stmt 0 view .LVU19
+  84 0020 0024     		movs	r4, #0
+  85              		.loc 1 55 3 view .LVU20
+  86 0022 26E0     		b	.L3
+  87              	.LVL8:
+  88              	.L16:
+  56:Src/maze_init.c ****     qY = maze_col_size - 1U;
+  57:Src/maze_init.c ****     if (qY > maze_col_size) {
+  58:Src/maze_init.c ****       qY = 0U;
+  59:Src/maze_init.c ****     }
+  60:Src/maze_init.c **** 
+  61:Src/maze_init.c ****     i1 = (int)qY;
+  62:Src/maze_init.c ****     for (n = 0; n < i1; n++) {
+  63:Src/maze_init.c ****       /* 北側 */
+  64:Src/maze_init.c ****       qY = maze_row_size - 1U;
+  65:Src/maze_init.c ****       if (qY > maze_row_size) {
+  66:Src/maze_init.c ****         qY = 0U;
+  67:Src/maze_init.c ****       }
+  68:Src/maze_init.c **** 
+  69:Src/maze_init.c ****       if (1 + i == (int)qY) {
+  70:Src/maze_init.c ****         maze_wall_tmp = i + (n << 5);
+  89              		.loc 1 70 9 is_stmt 1 view .LVU21
+  90              		.loc 1 70 23 is_stmt 0 view .LVU22
+  91 0024 04EB4012 		add	r2, r4, r0, lsl #5
+  92              	.LVL9:
+  71:Src/maze_init.c ****         maze_wall[maze_wall_tmp] |= 1;
+  93              		.loc 1 71 9 is_stmt 1 view .LVU23
+  94              		.loc 1 71 34 is_stmt 0 view .LVU24
+  95 0028 BB5C     		ldrb	r3, [r7, r2]	@ zero_extendqisi2
+  96 002a 43F00103 		orr	r3, r3, #1
+  97 002e BB54     		strb	r3, [r7, r2]
+  98 0030 16E0     		b	.L6
+  99              	.LVL10:
+ 100              	.L17:
+  72:Src/maze_init.c ****       }
+ARM GAS  C:\Temp\cco5PjcG.s 			page 4
+
+
+  73:Src/maze_init.c **** 
+  74:Src/maze_init.c ****       /* 東側 */
+  75:Src/maze_init.c ****       qY = maze_col_size - 1U;
+  76:Src/maze_init.c ****       if (qY > maze_col_size) {
+  77:Src/maze_init.c ****         qY = 0U;
+  78:Src/maze_init.c ****       }
+  79:Src/maze_init.c **** 
+  80:Src/maze_init.c ****       if (1 + n == (int)qY) {
+  81:Src/maze_init.c ****         maze_wall[i + (n << 5)] = (unsigned char)(maze_wall[i + (n << 5)] | 2);
+ 101              		.loc 1 81 9 is_stmt 1 view .LVU25
+ 102              		.loc 1 81 63 is_stmt 0 view .LVU26
+ 103 0032 04EB4012 		add	r2, r4, r0, lsl #5
+ 104              		.loc 1 81 60 view .LVU27
+ 105 0036 BB5C     		ldrb	r3, [r7, r2]	@ zero_extendqisi2
+ 106              		.loc 1 81 35 view .LVU28
+ 107 0038 43F00203 		orr	r3, r3, #2
+ 108              		.loc 1 81 33 view .LVU29
+ 109 003c BB54     		strb	r3, [r7, r2]
+ 110 003e 12E0     		b	.L7
+ 111              	.L18:
+  82:Src/maze_init.c ****       }
+  83:Src/maze_init.c **** 
+  84:Src/maze_init.c ****       /* 南側 */
+  85:Src/maze_init.c ****       if (1 + i == 1) {
+  86:Src/maze_init.c ****         maze_wall[n << 5] = (unsigned char)(maze_wall[n << 5] | 4);
+ 112              		.loc 1 86 9 is_stmt 1 view .LVU30
+ 113              		.loc 1 86 57 is_stmt 0 view .LVU31
+ 114 0040 4201     		lsls	r2, r0, #5
+ 115              		.loc 1 86 54 view .LVU32
+ 116 0042 BB5C     		ldrb	r3, [r7, r2]	@ zero_extendqisi2
+ 117              		.loc 1 86 29 view .LVU33
+ 118 0044 43F00403 		orr	r3, r3, #4
+ 119              		.loc 1 86 27 view .LVU34
+ 120 0048 BB54     		strb	r3, [r7, r2]
+ 121 004a 0EE0     		b	.L8
+ 122              	.L19:
+  87:Src/maze_init.c ****       }
+  88:Src/maze_init.c **** 
+  89:Src/maze_init.c ****       /* 西側 */
+  90:Src/maze_init.c ****       if (1 + n == 1) {
+  91:Src/maze_init.c ****         maze_wall[i] = (unsigned char)(maze_wall[i] | 8);
+ 123              		.loc 1 91 9 is_stmt 1 view .LVU35
+ 124              		.loc 1 91 49 is_stmt 0 view .LVU36
+ 125 004c 3B5D     		ldrb	r3, [r7, r4]	@ zero_extendqisi2
+ 126              		.loc 1 91 24 view .LVU37
+ 127 004e 43F00803 		orr	r3, r3, #8
+ 128              		.loc 1 91 22 view .LVU38
+ 129 0052 3B55     		strb	r3, [r7, r4]
+ 130              	.L9:
+  58:Src/maze_init.c ****     }
+ 131              		.loc 1 58 10 discriminator 1 view .LVU39
+ 132 0054 2846     		mov	r0, r5
+ 133              	.LVL11:
+ 134              	.L5:
+  62:Src/maze_init.c ****       /* 北側 */
+ 135              		.loc 1 62 17 is_stmt 1 discriminator 1 view .LVU40
+  62:Src/maze_init.c ****       /* 北側 */
+ARM GAS  C:\Temp\cco5PjcG.s 			page 5
+
+
+ 136              		.loc 1 62 5 is_stmt 0 discriminator 1 view .LVU41
+ 137 0056 B042     		cmp	r0, r6
+ 138 0058 0ADA     		bge	.L15
+  64:Src/maze_init.c ****       if (qY > maze_row_size) {
+ 139              		.loc 1 64 7 is_stmt 1 view .LVU42
+  65:Src/maze_init.c ****         qY = 0U;
+ 140              		.loc 1 65 7 view .LVU43
+  69:Src/maze_init.c ****         maze_wall_tmp = i + (n << 5);
+ 141              		.loc 1 69 7 view .LVU44
+  69:Src/maze_init.c ****         maze_wall_tmp = i + (n << 5);
+ 142              		.loc 1 69 13 is_stmt 0 view .LVU45
+ 143 005a 621C     		adds	r2, r4, #1
+  69:Src/maze_init.c ****         maze_wall_tmp = i + (n << 5);
+ 144              		.loc 1 69 10 view .LVU46
+ 145 005c 8A42     		cmp	r2, r1
+ 146 005e E1D0     		beq	.L16
+ 147              	.L6:
+  75:Src/maze_init.c ****       if (qY > maze_col_size) {
+ 148              		.loc 1 75 7 is_stmt 1 view .LVU47
+  76:Src/maze_init.c ****         qY = 0U;
+ 149              		.loc 1 76 7 view .LVU48
+  80:Src/maze_init.c ****         maze_wall[i + (n << 5)] = (unsigned char)(maze_wall[i + (n << 5)] | 2);
+ 150              		.loc 1 80 7 view .LVU49
+  80:Src/maze_init.c ****         maze_wall[i + (n << 5)] = (unsigned char)(maze_wall[i + (n << 5)] | 2);
+ 151              		.loc 1 80 13 is_stmt 0 view .LVU50
+ 152 0060 451C     		adds	r5, r0, #1
+  80:Src/maze_init.c ****         maze_wall[i + (n << 5)] = (unsigned char)(maze_wall[i + (n << 5)] | 2);
+ 153              		.loc 1 80 10 view .LVU51
+ 154 0062 B542     		cmp	r5, r6
+ 155 0064 E5D0     		beq	.L17
+ 156              	.L7:
+  85:Src/maze_init.c ****         maze_wall[n << 5] = (unsigned char)(maze_wall[n << 5] | 4);
+ 157              		.loc 1 85 7 is_stmt 1 view .LVU52
+  85:Src/maze_init.c ****         maze_wall[n << 5] = (unsigned char)(maze_wall[n << 5] | 4);
+ 158              		.loc 1 85 10 is_stmt 0 view .LVU53
+ 159 0066 002C     		cmp	r4, #0
+ 160 0068 EAD0     		beq	.L18
+ 161              	.L8:
+  90:Src/maze_init.c ****         maze_wall[i] = (unsigned char)(maze_wall[i] | 8);
+ 162              		.loc 1 90 7 is_stmt 1 view .LVU54
+  90:Src/maze_init.c ****         maze_wall[i] = (unsigned char)(maze_wall[i] | 8);
+ 163              		.loc 1 90 10 is_stmt 0 view .LVU55
+ 164 006a 0028     		cmp	r0, #0
+ 165 006c F2D1     		bne	.L9
+ 166 006e EDE7     		b	.L19
+ 167              	.L15:
+  55:Src/maze_init.c ****     qY = maze_col_size - 1U;
+ 168              		.loc 1 55 23 is_stmt 1 discriminator 2 view .LVU56
+  55:Src/maze_init.c ****     qY = maze_col_size - 1U;
+ 169              		.loc 1 55 24 is_stmt 0 discriminator 2 view .LVU57
+ 170 0070 0134     		adds	r4, r4, #1
+ 171              	.LVL12:
+ 172              	.L3:
+  55:Src/maze_init.c ****     qY = maze_col_size - 1U;
+ 173              		.loc 1 55 15 is_stmt 1 discriminator 1 view .LVU58
+  55:Src/maze_init.c ****     qY = maze_col_size - 1U;
+ 174              		.loc 1 55 3 is_stmt 0 discriminator 1 view .LVU59
+ARM GAS  C:\Temp\cco5PjcG.s 			page 6
+
+
+ 175 0072 8C42     		cmp	r4, r1
+ 176 0074 06DA     		bge	.L20
+  56:Src/maze_init.c ****     if (qY > maze_col_size) {
+ 177              		.loc 1 56 5 is_stmt 1 view .LVU60
+  56:Src/maze_init.c ****     if (qY > maze_col_size) {
+ 178              		.loc 1 56 8 is_stmt 0 view .LVU61
+ 179 0076 08F1FF36 		add	r6, r8, #-1
+ 180              	.LVL13:
+  57:Src/maze_init.c ****       qY = 0U;
+ 181              		.loc 1 57 5 is_stmt 1 view .LVU62
+  57:Src/maze_init.c ****       qY = 0U;
+ 182              		.loc 1 57 8 is_stmt 0 view .LVU63
+ 183 007a B045     		cmp	r8, r6
+ 184 007c 00D2     		bcs	.L4
+ 185              	.LVL14:
+  58:Src/maze_init.c ****     }
+ 186              		.loc 1 58 10 view .LVU64
+ 187 007e 0026     		movs	r6, #0
+ 188              	.LVL15:
+ 189              	.L4:
+  61:Src/maze_init.c ****     for (n = 0; n < i1; n++) {
+ 190              		.loc 1 61 5 is_stmt 1 view .LVU65
+  62:Src/maze_init.c ****       /* 北側 */
+ 191              		.loc 1 62 5 view .LVU66
+  62:Src/maze_init.c ****       /* 北側 */
+ 192              		.loc 1 62 12 is_stmt 0 view .LVU67
+ 193 0080 0020     		movs	r0, #0
+  62:Src/maze_init.c ****       /* 北側 */
+ 194              		.loc 1 62 5 view .LVU68
+ 195 0082 E8E7     		b	.L5
+ 196              	.LVL16:
+ 197              	.L20:
+  92:Src/maze_init.c ****       }
+  93:Src/maze_init.c ****     }
+  94:Src/maze_init.c ****   }
+  95:Src/maze_init.c **** 
+  96:Src/maze_init.c ****   /* スタート時の壁は|_|となっているので、あらかじめ入力 */
+  97:Src/maze_init.c ****   /* スタートマスから見て東側 */
+  98:Src/maze_init.c ****   maze_wall[0] = (unsigned char)(maze_wall[0] | 2);
+ 198              		.loc 1 98 3 is_stmt 1 view .LVU69
+ 199              		.loc 1 98 43 is_stmt 0 view .LVU70
+ 200 0084 3B78     		ldrb	r3, [r7]	@ zero_extendqisi2
+ 201              		.loc 1 98 18 view .LVU71
+ 202 0086 43F00203 		orr	r3, r3, #2
+ 203              		.loc 1 98 16 view .LVU72
+ 204 008a 3B70     		strb	r3, [r7]
+  99:Src/maze_init.c **** 
+ 100:Src/maze_init.c ****   /* スタートマスの一マス東側のマスから見て西側 */
+ 101:Src/maze_init.c ****   maze_wall[32] = (unsigned char)(maze_wall[32] | 8);
+ 205              		.loc 1 101 3 is_stmt 1 view .LVU73
+ 206              		.loc 1 101 44 is_stmt 0 view .LVU74
+ 207 008c 97F82030 		ldrb	r3, [r7, #32]	@ zero_extendqisi2
+ 208              		.loc 1 101 19 view .LVU75
+ 209 0090 43F00803 		orr	r3, r3, #8
+ 210              		.loc 1 101 17 view .LVU76
+ 211 0094 87F82030 		strb	r3, [r7, #32]
+ 102:Src/maze_init.c **** 
+ARM GAS  C:\Temp\cco5PjcG.s 			page 7
+
+
+ 103:Src/maze_init.c ****   /* 以上の壁情報は探索済みとする */
+ 104:Src/maze_init.c ****   memcpy(&maze_wall_search[0], &maze_wall[0], sizeof(unsigned char) << 10);
+ 212              		.loc 1 104 3 is_stmt 1 view .LVU77
+ 213 0098 4FF48062 		mov	r2, #1024
+ 214 009c 3946     		mov	r1, r7
+ 215              	.LVL17:
+ 216              		.loc 1 104 3 is_stmt 0 view .LVU78
+ 217 009e 4846     		mov	r0, r9
+ 218 00a0 FFF7FEFF 		bl	memcpy
+ 219              	.LVL18:
+ 105:Src/maze_init.c **** 
+ 106:Src/maze_init.c ****   /* 座標(1,1)の北側、(2,1)の南側は壁がないことがわかっているので探索済
+ 107:Src/maze_init.c ****   maze_wall_search[0] = (unsigned char)(maze_wall[0] | 1);
+ 220              		.loc 1 107 3 is_stmt 1 view .LVU79
+ 221              		.loc 1 107 50 is_stmt 0 view .LVU80
+ 222 00a4 3B78     		ldrb	r3, [r7]	@ zero_extendqisi2
+ 223              		.loc 1 107 25 view .LVU81
+ 224 00a6 43F00103 		orr	r3, r3, #1
+ 225              		.loc 1 107 23 view .LVU82
+ 226 00aa 89F80030 		strb	r3, [r9]
+ 108:Src/maze_init.c ****   maze_wall_search[1] = (unsigned char)(maze_wall[1] | 4);
+ 227              		.loc 1 108 3 is_stmt 1 view .LVU83
+ 228              		.loc 1 108 50 is_stmt 0 view .LVU84
+ 229 00ae 7B78     		ldrb	r3, [r7, #1]	@ zero_extendqisi2
+ 230              		.loc 1 108 25 view .LVU85
+ 231 00b0 43F00403 		orr	r3, r3, #4
+ 232              		.loc 1 108 23 view .LVU86
+ 233 00b4 89F80130 		strb	r3, [r9, #1]
+ 109:Src/maze_init.c **** }
+ 234              		.loc 1 109 1 view .LVU87
+ 235 00b8 BDE8F883 		pop	{r3, r4, r5, r6, r7, r8, r9, pc}
+ 236              		.loc 1 109 1 view .LVU88
+ 237              		.cfi_endproc
+ 238              	.LFE133:
+ 240              		.text
+ 241              	.Letext0:
+ 242              		.file 2 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\machine\\_default_t
+ 243              		.file 3 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\lock.h"
+ 244              		.file 4 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\_types.h"
+ 245              		.file 5 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\lib\\gcc\\arm-none-eabi\\9.2.1\\include\\st
+ 246              		.file 6 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\reent.h"
+ 247              		.file 7 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\stdlib.h"
+ 248              		.file 8 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 249              		.file 9 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\math.h"
+ 250              		.file 10 "Drivers/CMSIS/Include/core_cm4.h"
+ 251              		.file 11 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h"
+ 252              		.file 12 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f413xx.h"
+ 253              		.file 13 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h"
+ 254              		.file 14 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
+ 255              		.file 15 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h"
+ 256              		.file 16 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_adc.h"
+ 257              		.file 17 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h"
+ 258              		.file 18 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h"
+ 259              		.file 19 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h"
+ 260              		.file 20 "Inc/adc.h"
+ 261              		.file 21 "Inc/spi.h"
+ 262              		.file 22 "Inc/tim.h"
+ARM GAS  C:\Temp\cco5PjcG.s 			page 8
+
+
+ 263              		.file 23 "Inc/usart.h"
+ 264              		.file 24 "Inc/index.h"
+ 265              		.file 25 "<built-in>"
+ARM GAS  C:\Temp\cco5PjcG.s 			page 9
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 maze_init.c
+  C:\Temp\cco5PjcG.s:18     .text.maze_init:00000000 $t
+  C:\Temp\cco5PjcG.s:26     .text.maze_init:00000000 maze_init
+
+UNDEFINED SYMBOLS
+memset
+memcpy

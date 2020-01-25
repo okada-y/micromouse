@@ -1,0 +1,667 @@
+ARM GAS  C:\Temp\cc5FI8gt.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"motor.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.Motor_Initialize,"ax",%progbits
+  18              		.align	1
+  19              		.global	Motor_Initialize
+  20              		.arch armv7e-m
+  21              		.syntax unified
+  22              		.thumb
+  23              		.thumb_func
+  24              		.fpu fpv4-sp-d16
+  26              	Motor_Initialize:
+  27              	.LFB133:
+  28              		.file 1 "Src/motor.c"
+   1:Src/motor.c   **** /*
+   2:Src/motor.c   ****  * motor.c
+   3:Src/motor.c   ****  *
+   4:Src/motor.c   ****  *  Created on: Jul 14, 2019
+   5:Src/motor.c   ****  *      Author: 岡田 泰裕
+   6:Src/motor.c   ****  */
+   7:Src/motor.c   **** 
+   8:Src/motor.c   **** //#include "index.h"
+   9:Src/motor.c   **** 
+  10:Src/motor.c   **** #include "index.h"
+  11:Src/motor.c   **** 
+  12:Src/motor.c   **** #define PCLK			(HAL_RCC_GetPCLK2Freq())	// aマイコンの動作周波数[Hz]
+  13:Src/motor.c   **** #define PWMFREQ			(100000)					// aモータの動作周波数[Hz]
+  14:Src/motor.c   **** #define MOT_DUTY_MIN	(30)						// aモータの最低Duty
+  15:Src/motor.c   **** #define MOT_DUTY_MAX	(950)						// aモータの最大Duty
+  16:Src/motor.c   **** 
+  17:Src/motor.c   **** // aモータの向き設定
+  18:Src/motor.c   **** #define MOT_SET_COMPARE_L_REVERSE(x)	__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, x)
+  19:Src/motor.c   **** #define MOT_SET_COMPARE_L_FORWARD(x)	__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_2, x)
+  20:Src/motor.c   **** #define MOT_SET_COMPARE_R_FORWARD(x)	__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_3, x)
+  21:Src/motor.c   **** #define MOT_SET_COMPARE_R_REVERSE(x)	__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_4, x)
+  22:Src/motor.c   **** 
+  23:Src/motor.c   **** int16_t g_duty_r;
+  24:Src/motor.c   **** int16_t g_duty_l;
+  25:Src/motor.c   **** 
+  26:Src/motor.c   **** /* ---------------------------------------------------------------
+  27:Src/motor.c   **** 	モータ用のタイマーを開始する関数
+  28:Src/motor.c   **** --------------------------------------------------------------- */
+  29:Src/motor.c   **** void Motor_Initialize( void )
+  30:Src/motor.c   **** {
+ARM GAS  C:\Temp\cc5FI8gt.s 			page 2
+
+
+  29              		.loc 1 30 1 view -0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33 0000 10B5     		push	{r4, lr}
+  34              	.LCFI0:
+  35              		.cfi_def_cfa_offset 8
+  36              		.cfi_offset 4, -8
+  37              		.cfi_offset 14, -4
+  31:Src/motor.c   **** 	HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_1);
+  38              		.loc 1 31 2 view .LVU1
+  39 0002 094C     		ldr	r4, .L3
+  40 0004 0021     		movs	r1, #0
+  41 0006 2046     		mov	r0, r4
+  42 0008 FFF7FEFF 		bl	HAL_TIM_PWM_Start
+  43              	.LVL0:
+  32:Src/motor.c   **** 	HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_2);
+  44              		.loc 1 32 2 view .LVU2
+  45 000c 0421     		movs	r1, #4
+  46 000e 2046     		mov	r0, r4
+  47 0010 FFF7FEFF 		bl	HAL_TIM_PWM_Start
+  48              	.LVL1:
+  33:Src/motor.c   **** 	HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_3);
+  49              		.loc 1 33 2 view .LVU3
+  50 0014 0821     		movs	r1, #8
+  51 0016 2046     		mov	r0, r4
+  52 0018 FFF7FEFF 		bl	HAL_TIM_PWM_Start
+  53              	.LVL2:
+  34:Src/motor.c   **** 	HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_4);
+  54              		.loc 1 34 2 view .LVU4
+  55 001c 0C21     		movs	r1, #12
+  56 001e 2046     		mov	r0, r4
+  57 0020 FFF7FEFF 		bl	HAL_TIM_PWM_Start
+  58              	.LVL3:
+  35:Src/motor.c   **** }
+  59              		.loc 1 35 1 is_stmt 0 view .LVU5
+  60 0024 10BD     		pop	{r4, pc}
+  61              	.L4:
+  62 0026 00BF     		.align	2
+  63              	.L3:
+  64 0028 00000000 		.word	htim4
+  65              		.cfi_endproc
+  66              	.LFE133:
+  68              		.section	.text.Motor_StopPWM,"ax",%progbits
+  69              		.align	1
+  70              		.global	Motor_StopPWM
+  71              		.syntax unified
+  72              		.thumb
+  73              		.thumb_func
+  74              		.fpu fpv4-sp-d16
+  76              	Motor_StopPWM:
+  77              	.LFB134:
+  36:Src/motor.c   **** 
+  37:Src/motor.c   **** /* ---------------------------------------------------------------
+  38:Src/motor.c   **** 	モータのの回転を止める関数
+  39:Src/motor.c   **** --------------------------------------------------------------- */
+  40:Src/motor.c   **** void Motor_StopPWM( void )
+ARM GAS  C:\Temp\cc5FI8gt.s 			page 3
+
+
+  41:Src/motor.c   **** {
+  78              		.loc 1 41 1 is_stmt 1 view -0
+  79              		.cfi_startproc
+  80              		@ args = 0, pretend = 0, frame = 0
+  81              		@ frame_needed = 0, uses_anonymous_args = 0
+  82              		@ link register save eliminated.
+  42:Src/motor.c   **** 	MOT_SET_COMPARE_L_FORWARD( 0xffff );
+  83              		.loc 1 42 2 view .LVU7
+  84 0000 044B     		ldr	r3, .L6
+  85 0002 1B68     		ldr	r3, [r3]
+  86 0004 4FF6FF72 		movw	r2, #65535
+  87 0008 9A63     		str	r2, [r3, #56]
+  43:Src/motor.c   **** 	MOT_SET_COMPARE_L_REVERSE( 0xffff );
+  88              		.loc 1 43 2 view .LVU8
+  89 000a 5A63     		str	r2, [r3, #52]
+  44:Src/motor.c   **** 	MOT_SET_COMPARE_R_FORWARD( 0xffff );
+  90              		.loc 1 44 2 view .LVU9
+  91 000c DA63     		str	r2, [r3, #60]
+  45:Src/motor.c   **** 	MOT_SET_COMPARE_R_REVERSE( 0xffff );
+  92              		.loc 1 45 2 view .LVU10
+  93 000e 1A64     		str	r2, [r3, #64]
+  46:Src/motor.c   **** }
+  94              		.loc 1 46 1 is_stmt 0 view .LVU11
+  95 0010 7047     		bx	lr
+  96              	.L7:
+  97 0012 00BF     		.align	2
+  98              	.L6:
+  99 0014 00000000 		.word	htim4
+ 100              		.cfi_endproc
+ 101              	.LFE134:
+ 103              		.section	.text.Motor_SetDuty_Left,"ax",%progbits
+ 104              		.align	1
+ 105              		.global	Motor_SetDuty_Left
+ 106              		.syntax unified
+ 107              		.thumb
+ 108              		.thumb_func
+ 109              		.fpu fpv4-sp-d16
+ 111              	Motor_SetDuty_Left:
+ 112              	.LVL4:
+ 113              	.LFB135:
+  47:Src/motor.c   **** 
+  48:Src/motor.c   **** /* ---------------------------------------------------------------
+  49:Src/motor.c   **** 	左モータを指定のDuty（0～1000）で回転させる関数
+  50:Src/motor.c   **** --------------------------------------------------------------- */
+  51:Src/motor.c   **** void Motor_SetDuty_Left( int16_t duty_l )
+  52:Src/motor.c   **** {
+ 114              		.loc 1 52 1 is_stmt 1 view -0
+ 115              		.cfi_startproc
+ 116              		@ args = 0, pretend = 0, frame = 0
+ 117              		@ frame_needed = 0, uses_anonymous_args = 0
+ 118              		.loc 1 52 1 is_stmt 0 view .LVU13
+ 119 0000 10B5     		push	{r4, lr}
+ 120              	.LCFI1:
+ 121              		.cfi_def_cfa_offset 8
+ 122              		.cfi_offset 4, -8
+ 123              		.cfi_offset 14, -4
+ 124 0002 0446     		mov	r4, r0
+ARM GAS  C:\Temp\cc5FI8gt.s 			page 4
+
+
+  53:Src/motor.c   **** 	uint32_t	pulse_l;
+ 125              		.loc 1 53 2 is_stmt 1 view .LVU14
+  54:Src/motor.c   **** 
+  55:Src/motor.c   **** 	g_duty_l = duty_l;
+ 126              		.loc 1 55 2 view .LVU15
+ 127              		.loc 1 55 11 is_stmt 0 view .LVU16
+ 128 0004 2B4B     		ldr	r3, .L21
+ 129 0006 1880     		strh	r0, [r3]	@ movhi
+  56:Src/motor.c   **** 	if( ABS(duty_l) > MOT_DUTY_MAX ) {
+ 130              		.loc 1 56 2 is_stmt 1 view .LVU17
+ 131              		.loc 1 56 6 is_stmt 0 view .LVU18
+ 132 0008 80EAE073 		eor	r3, r0, r0, asr #31
+ 133 000c A3EBE073 		sub	r3, r3, r0, asr #31
+ 134 0010 9BB2     		uxth	r3, r3
+ 135              		.loc 1 56 4 view .LVU19
+ 136 0012 40F2B632 		movw	r2, #950
+ 137 0016 9342     		cmp	r3, r2
+ 138 0018 18D8     		bhi	.L18
+  57:Src/motor.c   **** 		pulse_l = (uint32_t)(PCLK / PWMFREQ * MOT_DUTY_MAX / 1000) - 1;
+  58:Src/motor.c   **** 	} else if( ABS(duty_l) < MOT_DUTY_MIN ) {
+ 139              		.loc 1 58 9 is_stmt 1 view .LVU20
+ 140              		.loc 1 58 11 is_stmt 0 view .LVU21
+ 141 001a 1D2B     		cmp	r3, #29
+ 142 001c 27D8     		bhi	.L11
+  59:Src/motor.c   **** 		pulse_l = (uint32_t)(PCLK / PWMFREQ * MOT_DUTY_MIN / 1000) - 1;
+ 143              		.loc 1 59 3 is_stmt 1 view .LVU22
+ 144              		.loc 1 59 24 is_stmt 0 view .LVU23
+ 145 001e FFF7FEFF 		bl	HAL_RCC_GetPCLK2Freq
+ 146              	.LVL5:
+ 147              		.loc 1 59 29 view .LVU24
+ 148 0022 4309     		lsrs	r3, r0, #5
+ 149 0024 2448     		ldr	r0, .L21+4
+ 150 0026 A0FB0323 		umull	r2, r3, r0, r3
+ 151 002a DB09     		lsrs	r3, r3, #7
+ 152              		.loc 1 59 39 view .LVU25
+ 153 002c C3EB0313 		rsb	r3, r3, r3, lsl #4
+ 154 0030 5B00     		lsls	r3, r3, #1
+ 155              		.loc 1 59 13 view .LVU26
+ 156 0032 224A     		ldr	r2, .L21+8
+ 157 0034 A2FB0323 		umull	r2, r3, r2, r3
+ 158 0038 9B09     		lsrs	r3, r3, #6
+ 159              		.loc 1 59 11 view .LVU27
+ 160 003a 013B     		subs	r3, r3, #1
+ 161              	.LVL6:
+ 162              	.L10:
+  60:Src/motor.c   **** 	} else {
+  61:Src/motor.c   **** 		pulse_l = (uint32_t)(PCLK / PWMFREQ * ABS(duty_l) / 1000) - 1;
+  62:Src/motor.c   **** 	}
+  63:Src/motor.c   **** 
+  64:Src/motor.c   **** 	if( duty_l > 0 ) {
+ 163              		.loc 1 64 2 is_stmt 1 view .LVU28
+ 164              		.loc 1 64 4 is_stmt 0 view .LVU29
+ 165 003c 002C     		cmp	r4, #0
+ 166 003e 2ADD     		ble	.L14
+  65:Src/motor.c   **** 		MOT_SET_COMPARE_L_FORWARD( pulse_l );
+ 167              		.loc 1 65 3 is_stmt 1 view .LVU30
+ 168 0040 1F4A     		ldr	r2, .L21+12
+ARM GAS  C:\Temp\cc5FI8gt.s 			page 5
+
+
+ 169 0042 1268     		ldr	r2, [r2]
+ 170 0044 9363     		str	r3, [r2, #56]
+  66:Src/motor.c   **** 		MOT_SET_COMPARE_L_REVERSE( 0 );
+ 171              		.loc 1 66 3 view .LVU31
+ 172 0046 0023     		movs	r3, #0
+ 173              	.LVL7:
+ 174              		.loc 1 66 3 is_stmt 0 view .LVU32
+ 175 0048 5363     		str	r3, [r2, #52]
+ 176              	.LVL8:
+ 177              	.L8:
+  67:Src/motor.c   **** 	} else if( duty_l < 0 ) {
+  68:Src/motor.c   **** 		MOT_SET_COMPARE_L_FORWARD( 0 );
+  69:Src/motor.c   **** 		MOT_SET_COMPARE_L_REVERSE( pulse_l );
+  70:Src/motor.c   **** 	} else {
+  71:Src/motor.c   **** 		MOT_SET_COMPARE_L_FORWARD( 0 );
+  72:Src/motor.c   **** 		MOT_SET_COMPARE_L_REVERSE( 0 );
+  73:Src/motor.c   **** 	}
+  74:Src/motor.c   **** }
+ 178              		.loc 1 74 1 view .LVU33
+ 179 004a 10BD     		pop	{r4, pc}
+ 180              	.LVL9:
+ 181              	.L18:
+  57:Src/motor.c   **** 	} else if( ABS(duty_l) < MOT_DUTY_MIN ) {
+ 182              		.loc 1 57 3 is_stmt 1 view .LVU34
+  57:Src/motor.c   **** 	} else if( ABS(duty_l) < MOT_DUTY_MIN ) {
+ 183              		.loc 1 57 24 is_stmt 0 view .LVU35
+ 184 004c FFF7FEFF 		bl	HAL_RCC_GetPCLK2Freq
+ 185              	.LVL10:
+  57:Src/motor.c   **** 	} else if( ABS(duty_l) < MOT_DUTY_MIN ) {
+ 186              		.loc 1 57 29 view .LVU36
+ 187 0050 4009     		lsrs	r0, r0, #5
+ 188 0052 194B     		ldr	r3, .L21+4
+ 189 0054 A3FB0023 		umull	r2, r3, r3, r0
+ 190 0058 D809     		lsrs	r0, r3, #7
+  57:Src/motor.c   **** 	} else if( ABS(duty_l) < MOT_DUTY_MIN ) {
+ 191              		.loc 1 57 39 view .LVU37
+ 192 005a 40F2B633 		movw	r3, #950
+ 193 005e 03FB00F3 		mul	r3, r3, r0
+  57:Src/motor.c   **** 	} else if( ABS(duty_l) < MOT_DUTY_MIN ) {
+ 194              		.loc 1 57 13 view .LVU38
+ 195 0062 164A     		ldr	r2, .L21+8
+ 196 0064 A2FB0323 		umull	r2, r3, r2, r3
+ 197 0068 9B09     		lsrs	r3, r3, #6
+  57:Src/motor.c   **** 	} else if( ABS(duty_l) < MOT_DUTY_MIN ) {
+ 198              		.loc 1 57 11 view .LVU39
+ 199 006a 013B     		subs	r3, r3, #1
+ 200              	.LVL11:
+  57:Src/motor.c   **** 	} else if( ABS(duty_l) < MOT_DUTY_MIN ) {
+ 201              		.loc 1 57 11 view .LVU40
+ 202 006c E6E7     		b	.L10
+ 203              	.LVL12:
+ 204              	.L11:
+  61:Src/motor.c   **** 	}
+ 205              		.loc 1 61 3 is_stmt 1 view .LVU41
+  61:Src/motor.c   **** 	}
+ 206              		.loc 1 61 24 is_stmt 0 view .LVU42
+ 207 006e FFF7FEFF 		bl	HAL_RCC_GetPCLK2Freq
+ARM GAS  C:\Temp\cc5FI8gt.s 			page 6
+
+
+ 208              	.LVL13:
+  61:Src/motor.c   **** 	}
+ 209              		.loc 1 61 29 view .LVU43
+ 210 0072 4009     		lsrs	r0, r0, #5
+ 211 0074 104B     		ldr	r3, .L21+4
+ 212 0076 A3FB0023 		umull	r2, r3, r3, r0
+ 213 007a D809     		lsrs	r0, r3, #7
+  61:Src/motor.c   **** 	}
+ 214              		.loc 1 61 41 view .LVU44
+ 215 007c 002C     		cmp	r4, #0
+ 216 007e 08DB     		blt	.L19
+  61:Src/motor.c   **** 	}
+ 217              		.loc 1 61 41 discriminator 2 view .LVU45
+ 218 0080 2346     		mov	r3, r4
+ 219              	.L13:
+  61:Src/motor.c   **** 	}
+ 220              		.loc 1 61 39 discriminator 4 view .LVU46
+ 221 0082 03FB00F3 		mul	r3, r3, r0
+  61:Src/motor.c   **** 	}
+ 222              		.loc 1 61 13 discriminator 4 view .LVU47
+ 223 0086 0D4A     		ldr	r2, .L21+8
+ 224 0088 A2FB0323 		umull	r2, r3, r2, r3
+ 225 008c 9B09     		lsrs	r3, r3, #6
+  61:Src/motor.c   **** 	}
+ 226              		.loc 1 61 11 discriminator 4 view .LVU48
+ 227 008e 013B     		subs	r3, r3, #1
+ 228              	.LVL14:
+  61:Src/motor.c   **** 	}
+ 229              		.loc 1 61 11 discriminator 4 view .LVU49
+ 230 0090 D4E7     		b	.L10
+ 231              	.LVL15:
+ 232              	.L19:
+  61:Src/motor.c   **** 	}
+ 233              		.loc 1 61 41 discriminator 1 view .LVU50
+ 234 0092 6342     		rsbs	r3, r4, #0
+ 235 0094 F5E7     		b	.L13
+ 236              	.LVL16:
+ 237              	.L14:
+  67:Src/motor.c   **** 	} else if( duty_l < 0 ) {
+ 238              		.loc 1 67 9 is_stmt 1 view .LVU51
+  67:Src/motor.c   **** 	} else if( duty_l < 0 ) {
+ 239              		.loc 1 67 11 is_stmt 0 view .LVU52
+ 240 0096 002C     		cmp	r4, #0
+ 241 0098 05DB     		blt	.L20
+  71:Src/motor.c   **** 		MOT_SET_COMPARE_L_REVERSE( 0 );
+ 242              		.loc 1 71 3 is_stmt 1 view .LVU53
+ 243 009a 094B     		ldr	r3, .L21+12
+ 244              	.LVL17:
+  71:Src/motor.c   **** 		MOT_SET_COMPARE_L_REVERSE( 0 );
+ 245              		.loc 1 71 3 is_stmt 0 view .LVU54
+ 246 009c 1B68     		ldr	r3, [r3]
+ 247 009e 0022     		movs	r2, #0
+ 248 00a0 9A63     		str	r2, [r3, #56]
+  72:Src/motor.c   **** 	}
+ 249              		.loc 1 72 3 is_stmt 1 view .LVU55
+ 250 00a2 5A63     		str	r2, [r3, #52]
+ 251              		.loc 1 74 1 is_stmt 0 view .LVU56
+ARM GAS  C:\Temp\cc5FI8gt.s 			page 7
+
+
+ 252 00a4 D1E7     		b	.L8
+ 253              	.LVL18:
+ 254              	.L20:
+  68:Src/motor.c   **** 		MOT_SET_COMPARE_L_REVERSE( pulse_l );
+ 255              		.loc 1 68 3 is_stmt 1 view .LVU57
+ 256 00a6 064A     		ldr	r2, .L21+12
+ 257 00a8 1268     		ldr	r2, [r2]
+ 258 00aa 0021     		movs	r1, #0
+ 259 00ac 9163     		str	r1, [r2, #56]
+  69:Src/motor.c   **** 	} else {
+ 260              		.loc 1 69 3 view .LVU58
+ 261 00ae 5363     		str	r3, [r2, #52]
+ 262 00b0 CBE7     		b	.L8
+ 263              	.L22:
+ 264 00b2 00BF     		.align	2
+ 265              	.L21:
+ 266 00b4 00000000 		.word	g_duty_l
+ 267 00b8 C55A7C0A 		.word	175921861
+ 268 00bc D34D6210 		.word	274877907
+ 269 00c0 00000000 		.word	htim4
+ 270              		.cfi_endproc
+ 271              	.LFE135:
+ 273              		.section	.text.Motor_SetDuty_Right,"ax",%progbits
+ 274              		.align	1
+ 275              		.global	Motor_SetDuty_Right
+ 276              		.syntax unified
+ 277              		.thumb
+ 278              		.thumb_func
+ 279              		.fpu fpv4-sp-d16
+ 281              	Motor_SetDuty_Right:
+ 282              	.LVL19:
+ 283              	.LFB136:
+  75:Src/motor.c   **** 
+  76:Src/motor.c   **** /* ---------------------------------------------------------------
+  77:Src/motor.c   **** 	右モータを指定のDuty（0～1000）で回転させる関数
+  78:Src/motor.c   **** --------------------------------------------------------------- */
+  79:Src/motor.c   **** void Motor_SetDuty_Right( int16_t duty_r )
+  80:Src/motor.c   **** {
+ 284              		.loc 1 80 1 view -0
+ 285              		.cfi_startproc
+ 286              		@ args = 0, pretend = 0, frame = 0
+ 287              		@ frame_needed = 0, uses_anonymous_args = 0
+ 288              		.loc 1 80 1 is_stmt 0 view .LVU60
+ 289 0000 10B5     		push	{r4, lr}
+ 290              	.LCFI2:
+ 291              		.cfi_def_cfa_offset 8
+ 292              		.cfi_offset 4, -8
+ 293              		.cfi_offset 14, -4
+ 294 0002 0446     		mov	r4, r0
+  81:Src/motor.c   **** 	uint32_t	pulse_r;
+ 295              		.loc 1 81 2 is_stmt 1 view .LVU61
+  82:Src/motor.c   **** 	g_duty_r = duty_r;
+ 296              		.loc 1 82 2 view .LVU62
+ 297              		.loc 1 82 11 is_stmt 0 view .LVU63
+ 298 0004 2B4B     		ldr	r3, .L36
+ 299 0006 1880     		strh	r0, [r3]	@ movhi
+  83:Src/motor.c   **** 	if( ABS(duty_r) > MOT_DUTY_MAX ) {
+ARM GAS  C:\Temp\cc5FI8gt.s 			page 8
+
+
+ 300              		.loc 1 83 2 is_stmt 1 view .LVU64
+ 301              		.loc 1 83 6 is_stmt 0 view .LVU65
+ 302 0008 80EAE073 		eor	r3, r0, r0, asr #31
+ 303 000c A3EBE073 		sub	r3, r3, r0, asr #31
+ 304 0010 9BB2     		uxth	r3, r3
+ 305              		.loc 1 83 4 view .LVU66
+ 306 0012 40F2B632 		movw	r2, #950
+ 307 0016 9342     		cmp	r3, r2
+ 308 0018 18D8     		bhi	.L33
+  84:Src/motor.c   **** 		pulse_r = (uint32_t)(PCLK / PWMFREQ * MOT_DUTY_MAX / 1000) - 1;
+  85:Src/motor.c   **** 	} else if( ABS(duty_r) < MOT_DUTY_MIN ) {
+ 309              		.loc 1 85 9 is_stmt 1 view .LVU67
+ 310              		.loc 1 85 11 is_stmt 0 view .LVU68
+ 311 001a 1D2B     		cmp	r3, #29
+ 312 001c 27D8     		bhi	.L26
+  86:Src/motor.c   **** 		pulse_r = (uint32_t)(PCLK / PWMFREQ * MOT_DUTY_MIN / 1000) - 1;
+ 313              		.loc 1 86 3 is_stmt 1 view .LVU69
+ 314              		.loc 1 86 24 is_stmt 0 view .LVU70
+ 315 001e FFF7FEFF 		bl	HAL_RCC_GetPCLK2Freq
+ 316              	.LVL20:
+ 317              		.loc 1 86 29 view .LVU71
+ 318 0022 4309     		lsrs	r3, r0, #5
+ 319 0024 2448     		ldr	r0, .L36+4
+ 320 0026 A0FB0323 		umull	r2, r3, r0, r3
+ 321 002a DB09     		lsrs	r3, r3, #7
+ 322              		.loc 1 86 39 view .LVU72
+ 323 002c C3EB0313 		rsb	r3, r3, r3, lsl #4
+ 324 0030 5B00     		lsls	r3, r3, #1
+ 325              		.loc 1 86 13 view .LVU73
+ 326 0032 224A     		ldr	r2, .L36+8
+ 327 0034 A2FB0323 		umull	r2, r3, r2, r3
+ 328 0038 9B09     		lsrs	r3, r3, #6
+ 329              		.loc 1 86 11 view .LVU74
+ 330 003a 013B     		subs	r3, r3, #1
+ 331              	.LVL21:
+ 332              	.L25:
+  87:Src/motor.c   **** 	} else {
+  88:Src/motor.c   **** 		pulse_r = (uint32_t)(PCLK / PWMFREQ * ABS(duty_r) / 1000) - 1;
+  89:Src/motor.c   **** 	}
+  90:Src/motor.c   **** 
+  91:Src/motor.c   **** 	if( duty_r > 0 ) {
+ 333              		.loc 1 91 2 is_stmt 1 view .LVU75
+ 334              		.loc 1 91 4 is_stmt 0 view .LVU76
+ 335 003c 002C     		cmp	r4, #0
+ 336 003e 2ADD     		ble	.L29
+  92:Src/motor.c   **** 		MOT_SET_COMPARE_R_FORWARD( pulse_r );
+ 337              		.loc 1 92 3 is_stmt 1 view .LVU77
+ 338 0040 1F4A     		ldr	r2, .L36+12
+ 339 0042 1268     		ldr	r2, [r2]
+ 340 0044 D363     		str	r3, [r2, #60]
+  93:Src/motor.c   **** 		MOT_SET_COMPARE_R_REVERSE( 0 );
+ 341              		.loc 1 93 3 view .LVU78
+ 342 0046 0023     		movs	r3, #0
+ 343              	.LVL22:
+ 344              		.loc 1 93 3 is_stmt 0 view .LVU79
+ 345 0048 1364     		str	r3, [r2, #64]
+ 346              	.LVL23:
+ARM GAS  C:\Temp\cc5FI8gt.s 			page 9
+
+
+ 347              	.L23:
+  94:Src/motor.c   **** 	} else if( duty_r < 0 ) {
+  95:Src/motor.c   **** 		MOT_SET_COMPARE_R_FORWARD( 0 );
+  96:Src/motor.c   **** 		MOT_SET_COMPARE_R_REVERSE( pulse_r );
+  97:Src/motor.c   **** 	} else {
+  98:Src/motor.c   **** 		MOT_SET_COMPARE_R_FORWARD( 0 );
+  99:Src/motor.c   **** 		MOT_SET_COMPARE_R_REVERSE( 0 );
+ 100:Src/motor.c   **** 	}
+ 101:Src/motor.c   **** }
+ 348              		.loc 1 101 1 view .LVU80
+ 349 004a 10BD     		pop	{r4, pc}
+ 350              	.LVL24:
+ 351              	.L33:
+  84:Src/motor.c   **** 	} else if( ABS(duty_r) < MOT_DUTY_MIN ) {
+ 352              		.loc 1 84 3 is_stmt 1 view .LVU81
+  84:Src/motor.c   **** 	} else if( ABS(duty_r) < MOT_DUTY_MIN ) {
+ 353              		.loc 1 84 24 is_stmt 0 view .LVU82
+ 354 004c FFF7FEFF 		bl	HAL_RCC_GetPCLK2Freq
+ 355              	.LVL25:
+  84:Src/motor.c   **** 	} else if( ABS(duty_r) < MOT_DUTY_MIN ) {
+ 356              		.loc 1 84 29 view .LVU83
+ 357 0050 4009     		lsrs	r0, r0, #5
+ 358 0052 194B     		ldr	r3, .L36+4
+ 359 0054 A3FB0023 		umull	r2, r3, r3, r0
+ 360 0058 D809     		lsrs	r0, r3, #7
+  84:Src/motor.c   **** 	} else if( ABS(duty_r) < MOT_DUTY_MIN ) {
+ 361              		.loc 1 84 39 view .LVU84
+ 362 005a 40F2B633 		movw	r3, #950
+ 363 005e 03FB00F3 		mul	r3, r3, r0
+  84:Src/motor.c   **** 	} else if( ABS(duty_r) < MOT_DUTY_MIN ) {
+ 364              		.loc 1 84 13 view .LVU85
+ 365 0062 164A     		ldr	r2, .L36+8
+ 366 0064 A2FB0323 		umull	r2, r3, r2, r3
+ 367 0068 9B09     		lsrs	r3, r3, #6
+  84:Src/motor.c   **** 	} else if( ABS(duty_r) < MOT_DUTY_MIN ) {
+ 368              		.loc 1 84 11 view .LVU86
+ 369 006a 013B     		subs	r3, r3, #1
+ 370              	.LVL26:
+  84:Src/motor.c   **** 	} else if( ABS(duty_r) < MOT_DUTY_MIN ) {
+ 371              		.loc 1 84 11 view .LVU87
+ 372 006c E6E7     		b	.L25
+ 373              	.LVL27:
+ 374              	.L26:
+  88:Src/motor.c   **** 	}
+ 375              		.loc 1 88 3 is_stmt 1 view .LVU88
+  88:Src/motor.c   **** 	}
+ 376              		.loc 1 88 24 is_stmt 0 view .LVU89
+ 377 006e FFF7FEFF 		bl	HAL_RCC_GetPCLK2Freq
+ 378              	.LVL28:
+  88:Src/motor.c   **** 	}
+ 379              		.loc 1 88 29 view .LVU90
+ 380 0072 4009     		lsrs	r0, r0, #5
+ 381 0074 104B     		ldr	r3, .L36+4
+ 382 0076 A3FB0023 		umull	r2, r3, r3, r0
+ 383 007a D809     		lsrs	r0, r3, #7
+  88:Src/motor.c   **** 	}
+ 384              		.loc 1 88 41 view .LVU91
+ARM GAS  C:\Temp\cc5FI8gt.s 			page 10
+
+
+ 385 007c 002C     		cmp	r4, #0
+ 386 007e 08DB     		blt	.L34
+  88:Src/motor.c   **** 	}
+ 387              		.loc 1 88 41 discriminator 2 view .LVU92
+ 388 0080 2346     		mov	r3, r4
+ 389              	.L28:
+  88:Src/motor.c   **** 	}
+ 390              		.loc 1 88 39 discriminator 4 view .LVU93
+ 391 0082 03FB00F3 		mul	r3, r3, r0
+  88:Src/motor.c   **** 	}
+ 392              		.loc 1 88 13 discriminator 4 view .LVU94
+ 393 0086 0D4A     		ldr	r2, .L36+8
+ 394 0088 A2FB0323 		umull	r2, r3, r2, r3
+ 395 008c 9B09     		lsrs	r3, r3, #6
+  88:Src/motor.c   **** 	}
+ 396              		.loc 1 88 11 discriminator 4 view .LVU95
+ 397 008e 013B     		subs	r3, r3, #1
+ 398              	.LVL29:
+  88:Src/motor.c   **** 	}
+ 399              		.loc 1 88 11 discriminator 4 view .LVU96
+ 400 0090 D4E7     		b	.L25
+ 401              	.LVL30:
+ 402              	.L34:
+  88:Src/motor.c   **** 	}
+ 403              		.loc 1 88 41 discriminator 1 view .LVU97
+ 404 0092 6342     		rsbs	r3, r4, #0
+ 405 0094 F5E7     		b	.L28
+ 406              	.LVL31:
+ 407              	.L29:
+  94:Src/motor.c   **** 	} else if( duty_r < 0 ) {
+ 408              		.loc 1 94 9 is_stmt 1 view .LVU98
+  94:Src/motor.c   **** 	} else if( duty_r < 0 ) {
+ 409              		.loc 1 94 11 is_stmt 0 view .LVU99
+ 410 0096 002C     		cmp	r4, #0
+ 411 0098 05DB     		blt	.L35
+  98:Src/motor.c   **** 		MOT_SET_COMPARE_R_REVERSE( 0 );
+ 412              		.loc 1 98 3 is_stmt 1 view .LVU100
+ 413 009a 094B     		ldr	r3, .L36+12
+ 414              	.LVL32:
+  98:Src/motor.c   **** 		MOT_SET_COMPARE_R_REVERSE( 0 );
+ 415              		.loc 1 98 3 is_stmt 0 view .LVU101
+ 416 009c 1B68     		ldr	r3, [r3]
+ 417 009e 0022     		movs	r2, #0
+ 418 00a0 DA63     		str	r2, [r3, #60]
+  99:Src/motor.c   **** 	}
+ 419              		.loc 1 99 3 is_stmt 1 view .LVU102
+ 420 00a2 1A64     		str	r2, [r3, #64]
+ 421              		.loc 1 101 1 is_stmt 0 view .LVU103
+ 422 00a4 D1E7     		b	.L23
+ 423              	.LVL33:
+ 424              	.L35:
+  95:Src/motor.c   **** 		MOT_SET_COMPARE_R_REVERSE( pulse_r );
+ 425              		.loc 1 95 3 is_stmt 1 view .LVU104
+ 426 00a6 064A     		ldr	r2, .L36+12
+ 427 00a8 1268     		ldr	r2, [r2]
+ 428 00aa 0021     		movs	r1, #0
+ 429 00ac D163     		str	r1, [r2, #60]
+ARM GAS  C:\Temp\cc5FI8gt.s 			page 11
+
+
+  96:Src/motor.c   **** 	} else {
+ 430              		.loc 1 96 3 view .LVU105
+ 431 00ae 1364     		str	r3, [r2, #64]
+ 432 00b0 CBE7     		b	.L23
+ 433              	.L37:
+ 434 00b2 00BF     		.align	2
+ 435              	.L36:
+ 436 00b4 00000000 		.word	g_duty_r
+ 437 00b8 C55A7C0A 		.word	175921861
+ 438 00bc D34D6210 		.word	274877907
+ 439 00c0 00000000 		.word	htim4
+ 440              		.cfi_endproc
+ 441              	.LFE136:
+ 443              		.comm	g_duty_l,2,2
+ 444              		.comm	g_duty_r,2,2
+ 445              		.text
+ 446              	.Letext0:
+ 447              		.file 2 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\machine\\_default_t
+ 448              		.file 3 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\lock.h"
+ 449              		.file 4 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\_types.h"
+ 450              		.file 5 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\lib\\gcc\\arm-none-eabi\\9.2.1\\include\\st
+ 451              		.file 6 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\reent.h"
+ 452              		.file 7 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 453              		.file 8 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\math.h"
+ 454              		.file 9 "Drivers/CMSIS/Include/core_cm4.h"
+ 455              		.file 10 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h"
+ 456              		.file 11 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f413xx.h"
+ 457              		.file 12 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h"
+ 458              		.file 13 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
+ 459              		.file 14 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h"
+ 460              		.file 15 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_adc.h"
+ 461              		.file 16 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h"
+ 462              		.file 17 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h"
+ 463              		.file 18 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h"
+ 464              		.file 19 "Inc/adc.h"
+ 465              		.file 20 "Inc/spi.h"
+ 466              		.file 21 "Inc/tim.h"
+ 467              		.file 22 "Inc/usart.h"
+ 468              		.file 23 "Inc/index.h"
+ 469              		.file 24 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h"
+ARM GAS  C:\Temp\cc5FI8gt.s 			page 12
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 motor.c
+  C:\Temp\cc5FI8gt.s:18     .text.Motor_Initialize:00000000 $t
+  C:\Temp\cc5FI8gt.s:26     .text.Motor_Initialize:00000000 Motor_Initialize
+  C:\Temp\cc5FI8gt.s:64     .text.Motor_Initialize:00000028 $d
+  C:\Temp\cc5FI8gt.s:69     .text.Motor_StopPWM:00000000 $t
+  C:\Temp\cc5FI8gt.s:76     .text.Motor_StopPWM:00000000 Motor_StopPWM
+  C:\Temp\cc5FI8gt.s:99     .text.Motor_StopPWM:00000014 $d
+  C:\Temp\cc5FI8gt.s:104    .text.Motor_SetDuty_Left:00000000 $t
+  C:\Temp\cc5FI8gt.s:111    .text.Motor_SetDuty_Left:00000000 Motor_SetDuty_Left
+  C:\Temp\cc5FI8gt.s:266    .text.Motor_SetDuty_Left:000000b4 $d
+                            *COM*:00000002 g_duty_l
+  C:\Temp\cc5FI8gt.s:274    .text.Motor_SetDuty_Right:00000000 $t
+  C:\Temp\cc5FI8gt.s:281    .text.Motor_SetDuty_Right:00000000 Motor_SetDuty_Right
+  C:\Temp\cc5FI8gt.s:436    .text.Motor_SetDuty_Right:000000b4 $d
+                            *COM*:00000002 g_duty_r
+
+UNDEFINED SYMBOLS
+HAL_TIM_PWM_Start
+htim4
+HAL_RCC_GetPCLK2Freq

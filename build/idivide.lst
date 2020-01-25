@@ -1,0 +1,433 @@
+ARM GAS  C:\Temp\ccVjm3Kc.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"idivide.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.global	__aeabi_dcmplt
+  18              		.global	__aeabi_dcmpge
+  19              		.global	__aeabi_dadd
+  20              		.global	__aeabi_dcmpgt
+  21              		.global	__aeabi_dmul
+  22              		.global	__aeabi_dsub
+  23              		.section	.text.rt_roundd_snf,"ax",%progbits
+  24              		.align	1
+  25              		.arch armv7e-m
+  26              		.syntax unified
+  27              		.thumb
+  28              		.thumb_func
+  29              		.fpu fpv4-sp-d16
+  31              	rt_roundd_snf:
+  32              	.LVL0:
+  33              	.LFB0:
+  34              		.file 1 "Src/idivide.c"
+   1:Src/idivide.c **** /*
+   2:Src/idivide.c ****  * Sponsored License - for use in support of a program or activity
+   3:Src/idivide.c ****  * sponsored by MathWorks.  Not for government, commercial or other
+   4:Src/idivide.c ****  * non-sponsored organizational use.
+   5:Src/idivide.c ****  * File: idivide.c
+   6:Src/idivide.c ****  *
+   7:Src/idivide.c ****  * MATLAB Coder version            : 4.2
+   8:Src/idivide.c ****  * C/C++ source code generated on  : 18-Nov-2019 23:53:15
+   9:Src/idivide.c ****  */
+  10:Src/idivide.c **** 
+  11:Src/idivide.c **** /* Include Files */
+  12:Src/idivide.c **** #include <math.h>
+  13:Src/idivide.c **** #include "maze_init.h"
+  14:Src/idivide.c **** #include "maze_solve.h"
+  15:Src/idivide.c **** #include "idivide.h"
+  16:Src/idivide.c **** 
+  17:Src/idivide.c **** /* Function Declarations */
+  18:Src/idivide.c **** static double rt_roundd_snf(double u);
+  19:Src/idivide.c **** 
+  20:Src/idivide.c **** /* Function Definitions */
+  21:Src/idivide.c **** 
+  22:Src/idivide.c **** /*
+  23:Src/idivide.c ****  * Arguments    : double u
+  24:Src/idivide.c ****  * Return Type  : double
+ARM GAS  C:\Temp\ccVjm3Kc.s 			page 2
+
+
+  25:Src/idivide.c ****  */
+  26:Src/idivide.c **** static double rt_roundd_snf(double u)
+  27:Src/idivide.c **** {
+  35              		.loc 1 27 1 view -0
+  36              		.cfi_startproc
+  37              		@ args = 0, pretend = 0, frame = 0
+  38              		@ frame_needed = 0, uses_anonymous_args = 0
+  39              		.loc 1 27 1 is_stmt 0 view .LVU1
+  40 0000 38B5     		push	{r3, r4, r5, lr}
+  41              	.LCFI0:
+  42              		.cfi_def_cfa_offset 16
+  43              		.cfi_offset 3, -16
+  44              		.cfi_offset 4, -12
+  45              		.cfi_offset 5, -8
+  46              		.cfi_offset 14, -4
+  47 0002 0446     		mov	r4, r0
+  48 0004 0D46     		mov	r5, r1
+  28:Src/idivide.c ****   double y;
+  49              		.loc 1 28 3 is_stmt 1 view .LVU2
+  29:Src/idivide.c ****   if (fabs(u) < 4.503599627370496E+15) {
+  50              		.loc 1 29 3 view .LVU3
+  51              		.loc 1 29 7 is_stmt 0 view .LVU4
+  52 0006 21F00041 		bic	r1, r1, #-2147483648
+  53              		.loc 1 29 6 view .LVU5
+  54 000a 0022     		movs	r2, #0
+  55 000c 1B4B     		ldr	r3, .L14
+  56 000e FFF7FEFF 		bl	__aeabi_dcmplt
+  57              	.LVL1:
+  58              		.loc 1 29 6 view .LVU6
+  59 0012 90B1     		cbz	r0, .L2
+  30:Src/idivide.c ****     if (u >= 0.5) {
+  60              		.loc 1 30 5 is_stmt 1 view .LVU7
+  61              		.loc 1 30 8 is_stmt 0 view .LVU8
+  62 0014 0022     		movs	r2, #0
+  63 0016 1A4B     		ldr	r3, .L14+4
+  64 0018 2046     		mov	r0, r4
+  65 001a 2946     		mov	r1, r5
+  66 001c FFF7FEFF 		bl	__aeabi_dcmpge
+  67              	.LVL2:
+  68 0020 70B1     		cbz	r0, .L11
+  31:Src/idivide.c ****       y = floor(u + 0.5);
+  69              		.loc 1 31 7 is_stmt 1 view .LVU9
+  70              		.loc 1 31 11 is_stmt 0 view .LVU10
+  71 0022 0022     		movs	r2, #0
+  72 0024 164B     		ldr	r3, .L14+4
+  73 0026 2046     		mov	r0, r4
+  74 0028 2946     		mov	r1, r5
+  75 002a FFF7FEFF 		bl	__aeabi_dadd
+  76              	.LVL3:
+  77 002e 41EC100B 		vmov	d0, r0, r1
+  78 0032 FFF7FEFF 		bl	floor
+  79              	.LVL4:
+  80 0036 55EC104B 		vmov	r4, r5, d0
+  81              	.LVL5:
+  82              	.L2:
+  32:Src/idivide.c ****     } else if (u > -0.5) {
+  33:Src/idivide.c ****       y = u * 0.0;
+ARM GAS  C:\Temp\ccVjm3Kc.s 			page 3
+
+
+  34:Src/idivide.c ****     } else {
+  35:Src/idivide.c ****       y = ceil(u - 0.5);
+  36:Src/idivide.c ****     }
+  37:Src/idivide.c ****   } else {
+  38:Src/idivide.c ****     y = u;
+  39:Src/idivide.c ****   }
+  40:Src/idivide.c **** 
+  41:Src/idivide.c ****   return y;
+  83              		.loc 1 41 3 is_stmt 1 view .LVU11
+  42:Src/idivide.c **** }
+  84              		.loc 1 42 1 is_stmt 0 view .LVU12
+  85 003a 2046     		mov	r0, r4
+  86 003c 2946     		mov	r1, r5
+  87 003e 38BD     		pop	{r3, r4, r5, pc}
+  88              	.LVL6:
+  89              	.L11:
+  32:Src/idivide.c ****     } else if (u > -0.5) {
+  90              		.loc 1 32 12 is_stmt 1 view .LVU13
+  32:Src/idivide.c ****     } else if (u > -0.5) {
+  91              		.loc 1 32 15 is_stmt 0 view .LVU14
+  92 0040 0022     		movs	r2, #0
+  93 0042 104B     		ldr	r3, .L14+8
+  94 0044 2046     		mov	r0, r4
+  95 0046 2946     		mov	r1, r5
+  96 0048 FFF7FEFF 		bl	__aeabi_dcmpgt
+  97              	.LVL7:
+  98 004c 40B1     		cbz	r0, .L12
+  33:Src/idivide.c ****     } else {
+  99              		.loc 1 33 7 is_stmt 1 view .LVU15
+  33:Src/idivide.c ****     } else {
+ 100              		.loc 1 33 9 is_stmt 0 view .LVU16
+ 101 004e 0022     		movs	r2, #0
+ 102 0050 0023     		movs	r3, #0
+ 103 0052 2046     		mov	r0, r4
+ 104 0054 2946     		mov	r1, r5
+ 105 0056 FFF7FEFF 		bl	__aeabi_dmul
+ 106              	.LVL8:
+ 107 005a 0446     		mov	r4, r0
+ 108 005c 0D46     		mov	r5, r1
+ 109              	.LVL9:
+  33:Src/idivide.c ****     } else {
+ 110              		.loc 1 33 9 view .LVU17
+ 111 005e ECE7     		b	.L2
+ 112              	.LVL10:
+ 113              	.L12:
+  35:Src/idivide.c ****     }
+ 114              		.loc 1 35 7 is_stmt 1 view .LVU18
+  35:Src/idivide.c ****     }
+ 115              		.loc 1 35 11 is_stmt 0 view .LVU19
+ 116 0060 0022     		movs	r2, #0
+ 117 0062 074B     		ldr	r3, .L14+4
+ 118 0064 2046     		mov	r0, r4
+ 119 0066 2946     		mov	r1, r5
+ 120 0068 FFF7FEFF 		bl	__aeabi_dsub
+ 121              	.LVL11:
+ 122 006c 41EC100B 		vmov	d0, r0, r1
+ 123 0070 FFF7FEFF 		bl	ceil
+ARM GAS  C:\Temp\ccVjm3Kc.s 			page 4
+
+
+ 124              	.LVL12:
+ 125 0074 55EC104B 		vmov	r4, r5, d0
+ 126              	.LVL13:
+  35:Src/idivide.c ****     }
+ 127              		.loc 1 35 11 view .LVU20
+ 128 0078 DFE7     		b	.L2
+ 129              	.L15:
+ 130 007a 00BF     		.align	2
+ 131              	.L14:
+ 132 007c 00003043 		.word	1127219200
+ 133 0080 0000E03F 		.word	1071644672
+ 134 0084 0000E0BF 		.word	-1075838976
+ 135              		.cfi_endproc
+ 136              	.LFE0:
+ 138              		.global	__aeabi_ui2d
+ 139              		.global	__aeabi_d2uiz
+ 140              		.section	.text.idivide,"ax",%progbits
+ 141              		.align	1
+ 142              		.global	idivide
+ 143              		.syntax unified
+ 144              		.thumb
+ 145              		.thumb_func
+ 146              		.fpu fpv4-sp-d16
+ 148              	idivide:
+ 149              	.LVL14:
+ 150              	.LFB1:
+  43:Src/idivide.c **** 
+  44:Src/idivide.c **** /*
+  45:Src/idivide.c ****  * Arguments    : const unsigned short a_data[]
+  46:Src/idivide.c ****  *                const int a_size[1]
+  47:Src/idivide.c ****  *                unsigned short c_data[]
+  48:Src/idivide.c ****  *                int c_size[1]
+  49:Src/idivide.c ****  * Return Type  : void
+  50:Src/idivide.c ****  */
+  51:Src/idivide.c **** void idivide(const unsigned short a_data[], const int a_size[1], unsigned short
+  52:Src/idivide.c ****              c_data[], int c_size[1])
+  53:Src/idivide.c **** {
+ 151              		.loc 1 53 1 is_stmt 1 view -0
+ 152              		.cfi_startproc
+ 153              		@ args = 0, pretend = 0, frame = 0
+ 154              		@ frame_needed = 0, uses_anonymous_args = 0
+ 155              		.loc 1 53 1 is_stmt 0 view .LVU22
+ 156 0000 2DE9F843 		push	{r3, r4, r5, r6, r7, r8, r9, lr}
+ 157              	.LCFI1:
+ 158              		.cfi_def_cfa_offset 32
+ 159              		.cfi_offset 3, -32
+ 160              		.cfi_offset 4, -28
+ 161              		.cfi_offset 5, -24
+ 162              		.cfi_offset 6, -20
+ 163              		.cfi_offset 7, -16
+ 164              		.cfi_offset 8, -12
+ 165              		.cfi_offset 9, -8
+ 166              		.cfi_offset 14, -4
+ 167 0004 0546     		mov	r5, r0
+ 168 0006 0F46     		mov	r7, r1
+ 169 0008 1646     		mov	r6, r2
+ 170 000a 9846     		mov	r8, r3
+ARM GAS  C:\Temp\ccVjm3Kc.s 			page 5
+
+
+  54:Src/idivide.c ****   int nx;
+ 171              		.loc 1 54 3 is_stmt 1 view .LVU23
+  55:Src/idivide.c ****   int k;
+ 172              		.loc 1 55 3 view .LVU24
+  56:Src/idivide.c ****   static double x_data[1024];
+ 173              		.loc 1 56 3 view .LVU25
+  57:Src/idivide.c ****   nx = a_size[0];
+ 174              		.loc 1 57 3 view .LVU26
+ 175              		.loc 1 57 6 is_stmt 0 view .LVU27
+ 176 000c D1F80090 		ldr	r9, [r1]
+ 177              	.LVL15:
+  58:Src/idivide.c ****   for (k = 0; k < nx; k++) {
+ 178              		.loc 1 58 3 is_stmt 1 view .LVU28
+ 179              		.loc 1 58 10 is_stmt 0 view .LVU29
+ 180 0010 0024     		movs	r4, #0
+ 181              	.LVL16:
+ 182              	.L17:
+ 183              		.loc 1 58 15 is_stmt 1 discriminator 1 view .LVU30
+ 184              		.loc 1 58 3 is_stmt 0 discriminator 1 view .LVU31
+ 185 0012 4C45     		cmp	r4, r9
+ 186 0014 0EDA     		bge	.L24
+  59:Src/idivide.c ****     x_data[k] = (double)a_data[k] / 32.0;
+ 187              		.loc 1 59 5 is_stmt 1 discriminator 3 view .LVU32
+ 188              		.loc 1 59 17 is_stmt 0 discriminator 3 view .LVU33
+ 189 0016 35F81400 		ldrh	r0, [r5, r4, lsl #1]
+ 190 001a FFF7FEFF 		bl	__aeabi_ui2d
+ 191              	.LVL17:
+ 192              		.loc 1 59 35 discriminator 3 view .LVU34
+ 193 001e 0022     		movs	r2, #0
+ 194 0020 174B     		ldr	r3, .L26
+ 195 0022 FFF7FEFF 		bl	__aeabi_dmul
+ 196              	.LVL18:
+ 197              		.loc 1 59 15 discriminator 3 view .LVU35
+ 198 0026 174A     		ldr	r2, .L26+4
+ 199 0028 02EBC402 		add	r2, r2, r4, lsl #3
+ 200 002c C2E90001 		strd	r0, [r2]
+  58:Src/idivide.c ****   for (k = 0; k < nx; k++) {
+ 201              		.loc 1 58 23 is_stmt 1 discriminator 3 view .LVU36
+  58:Src/idivide.c ****   for (k = 0; k < nx; k++) {
+ 202              		.loc 1 58 24 is_stmt 0 discriminator 3 view .LVU37
+ 203 0030 0134     		adds	r4, r4, #1
+ 204              	.LVL19:
+  58:Src/idivide.c ****   for (k = 0; k < nx; k++) {
+ 205              		.loc 1 58 24 discriminator 3 view .LVU38
+ 206 0032 EEE7     		b	.L17
+ 207              	.L24:
+  60:Src/idivide.c ****   }
+  61:Src/idivide.c **** 
+  62:Src/idivide.c ****   nx = a_size[0];
+ 208              		.loc 1 62 3 is_stmt 1 view .LVU39
+ 209              		.loc 1 62 6 is_stmt 0 view .LVU40
+ 210 0034 D7F80090 		ldr	r9, [r7]
+ 211              	.LVL20:
+  63:Src/idivide.c ****   for (k = 0; k < nx; k++) {
+ 212              		.loc 1 63 3 is_stmt 1 view .LVU41
+ 213              		.loc 1 63 10 is_stmt 0 view .LVU42
+ 214 0038 0025     		movs	r5, #0
+ARM GAS  C:\Temp\ccVjm3Kc.s 			page 6
+
+
+ 215              	.LVL21:
+ 216              	.L19:
+ 217              		.loc 1 63 15 is_stmt 1 discriminator 1 view .LVU43
+ 218              		.loc 1 63 3 is_stmt 0 discriminator 1 view .LVU44
+ 219 003a 4D45     		cmp	r5, r9
+ 220 003c 0ADA     		bge	.L25
+  64:Src/idivide.c ****     x_data[k] = trunc(x_data[k]);
+ 221              		.loc 1 64 5 is_stmt 1 discriminator 3 view .LVU45
+ 222              		.loc 1 64 17 is_stmt 0 discriminator 3 view .LVU46
+ 223 003e 114C     		ldr	r4, .L26+4
+ 224 0040 04EBC504 		add	r4, r4, r5, lsl #3
+ 225 0044 94ED000B 		vldr.64	d0, [r4]
+ 226 0048 FFF7FEFF 		bl	trunc
+ 227              	.LVL22:
+ 228              		.loc 1 64 15 discriminator 3 view .LVU47
+ 229 004c 84ED000B 		vstr.64	d0, [r4]
+  63:Src/idivide.c ****   for (k = 0; k < nx; k++) {
+ 230              		.loc 1 63 23 is_stmt 1 discriminator 3 view .LVU48
+  63:Src/idivide.c ****   for (k = 0; k < nx; k++) {
+ 231              		.loc 1 63 24 is_stmt 0 discriminator 3 view .LVU49
+ 232 0050 0135     		adds	r5, r5, #1
+ 233              	.LVL23:
+  63:Src/idivide.c ****   for (k = 0; k < nx; k++) {
+ 234              		.loc 1 63 24 discriminator 3 view .LVU50
+ 235 0052 F2E7     		b	.L19
+ 236              	.L25:
+  65:Src/idivide.c ****   }
+  66:Src/idivide.c **** 
+  67:Src/idivide.c ****   c_size[0] = a_size[0];
+ 237              		.loc 1 67 3 is_stmt 1 view .LVU51
+ 238              		.loc 1 67 21 is_stmt 0 view .LVU52
+ 239 0054 3D68     		ldr	r5, [r7]
+ 240              	.LVL24:
+ 241              		.loc 1 67 13 view .LVU53
+ 242 0056 C8F80050 		str	r5, [r8]
+  68:Src/idivide.c ****   nx = a_size[0];
+ 243              		.loc 1 68 3 is_stmt 1 view .LVU54
+ 244              	.LVL25:
+  69:Src/idivide.c ****   for (k = 0; k < nx; k++) {
+ 245              		.loc 1 69 3 view .LVU55
+ 246              		.loc 1 69 10 is_stmt 0 view .LVU56
+ 247 005a 0024     		movs	r4, #0
+ 248              		.loc 1 69 3 view .LVU57
+ 249 005c 0BE0     		b	.L21
+ 250              	.LVL26:
+ 251              	.L22:
+  70:Src/idivide.c ****     c_data[k] = (unsigned short)rt_roundd_snf(x_data[k]);
+ 252              		.loc 1 70 5 is_stmt 1 discriminator 3 view .LVU58
+ 253              		.loc 1 70 33 is_stmt 0 discriminator 3 view .LVU59
+ 254 005e 094B     		ldr	r3, .L26+4
+ 255 0060 03EBC403 		add	r3, r3, r4, lsl #3
+ 256 0064 D3E90001 		ldrd	r0, [r3]
+ 257 0068 FFF7FEFF 		bl	rt_roundd_snf
+ 258              	.LVL27:
+ 259              		.loc 1 70 17 discriminator 3 view .LVU60
+ 260 006c FFF7FEFF 		bl	__aeabi_d2uiz
+ 261              	.LVL28:
+ARM GAS  C:\Temp\ccVjm3Kc.s 			page 7
+
+
+ 262              		.loc 1 70 15 discriminator 3 view .LVU61
+ 263 0070 26F81400 		strh	r0, [r6, r4, lsl #1]	@ movhi
+  69:Src/idivide.c ****   for (k = 0; k < nx; k++) {
+ 264              		.loc 1 69 23 is_stmt 1 discriminator 3 view .LVU62
+  69:Src/idivide.c ****   for (k = 0; k < nx; k++) {
+ 265              		.loc 1 69 24 is_stmt 0 discriminator 3 view .LVU63
+ 266 0074 0134     		adds	r4, r4, #1
+ 267              	.LVL29:
+ 268              	.L21:
+  69:Src/idivide.c ****   for (k = 0; k < nx; k++) {
+ 269              		.loc 1 69 15 is_stmt 1 discriminator 1 view .LVU64
+  69:Src/idivide.c ****   for (k = 0; k < nx; k++) {
+ 270              		.loc 1 69 3 is_stmt 0 discriminator 1 view .LVU65
+ 271 0076 A542     		cmp	r5, r4
+ 272 0078 F1DC     		bgt	.L22
+  71:Src/idivide.c ****   }
+  72:Src/idivide.c **** }
+ 273              		.loc 1 72 1 view .LVU66
+ 274 007a BDE8F883 		pop	{r3, r4, r5, r6, r7, r8, r9, pc}
+ 275              	.LVL30:
+ 276              	.L27:
+ 277              		.loc 1 72 1 view .LVU67
+ 278 007e 00BF     		.align	2
+ 279              	.L26:
+ 280 0080 0000A03F 		.word	1067450368
+ 281 0084 00000000 		.word	x_data.6732
+ 282              		.cfi_endproc
+ 283              	.LFE1:
+ 285              		.section	.bss.x_data.6732,"aw",%nobits
+ 286              		.align	3
+ 289              	x_data.6732:
+ 290 0000 00000000 		.space	8192
+ 290      00000000 
+ 290      00000000 
+ 290      00000000 
+ 290      00000000 
+ 291              		.text
+ 292              	.Letext0:
+ 293              		.file 2 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\lock.h"
+ 294              		.file 3 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\_types.h"
+ 295              		.file 4 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\lib\\gcc\\arm-none-eabi\\9.2.1\\include\\st
+ 296              		.file 5 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\reent.h"
+ 297              		.file 6 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\math.h"
+ 298              		.file 7 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\stdlib.h"
+ARM GAS  C:\Temp\ccVjm3Kc.s 			page 8
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 idivide.c
+  C:\Temp\ccVjm3Kc.s:24     .text.rt_roundd_snf:00000000 $t
+  C:\Temp\ccVjm3Kc.s:31     .text.rt_roundd_snf:00000000 rt_roundd_snf
+  C:\Temp\ccVjm3Kc.s:132    .text.rt_roundd_snf:0000007c $d
+  C:\Temp\ccVjm3Kc.s:141    .text.idivide:00000000 $t
+  C:\Temp\ccVjm3Kc.s:148    .text.idivide:00000000 idivide
+  C:\Temp\ccVjm3Kc.s:280    .text.idivide:00000080 $d
+  C:\Temp\ccVjm3Kc.s:289    .bss.x_data.6732:00000000 x_data.6732
+  C:\Temp\ccVjm3Kc.s:286    .bss.x_data.6732:00000000 $d
+
+UNDEFINED SYMBOLS
+__aeabi_dcmplt
+__aeabi_dcmpge
+__aeabi_dadd
+__aeabi_dcmpgt
+__aeabi_dmul
+__aeabi_dsub
+floor
+ceil
+__aeabi_ui2d
+__aeabi_d2uiz
+trunc

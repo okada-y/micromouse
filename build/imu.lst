@@ -1,0 +1,898 @@
+ARM GAS  C:\Temp\cceNM1vl.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"imu.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.IMU_Write1byte,"ax",%progbits
+  18              		.align	1
+  19              		.global	IMU_Write1byte
+  20              		.arch armv7e-m
+  21              		.syntax unified
+  22              		.thumb
+  23              		.thumb_func
+  24              		.fpu fpv4-sp-d16
+  26              	IMU_Write1byte:
+  27              	.LVL0:
+  28              	.LFB133:
+  29              		.file 1 "Src/imu.c"
+   1:Src/imu.c     **** /*
+   2:Src/imu.c     ****  * imu.c
+   3:Src/imu.c     ****  *
+   4:Src/imu.c     ****  *  Created on: Jul 27, 2019
+   5:Src/imu.c     ****  *      Author: 岡田 泰裕
+   6:Src/imu.c     ****  */
+   7:Src/imu.c     **** #include "index.h"
+   8:Src/imu.c     **** #include "ICM20648_Register.h"
+   9:Src/imu.c     **** 
+  10:Src/imu.c     **** #define REFFERENCE_NUM		(1000)		// a何回の平均をもってジャイロのリファレンス電
+  11:Src/imu.c     **** 
+  12:Src/imu.c     **** // aジャイロ関連マクロ
+  13:Src/imu.c     **** #define GYRO_Z_SIGN			(-1.f)		// aジャイロの出力の符号（自分の座標系に合った�
+  14:Src/imu.c     **** #define GYRO_Z_SENSITIVITY	(16.752f)		//(16.4f)
+  15:Src/imu.c     **** 
+  16:Src/imu.c     **** // a加速度計関連マクロ
+  17:Src/imu.c     **** #define ACCEL_X_SIGN		(1.f)		// a加速度計の出力の符号（自分の座標系に合った方
+  18:Src/imu.c     **** #define ACCEL_X_SENSITIVITY	(4096.f)
+  19:Src/imu.c     **** 
+  20:Src/imu.c     **** 
+  21:Src/imu.c     **** // a ローカル関数宣言
+  22:Src/imu.c     **** void 	IMU_Write1byte( uint8_t , uint8_t );
+  23:Src/imu.c     **** uint8_t IMU_Read1byte( uint8_t );
+  24:Src/imu.c     **** 
+  25:Src/imu.c     **** // aグローバル変数宣言
+  26:Src/imu.c     **** static uint8_t  imu_address = ACCEL_XOUT_H | 0x80;	//a 加速度、ジャイロデータの先頭�
+  27:Src/imu.c     **** static uint8_t	imu_value[13];			// value[0]はダミーデータが入るため注意
+  28:Src/imu.c     **** 
+  29:Src/imu.c     **** static int16_t	accel_x_value;			// X軸加速度計の生データ
+ARM GAS  C:\Temp\cceNM1vl.s 			page 2
+
+
+  30:Src/imu.c     **** static int16_t	accel_x_reference;		// X軸加速度計のリファレンス
+  31:Src/imu.c     **** 
+  32:Src/imu.c     **** static int16_t	gyro_z_value;			// Z軸ジャイロの生データ
+  33:Src/imu.c     **** static int16_t	gyro_z_reference;		// Z軸ジャイロのリファレンス
+  34:Src/imu.c     **** 
+  35:Src/imu.c     **** /* ---------------------------------------------------------------
+  36:Src/imu.c     **** 	ICM20648に1byte書き込む関数
+  37:Src/imu.c     **** --------------------------------------------------------------- */
+  38:Src/imu.c     **** void IMU_Write1byte( uint8_t addr , uint8_t data )
+  39:Src/imu.c     **** {
+  30              		.loc 1 39 1 view -0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 16
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              		.loc 1 39 1 is_stmt 0 view .LVU1
+  35 0000 30B5     		push	{r4, r5, lr}
+  36              	.LCFI0:
+  37              		.cfi_def_cfa_offset 12
+  38              		.cfi_offset 4, -12
+  39              		.cfi_offset 5, -8
+  40              		.cfi_offset 14, -4
+  41 0002 85B0     		sub	sp, sp, #20
+  42              	.LCFI1:
+  43              		.cfi_def_cfa_offset 32
+  44 0004 8DF80710 		strb	r1, [sp, #7]
+  40:Src/imu.c     **** 	uint8_t address = addr & 0x7f;//write設定(MSB=0)　+　アドレス7bit
+  45              		.loc 1 40 2 is_stmt 1 view .LVU2
+  46              		.loc 1 40 25 is_stmt 0 view .LVU3
+  47 0008 00F07F00 		and	r0, r0, #127
+  48              	.LVL1:
+  49              		.loc 1 40 10 view .LVU4
+  50 000c 8DF80F00 		strb	r0, [sp, #15]
+  41:Src/imu.c     **** 
+  42:Src/imu.c     **** 	HAL_GPIO_WritePin(gyro_CS_GPIO_Port, gyro_CS_Pin, GPIO_PIN_RESET);//CSpinをLoに、SPI通信開�
+  51              		.loc 1 42 2 is_stmt 1 view .LVU5
+  52 0010 0E4C     		ldr	r4, .L3
+  53 0012 0022     		movs	r2, #0
+  54 0014 4FF48051 		mov	r1, #4096
+  55              	.LVL2:
+  56              		.loc 1 42 2 is_stmt 0 view .LVU6
+  57 0018 2046     		mov	r0, r4
+  58 001a FFF7FEFF 		bl	HAL_GPIO_WritePin
+  59              	.LVL3:
+  43:Src/imu.c     **** 	HAL_SPI_Transmit(&hspi2, &address, 1, 1);//address送付
+  60              		.loc 1 43 2 is_stmt 1 view .LVU7
+  61 001e 0C4D     		ldr	r5, .L3+4
+  62 0020 0123     		movs	r3, #1
+  63 0022 1A46     		mov	r2, r3
+  64 0024 0DF10F01 		add	r1, sp, #15
+  65 0028 2846     		mov	r0, r5
+  66 002a FFF7FEFF 		bl	HAL_SPI_Transmit
+  67              	.LVL4:
+  44:Src/imu.c     **** 	HAL_SPI_Transmit(&hspi2, &data, 1, 1);//data送付
+  68              		.loc 1 44 2 view .LVU8
+  69 002e 0123     		movs	r3, #1
+  70 0030 1A46     		mov	r2, r3
+  71 0032 0DF10701 		add	r1, sp, #7
+ARM GAS  C:\Temp\cceNM1vl.s 			page 3
+
+
+  72 0036 2846     		mov	r0, r5
+  73 0038 FFF7FEFF 		bl	HAL_SPI_Transmit
+  74              	.LVL5:
+  45:Src/imu.c     **** 	HAL_GPIO_WritePin(gyro_CS_GPIO_Port, gyro_CS_Pin, GPIO_PIN_SET);//CSpinをHiに、SPI通信終了
+  75              		.loc 1 45 2 view .LVU9
+  76 003c 0122     		movs	r2, #1
+  77 003e 4FF48051 		mov	r1, #4096
+  78 0042 2046     		mov	r0, r4
+  79 0044 FFF7FEFF 		bl	HAL_GPIO_WritePin
+  80              	.LVL6:
+  46:Src/imu.c     **** }
+  81              		.loc 1 46 1 is_stmt 0 view .LVU10
+  82 0048 05B0     		add	sp, sp, #20
+  83              	.LCFI2:
+  84              		.cfi_def_cfa_offset 12
+  85              		@ sp needed
+  86 004a 30BD     		pop	{r4, r5, pc}
+  87              	.L4:
+  88              		.align	2
+  89              	.L3:
+  90 004c 00040240 		.word	1073873920
+  91 0050 00000000 		.word	hspi2
+  92              		.cfi_endproc
+  93              	.LFE133:
+  95              		.section	.text.IMU_Read1byte,"ax",%progbits
+  96              		.align	1
+  97              		.global	IMU_Read1byte
+  98              		.syntax unified
+  99              		.thumb
+ 100              		.thumb_func
+ 101              		.fpu fpv4-sp-d16
+ 103              	IMU_Read1byte:
+ 104              	.LVL7:
+ 105              	.LFB134:
+  47:Src/imu.c     **** 
+  48:Src/imu.c     **** 
+  49:Src/imu.c     **** /* ---------------------------------------------------------------
+  50:Src/imu.c     **** 	ICM20648から1byte読み出す関数
+  51:Src/imu.c     **** --------------------------------------------------------------- */
+  52:Src/imu.c     **** uint8_t IMU_Read1byte( uint8_t addr )
+  53:Src/imu.c     **** {
+ 106              		.loc 1 53 1 is_stmt 1 view -0
+ 107              		.cfi_startproc
+ 108              		@ args = 0, pretend = 0, frame = 8
+ 109              		@ frame_needed = 0, uses_anonymous_args = 0
+ 110              		.loc 1 53 1 is_stmt 0 view .LVU12
+ 111 0000 30B5     		push	{r4, r5, lr}
+ 112              	.LCFI3:
+ 113              		.cfi_def_cfa_offset 12
+ 114              		.cfi_offset 4, -12
+ 115              		.cfi_offset 5, -8
+ 116              		.cfi_offset 14, -4
+ 117 0002 83B0     		sub	sp, sp, #12
+ 118              	.LCFI4:
+ 119              		.cfi_def_cfa_offset 24
+  54:Src/imu.c     **** 	uint8_t address = addr | 0x80;//read設定(MSB=0)　+ アドレス7bit
+ 120              		.loc 1 54 2 is_stmt 1 view .LVU13
+ARM GAS  C:\Temp\cceNM1vl.s 			page 4
+
+
+ 121              		.loc 1 54 10 is_stmt 0 view .LVU14
+ 122 0004 60F07F00 		orn	r0, r0, #127
+ 123              	.LVL8:
+ 124              		.loc 1 54 10 view .LVU15
+ 125 0008 8DF80700 		strb	r0, [sp, #7]
+  55:Src/imu.c     **** 	uint8_t value;
+ 126              		.loc 1 55 2 is_stmt 1 view .LVU16
+  56:Src/imu.c     **** 
+  57:Src/imu.c     **** 	HAL_GPIO_WritePin(gyro_CS_GPIO_Port, gyro_CS_Pin, GPIO_PIN_RESET);//CSpinをLoに、SPI通信開�
+ 127              		.loc 1 57 2 view .LVU17
+ 128 000c 0F4C     		ldr	r4, .L7
+ 129 000e 0022     		movs	r2, #0
+ 130 0010 4FF48051 		mov	r1, #4096
+ 131 0014 2046     		mov	r0, r4
+ 132 0016 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 133              	.LVL9:
+  58:Src/imu.c     **** 	HAL_SPI_Transmit(&hspi2, &address, 1, 1);//address送付
+ 134              		.loc 1 58 2 view .LVU18
+ 135 001a 0D4D     		ldr	r5, .L7+4
+ 136 001c 0123     		movs	r3, #1
+ 137 001e 1A46     		mov	r2, r3
+ 138 0020 0DF10701 		add	r1, sp, #7
+ 139 0024 2846     		mov	r0, r5
+ 140 0026 FFF7FEFF 		bl	HAL_SPI_Transmit
+ 141              	.LVL10:
+  59:Src/imu.c     **** 	HAL_SPI_Receive(&hspi2, &value, 1, 1);//data受信
+ 142              		.loc 1 59 2 view .LVU19
+ 143 002a 0123     		movs	r3, #1
+ 144 002c 1A46     		mov	r2, r3
+ 145 002e 0DF10601 		add	r1, sp, #6
+ 146 0032 2846     		mov	r0, r5
+ 147 0034 FFF7FEFF 		bl	HAL_SPI_Receive
+ 148              	.LVL11:
+  60:Src/imu.c     **** 	HAL_GPIO_WritePin(gyro_CS_GPIO_Port, gyro_CS_Pin, GPIO_PIN_SET);//CSpinをHiに、SPI通信終了
+ 149              		.loc 1 60 2 view .LVU20
+ 150 0038 0122     		movs	r2, #1
+ 151 003a 4FF48051 		mov	r1, #4096
+ 152 003e 2046     		mov	r0, r4
+ 153 0040 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 154              	.LVL12:
+  61:Src/imu.c     **** 
+  62:Src/imu.c     **** 	return value;
+ 155              		.loc 1 62 2 view .LVU21
+  63:Src/imu.c     **** }
+ 156              		.loc 1 63 1 is_stmt 0 view .LVU22
+ 157 0044 9DF80600 		ldrb	r0, [sp, #6]	@ zero_extendqisi2
+ 158 0048 03B0     		add	sp, sp, #12
+ 159              	.LCFI5:
+ 160              		.cfi_def_cfa_offset 12
+ 161              		@ sp needed
+ 162 004a 30BD     		pop	{r4, r5, pc}
+ 163              	.L8:
+ 164              		.align	2
+ 165              	.L7:
+ 166 004c 00040240 		.word	1073873920
+ 167 0050 00000000 		.word	hspi2
+ 168              		.cfi_endproc
+ARM GAS  C:\Temp\cceNM1vl.s 			page 5
+
+
+ 169              	.LFE134:
+ 171              		.section	.text.IMU_CheckWHOAMI,"ax",%progbits
+ 172              		.align	1
+ 173              		.global	IMU_CheckWHOAMI
+ 174              		.syntax unified
+ 175              		.thumb
+ 176              		.thumb_func
+ 177              		.fpu fpv4-sp-d16
+ 179              	IMU_CheckWHOAMI:
+ 180              	.LFB135:
+  64:Src/imu.c     **** 
+  65:Src/imu.c     **** /* ---------------------------------------------------------------
+  66:Src/imu.c     **** 	ICM20648の動作確認関数（WHO_AM_I(0xe0)を取得する）
+  67:Src/imu.c     **** --------------------------------------------------------------- */
+  68:Src/imu.c     **** uint8_t IMU_CheckWHOAMI( void )
+  69:Src/imu.c     **** {
+ 181              		.loc 1 69 1 is_stmt 1 view -0
+ 182              		.cfi_startproc
+ 183              		@ args = 0, pretend = 0, frame = 0
+ 184              		@ frame_needed = 0, uses_anonymous_args = 0
+ 185 0000 08B5     		push	{r3, lr}
+ 186              	.LCFI6:
+ 187              		.cfi_def_cfa_offset 8
+ 188              		.cfi_offset 3, -8
+ 189              		.cfi_offset 14, -4
+  70:Src/imu.c     **** 	return IMU_Read1byte( WHO_AM_I );
+ 190              		.loc 1 70 2 view .LVU24
+ 191              		.loc 1 70 9 is_stmt 0 view .LVU25
+ 192 0002 0020     		movs	r0, #0
+ 193 0004 FFF7FEFF 		bl	IMU_Read1byte
+ 194              	.LVL13:
+  71:Src/imu.c     **** }
+ 195              		.loc 1 71 1 view .LVU26
+ 196 0008 08BD     		pop	{r3, pc}
+ 197              		.cfi_endproc
+ 198              	.LFE135:
+ 200              		.section	.rodata.IMU_Initialize.str1.4,"aMS",%progbits,1
+ 201              		.align	2
+ 202              	.LC0:
+ 203 0000 6779726F 		.ascii	"gyro_error\015\000"
+ 203      5F657272 
+ 203      6F720D00 
+ 204              		.section	.text.IMU_Initialize,"ax",%progbits
+ 205              		.align	1
+ 206              		.global	IMU_Initialize
+ 207              		.syntax unified
+ 208              		.thumb
+ 209              		.thumb_func
+ 210              		.fpu fpv4-sp-d16
+ 212              	IMU_Initialize:
+ 213              	.LFB136:
+  72:Src/imu.c     **** 
+  73:Src/imu.c     **** /* ---------------------------------------------------------------
+  74:Src/imu.c     **** 	ICM20648の初期設定用関数
+  75:Src/imu.c     **** --------------------------------------------------------------- */
+  76:Src/imu.c     **** void IMU_Initialize( void )
+  77:Src/imu.c     **** {
+ARM GAS  C:\Temp\cceNM1vl.s 			page 6
+
+
+ 214              		.loc 1 77 1 is_stmt 1 view -0
+ 215              		.cfi_startproc
+ 216              		@ args = 0, pretend = 0, frame = 0
+ 217              		@ frame_needed = 0, uses_anonymous_args = 0
+ 218 0000 08B5     		push	{r3, lr}
+ 219              	.LCFI7:
+ 220              		.cfi_def_cfa_offset 8
+ 221              		.cfi_offset 3, -8
+ 222              		.cfi_offset 14, -4
+  78:Src/imu.c     **** 
+  79:Src/imu.c     **** 	uint8_t who_am_i;
+ 223              		.loc 1 79 2 view .LVU28
+  80:Src/imu.c     **** 
+  81:Src/imu.c     **** 	HAL_Delay( 100 ); // wait start
+ 224              		.loc 1 81 2 view .LVU29
+ 225 0002 6420     		movs	r0, #100
+ 226 0004 FFF7FEFF 		bl	HAL_Delay
+ 227              	.LVL14:
+  82:Src/imu.c     **** 	IMU_CheckWHOAMI( );//dummy read
+ 228              		.loc 1 82 2 view .LVU30
+ 229 0008 FFF7FEFF 		bl	IMU_CheckWHOAMI
+ 230              	.LVL15:
+  83:Src/imu.c     **** 	who_am_i = IMU_CheckWHOAMI( ); // Who_am_iの取得
+ 231              		.loc 1 83 2 view .LVU31
+ 232              		.loc 1 83 13 is_stmt 0 view .LVU32
+ 233 000c FFF7FEFF 		bl	IMU_CheckWHOAMI
+ 234              	.LVL16:
+  84:Src/imu.c     **** //	printf( "\r\n0x%x\r\n",who_am_i ); // Who_am_iの値出力
+  85:Src/imu.c     **** 
+  86:Src/imu.c     **** 	if ( who_am_i != 0xe0 ){//WHO_AM_Iが規定値でないときエラー表示
+ 235              		.loc 1 86 2 is_stmt 1 view .LVU33
+ 236              		.loc 1 86 5 is_stmt 0 view .LVU34
+ 237 0010 E028     		cmp	r0, #224
+ 238 0012 03D0     		beq	.L12
+ 239              	.LVL17:
+ 240              	.L13:
+  87:Src/imu.c     **** 	  while(1){
+ 241              		.loc 1 87 4 is_stmt 1 discriminator 1 view .LVU35
+  88:Src/imu.c     **** 	    printf( "gyro_error\r");
+ 242              		.loc 1 88 6 discriminator 1 view .LVU36
+ 243 0014 1E48     		ldr	r0, .L15
+ 244 0016 FFF7FEFF 		bl	printf
+ 245              	.LVL18:
+  87:Src/imu.c     **** 	  while(1){
+ 246              		.loc 1 87 9 discriminator 1 view .LVU37
+ 247 001a FBE7     		b	.L13
+ 248              	.LVL19:
+ 249              	.L12:
+  89:Src/imu.c     **** 	    }
+  90:Src/imu.c     **** 	}
+  91:Src/imu.c     **** 
+  92:Src/imu.c     **** 
+  93:Src/imu.c     **** 	HAL_Delay(100);
+ 250              		.loc 1 93 2 view .LVU38
+ 251 001c 6420     		movs	r0, #100
+ 252              	.LVL20:
+ 253              		.loc 1 93 2 is_stmt 0 view .LVU39
+ARM GAS  C:\Temp\cceNM1vl.s 			page 7
+
+
+ 254 001e FFF7FEFF 		bl	HAL_Delay
+ 255              	.LVL21:
+  94:Src/imu.c     **** 
+  95:Src/imu.c     **** 	IMU_Write1byte(USER_CTRL, 0x10);	//I2CモードをDisableに設定
+ 256              		.loc 1 95 2 is_stmt 1 view .LVU40
+ 257 0022 1021     		movs	r1, #16
+ 258 0024 0320     		movs	r0, #3
+ 259 0026 FFF7FEFF 		bl	IMU_Write1byte
+ 260              	.LVL22:
+  96:Src/imu.c     **** 	HAL_Delay(1);
+ 261              		.loc 1 96 2 view .LVU41
+ 262 002a 0120     		movs	r0, #1
+ 263 002c FFF7FEFF 		bl	HAL_Delay
+ 264              	.LVL23:
+  97:Src/imu.c     **** 	IMU_Write1byte(PWR_MGMT_1, 0x01);	// ICM20648をリセット
+ 265              		.loc 1 97 2 view .LVU42
+ 266 0030 0121     		movs	r1, #1
+ 267 0032 0620     		movs	r0, #6
+ 268 0034 FFF7FEFF 		bl	IMU_Write1byte
+ 269              	.LVL24:
+  98:Src/imu.c     **** 	HAL_Delay(100);
+ 270              		.loc 1 98 2 view .LVU43
+ 271 0038 6420     		movs	r0, #100
+ 272 003a FFF7FEFF 		bl	HAL_Delay
+ 273              	.LVL25:
+  99:Src/imu.c     **** 
+ 100:Src/imu.c     **** 	IMU_Write1byte(REG_BANK_SEL, REG_USER_BANK_2); // USER_BANK_2へ切り替え
+ 274              		.loc 1 100 2 view .LVU44
+ 275 003e 2021     		movs	r1, #32
+ 276 0040 7F20     		movs	r0, #127
+ 277 0042 FFF7FEFF 		bl	IMU_Write1byte
+ 278              	.LVL26:
+ 101:Src/imu.c     **** 	HAL_Delay(100);
+ 279              		.loc 1 101 2 view .LVU45
+ 280 0046 6420     		movs	r0, #100
+ 281 0048 FFF7FEFF 		bl	HAL_Delay
+ 282              	.LVL27:
+ 102:Src/imu.c     **** 
+ 103:Src/imu.c     **** 	// m ジャイロの設定
+ 104:Src/imu.c     **** 	IMU_Write1byte(GYRO_CONFIG_1, 0x07);	// a ジャイロのスケールを±2000deg/sに設定、
+ 283              		.loc 1 104 2 view .LVU46
+ 284 004c 0721     		movs	r1, #7
+ 285 004e 0120     		movs	r0, #1
+ 286 0050 FFF7FEFF 		bl	IMU_Write1byte
+ 287              	.LVL28:
+ 105:Src/imu.c     **** 											// a ジャイロのローパスフィルタをEnableに設定
+ 106:Src/imu.c     **** 	HAL_Delay(1);
+ 288              		.loc 1 106 2 view .LVU47
+ 289 0054 0120     		movs	r0, #1
+ 290 0056 FFF7FEFF 		bl	HAL_Delay
+ 291              	.LVL29:
+ 107:Src/imu.c     **** 	// a 加速度計の設定
+ 108:Src/imu.c     **** 	IMU_Write1byte(ACCEL_CONFIG, 0x0d);		// a 加速度計のスケールを±8gに設定
+ 292              		.loc 1 108 2 view .LVU48
+ 293 005a 0D21     		movs	r1, #13
+ 294 005c 1420     		movs	r0, #20
+ 295 005e FFF7FEFF 		bl	IMU_Write1byte
+ARM GAS  C:\Temp\cceNM1vl.s 			page 8
+
+
+ 296              	.LVL30:
+ 109:Src/imu.c     **** 											// a 加速度計のローパスフィルタをEnableに設定
+ 110:Src/imu.c     **** 	HAL_Delay(1);
+ 297              		.loc 1 110 2 view .LVU49
+ 298 0062 0120     		movs	r0, #1
+ 299 0064 FFF7FEFF 		bl	HAL_Delay
+ 300              	.LVL31:
+ 111:Src/imu.c     **** 
+ 112:Src/imu.c     **** 	IMU_Write1byte(REG_BANK_SEL, REG_USER_BANK_0);	// USER_BANK_0へ切り替え
+ 301              		.loc 1 112 2 view .LVU50
+ 302 0068 0021     		movs	r1, #0
+ 303 006a 7F20     		movs	r0, #127
+ 304 006c FFF7FEFF 		bl	IMU_Write1byte
+ 305              	.LVL32:
+ 113:Src/imu.c     **** 	HAL_Delay(100);
+ 306              		.loc 1 113 2 view .LVU51
+ 307 0070 6420     		movs	r0, #100
+ 308 0072 FFF7FEFF 		bl	HAL_Delay
+ 309              	.LVL33:
+ 114:Src/imu.c     **** 
+ 115:Src/imu.c     **** 	// DMAの開始
+ 116:Src/imu.c     **** 	HAL_GPIO_WritePin(gyro_CS_GPIO_Port, gyro_CS_Pin, GPIO_PIN_RESET);//CSpinをLoに、SPI通信開�
+ 310              		.loc 1 116 2 view .LVU52
+ 311 0076 0022     		movs	r2, #0
+ 312 0078 4FF48051 		mov	r1, #4096
+ 313 007c 0548     		ldr	r0, .L15+4
+ 314 007e FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 315              	.LVL34:
+ 117:Src/imu.c     **** 	HAL_SPI_TransmitReceive_DMA( &hspi2, &imu_address, imu_value, sizeof(imu_value)/sizeof(uint8_t) );
+ 316              		.loc 1 117 2 view .LVU53
+ 317 0082 0D23     		movs	r3, #13
+ 318 0084 044A     		ldr	r2, .L15+8
+ 319 0086 0549     		ldr	r1, .L15+12
+ 320 0088 0548     		ldr	r0, .L15+16
+ 321 008a FFF7FEFF 		bl	HAL_SPI_TransmitReceive_DMA
+ 322              	.LVL35:
+ 118:Src/imu.c     **** 
+ 119:Src/imu.c     **** }
+ 323              		.loc 1 119 1 is_stmt 0 view .LVU54
+ 324 008e 08BD     		pop	{r3, pc}
+ 325              	.L16:
+ 326              		.align	2
+ 327              	.L15:
+ 328 0090 00000000 		.word	.LC0
+ 329 0094 00040240 		.word	1073873920
+ 330 0098 00000000 		.word	.LANCHOR0
+ 331 009c 00000000 		.word	.LANCHOR1
+ 332 00a0 00000000 		.word	hspi2
+ 333              		.cfi_endproc
+ 334              	.LFE136:
+ 336              		.section	.text.HAL_SPI_TxRxCpltCallback,"ax",%progbits
+ 337              		.align	1
+ 338              		.global	HAL_SPI_TxRxCpltCallback
+ 339              		.syntax unified
+ 340              		.thumb
+ 341              		.thumb_func
+ 342              		.fpu fpv4-sp-d16
+ARM GAS  C:\Temp\cceNM1vl.s 			page 9
+
+
+ 344              	HAL_SPI_TxRxCpltCallback:
+ 345              	.LVL36:
+ 346              	.LFB137:
+ 120:Src/imu.c     **** 
+ 121:Src/imu.c     **** /* ---------------------------------------------------------------
+ 122:Src/imu.c     **** 	DMA送受信完了後のコールバック関数
+ 123:Src/imu.c     **** --------------------------------------------------------------- */
+ 124:Src/imu.c     **** void HAL_SPI_TxRxCpltCallback(SPI_HandleTypeDef* hspi)
+ 125:Src/imu.c     **** {
+ 347              		.loc 1 125 1 is_stmt 1 view -0
+ 348              		.cfi_startproc
+ 349              		@ args = 0, pretend = 0, frame = 0
+ 350              		@ frame_needed = 0, uses_anonymous_args = 0
+ 351              		.loc 1 125 1 is_stmt 0 view .LVU56
+ 352 0000 38B5     		push	{r3, r4, r5, lr}
+ 353              	.LCFI8:
+ 354              		.cfi_def_cfa_offset 16
+ 355              		.cfi_offset 3, -16
+ 356              		.cfi_offset 4, -12
+ 357              		.cfi_offset 5, -8
+ 358              		.cfi_offset 14, -4
+ 126:Src/imu.c     **** 	HAL_GPIO_WritePin( gyro_CS_GPIO_Port, gyro_CS_Pin, GPIO_PIN_SET );//CSpinをHIに、SPI通信停�
+ 359              		.loc 1 126 2 is_stmt 1 view .LVU57
+ 360 0002 104D     		ldr	r5, .L19
+ 361 0004 0122     		movs	r2, #1
+ 362 0006 4FF48051 		mov	r1, #4096
+ 363 000a 2846     		mov	r0, r5
+ 364              	.LVL37:
+ 365              		.loc 1 126 2 is_stmt 0 view .LVU58
+ 366 000c FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 367              	.LVL38:
+ 127:Src/imu.c     **** 	accel_x_value = ( ( (int16_t)imu_value[3]<<8 ) | ( (int16_t)imu_value[4]&0x00ff ) );//ICMのy軸�
+ 368              		.loc 1 127 2 is_stmt 1 view .LVU59
+ 369              		.loc 1 127 40 is_stmt 0 view .LVU60
+ 370 0010 0D4C     		ldr	r4, .L19+4
+ 371 0012 E278     		ldrb	r2, [r4, #3]	@ zero_extendqisi2
+ 372              		.loc 1 127 71 view .LVU61
+ 373 0014 2379     		ldrb	r3, [r4, #4]	@ zero_extendqisi2
+ 374              		.loc 1 127 49 view .LVU62
+ 375 0016 43EA0223 		orr	r3, r3, r2, lsl #8
+ 376              		.loc 1 127 16 view .LVU63
+ 377 001a 0C4A     		ldr	r2, .L19+8
+ 378 001c 1380     		strh	r3, [r2]	@ movhi
+ 128:Src/imu.c     **** 	gyro_z_value =  ( ( (int16_t)imu_value[11]<<8 ) | ( (int16_t)imu_value[12]&0x00ff ) );//z軸角速
+ 379              		.loc 1 128 2 is_stmt 1 view .LVU64
+ 380              		.loc 1 128 40 is_stmt 0 view .LVU65
+ 381 001e E27A     		ldrb	r2, [r4, #11]	@ zero_extendqisi2
+ 382              		.loc 1 128 72 view .LVU66
+ 383 0020 237B     		ldrb	r3, [r4, #12]	@ zero_extendqisi2
+ 384              		.loc 1 128 50 view .LVU67
+ 385 0022 43EA0223 		orr	r3, r3, r2, lsl #8
+ 386              		.loc 1 128 15 view .LVU68
+ 387 0026 0A4A     		ldr	r2, .L19+12
+ 388 0028 1380     		strh	r3, [r2]	@ movhi
+ 129:Src/imu.c     **** 	HAL_GPIO_WritePin( gyro_CS_GPIO_Port, gyro_CS_Pin, GPIO_PIN_RESET );//CSpinをLoに、SPI通信開
+ 389              		.loc 1 129 2 is_stmt 1 view .LVU69
+ 390 002a 0022     		movs	r2, #0
+ARM GAS  C:\Temp\cceNM1vl.s 			page 10
+
+
+ 391 002c 4FF48051 		mov	r1, #4096
+ 392 0030 2846     		mov	r0, r5
+ 393 0032 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 394              	.LVL39:
+ 130:Src/imu.c     **** 	HAL_SPI_TransmitReceive_DMA( &hspi2, &imu_address, imu_value, sizeof(imu_value)/sizeof(uint8_t) );
+ 395              		.loc 1 130 2 view .LVU70
+ 396 0036 0D23     		movs	r3, #13
+ 397 0038 2246     		mov	r2, r4
+ 398 003a 0649     		ldr	r1, .L19+16
+ 399 003c 0648     		ldr	r0, .L19+20
+ 400 003e FFF7FEFF 		bl	HAL_SPI_TransmitReceive_DMA
+ 401              	.LVL40:
+ 131:Src/imu.c     **** }
+ 402              		.loc 1 131 1 is_stmt 0 view .LVU71
+ 403 0042 38BD     		pop	{r3, r4, r5, pc}
+ 404              	.L20:
+ 405              		.align	2
+ 406              	.L19:
+ 407 0044 00040240 		.word	1073873920
+ 408 0048 00000000 		.word	.LANCHOR0
+ 409 004c 00000000 		.word	.LANCHOR2
+ 410 0050 00000000 		.word	.LANCHOR3
+ 411 0054 00000000 		.word	.LANCHOR1
+ 412 0058 00000000 		.word	hspi2
+ 413              		.cfi_endproc
+ 414              	.LFE137:
+ 416              		.section	.text.IMU_ResetReference,"ax",%progbits
+ 417              		.align	1
+ 418              		.global	IMU_ResetReference
+ 419              		.syntax unified
+ 420              		.thumb
+ 421              		.thumb_func
+ 422              		.fpu fpv4-sp-d16
+ 424              	IMU_ResetReference:
+ 425              	.LFB138:
+ 132:Src/imu.c     **** 
+ 133:Src/imu.c     **** /* ---------------------------------------------------------------
+ 134:Src/imu.c     **** 	IMUのリファレンスを補正する関数
+ 135:Src/imu.c     **** --------------------------------------------------------------- */
+ 136:Src/imu.c     **** void IMU_ResetReference( void )
+ 137:Src/imu.c     **** {
+ 426              		.loc 1 137 1 is_stmt 1 view -0
+ 427              		.cfi_startproc
+ 428              		@ args = 0, pretend = 0, frame = 0
+ 429              		@ frame_needed = 0, uses_anonymous_args = 0
+ 430 0000 10B5     		push	{r4, lr}
+ 431              	.LCFI9:
+ 432              		.cfi_def_cfa_offset 8
+ 433              		.cfi_offset 4, -8
+ 434              		.cfi_offset 14, -4
+ 138:Src/imu.c     **** 	int16_t i;
+ 435              		.loc 1 138 2 view .LVU73
+ 139:Src/imu.c     **** 
+ 140:Src/imu.c     **** 	for(i = 0; i < REFFERENCE_NUM; i++) {
+ 436              		.loc 1 140 2 view .LVU74
+ 437              	.LVL41:
+ 438              		.loc 1 140 8 is_stmt 0 view .LVU75
+ARM GAS  C:\Temp\cceNM1vl.s 			page 11
+
+
+ 439 0002 0024     		movs	r4, #0
+ 440              	.LVL42:
+ 441              	.L22:
+ 442              		.loc 1 140 13 is_stmt 1 discriminator 1 view .LVU76
+ 443              		.loc 1 140 2 is_stmt 0 discriminator 1 view .LVU77
+ 444 0004 B4F57A7F 		cmp	r4, #1000
+ 445 0008 11DA     		bge	.L25
+ 141:Src/imu.c     **** 		HAL_Delay(1);
+ 446              		.loc 1 141 3 is_stmt 1 discriminator 3 view .LVU78
+ 447 000a 0120     		movs	r0, #1
+ 448 000c FFF7FEFF 		bl	HAL_Delay
+ 449              	.LVL43:
+ 142:Src/imu.c     **** 		accel_x_reference += accel_x_value;
+ 450              		.loc 1 142 3 discriminator 3 view .LVU79
+ 451              		.loc 1 142 21 is_stmt 0 discriminator 3 view .LVU80
+ 452 0010 114A     		ldr	r2, .L26
+ 453 0012 1388     		ldrh	r3, [r2]
+ 454 0014 1149     		ldr	r1, .L26+4
+ 455 0016 0988     		ldrh	r1, [r1]
+ 456 0018 0B44     		add	r3, r3, r1
+ 457 001a 1380     		strh	r3, [r2]	@ movhi
+ 143:Src/imu.c     **** 		gyro_z_reference += gyro_z_value;
+ 458              		.loc 1 143 3 is_stmt 1 discriminator 3 view .LVU81
+ 459              		.loc 1 143 20 is_stmt 0 discriminator 3 view .LVU82
+ 460 001c 104A     		ldr	r2, .L26+8
+ 461 001e 1388     		ldrh	r3, [r2]
+ 462 0020 1049     		ldr	r1, .L26+12
+ 463 0022 0988     		ldrh	r1, [r1]
+ 464 0024 0B44     		add	r3, r3, r1
+ 465 0026 1380     		strh	r3, [r2]	@ movhi
+ 140:Src/imu.c     **** 		HAL_Delay(1);
+ 466              		.loc 1 140 33 is_stmt 1 discriminator 3 view .LVU83
+ 140:Src/imu.c     **** 		HAL_Delay(1);
+ 467              		.loc 1 140 34 is_stmt 0 discriminator 3 view .LVU84
+ 468 0028 0134     		adds	r4, r4, #1
+ 469              	.LVL44:
+ 140:Src/imu.c     **** 		HAL_Delay(1);
+ 470              		.loc 1 140 34 discriminator 3 view .LVU85
+ 471 002a 24B2     		sxth	r4, r4
+ 472              	.LVL45:
+ 140:Src/imu.c     **** 		HAL_Delay(1);
+ 473              		.loc 1 140 34 discriminator 3 view .LVU86
+ 474 002c EAE7     		b	.L22
+ 475              	.L25:
+ 144:Src/imu.c     **** 	}
+ 145:Src/imu.c     **** 	accel_x_reference /= REFFERENCE_NUM;
+ 476              		.loc 1 145 2 is_stmt 1 view .LVU87
+ 477              		.loc 1 145 20 is_stmt 0 view .LVU88
+ 478 002e 0A49     		ldr	r1, .L26
+ 479 0030 B1F90030 		ldrsh	r3, [r1]
+ 480 0034 0C4A     		ldr	r2, .L26+16
+ 481 0036 82FB0340 		smull	r4, r0, r2, r3
+ 482              	.LVL46:
+ 483              		.loc 1 145 20 view .LVU89
+ 484 003a DB17     		asrs	r3, r3, #31
+ 485 003c C3EBA013 		rsb	r3, r3, r0, asr #6
+ 486 0040 0B80     		strh	r3, [r1]	@ movhi
+ARM GAS  C:\Temp\cceNM1vl.s 			page 12
+
+
+ 146:Src/imu.c     **** 	gyro_z_reference /= REFFERENCE_NUM;
+ 487              		.loc 1 146 2 is_stmt 1 view .LVU90
+ 488              		.loc 1 146 19 is_stmt 0 view .LVU91
+ 489 0042 0749     		ldr	r1, .L26+8
+ 490 0044 B1F90030 		ldrsh	r3, [r1]
+ 491 0048 82FB0302 		smull	r0, r2, r2, r3
+ 492 004c DB17     		asrs	r3, r3, #31
+ 493 004e C3EBA213 		rsb	r3, r3, r2, asr #6
+ 494 0052 0B80     		strh	r3, [r1]	@ movhi
+ 147:Src/imu.c     **** }
+ 495              		.loc 1 147 1 view .LVU92
+ 496 0054 10BD     		pop	{r4, pc}
+ 497              	.L27:
+ 498 0056 00BF     		.align	2
+ 499              	.L26:
+ 500 0058 00000000 		.word	.LANCHOR4
+ 501 005c 00000000 		.word	.LANCHOR2
+ 502 0060 00000000 		.word	.LANCHOR5
+ 503 0064 00000000 		.word	.LANCHOR3
+ 504 0068 D34D6210 		.word	274877907
+ 505              		.cfi_endproc
+ 506              	.LFE138:
+ 508              		.section	.text.IMU_GetAccel_X,"ax",%progbits
+ 509              		.align	1
+ 510              		.global	IMU_GetAccel_X
+ 511              		.syntax unified
+ 512              		.thumb
+ 513              		.thumb_func
+ 514              		.fpu fpv4-sp-d16
+ 516              	IMU_GetAccel_X:
+ 517              	.LFB139:
+ 148:Src/imu.c     **** 
+ 149:Src/imu.c     **** /* ---------------------------------------------------------------
+ 150:Src/imu.c     **** 	X軸加速度計の加速度を取得する関数[m/s^2]
+ 151:Src/imu.c     **** --------------------------------------------------------------- */
+ 152:Src/imu.c     **** float IMU_GetAccel_X( void )
+ 153:Src/imu.c     **** {
+ 518              		.loc 1 153 1 is_stmt 1 view -0
+ 519              		.cfi_startproc
+ 520              		@ args = 0, pretend = 0, frame = 0
+ 521              		@ frame_needed = 0, uses_anonymous_args = 0
+ 522              		@ link register save eliminated.
+ 154:Src/imu.c     **** 	return ACCEL_X_SIGN * G * (accel_x_value - accel_x_reference) / ACCEL_X_SENSITIVITY;
+ 523              		.loc 1 154 2 view .LVU94
+ 524              		.loc 1 154 43 is_stmt 0 view .LVU95
+ 525 0000 094B     		ldr	r3, .L29
+ 526 0002 B3F90030 		ldrsh	r3, [r3]
+ 527 0006 094A     		ldr	r2, .L29+4
+ 528 0008 B2F90020 		ldrsh	r2, [r2]
+ 529 000c 9B1A     		subs	r3, r3, r2
+ 530 000e 07EE903A 		vmov	s15, r3	@ int
+ 531              		.loc 1 154 26 view .LVU96
+ 532 0012 F8EEE77A 		vcvt.f32.s32	s15, s15
+ 533 0016 9FED060A 		vldr.32	s0, .L29+8
+ 534 001a 67EE807A 		vmul.f32	s15, s15, s0
+ 155:Src/imu.c     **** }
+ 535              		.loc 1 155 1 view .LVU97
+ARM GAS  C:\Temp\cceNM1vl.s 			page 13
+
+
+ 536 001e 9FED050A 		vldr.32	s0, .L29+12
+ 537 0022 27EE800A 		vmul.f32	s0, s15, s0
+ 538 0026 7047     		bx	lr
+ 539              	.L30:
+ 540              		.align	2
+ 541              	.L29:
+ 542 0028 00000000 		.word	.LANCHOR2
+ 543 002c 00000000 		.word	.LANCHOR4
+ 544 0030 0AE81C41 		.word	1092413450
+ 545 0034 00008039 		.word	964689920
+ 546              		.cfi_endproc
+ 547              	.LFE139:
+ 549              		.section	.text.IMU_GetGyro_Z,"ax",%progbits
+ 550              		.align	1
+ 551              		.global	IMU_GetGyro_Z
+ 552              		.syntax unified
+ 553              		.thumb
+ 554              		.thumb_func
+ 555              		.fpu fpv4-sp-d16
+ 557              	IMU_GetGyro_Z:
+ 558              	.LFB140:
+ 156:Src/imu.c     **** 
+ 157:Src/imu.c     **** /* ---------------------------------------------------------------
+ 158:Src/imu.c     **** 	Z軸ジャイロの角速度を取得する関数[rad/s]
+ 159:Src/imu.c     **** --------------------------------------------------------------- */
+ 160:Src/imu.c     **** float IMU_GetGyro_Z( void )
+ 161:Src/imu.c     **** {
+ 559              		.loc 1 161 1 is_stmt 1 view -0
+ 560              		.cfi_startproc
+ 561              		@ args = 0, pretend = 0, frame = 0
+ 562              		@ frame_needed = 0, uses_anonymous_args = 0
+ 563              		@ link register save eliminated.
+ 162:Src/imu.c     **** 	return GYRO_Z_SIGN * DEG2RAD( (gyro_z_value - gyro_z_reference) / GYRO_Z_SENSITIVITY );
+ 564              		.loc 1 162 2 view .LVU99
+ 565              		.loc 1 162 23 is_stmt 0 view .LVU100
+ 566 0000 0B4B     		ldr	r3, .L32
+ 567 0002 B3F90030 		ldrsh	r3, [r3]
+ 568 0006 0B4A     		ldr	r2, .L32+4
+ 569 0008 B2F90020 		ldrsh	r2, [r2]
+ 570 000c 9B1A     		subs	r3, r3, r2
+ 571 000e 07EE903A 		vmov	s15, r3	@ int
+ 572 0012 F8EEE77A 		vcvt.f32.s32	s15, s15
+ 573 0016 9FED087A 		vldr.32	s14, .L32+8
+ 574 001a C7EE876A 		vdiv.f32	s13, s15, s14
+ 575 001e 9FED077A 		vldr.32	s14, .L32+12
+ 576 0022 C6EE877A 		vdiv.f32	s15, s13, s14
+ 163:Src/imu.c     **** }
+ 577              		.loc 1 163 1 view .LVU101
+ 578 0026 9FED060A 		vldr.32	s0, .L32+16
+ 579 002a 20EE670A 		vnmul.f32	s0, s0, s15
+ 580 002e 7047     		bx	lr
+ 581              	.L33:
+ 582              		.align	2
+ 583              	.L32:
+ 584 0030 00000000 		.word	.LANCHOR3
+ 585 0034 00000000 		.word	.LANCHOR5
+ 586 0038 19048641 		.word	1099301913
+ARM GAS  C:\Temp\cceNM1vl.s 			page 14
+
+
+ 587 003c 00003443 		.word	1127481344
+ 588 0040 DA0F4940 		.word	1078530010
+ 589              		.cfi_endproc
+ 590              	.LFE140:
+ 592              		.section	.bss.accel_x_reference,"aw",%nobits
+ 593              		.align	1
+ 594              		.set	.LANCHOR4,. + 0
+ 597              	accel_x_reference:
+ 598 0000 0000     		.space	2
+ 599              		.section	.bss.accel_x_value,"aw",%nobits
+ 600              		.align	1
+ 601              		.set	.LANCHOR2,. + 0
+ 604              	accel_x_value:
+ 605 0000 0000     		.space	2
+ 606              		.section	.bss.gyro_z_reference,"aw",%nobits
+ 607              		.align	1
+ 608              		.set	.LANCHOR5,. + 0
+ 611              	gyro_z_reference:
+ 612 0000 0000     		.space	2
+ 613              		.section	.bss.gyro_z_value,"aw",%nobits
+ 614              		.align	1
+ 615              		.set	.LANCHOR3,. + 0
+ 618              	gyro_z_value:
+ 619 0000 0000     		.space	2
+ 620              		.section	.bss.imu_value,"aw",%nobits
+ 621              		.align	2
+ 622              		.set	.LANCHOR0,. + 0
+ 625              	imu_value:
+ 626 0000 00000000 		.space	13
+ 626      00000000 
+ 626      00000000 
+ 626      00
+ 627              		.section	.data.imu_address,"aw"
+ 628              		.set	.LANCHOR1,. + 0
+ 631              	imu_address:
+ 632 0000 AD       		.byte	-83
+ 633              		.text
+ 634              	.Letext0:
+ 635              		.file 2 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\machine\\_default_t
+ 636              		.file 3 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\lock.h"
+ 637              		.file 4 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\_types.h"
+ 638              		.file 5 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\lib\\gcc\\arm-none-eabi\\9.2.1\\include\\st
+ 639              		.file 6 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\reent.h"
+ 640              		.file 7 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 641              		.file 8 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\math.h"
+ 642              		.file 9 "Drivers/CMSIS/Include/core_cm4.h"
+ 643              		.file 10 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h"
+ 644              		.file 11 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f413xx.h"
+ 645              		.file 12 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h"
+ 646              		.file 13 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
+ 647              		.file 14 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio.h"
+ 648              		.file 15 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h"
+ 649              		.file 16 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_adc.h"
+ 650              		.file 17 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h"
+ 651              		.file 18 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h"
+ 652              		.file 19 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h"
+ 653              		.file 20 "Inc/adc.h"
+ARM GAS  C:\Temp\cceNM1vl.s 			page 15
+
+
+ 654              		.file 21 "Inc/spi.h"
+ 655              		.file 22 "Inc/tim.h"
+ 656              		.file 23 "Inc/usart.h"
+ 657              		.file 24 "Inc/index.h"
+ 658              		.file 25 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h"
+ 659              		.file 26 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\stdio.h"
+ARM GAS  C:\Temp\cceNM1vl.s 			page 16
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 imu.c
+  C:\Temp\cceNM1vl.s:18     .text.IMU_Write1byte:00000000 $t
+  C:\Temp\cceNM1vl.s:26     .text.IMU_Write1byte:00000000 IMU_Write1byte
+  C:\Temp\cceNM1vl.s:90     .text.IMU_Write1byte:0000004c $d
+  C:\Temp\cceNM1vl.s:96     .text.IMU_Read1byte:00000000 $t
+  C:\Temp\cceNM1vl.s:103    .text.IMU_Read1byte:00000000 IMU_Read1byte
+  C:\Temp\cceNM1vl.s:166    .text.IMU_Read1byte:0000004c $d
+  C:\Temp\cceNM1vl.s:172    .text.IMU_CheckWHOAMI:00000000 $t
+  C:\Temp\cceNM1vl.s:179    .text.IMU_CheckWHOAMI:00000000 IMU_CheckWHOAMI
+  C:\Temp\cceNM1vl.s:201    .rodata.IMU_Initialize.str1.4:00000000 $d
+  C:\Temp\cceNM1vl.s:205    .text.IMU_Initialize:00000000 $t
+  C:\Temp\cceNM1vl.s:212    .text.IMU_Initialize:00000000 IMU_Initialize
+  C:\Temp\cceNM1vl.s:328    .text.IMU_Initialize:00000090 $d
+  C:\Temp\cceNM1vl.s:337    .text.HAL_SPI_TxRxCpltCallback:00000000 $t
+  C:\Temp\cceNM1vl.s:344    .text.HAL_SPI_TxRxCpltCallback:00000000 HAL_SPI_TxRxCpltCallback
+  C:\Temp\cceNM1vl.s:407    .text.HAL_SPI_TxRxCpltCallback:00000044 $d
+  C:\Temp\cceNM1vl.s:417    .text.IMU_ResetReference:00000000 $t
+  C:\Temp\cceNM1vl.s:424    .text.IMU_ResetReference:00000000 IMU_ResetReference
+  C:\Temp\cceNM1vl.s:500    .text.IMU_ResetReference:00000058 $d
+  C:\Temp\cceNM1vl.s:509    .text.IMU_GetAccel_X:00000000 $t
+  C:\Temp\cceNM1vl.s:516    .text.IMU_GetAccel_X:00000000 IMU_GetAccel_X
+  C:\Temp\cceNM1vl.s:542    .text.IMU_GetAccel_X:00000028 $d
+  C:\Temp\cceNM1vl.s:550    .text.IMU_GetGyro_Z:00000000 $t
+  C:\Temp\cceNM1vl.s:557    .text.IMU_GetGyro_Z:00000000 IMU_GetGyro_Z
+  C:\Temp\cceNM1vl.s:584    .text.IMU_GetGyro_Z:00000030 $d
+  C:\Temp\cceNM1vl.s:593    .bss.accel_x_reference:00000000 $d
+  C:\Temp\cceNM1vl.s:597    .bss.accel_x_reference:00000000 accel_x_reference
+  C:\Temp\cceNM1vl.s:600    .bss.accel_x_value:00000000 $d
+  C:\Temp\cceNM1vl.s:604    .bss.accel_x_value:00000000 accel_x_value
+  C:\Temp\cceNM1vl.s:607    .bss.gyro_z_reference:00000000 $d
+  C:\Temp\cceNM1vl.s:611    .bss.gyro_z_reference:00000000 gyro_z_reference
+  C:\Temp\cceNM1vl.s:614    .bss.gyro_z_value:00000000 $d
+  C:\Temp\cceNM1vl.s:618    .bss.gyro_z_value:00000000 gyro_z_value
+  C:\Temp\cceNM1vl.s:621    .bss.imu_value:00000000 $d
+  C:\Temp\cceNM1vl.s:625    .bss.imu_value:00000000 imu_value
+  C:\Temp\cceNM1vl.s:631    .data.imu_address:00000000 imu_address
+
+UNDEFINED SYMBOLS
+HAL_GPIO_WritePin
+HAL_SPI_Transmit
+hspi2
+HAL_SPI_Receive
+HAL_Delay
+printf
+HAL_SPI_TransmitReceive_DMA

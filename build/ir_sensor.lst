@@ -1,0 +1,1167 @@
+ARM GAS  C:\Temp\ccwE4PWa.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"ir_sensor.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.TIM1_CC2_Callback,"ax",%progbits
+  18              		.align	1
+  19              		.global	TIM1_CC2_Callback
+  20              		.arch armv7e-m
+  21              		.syntax unified
+  22              		.thumb
+  23              		.thumb_func
+  24              		.fpu fpv4-sp-d16
+  26              	TIM1_CC2_Callback:
+  27              	.LVL0:
+  28              	.LFB133:
+  29              		.file 1 "Src/ir_sensor.c"
+   1:Src/ir_sensor.c **** #include "index.h"
+   2:Src/ir_sensor.c **** 
+   3:Src/ir_sensor.c **** 
+   4:Src/ir_sensor.c **** 
+   5:Src/ir_sensor.c **** #define SENSOR_ALL_OFF()			HAL_GPIO_WritePin(GPIOA, LED_FR_Pin|LED_SL_Pin|LED_SR_Pin|LED_FL_Pin, GP
+   6:Src/ir_sensor.c **** #define SENSOR_FRONT_ON()			HAL_GPIO_WritePin(GPIOA, LED_FL_Pin|LED_FR_Pin, GPIO_PIN_SET)
+   7:Src/ir_sensor.c **** #define SENSOR_FRONT_OFF()			HAL_GPIO_WritePin(GPIOA, LED_FL_Pin|LED_FR_Pin, GPIO_PIN_RESET)
+   8:Src/ir_sensor.c **** #define SENSOR_SIDE_ON()			HAL_GPIO_WritePin(GPIOA, LED_SL_Pin|LED_SR_Pin, GPIO_PIN_SET)
+   9:Src/ir_sensor.c **** #define SENSOR_SIDE_OFF()			HAL_GPIO_WritePin(GPIOA, LED_SL_Pin|LED_SR_Pin, GPIO_PIN_RESET)
+  10:Src/ir_sensor.c **** 
+  11:Src/ir_sensor.c **** 
+  12:Src/ir_sensor.c **** #define	SENSOR_ALL_OFF_PATTERN		(0x0000)
+  13:Src/ir_sensor.c **** #define	SENSOR_FRONT_ON_PATTERN 	(LED_FL_Pin|LED_FR_Pin)
+  14:Src/ir_sensor.c **** #define	SENSOR_SIDE_ON_PATTERN		(LED_SL_Pin|LED_SR_Pin)
+  15:Src/ir_sensor.c **** 
+  16:Src/ir_sensor.c **** typedef enum {
+  17:Src/ir_sensor.c **** 	sensor_all_off_mode 	= 0,
+  18:Src/ir_sensor.c **** 	sensor_front_on_mode 	= 1,
+  19:Src/ir_sensor.c **** 	sensor_side_on_mode 	= 2,
+  20:Src/ir_sensor.c **** } t_sensor_mode;
+  21:Src/ir_sensor.c **** 
+  22:Src/ir_sensor.c **** 
+  23:Src/ir_sensor.c **** typedef enum {
+  24:Src/ir_sensor.c **** 	front_left = 0,
+  25:Src/ir_sensor.c **** 	side_left 	= 1,
+  26:Src/ir_sensor.c **** 	side_right	= 2,
+  27:Src/ir_sensor.c **** 	front_right	= 3,
+  28:Src/ir_sensor.c **** } t_sensor_dir;
+  29:Src/ir_sensor.c **** 
+ARM GAS  C:\Temp\ccwE4PWa.s 			page 2
+
+
+  30:Src/ir_sensor.c **** typedef struct {	//a センサ情報用構造体
+  31:Src/ir_sensor.c **** 	uint16_t	off;		// LEDオフ時の値
+  32:Src/ir_sensor.c **** 	uint16_t	on;			// LEDオン時の値
+  33:Src/ir_sensor.c **** } t_sensor_value;
+  34:Src/ir_sensor.c **** 
+  35:Src/ir_sensor.c **** static uint16_t		sensor_on_pattern;		// LED点灯コマンド
+  36:Src/ir_sensor.c **** static uint16_t		sensor_off_pattern;		// LED消灯コマンド
+  37:Src/ir_sensor.c **** 
+  38:Src/ir_sensor.c **** static uint8_t			sensor_mode;		// a センシングパターン
+  39:Src/ir_sensor.c **** 
+  40:Src/ir_sensor.c **** static uint16_t			adc_value[5];		// AD変換値
+  41:Src/ir_sensor.c **** static uint16_t			battery_value;		// a バッテリ電圧の生データ
+  42:Src/ir_sensor.c **** static t_sensor_value	sensor_value[4];	// IRセンサの生データ
+  43:Src/ir_sensor.c **** 
+  44:Src/ir_sensor.c **** uint8_t mode_number_int = 0; //m モードごとの割り込み用フラグ　（0は使わない�
+  45:Src/ir_sensor.c **** 
+  46:Src/ir_sensor.c **** /* ---------------------------------------------------------------
+  47:Src/ir_sensor.c **** 	LED消灯時に次のセンシングパターンに切り替えるコールバック関数
+  48:Src/ir_sensor.c **** --------------------------------------------------------------- */
+  49:Src/ir_sensor.c **** void TIM1_CC2_Callback( DMA_HandleTypeDef* hdma )
+  50:Src/ir_sensor.c **** {
+  30              		.loc 1 50 1 view -0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              		@ link register save eliminated.
+  51:Src/ir_sensor.c **** 	switch( sensor_mode ) {
+  35              		.loc 1 51 2 view .LVU1
+  36 0000 0E4B     		ldr	r3, .L6
+  37 0002 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+  38 0004 012B     		cmp	r3, #1
+  39 0006 10D0     		beq	.L2
+  40 0008 022B     		cmp	r3, #2
+  41 000a 12D0     		beq	.L3
+  42 000c 4BB1     		cbz	r3, .L5
+  43              	.L4:
+  52:Src/ir_sensor.c **** 		case sensor_all_off_mode:
+  53:Src/ir_sensor.c **** 			sensor_on_pattern = SENSOR_FRONT_ON_PATTERN;
+  54:Src/ir_sensor.c **** 		break;
+  55:Src/ir_sensor.c **** 
+  56:Src/ir_sensor.c **** 		case sensor_front_on_mode:
+  57:Src/ir_sensor.c **** 			sensor_on_pattern = SENSOR_SIDE_ON_PATTERN;
+  58:Src/ir_sensor.c **** 		break;
+  59:Src/ir_sensor.c **** 
+  60:Src/ir_sensor.c **** 		case sensor_side_on_mode:
+  61:Src/ir_sensor.c **** 			sensor_on_pattern = SENSOR_ALL_OFF_PATTERN;
+  62:Src/ir_sensor.c **** 		break;
+  63:Src/ir_sensor.c **** 	}
+  64:Src/ir_sensor.c **** 	// 	m次のLED点灯パターンに切替
+  65:Src/ir_sensor.c **** 	sensor_mode = (sensor_mode + 1) % 3;
+  44              		.loc 1 65 2 view .LVU2
+  45              		.loc 1 65 29 is_stmt 0 view .LVU3
+  46 000e 5A1C     		adds	r2, r3, #1
+  47              		.loc 1 65 34 view .LVU4
+  48 0010 0B4B     		ldr	r3, .L6+4
+  49 0012 83FB0213 		smull	r1, r3, r3, r2
+  50 0016 03EB4303 		add	r3, r3, r3, lsl #1
+ARM GAS  C:\Temp\ccwE4PWa.s 			page 3
+
+
+  51 001a D31A     		subs	r3, r2, r3
+  52              		.loc 1 65 14 view .LVU5
+  53 001c 074A     		ldr	r2, .L6
+  54 001e 1370     		strb	r3, [r2]
+  66:Src/ir_sensor.c **** }
+  55              		.loc 1 66 1 view .LVU6
+  56 0020 7047     		bx	lr
+  57              	.L5:
+  53:Src/ir_sensor.c **** 		break;
+  58              		.loc 1 53 4 is_stmt 1 view .LVU7
+  53:Src/ir_sensor.c **** 		break;
+  59              		.loc 1 53 22 is_stmt 0 view .LVU8
+  60 0022 084A     		ldr	r2, .L6+8
+  61 0024 9021     		movs	r1, #144
+  62 0026 1180     		strh	r1, [r2]	@ movhi
+  54:Src/ir_sensor.c **** 
+  63              		.loc 1 54 3 is_stmt 1 view .LVU9
+  64 0028 F1E7     		b	.L4
+  65              	.L2:
+  57:Src/ir_sensor.c **** 		break;
+  66              		.loc 1 57 4 view .LVU10
+  57:Src/ir_sensor.c **** 		break;
+  67              		.loc 1 57 22 is_stmt 0 view .LVU11
+  68 002a 064A     		ldr	r2, .L6+8
+  69 002c 6021     		movs	r1, #96
+  70 002e 1180     		strh	r1, [r2]	@ movhi
+  58:Src/ir_sensor.c **** 
+  71              		.loc 1 58 3 is_stmt 1 view .LVU12
+  72 0030 EDE7     		b	.L4
+  73              	.L3:
+  61:Src/ir_sensor.c **** 		break;
+  74              		.loc 1 61 4 view .LVU13
+  61:Src/ir_sensor.c **** 		break;
+  75              		.loc 1 61 22 is_stmt 0 view .LVU14
+  76 0032 044A     		ldr	r2, .L6+8
+  77 0034 0021     		movs	r1, #0
+  78 0036 1180     		strh	r1, [r2]	@ movhi
+  62:Src/ir_sensor.c **** 	}
+  79              		.loc 1 62 3 is_stmt 1 view .LVU15
+  80 0038 E9E7     		b	.L4
+  81              	.L7:
+  82 003a 00BF     		.align	2
+  83              	.L6:
+  84 003c 00000000 		.word	.LANCHOR0
+  85 0040 56555555 		.word	1431655766
+  86 0044 00000000 		.word	.LANCHOR1
+  87              		.cfi_endproc
+  88              	.LFE133:
+  90              		.section	.text.Sensor_StartADC,"ax",%progbits
+  91              		.align	1
+  92              		.global	Sensor_StartADC
+  93              		.syntax unified
+  94              		.thumb
+  95              		.thumb_func
+  96              		.fpu fpv4-sp-d16
+  98              	Sensor_StartADC:
+  99              	.LFB135:
+ARM GAS  C:\Temp\ccwE4PWa.s 			page 4
+
+
+  67:Src/ir_sensor.c **** 
+  68:Src/ir_sensor.c **** /* ---------------------------------------------------------------
+  69:Src/ir_sensor.c **** 	赤外センサの初期設定関数
+  70:Src/ir_sensor.c **** --------------------------------------------------------------- */
+  71:Src/ir_sensor.c **** void Sensor_Initialize( void )
+  72:Src/ir_sensor.c **** {
+  73:Src/ir_sensor.c **** 	HAL_DMA_RegisterCallback (htim1.hdma[TIM_DMA_ID_CC2], HAL_DMA_XFER_CPLT_CB_ID, TIM1_CC2_Callback);
+  74:Src/ir_sensor.c **** 	HAL_DMA_Start_IT(htim1.hdma[TIM_DMA_ID_CC1], (uint32_t)&sensor_on_pattern,  (uint32_t)(&(GPIOA->OD
+  75:Src/ir_sensor.c **** 	HAL_DMA_Start_IT(htim1.hdma[TIM_DMA_ID_CC2], (uint32_t)&sensor_off_pattern, (uint32_t)(&(GPIOA->OD
+  76:Src/ir_sensor.c **** 	HAL_ADC_Start_DMA(&hadc1, (uint32_t*)adc_value, sizeof(adc_value)/sizeof(uint16_t));
+  77:Src/ir_sensor.c **** 
+  78:Src/ir_sensor.c **** 	htim1.Instance->DIER |= TIM_DIER_CC1DE | TIM_DIER_CC2DE;
+  79:Src/ir_sensor.c **** 	__HAL_TIM_MOE_ENABLE(&htim1);
+  80:Src/ir_sensor.c **** 
+  81:Src/ir_sensor.c **** 	Sensor_StartADC();
+  82:Src/ir_sensor.c **** 	//HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_3);
+  83:Src/ir_sensor.c **** }
+  84:Src/ir_sensor.c **** 
+  85:Src/ir_sensor.c **** 
+  86:Src/ir_sensor.c **** /* ---------------------------------------------------------------
+  87:Src/ir_sensor.c **** 	赤外センサによる計測を開始する関数
+  88:Src/ir_sensor.c **** --------------------------------------------------------------- */
+  89:Src/ir_sensor.c **** void Sensor_StartADC( void )
+  90:Src/ir_sensor.c **** {
+ 100              		.loc 1 90 1 view -0
+ 101              		.cfi_startproc
+ 102              		@ args = 0, pretend = 0, frame = 0
+ 103              		@ frame_needed = 0, uses_anonymous_args = 0
+ 104 0000 10B5     		push	{r4, lr}
+ 105              	.LCFI0:
+ 106              		.cfi_def_cfa_offset 8
+ 107              		.cfi_offset 4, -8
+ 108              		.cfi_offset 14, -4
+  91:Src/ir_sensor.c **** 	sensor_off_pattern = SENSOR_ALL_OFF_PATTERN;
+ 109              		.loc 1 91 2 view .LVU17
+ 110              		.loc 1 91 21 is_stmt 0 view .LVU18
+ 111 0002 0021     		movs	r1, #0
+ 112 0004 0B4B     		ldr	r3, .L10
+ 113 0006 1980     		strh	r1, [r3]	@ movhi
+  92:Src/ir_sensor.c **** 	sensor_on_pattern = SENSOR_ALL_OFF_PATTERN;
+ 114              		.loc 1 92 2 is_stmt 1 view .LVU19
+ 115              		.loc 1 92 20 is_stmt 0 view .LVU20
+ 116 0008 0B4B     		ldr	r3, .L10+4
+ 117 000a 1980     		strh	r1, [r3]	@ movhi
+  93:Src/ir_sensor.c **** 	sensor_mode = sensor_all_off_mode;
+ 118              		.loc 1 93 2 is_stmt 1 view .LVU21
+ 119              		.loc 1 93 14 is_stmt 0 view .LVU22
+ 120 000c 0B4B     		ldr	r3, .L10+8
+ 121 000e 1970     		strb	r1, [r3]
+  94:Src/ir_sensor.c **** 
+  95:Src/ir_sensor.c **** 	__HAL_TIM_CLEAR_FLAG(&htim1, TIM_FLAG_UPDATE);
+ 122              		.loc 1 95 2 is_stmt 1 view .LVU23
+ 123 0010 0B4C     		ldr	r4, .L10+12
+ 124 0012 2368     		ldr	r3, [r4]
+ 125 0014 6FF00102 		mvn	r2, #1
+ 126 0018 1A61     		str	r2, [r3, #16]
+  96:Src/ir_sensor.c **** 	HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);
+ARM GAS  C:\Temp\ccwE4PWa.s 			page 5
+
+
+ 127              		.loc 1 96 2 view .LVU24
+ 128 001a 2046     		mov	r0, r4
+ 129 001c FFF7FEFF 		bl	HAL_TIM_PWM_Start
+ 130              	.LVL1:
+  97:Src/ir_sensor.c **** 	HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_2);
+ 131              		.loc 1 97 2 view .LVU25
+ 132 0020 0421     		movs	r1, #4
+ 133 0022 2046     		mov	r0, r4
+ 134 0024 FFF7FEFF 		bl	HAL_TIM_PWM_Start
+ 135              	.LVL2:
+  98:Src/ir_sensor.c **** 	HAL_TIM_OC_Start(&htim1, TIM_CHANNEL_3);
+ 136              		.loc 1 98 2 view .LVU26
+ 137 0028 0821     		movs	r1, #8
+ 138 002a 2046     		mov	r0, r4
+ 139 002c FFF7FEFF 		bl	HAL_TIM_OC_Start
+ 140              	.LVL3:
+  99:Src/ir_sensor.c **** }
+ 141              		.loc 1 99 1 is_stmt 0 view .LVU27
+ 142 0030 10BD     		pop	{r4, pc}
+ 143              	.L11:
+ 144 0032 00BF     		.align	2
+ 145              	.L10:
+ 146 0034 00000000 		.word	.LANCHOR2
+ 147 0038 00000000 		.word	.LANCHOR1
+ 148 003c 00000000 		.word	.LANCHOR0
+ 149 0040 00000000 		.word	htim1
+ 150              		.cfi_endproc
+ 151              	.LFE135:
+ 153              		.section	.text.Sensor_Initialize,"ax",%progbits
+ 154              		.align	1
+ 155              		.global	Sensor_Initialize
+ 156              		.syntax unified
+ 157              		.thumb
+ 158              		.thumb_func
+ 159              		.fpu fpv4-sp-d16
+ 161              	Sensor_Initialize:
+ 162              	.LFB134:
+  72:Src/ir_sensor.c **** 	HAL_DMA_RegisterCallback (htim1.hdma[TIM_DMA_ID_CC2], HAL_DMA_XFER_CPLT_CB_ID, TIM1_CC2_Callback);
+ 163              		.loc 1 72 1 is_stmt 1 view -0
+ 164              		.cfi_startproc
+ 165              		@ args = 0, pretend = 0, frame = 0
+ 166              		@ frame_needed = 0, uses_anonymous_args = 0
+ 167 0000 38B5     		push	{r3, r4, r5, lr}
+ 168              	.LCFI1:
+ 169              		.cfi_def_cfa_offset 16
+ 170              		.cfi_offset 3, -16
+ 171              		.cfi_offset 4, -12
+ 172              		.cfi_offset 5, -8
+ 173              		.cfi_offset 14, -4
+  73:Src/ir_sensor.c **** 	HAL_DMA_Start_IT(htim1.hdma[TIM_DMA_ID_CC1], (uint32_t)&sensor_on_pattern,  (uint32_t)(&(GPIOA->OD
+ 174              		.loc 1 73 2 view .LVU29
+ 175 0002 124C     		ldr	r4, .L14
+ 176 0004 124A     		ldr	r2, .L14+4
+ 177 0006 0021     		movs	r1, #0
+ 178 0008 A06A     		ldr	r0, [r4, #40]
+ 179 000a FFF7FEFF 		bl	HAL_DMA_RegisterCallback
+ 180              	.LVL4:
+ARM GAS  C:\Temp\ccwE4PWa.s 			page 6
+
+
+  74:Src/ir_sensor.c **** 	HAL_DMA_Start_IT(htim1.hdma[TIM_DMA_ID_CC2], (uint32_t)&sensor_off_pattern, (uint32_t)(&(GPIOA->OD
+ 181              		.loc 1 74 2 view .LVU30
+ 182 000e 114D     		ldr	r5, .L14+8
+ 183 0010 0123     		movs	r3, #1
+ 184 0012 2A46     		mov	r2, r5
+ 185 0014 1049     		ldr	r1, .L14+12
+ 186 0016 606A     		ldr	r0, [r4, #36]
+ 187 0018 FFF7FEFF 		bl	HAL_DMA_Start_IT
+ 188              	.LVL5:
+  75:Src/ir_sensor.c **** 	HAL_ADC_Start_DMA(&hadc1, (uint32_t*)adc_value, sizeof(adc_value)/sizeof(uint16_t));
+ 189              		.loc 1 75 2 view .LVU31
+ 190 001c 0123     		movs	r3, #1
+ 191 001e 2A46     		mov	r2, r5
+ 192 0020 0E49     		ldr	r1, .L14+16
+ 193 0022 A06A     		ldr	r0, [r4, #40]
+ 194 0024 FFF7FEFF 		bl	HAL_DMA_Start_IT
+ 195              	.LVL6:
+  76:Src/ir_sensor.c **** 
+ 196              		.loc 1 76 2 view .LVU32
+ 197 0028 0522     		movs	r2, #5
+ 198 002a 0D49     		ldr	r1, .L14+20
+ 199 002c 0D48     		ldr	r0, .L14+24
+ 200 002e FFF7FEFF 		bl	HAL_ADC_Start_DMA
+ 201              	.LVL7:
+  78:Src/ir_sensor.c **** 	__HAL_TIM_MOE_ENABLE(&htim1);
+ 202              		.loc 1 78 2 view .LVU33
+  78:Src/ir_sensor.c **** 	__HAL_TIM_MOE_ENABLE(&htim1);
+ 203              		.loc 1 78 7 is_stmt 0 view .LVU34
+ 204 0032 2368     		ldr	r3, [r4]
+  78:Src/ir_sensor.c **** 	__HAL_TIM_MOE_ENABLE(&htim1);
+ 205              		.loc 1 78 23 view .LVU35
+ 206 0034 DA68     		ldr	r2, [r3, #12]
+ 207 0036 42F4C062 		orr	r2, r2, #1536
+ 208 003a DA60     		str	r2, [r3, #12]
+  79:Src/ir_sensor.c **** 
+ 209              		.loc 1 79 2 is_stmt 1 view .LVU36
+ 210 003c 5A6C     		ldr	r2, [r3, #68]
+ 211 003e 42F40042 		orr	r2, r2, #32768
+ 212 0042 5A64     		str	r2, [r3, #68]
+  81:Src/ir_sensor.c **** 	//HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_3);
+ 213              		.loc 1 81 2 view .LVU37
+ 214 0044 FFF7FEFF 		bl	Sensor_StartADC
+ 215              	.LVL8:
+  83:Src/ir_sensor.c **** 
+ 216              		.loc 1 83 1 is_stmt 0 view .LVU38
+ 217 0048 38BD     		pop	{r3, r4, r5, pc}
+ 218              	.L15:
+ 219 004a 00BF     		.align	2
+ 220              	.L14:
+ 221 004c 00000000 		.word	htim1
+ 222 0050 00000000 		.word	TIM1_CC2_Callback
+ 223 0054 14000240 		.word	1073872916
+ 224 0058 00000000 		.word	.LANCHOR1
+ 225 005c 00000000 		.word	.LANCHOR2
+ 226 0060 00000000 		.word	.LANCHOR3
+ 227 0064 00000000 		.word	hadc1
+ 228              		.cfi_endproc
+ARM GAS  C:\Temp\ccwE4PWa.s 			page 7
+
+
+ 229              	.LFE134:
+ 231              		.section	.text.Sensor_StopADC,"ax",%progbits
+ 232              		.align	1
+ 233              		.global	Sensor_StopADC
+ 234              		.syntax unified
+ 235              		.thumb
+ 236              		.thumb_func
+ 237              		.fpu fpv4-sp-d16
+ 239              	Sensor_StopADC:
+ 240              	.LFB136:
+ 100:Src/ir_sensor.c **** 
+ 101:Src/ir_sensor.c **** /* ---------------------------------------------------------------
+ 102:Src/ir_sensor.c **** 	赤外センサによる計測を停止する関数
+ 103:Src/ir_sensor.c **** --------------------------------------------------------------- */
+ 104:Src/ir_sensor.c **** void Sensor_StopADC( void )
+ 105:Src/ir_sensor.c **** {
+ 241              		.loc 1 105 1 is_stmt 1 view -0
+ 242              		.cfi_startproc
+ 243              		@ args = 0, pretend = 0, frame = 0
+ 244              		@ frame_needed = 0, uses_anonymous_args = 0
+ 245 0000 10B5     		push	{r4, lr}
+ 246              	.LCFI2:
+ 247              		.cfi_def_cfa_offset 8
+ 248              		.cfi_offset 4, -8
+ 249              		.cfi_offset 14, -4
+ 106:Src/ir_sensor.c **** 	HAL_TIM_PWM_Stop(&htim1, TIM_CHANNEL_1);
+ 250              		.loc 1 106 2 view .LVU40
+ 251 0002 0C4C     		ldr	r4, .L18
+ 252 0004 0021     		movs	r1, #0
+ 253 0006 2046     		mov	r0, r4
+ 254 0008 FFF7FEFF 		bl	HAL_TIM_PWM_Stop
+ 255              	.LVL9:
+ 107:Src/ir_sensor.c **** 	HAL_TIM_PWM_Stop(&htim1, TIM_CHANNEL_2);
+ 256              		.loc 1 107 2 view .LVU41
+ 257 000c 0421     		movs	r1, #4
+ 258 000e 2046     		mov	r0, r4
+ 259 0010 FFF7FEFF 		bl	HAL_TIM_PWM_Stop
+ 260              	.LVL10:
+ 108:Src/ir_sensor.c **** 	HAL_TIM_PWM_Stop(&htim1, TIM_CHANNEL_3);
+ 261              		.loc 1 108 2 view .LVU42
+ 262 0014 0821     		movs	r1, #8
+ 263 0016 2046     		mov	r0, r4
+ 264 0018 FFF7FEFF 		bl	HAL_TIM_PWM_Stop
+ 265              	.LVL11:
+ 109:Src/ir_sensor.c **** 	HAL_DMA_Abort_IT(htim1.hdma[TIM_DMA_ID_CC2]);
+ 266              		.loc 1 109 2 view .LVU43
+ 267 001c A06A     		ldr	r0, [r4, #40]
+ 268 001e FFF7FEFF 		bl	HAL_DMA_Abort_IT
+ 269              	.LVL12:
+ 110:Src/ir_sensor.c **** 	HAL_DMA_Abort_IT(htim1.hdma[TIM_DMA_ID_CC1]);
+ 270              		.loc 1 110 2 view .LVU44
+ 271 0022 606A     		ldr	r0, [r4, #36]
+ 272 0024 FFF7FEFF 		bl	HAL_DMA_Abort_IT
+ 273              	.LVL13:
+ 111:Src/ir_sensor.c **** 	SENSOR_ALL_OFF();
+ 274              		.loc 1 111 2 view .LVU45
+ 275 0028 0022     		movs	r2, #0
+ARM GAS  C:\Temp\ccwE4PWa.s 			page 8
+
+
+ 276 002a F021     		movs	r1, #240
+ 277 002c 0248     		ldr	r0, .L18+4
+ 278 002e FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 279              	.LVL14:
+ 112:Src/ir_sensor.c **** }
+ 280              		.loc 1 112 1 is_stmt 0 view .LVU46
+ 281 0032 10BD     		pop	{r4, pc}
+ 282              	.L19:
+ 283              		.align	2
+ 284              	.L18:
+ 285 0034 00000000 		.word	htim1
+ 286 0038 00000240 		.word	1073872896
+ 287              		.cfi_endproc
+ 288              	.LFE136:
+ 290              		.section	.text.HAL_ADC_ConvCpltCallback,"ax",%progbits
+ 291              		.align	1
+ 292              		.global	HAL_ADC_ConvCpltCallback
+ 293              		.syntax unified
+ 294              		.thumb
+ 295              		.thumb_func
+ 296              		.fpu fpv4-sp-d16
+ 298              	HAL_ADC_ConvCpltCallback:
+ 299              	.LVL15:
+ 300              	.LFB137:
+ 113:Src/ir_sensor.c **** 
+ 114:Src/ir_sensor.c **** 
+ 115:Src/ir_sensor.c **** void HAL_ADC_ConvCpltCallback( ADC_HandleTypeDef* hadc )
+ 116:Src/ir_sensor.c **** {
+ 301              		.loc 1 116 1 is_stmt 1 view -0
+ 302              		.cfi_startproc
+ 303              		@ args = 0, pretend = 0, frame = 0
+ 304              		@ frame_needed = 0, uses_anonymous_args = 0
+ 305              		@ link register save eliminated.
+ 117:Src/ir_sensor.c **** //	printf("DMA_complete\r\n");//デバッグ用
+ 118:Src/ir_sensor.c **** 
+ 119:Src/ir_sensor.c **** //	ADC1->SR &= ~ADC_SR_EOC_Msk;//ADC完了フラグをクリア
+ 120:Src/ir_sensor.c **** 
+ 121:Src/ir_sensor.c **** 	/* a 割り込み処理を書く */
+ 122:Src/ir_sensor.c **** 	switch ((sensor_mode+2)%3) {
+ 306              		.loc 1 122 2 view .LVU48
+ 307              		.loc 1 122 22 is_stmt 0 view .LVU49
+ 308 0000 154B     		ldr	r3, .L25
+ 309 0002 1A78     		ldrb	r2, [r3]	@ zero_extendqisi2
+ 310 0004 0232     		adds	r2, r2, #2
+ 311              		.loc 1 122 25 view .LVU50
+ 312 0006 154B     		ldr	r3, .L25+4
+ 313 0008 83FB0213 		smull	r1, r3, r3, r2
+ 314 000c 03EB4303 		add	r3, r3, r3, lsl #1
+ 315 0010 D31A     		subs	r3, r2, r3
+ 316              		.loc 1 122 2 view .LVU51
+ 317 0012 012B     		cmp	r3, #1
+ 318 0014 11D0     		beq	.L21
+ 319 0016 022B     		cmp	r3, #2
+ 320 0018 16D0     		beq	.L22
+ 321 001a 03B1     		cbz	r3, .L24
+ 322              	.L20:
+ 123:Src/ir_sensor.c **** 	case sensor_all_off_mode:
+ARM GAS  C:\Temp\ccwE4PWa.s 			page 9
+
+
+ 124:Src/ir_sensor.c **** 		battery_value 					= adc_value[0];
+ 125:Src/ir_sensor.c **** 		sensor_value[front_left].off 	= adc_value[1];
+ 126:Src/ir_sensor.c **** 		sensor_value[side_left].off		= adc_value[2];
+ 127:Src/ir_sensor.c **** 		sensor_value[side_right].off 	= adc_value[3];
+ 128:Src/ir_sensor.c **** 		sensor_value[front_right].off 	= adc_value[4];
+ 129:Src/ir_sensor.c **** 		//HAL_GPIO_WritePin(GPIOA,LED2_Pin,GPIO_PIN_SET);
+ 130:Src/ir_sensor.c **** 	break;
+ 131:Src/ir_sensor.c **** 
+ 132:Src/ir_sensor.c **** 	case sensor_front_on_mode:
+ 133:Src/ir_sensor.c **** 		sensor_value[front_left].on 	= adc_value[1];
+ 134:Src/ir_sensor.c **** 		sensor_value[front_right].on 	= adc_value[4];
+ 135:Src/ir_sensor.c **** 		//HAL_GPIO_WritePin(GPIOA,LED3_Pin,GPIO_PIN_SET);
+ 136:Src/ir_sensor.c **** 	break;
+ 137:Src/ir_sensor.c **** 
+ 138:Src/ir_sensor.c **** 	case sensor_side_on_mode:
+ 139:Src/ir_sensor.c **** 		sensor_value[side_left].on		= adc_value[2];
+ 140:Src/ir_sensor.c **** 		sensor_value[side_right].on 	= adc_value[3];
+ 141:Src/ir_sensor.c **** 		//HAL_GPIO_WritePin(GPIOA,LED4_Pin,GPIO_PIN_SET);
+ 142:Src/ir_sensor.c **** 	break;
+ 143:Src/ir_sensor.c **** 
+ 144:Src/ir_sensor.c **** 	}
+ 145:Src/ir_sensor.c **** 	//HAL_GPIO_WritePin(GPIOA,LED2_Pin,GPIO_PIN_SET);
+ 146:Src/ir_sensor.c **** 
+ 147:Src/ir_sensor.c **** }
+ 323              		.loc 1 147 1 view .LVU52
+ 324 001c 7047     		bx	lr
+ 325              	.L24:
+ 124:Src/ir_sensor.c **** 		sensor_value[front_left].off 	= adc_value[1];
+ 326              		.loc 1 124 3 is_stmt 1 view .LVU53
+ 124:Src/ir_sensor.c **** 		sensor_value[front_left].off 	= adc_value[1];
+ 327              		.loc 1 124 33 is_stmt 0 view .LVU54
+ 328 001e 104B     		ldr	r3, .L25+8
+ 329 0020 1988     		ldrh	r1, [r3]
+ 124:Src/ir_sensor.c **** 		sensor_value[front_left].off 	= adc_value[1];
+ 330              		.loc 1 124 22 view .LVU55
+ 331 0022 104A     		ldr	r2, .L25+12
+ 332 0024 1180     		strh	r1, [r2]	@ movhi
+ 125:Src/ir_sensor.c **** 		sensor_value[side_left].off		= adc_value[2];
+ 333              		.loc 1 125 3 is_stmt 1 view .LVU56
+ 125:Src/ir_sensor.c **** 		sensor_value[side_left].off		= adc_value[2];
+ 334              		.loc 1 125 44 is_stmt 0 view .LVU57
+ 335 0026 5988     		ldrh	r1, [r3, #2]
+ 125:Src/ir_sensor.c **** 		sensor_value[side_left].off		= adc_value[2];
+ 336              		.loc 1 125 33 view .LVU58
+ 337 0028 0F4A     		ldr	r2, .L25+16
+ 338 002a 1180     		strh	r1, [r2]	@ movhi
+ 126:Src/ir_sensor.c **** 		sensor_value[side_right].off 	= adc_value[3];
+ 339              		.loc 1 126 3 is_stmt 1 view .LVU59
+ 126:Src/ir_sensor.c **** 		sensor_value[side_right].off 	= adc_value[3];
+ 340              		.loc 1 126 43 is_stmt 0 view .LVU60
+ 341 002c 9988     		ldrh	r1, [r3, #4]
+ 126:Src/ir_sensor.c **** 		sensor_value[side_right].off 	= adc_value[3];
+ 342              		.loc 1 126 32 view .LVU61
+ 343 002e 9180     		strh	r1, [r2, #4]	@ movhi
+ 127:Src/ir_sensor.c **** 		sensor_value[front_right].off 	= adc_value[4];
+ 344              		.loc 1 127 3 is_stmt 1 view .LVU62
+ 127:Src/ir_sensor.c **** 		sensor_value[front_right].off 	= adc_value[4];
+ARM GAS  C:\Temp\ccwE4PWa.s 			page 10
+
+
+ 345              		.loc 1 127 44 is_stmt 0 view .LVU63
+ 346 0030 D988     		ldrh	r1, [r3, #6]
+ 127:Src/ir_sensor.c **** 		sensor_value[front_right].off 	= adc_value[4];
+ 347              		.loc 1 127 33 view .LVU64
+ 348 0032 1181     		strh	r1, [r2, #8]	@ movhi
+ 128:Src/ir_sensor.c **** 		//HAL_GPIO_WritePin(GPIOA,LED2_Pin,GPIO_PIN_SET);
+ 349              		.loc 1 128 3 is_stmt 1 view .LVU65
+ 128:Src/ir_sensor.c **** 		//HAL_GPIO_WritePin(GPIOA,LED2_Pin,GPIO_PIN_SET);
+ 350              		.loc 1 128 45 is_stmt 0 view .LVU66
+ 351 0034 1B89     		ldrh	r3, [r3, #8]
+ 128:Src/ir_sensor.c **** 		//HAL_GPIO_WritePin(GPIOA,LED2_Pin,GPIO_PIN_SET);
+ 352              		.loc 1 128 34 view .LVU67
+ 353 0036 9381     		strh	r3, [r2, #12]	@ movhi
+ 130:Src/ir_sensor.c **** 
+ 354              		.loc 1 130 2 is_stmt 1 view .LVU68
+ 355 0038 7047     		bx	lr
+ 356              	.L21:
+ 133:Src/ir_sensor.c **** 		sensor_value[front_right].on 	= adc_value[4];
+ 357              		.loc 1 133 3 view .LVU69
+ 133:Src/ir_sensor.c **** 		sensor_value[front_right].on 	= adc_value[4];
+ 358              		.loc 1 133 43 is_stmt 0 view .LVU70
+ 359 003a 094A     		ldr	r2, .L25+8
+ 360 003c 5188     		ldrh	r1, [r2, #2]
+ 133:Src/ir_sensor.c **** 		sensor_value[front_right].on 	= adc_value[4];
+ 361              		.loc 1 133 32 view .LVU71
+ 362 003e 0A4B     		ldr	r3, .L25+16
+ 363 0040 5980     		strh	r1, [r3, #2]	@ movhi
+ 134:Src/ir_sensor.c **** 		//HAL_GPIO_WritePin(GPIOA,LED3_Pin,GPIO_PIN_SET);
+ 364              		.loc 1 134 3 is_stmt 1 view .LVU72
+ 134:Src/ir_sensor.c **** 		//HAL_GPIO_WritePin(GPIOA,LED3_Pin,GPIO_PIN_SET);
+ 365              		.loc 1 134 44 is_stmt 0 view .LVU73
+ 366 0042 1289     		ldrh	r2, [r2, #8]
+ 134:Src/ir_sensor.c **** 		//HAL_GPIO_WritePin(GPIOA,LED3_Pin,GPIO_PIN_SET);
+ 367              		.loc 1 134 33 view .LVU74
+ 368 0044 DA81     		strh	r2, [r3, #14]	@ movhi
+ 136:Src/ir_sensor.c **** 
+ 369              		.loc 1 136 2 is_stmt 1 view .LVU75
+ 370 0046 7047     		bx	lr
+ 371              	.L22:
+ 139:Src/ir_sensor.c **** 		sensor_value[side_right].on 	= adc_value[3];
+ 372              		.loc 1 139 3 view .LVU76
+ 139:Src/ir_sensor.c **** 		sensor_value[side_right].on 	= adc_value[3];
+ 373              		.loc 1 139 42 is_stmt 0 view .LVU77
+ 374 0048 054A     		ldr	r2, .L25+8
+ 375 004a 9188     		ldrh	r1, [r2, #4]
+ 139:Src/ir_sensor.c **** 		sensor_value[side_right].on 	= adc_value[3];
+ 376              		.loc 1 139 31 view .LVU78
+ 377 004c 064B     		ldr	r3, .L25+16
+ 378 004e D980     		strh	r1, [r3, #6]	@ movhi
+ 140:Src/ir_sensor.c **** 		//HAL_GPIO_WritePin(GPIOA,LED4_Pin,GPIO_PIN_SET);
+ 379              		.loc 1 140 3 is_stmt 1 view .LVU79
+ 140:Src/ir_sensor.c **** 		//HAL_GPIO_WritePin(GPIOA,LED4_Pin,GPIO_PIN_SET);
+ 380              		.loc 1 140 43 is_stmt 0 view .LVU80
+ 381 0050 D288     		ldrh	r2, [r2, #6]
+ 140:Src/ir_sensor.c **** 		//HAL_GPIO_WritePin(GPIOA,LED4_Pin,GPIO_PIN_SET);
+ 382              		.loc 1 140 32 view .LVU81
+ 383 0052 5A81     		strh	r2, [r3, #10]	@ movhi
+ARM GAS  C:\Temp\ccwE4PWa.s 			page 11
+
+
+ 142:Src/ir_sensor.c **** 
+ 384              		.loc 1 142 2 is_stmt 1 view .LVU82
+ 385              		.loc 1 147 1 is_stmt 0 view .LVU83
+ 386 0054 E2E7     		b	.L20
+ 387              	.L26:
+ 388 0056 00BF     		.align	2
+ 389              	.L25:
+ 390 0058 00000000 		.word	.LANCHOR0
+ 391 005c 56555555 		.word	1431655766
+ 392 0060 00000000 		.word	.LANCHOR3
+ 393 0064 00000000 		.word	.LANCHOR4
+ 394 0068 00000000 		.word	.LANCHOR5
+ 395              		.cfi_endproc
+ 396              	.LFE137:
+ 398              		.section	.text.Sensor_GetBatteryValue,"ax",%progbits
+ 399              		.align	1
+ 400              		.global	Sensor_GetBatteryValue
+ 401              		.syntax unified
+ 402              		.thumb
+ 403              		.thumb_func
+ 404              		.fpu fpv4-sp-d16
+ 406              	Sensor_GetBatteryValue:
+ 407              	.LFB138:
+ 148:Src/ir_sensor.c **** 
+ 149:Src/ir_sensor.c **** 
+ 150:Src/ir_sensor.c **** /* ---------------------------------------------------------------
+ 151:Src/ir_sensor.c **** 	バッテリのAD値を取得する関数
+ 152:Src/ir_sensor.c **** --------------------------------------------------------------- */
+ 153:Src/ir_sensor.c **** uint16_t Sensor_GetBatteryValue( void )
+ 154:Src/ir_sensor.c **** {
+ 408              		.loc 1 154 1 is_stmt 1 view -0
+ 409              		.cfi_startproc
+ 410              		@ args = 0, pretend = 0, frame = 0
+ 411              		@ frame_needed = 0, uses_anonymous_args = 0
+ 412              		@ link register save eliminated.
+ 155:Src/ir_sensor.c **** 	return( battery_value );
+ 413              		.loc 1 155 2 view .LVU85
+ 156:Src/ir_sensor.c **** }
+ 414              		.loc 1 156 1 is_stmt 0 view .LVU86
+ 415 0000 014B     		ldr	r3, .L28
+ 416 0002 1888     		ldrh	r0, [r3]
+ 417 0004 7047     		bx	lr
+ 418              	.L29:
+ 419 0006 00BF     		.align	2
+ 420              	.L28:
+ 421 0008 00000000 		.word	.LANCHOR4
+ 422              		.cfi_endproc
+ 423              	.LFE138:
+ 425              		.section	.text.Sensor_GetValue,"ax",%progbits
+ 426              		.align	1
+ 427              		.global	Sensor_GetValue
+ 428              		.syntax unified
+ 429              		.thumb
+ 430              		.thumb_func
+ 431              		.fpu fpv4-sp-d16
+ 433              	Sensor_GetValue:
+ 434              	.LVL16:
+ARM GAS  C:\Temp\ccwE4PWa.s 			page 12
+
+
+ 435              	.LFB139:
+ 157:Src/ir_sensor.c **** 
+ 158:Src/ir_sensor.c **** /* ---------------------------------------------------------------
+ 159:Src/ir_sensor.c **** 	赤外センサの偏差値を取得する関数
+ 160:Src/ir_sensor.c **** --------------------------------------------------------------- */
+ 161:Src/ir_sensor.c **** int16_t Sensor_GetValue( uint8_t dir )
+ 162:Src/ir_sensor.c **** {
+ 436              		.loc 1 162 1 is_stmt 1 view -0
+ 437              		.cfi_startproc
+ 438              		@ args = 0, pretend = 0, frame = 0
+ 439              		@ frame_needed = 0, uses_anonymous_args = 0
+ 440              		@ link register save eliminated.
+ 163:Src/ir_sensor.c **** 	if( 0 <= dir || dir <= 3 ) {
+ 441              		.loc 1 163 2 view .LVU88
+ 164:Src/ir_sensor.c **** 		return sensor_value[dir].on - sensor_value[dir].off;
+ 442              		.loc 1 164 3 view .LVU89
+ 443              		.loc 1 164 27 is_stmt 0 view .LVU90
+ 444 0000 044A     		ldr	r2, .L31
+ 445 0002 02EB8003 		add	r3, r2, r0, lsl #2
+ 446 0006 5B88     		ldrh	r3, [r3, #2]
+ 447              		.loc 1 164 50 view .LVU91
+ 448 0008 32F82000 		ldrh	r0, [r2, r0, lsl #2]
+ 449              	.LVL17:
+ 450              		.loc 1 164 31 view .LVU92
+ 451 000c 181A     		subs	r0, r3, r0
+ 165:Src/ir_sensor.c **** 	} else {
+ 166:Src/ir_sensor.c **** 		return -1;
+ 167:Src/ir_sensor.c **** 	}
+ 168:Src/ir_sensor.c **** }
+ 452              		.loc 1 168 1 view .LVU93
+ 453 000e 00B2     		sxth	r0, r0
+ 454 0010 7047     		bx	lr
+ 455              	.L32:
+ 456 0012 00BF     		.align	2
+ 457              	.L31:
+ 458 0014 00000000 		.word	.LANCHOR5
+ 459              		.cfi_endproc
+ 460              	.LFE139:
+ 462              		.global	__aeabi_i2d
+ 463              		.global	__aeabi_ddiv
+ 464              		.global	__aeabi_dsub
+ 465              		.global	__aeabi_dcmplt
+ 466              		.section	.text.SensorValue2length,"ax",%progbits
+ 467              		.align	1
+ 468              		.global	SensorValue2length
+ 469              		.syntax unified
+ 470              		.thumb
+ 471              		.thumb_func
+ 472              		.fpu fpv4-sp-d16
+ 474              	SensorValue2length:
+ 475              	.LVL18:
+ 476              	.LFB140:
+ 169:Src/ir_sensor.c **** 
+ 170:Src/ir_sensor.c **** 
+ 171:Src/ir_sensor.c **** 
+ 172:Src/ir_sensor.c **** /* ---------------------------------------------------------------
+ 173:Src/ir_sensor.c **** 	赤外センサの偏差値から距離に変換する関数
+ARM GAS  C:\Temp\ccwE4PWa.s 			page 13
+
+
+ 174:Src/ir_sensor.c **** --------------------------------------------------------------- */
+ 175:Src/ir_sensor.c **** double SensorValue2length( uint8_t dir )
+ 176:Src/ir_sensor.c **** {
+ 477              		.loc 1 176 1 is_stmt 1 view -0
+ 478              		.cfi_startproc
+ 479              		@ args = 0, pretend = 0, frame = 0
+ 480              		@ frame_needed = 0, uses_anonymous_args = 0
+ 481              		.loc 1 176 1 is_stmt 0 view .LVU95
+ 482 0000 2DE9F843 		push	{r3, r4, r5, r6, r7, r8, r9, lr}
+ 483              	.LCFI3:
+ 484              		.cfi_def_cfa_offset 32
+ 485              		.cfi_offset 3, -32
+ 486              		.cfi_offset 4, -28
+ 487              		.cfi_offset 5, -24
+ 488              		.cfi_offset 6, -20
+ 489              		.cfi_offset 7, -16
+ 490              		.cfi_offset 8, -12
+ 491              		.cfi_offset 9, -8
+ 492              		.cfi_offset 14, -4
+ 493 0004 2DED028B 		vpush.64	{d8}
+ 494              	.LCFI4:
+ 495              		.cfi_def_cfa_offset 40
+ 496              		.cfi_offset 80, -40
+ 497              		.cfi_offset 81, -36
+ 498 0008 0446     		mov	r4, r0
+ 177:Src/ir_sensor.c **** 
+ 178:Src/ir_sensor.c **** double length_tmp = 0;
+ 499              		.loc 1 178 1 is_stmt 1 view .LVU96
+ 500              	.LVL19:
+ 179:Src/ir_sensor.c **** double sensor_tmp = (double)Sensor_GetValue(dir);
+ 501              		.loc 1 179 1 view .LVU97
+ 502              		.loc 1 179 29 is_stmt 0 view .LVU98
+ 503 000a FFF7FEFF 		bl	Sensor_GetValue
+ 504              	.LVL20:
+ 505              		.loc 1 179 29 view .LVU99
+ 506 000e 0546     		mov	r5, r0
+ 507              		.loc 1 179 8 view .LVU100
+ 508 0010 FFF7FEFF 		bl	__aeabi_i2d
+ 509              	.LVL21:
+ 180:Src/ir_sensor.c **** 
+ 181:Src/ir_sensor.c **** //m線形近似　a*ln(AD) -b
+ 182:Src/ir_sensor.c **** double a = 0;
+ 510              		.loc 1 182 1 is_stmt 1 view .LVU101
+ 183:Src/ir_sensor.c **** double b = 0;
+ 511              		.loc 1 183 1 view .LVU102
+ 184:Src/ir_sensor.c **** 
+ 185:Src/ir_sensor.c **** if(sensor_tmp <= 100){
+ 512              		.loc 1 185 1 view .LVU103
+ 513              		.loc 1 185 3 is_stmt 0 view .LVU104
+ 514 0014 642D     		cmp	r5, #100
+ 515 0016 30DD     		ble	.L38
+ 516 0018 41EC100B 		vmov	d0, r0, r1
+ 186:Src/ir_sensor.c **** 	return 0.09;
+ 187:Src/ir_sensor.c **** }
+ 188:Src/ir_sensor.c **** 
+ 189:Src/ir_sensor.c **** else{
+ 190:Src/ir_sensor.c **** 
+ARM GAS  C:\Temp\ccwE4PWa.s 			page 14
+
+
+ 191:Src/ir_sensor.c **** 	//m 左前
+ 192:Src/ir_sensor.c **** 	if(dir == 0){
+ 517              		.loc 1 192 2 is_stmt 1 view .LVU105
+ 518              		.loc 1 192 4 is_stmt 0 view .LVU106
+ 519 001c ECB1     		cbz	r4, .L39
+ 183:Src/ir_sensor.c **** 
+ 520              		.loc 1 183 8 view .LVU107
+ 521 001e 0026     		movs	r6, #0
+ 522 0020 0027     		movs	r7, #0
+ 182:Src/ir_sensor.c **** double b = 0;
+ 523              		.loc 1 182 8 view .LVU108
+ 524 0022 B046     		mov	r8, r6
+ 525 0024 B946     		mov	r9, r7
+ 526              	.L35:
+ 527              	.LVL22:
+ 193:Src/ir_sensor.c **** 		a = 0.7;
+ 194:Src/ir_sensor.c **** 		b = 0.0847;
+ 195:Src/ir_sensor.c **** 	}
+ 196:Src/ir_sensor.c **** 
+ 197:Src/ir_sensor.c **** 	//m 右前
+ 198:Src/ir_sensor.c **** 	if(dir == 3){
+ 528              		.loc 1 198 2 is_stmt 1 view .LVU109
+ 529              		.loc 1 198 4 is_stmt 0 view .LVU110
+ 530 0026 032C     		cmp	r4, #3
+ 531 0028 1FD0     		beq	.L43
+ 532              	.LVL23:
+ 533              	.L36:
+ 199:Src/ir_sensor.c **** 		a = 0.7;
+ 200:Src/ir_sensor.c **** 		b = 0.082;
+ 201:Src/ir_sensor.c **** 		}
+ 202:Src/ir_sensor.c **** 
+ 203:Src/ir_sensor.c **** 	length_tmp = a / log(sensor_tmp) - b ;
+ 534              		.loc 1 203 2 is_stmt 1 view .LVU111
+ 535              		.loc 1 203 19 is_stmt 0 view .LVU112
+ 536 002a FFF7FEFF 		bl	log
+ 537              	.LVL24:
+ 538              		.loc 1 203 19 view .LVU113
+ 539 002e 53EC102B 		vmov	r2, r3, d0
+ 540              		.loc 1 203 17 view .LVU114
+ 541 0032 4046     		mov	r0, r8
+ 542 0034 4946     		mov	r1, r9
+ 543 0036 FFF7FEFF 		bl	__aeabi_ddiv
+ 544              	.LVL25:
+ 545              		.loc 1 203 13 view .LVU115
+ 546 003a 3246     		mov	r2, r6
+ 547 003c 3B46     		mov	r3, r7
+ 548 003e FFF7FEFF 		bl	__aeabi_dsub
+ 549              	.LVL26:
+ 550 0042 0246     		mov	r2, r0
+ 551 0044 0B46     		mov	r3, r1
+ 552 0046 43EC182B 		vmov	d8, r2, r3
+ 553              	.LVL27:
+ 204:Src/ir_sensor.c **** 
+ 205:Src/ir_sensor.c **** 	if(length_tmp < 0) //mリミット処理
+ 554              		.loc 1 205 2 is_stmt 1 view .LVU116
+ 555              		.loc 1 205 4 is_stmt 0 view .LVU117
+ 556 004a 0022     		movs	r2, #0
+ARM GAS  C:\Temp\ccwE4PWa.s 			page 15
+
+
+ 557              	.LVL28:
+ 558              		.loc 1 205 4 view .LVU118
+ 559 004c 0023     		movs	r3, #0
+ 560 004e FFF7FEFF 		bl	__aeabi_dcmplt
+ 561              	.LVL29:
+ 562 0052 A0B1     		cbz	r0, .L33
+ 206:Src/ir_sensor.c **** 	{
+ 207:Src/ir_sensor.c **** 		length_tmp = 0;
+ 563              		.loc 1 207 14 view .LVU119
+ 564 0054 9FED0E8B 		vldr.64	d8, .L44
+ 565              	.LVL30:
+ 208:Src/ir_sensor.c **** 	}
+ 209:Src/ir_sensor.c **** 
+ 210:Src/ir_sensor.c **** 	return length_tmp;
+ 566              		.loc 1 210 2 is_stmt 1 view .LVU120
+ 567              		.loc 1 210 9 is_stmt 0 view .LVU121
+ 568 0058 11E0     		b	.L33
+ 569              	.LVL31:
+ 570              	.L39:
+ 194:Src/ir_sensor.c **** 	}
+ 571              		.loc 1 194 5 view .LVU122
+ 572 005a 11A7     		adr	r7, .L44+16
+ 573 005c D7E90067 		ldrd	r6, [r7]
+ 193:Src/ir_sensor.c **** 		b = 0.0847;
+ 574              		.loc 1 193 5 view .LVU123
+ 575 0060 0FF24409 		adr	r9, .L44+24
+ 576 0064 D9E90089 		ldrd	r8, [r9]
+ 577 0068 DDE7     		b	.L35
+ 578              	.LVL32:
+ 579              	.L43:
+ 200:Src/ir_sensor.c **** 		}
+ 580              		.loc 1 200 5 view .LVU124
+ 581 006a 11A7     		adr	r7, .L44+32
+ 582 006c D7E90067 		ldrd	r6, [r7]
+ 583              	.LVL33:
+ 199:Src/ir_sensor.c **** 		b = 0.082;
+ 584              		.loc 1 199 5 view .LVU125
+ 585 0070 0FF23409 		adr	r9, .L44+24
+ 586 0074 D9E90089 		ldrd	r8, [r9]
+ 587              	.LVL34:
+ 199:Src/ir_sensor.c **** 		b = 0.082;
+ 588              		.loc 1 199 5 view .LVU126
+ 589 0078 D7E7     		b	.L36
+ 590              	.LVL35:
+ 591              	.L38:
+ 186:Src/ir_sensor.c **** }
+ 592              		.loc 1 186 9 view .LVU127
+ 593 007a 9FED078B 		vldr.64	d8, .L44+8
+ 594              	.LVL36:
+ 595              	.L33:
+ 211:Src/ir_sensor.c **** 
+ 212:Src/ir_sensor.c **** 
+ 213:Src/ir_sensor.c **** }
+ 214:Src/ir_sensor.c **** 
+ 215:Src/ir_sensor.c **** }
+ 596              		.loc 1 215 1 view .LVU128
+ 597 007e B0EE480A 		vmov.f32	s0, s16
+ARM GAS  C:\Temp\ccwE4PWa.s 			page 16
+
+
+ 598 0082 F0EE680A 		vmov.f32	s1, s17
+ 599 0086 BDEC028B 		vldm	sp!, {d8}
+ 600              	.LCFI5:
+ 601              		.cfi_restore 80
+ 602              		.cfi_restore 81
+ 603              		.cfi_def_cfa_offset 32
+ 604 008a BDE8F883 		pop	{r3, r4, r5, r6, r7, r8, r9, pc}
+ 605              	.L45:
+ 606 008e 00BF     		.align	3
+ 607              	.L44:
+ 608 0090 00000000 		.word	0
+ 609 0094 00000000 		.word	0
+ 610 0098 0AD7A370 		.word	1889785610
+ 611 009c 3D0AB73F 		.word	1068960317
+ 612 00a0 90A0F831 		.word	838377616
+ 613 00a4 E6AEB53F 		.word	1068871398
+ 614 00a8 66666666 		.word	1717986918
+ 615 00ac 6666E63F 		.word	1072064102
+ 616 00b0 CBA145B6 		.word	-1236950581
+ 617 00b4 F3FDB43F 		.word	1068826099
+ 618              		.cfi_endproc
+ 619              	.LFE140:
+ 621              		.section	.rodata.Sensor_DebugPrintf.str1.4,"aMS",%progbits,1
+ 622              		.align	2
+ 623              	.LC0:
+ 624 0000 25356420 		.ascii	"%5d (%4d - %3d), %5d (%4d - %3d), %5d (%4d - %3d), "
+ 624      28253464 
+ 624      202D2025 
+ 624      3364292C 
+ 624      20253564 
+ 625 0033 25356420 		.ascii	"%5d (%4d - %3d)\015\012\000"
+ 625      28253464 
+ 625      202D2025 
+ 625      3364290D 
+ 625      0A00
+ 626              		.section	.text.Sensor_DebugPrintf,"ax",%progbits
+ 627              		.align	1
+ 628              		.global	Sensor_DebugPrintf
+ 629              		.syntax unified
+ 630              		.thumb
+ 631              		.thumb_func
+ 632              		.fpu fpv4-sp-d16
+ 634              	Sensor_DebugPrintf:
+ 635              	.LFB141:
+ 216:Src/ir_sensor.c **** 
+ 217:Src/ir_sensor.c **** 
+ 218:Src/ir_sensor.c **** 
+ 219:Src/ir_sensor.c **** /* ---------------------------------------------------------------
+ 220:Src/ir_sensor.c **** 	デバッグ用
+ 221:Src/ir_sensor.c **** --------------------------------------------------------------- */
+ 222:Src/ir_sensor.c **** void Sensor_DebugPrintf( void )
+ 223:Src/ir_sensor.c **** {
+ 636              		.loc 1 223 1 is_stmt 1 view -0
+ 637              		.cfi_startproc
+ 638              		@ args = 0, pretend = 0, frame = 0
+ 639              		@ frame_needed = 0, uses_anonymous_args = 0
+ 640 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ARM GAS  C:\Temp\ccwE4PWa.s 			page 17
+
+
+ 641              	.LCFI6:
+ 642              		.cfi_def_cfa_offset 20
+ 643              		.cfi_offset 4, -20
+ 644              		.cfi_offset 5, -16
+ 645              		.cfi_offset 6, -12
+ 646              		.cfi_offset 7, -8
+ 647              		.cfi_offset 14, -4
+ 648 0002 8BB0     		sub	sp, sp, #44
+ 649              	.LCFI7:
+ 650              		.cfi_def_cfa_offset 64
+ 224:Src/ir_sensor.c **** 	printf( "%5d (%4d - %3d), %5d (%4d - %3d), %5d (%4d - %3d), %5d (%4d - %3d)\r\n",
+ 651              		.loc 1 224 2 view .LVU130
+ 225:Src/ir_sensor.c **** 			sensor_value[3].on - sensor_value[3].off, sensor_value[3].on, sensor_value[3].off,
+ 652              		.loc 1 225 19 is_stmt 0 view .LVU131
+ 653 0004 0D48     		ldr	r0, .L48
+ 654 0006 C289     		ldrh	r2, [r0, #14]
+ 655              		.loc 1 225 40 view .LVU132
+ 656 0008 8389     		ldrh	r3, [r0, #12]
+ 226:Src/ir_sensor.c **** 			sensor_value[2].on - sensor_value[2].off, sensor_value[2].on, sensor_value[2].off,
+ 657              		.loc 1 226 19 view .LVU133
+ 658 000a 4489     		ldrh	r4, [r0, #10]
+ 659              		.loc 1 226 40 view .LVU134
+ 660 000c 0189     		ldrh	r1, [r0, #8]
+ 227:Src/ir_sensor.c **** 			sensor_value[1].on - sensor_value[1].off, sensor_value[1].on, sensor_value[1].off,
+ 661              		.loc 1 227 19 view .LVU135
+ 662 000e C588     		ldrh	r5, [r0, #6]
+ 663              		.loc 1 227 40 view .LVU136
+ 664 0010 8788     		ldrh	r7, [r0, #4]
+ 228:Src/ir_sensor.c **** 			sensor_value[0].on - sensor_value[0].off, sensor_value[0].on, sensor_value[0].off );
+ 665              		.loc 1 228 19 view .LVU137
+ 666 0012 4688     		ldrh	r6, [r0, #2]
+ 667              		.loc 1 228 40 view .LVU138
+ 668 0014 0088     		ldrh	r0, [r0]
+ 224:Src/ir_sensor.c **** 			sensor_value[3].on - sensor_value[3].off, sensor_value[3].on, sensor_value[3].off,
+ 669              		.loc 1 224 2 view .LVU139
+ 670 0016 0890     		str	r0, [sp, #32]
+ 671 0018 0796     		str	r6, [sp, #28]
+ 672 001a 361A     		subs	r6, r6, r0
+ 673 001c 0696     		str	r6, [sp, #24]
+ 674 001e 0597     		str	r7, [sp, #20]
+ 675 0020 0495     		str	r5, [sp, #16]
+ 676 0022 ED1B     		subs	r5, r5, r7
+ 677 0024 0395     		str	r5, [sp, #12]
+ 678 0026 0291     		str	r1, [sp, #8]
+ 679 0028 0194     		str	r4, [sp, #4]
+ 680 002a 641A     		subs	r4, r4, r1
+ 681 002c 0094     		str	r4, [sp]
+ 682 002e D11A     		subs	r1, r2, r3
+ 683 0030 0348     		ldr	r0, .L48+4
+ 684 0032 FFF7FEFF 		bl	printf
+ 685              	.LVL37:
+ 229:Src/ir_sensor.c **** 
+ 230:Src/ir_sensor.c **** }
+ 686              		.loc 1 230 1 view .LVU140
+ 687 0036 0BB0     		add	sp, sp, #44
+ 688              	.LCFI8:
+ 689              		.cfi_def_cfa_offset 20
+ARM GAS  C:\Temp\ccwE4PWa.s 			page 18
+
+
+ 690              		@ sp needed
+ 691 0038 F0BD     		pop	{r4, r5, r6, r7, pc}
+ 692              	.L49:
+ 693 003a 00BF     		.align	2
+ 694              	.L48:
+ 695 003c 00000000 		.word	.LANCHOR5
+ 696 0040 00000000 		.word	.LC0
+ 697              		.cfi_endproc
+ 698              	.LFE141:
+ 700              		.global	mode_number_int
+ 701              		.section	.bss.adc_value,"aw",%nobits
+ 702              		.align	2
+ 703              		.set	.LANCHOR3,. + 0
+ 706              	adc_value:
+ 707 0000 00000000 		.space	10
+ 707      00000000 
+ 707      0000
+ 708              		.section	.bss.battery_value,"aw",%nobits
+ 709              		.align	1
+ 710              		.set	.LANCHOR4,. + 0
+ 713              	battery_value:
+ 714 0000 0000     		.space	2
+ 715              		.section	.bss.mode_number_int,"aw",%nobits
+ 718              	mode_number_int:
+ 719 0000 00       		.space	1
+ 720              		.section	.bss.sensor_mode,"aw",%nobits
+ 721              		.set	.LANCHOR0,. + 0
+ 724              	sensor_mode:
+ 725 0000 00       		.space	1
+ 726              		.section	.bss.sensor_off_pattern,"aw",%nobits
+ 727              		.align	1
+ 728              		.set	.LANCHOR2,. + 0
+ 731              	sensor_off_pattern:
+ 732 0000 0000     		.space	2
+ 733              		.section	.bss.sensor_on_pattern,"aw",%nobits
+ 734              		.align	1
+ 735              		.set	.LANCHOR1,. + 0
+ 738              	sensor_on_pattern:
+ 739 0000 0000     		.space	2
+ 740              		.section	.bss.sensor_value,"aw",%nobits
+ 741              		.align	2
+ 742              		.set	.LANCHOR5,. + 0
+ 745              	sensor_value:
+ 746 0000 00000000 		.space	16
+ 746      00000000 
+ 746      00000000 
+ 746      00000000 
+ 747              		.text
+ 748              	.Letext0:
+ 749              		.file 2 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\machine\\_default_t
+ 750              		.file 3 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\lock.h"
+ 751              		.file 4 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\_types.h"
+ 752              		.file 5 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\lib\\gcc\\arm-none-eabi\\9.2.1\\include\\st
+ 753              		.file 6 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\reent.h"
+ 754              		.file 7 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 755              		.file 8 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\math.h"
+ 756              		.file 9 "Drivers/CMSIS/Include/core_cm4.h"
+ARM GAS  C:\Temp\ccwE4PWa.s 			page 19
+
+
+ 757              		.file 10 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h"
+ 758              		.file 11 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f413xx.h"
+ 759              		.file 12 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h"
+ 760              		.file 13 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
+ 761              		.file 14 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio.h"
+ 762              		.file 15 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h"
+ 763              		.file 16 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_adc.h"
+ 764              		.file 17 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h"
+ 765              		.file 18 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h"
+ 766              		.file 19 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h"
+ 767              		.file 20 "Inc/adc.h"
+ 768              		.file 21 "Inc/spi.h"
+ 769              		.file 22 "Inc/tim.h"
+ 770              		.file 23 "Inc/usart.h"
+ 771              		.file 24 "Inc/index.h"
+ 772              		.file 25 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\stdio.h"
+ARM GAS  C:\Temp\ccwE4PWa.s 			page 20
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 ir_sensor.c
+  C:\Temp\ccwE4PWa.s:18     .text.TIM1_CC2_Callback:00000000 $t
+  C:\Temp\ccwE4PWa.s:26     .text.TIM1_CC2_Callback:00000000 TIM1_CC2_Callback
+  C:\Temp\ccwE4PWa.s:84     .text.TIM1_CC2_Callback:0000003c $d
+  C:\Temp\ccwE4PWa.s:91     .text.Sensor_StartADC:00000000 $t
+  C:\Temp\ccwE4PWa.s:98     .text.Sensor_StartADC:00000000 Sensor_StartADC
+  C:\Temp\ccwE4PWa.s:146    .text.Sensor_StartADC:00000034 $d
+  C:\Temp\ccwE4PWa.s:154    .text.Sensor_Initialize:00000000 $t
+  C:\Temp\ccwE4PWa.s:161    .text.Sensor_Initialize:00000000 Sensor_Initialize
+  C:\Temp\ccwE4PWa.s:221    .text.Sensor_Initialize:0000004c $d
+  C:\Temp\ccwE4PWa.s:232    .text.Sensor_StopADC:00000000 $t
+  C:\Temp\ccwE4PWa.s:239    .text.Sensor_StopADC:00000000 Sensor_StopADC
+  C:\Temp\ccwE4PWa.s:285    .text.Sensor_StopADC:00000034 $d
+  C:\Temp\ccwE4PWa.s:291    .text.HAL_ADC_ConvCpltCallback:00000000 $t
+  C:\Temp\ccwE4PWa.s:298    .text.HAL_ADC_ConvCpltCallback:00000000 HAL_ADC_ConvCpltCallback
+  C:\Temp\ccwE4PWa.s:390    .text.HAL_ADC_ConvCpltCallback:00000058 $d
+  C:\Temp\ccwE4PWa.s:399    .text.Sensor_GetBatteryValue:00000000 $t
+  C:\Temp\ccwE4PWa.s:406    .text.Sensor_GetBatteryValue:00000000 Sensor_GetBatteryValue
+  C:\Temp\ccwE4PWa.s:421    .text.Sensor_GetBatteryValue:00000008 $d
+  C:\Temp\ccwE4PWa.s:426    .text.Sensor_GetValue:00000000 $t
+  C:\Temp\ccwE4PWa.s:433    .text.Sensor_GetValue:00000000 Sensor_GetValue
+  C:\Temp\ccwE4PWa.s:458    .text.Sensor_GetValue:00000014 $d
+  C:\Temp\ccwE4PWa.s:467    .text.SensorValue2length:00000000 $t
+  C:\Temp\ccwE4PWa.s:474    .text.SensorValue2length:00000000 SensorValue2length
+  C:\Temp\ccwE4PWa.s:608    .text.SensorValue2length:00000090 $d
+  C:\Temp\ccwE4PWa.s:622    .rodata.Sensor_DebugPrintf.str1.4:00000000 $d
+  C:\Temp\ccwE4PWa.s:627    .text.Sensor_DebugPrintf:00000000 $t
+  C:\Temp\ccwE4PWa.s:634    .text.Sensor_DebugPrintf:00000000 Sensor_DebugPrintf
+  C:\Temp\ccwE4PWa.s:695    .text.Sensor_DebugPrintf:0000003c $d
+  C:\Temp\ccwE4PWa.s:718    .bss.mode_number_int:00000000 mode_number_int
+  C:\Temp\ccwE4PWa.s:702    .bss.adc_value:00000000 $d
+  C:\Temp\ccwE4PWa.s:706    .bss.adc_value:00000000 adc_value
+  C:\Temp\ccwE4PWa.s:709    .bss.battery_value:00000000 $d
+  C:\Temp\ccwE4PWa.s:713    .bss.battery_value:00000000 battery_value
+  C:\Temp\ccwE4PWa.s:719    .bss.mode_number_int:00000000 $d
+  C:\Temp\ccwE4PWa.s:724    .bss.sensor_mode:00000000 sensor_mode
+  C:\Temp\ccwE4PWa.s:725    .bss.sensor_mode:00000000 $d
+  C:\Temp\ccwE4PWa.s:727    .bss.sensor_off_pattern:00000000 $d
+  C:\Temp\ccwE4PWa.s:731    .bss.sensor_off_pattern:00000000 sensor_off_pattern
+  C:\Temp\ccwE4PWa.s:734    .bss.sensor_on_pattern:00000000 $d
+  C:\Temp\ccwE4PWa.s:738    .bss.sensor_on_pattern:00000000 sensor_on_pattern
+  C:\Temp\ccwE4PWa.s:741    .bss.sensor_value:00000000 $d
+  C:\Temp\ccwE4PWa.s:745    .bss.sensor_value:00000000 sensor_value
+
+UNDEFINED SYMBOLS
+HAL_TIM_PWM_Start
+HAL_TIM_OC_Start
+htim1
+HAL_DMA_RegisterCallback
+HAL_DMA_Start_IT
+HAL_ADC_Start_DMA
+hadc1
+HAL_TIM_PWM_Stop
+HAL_DMA_Abort_IT
+HAL_GPIO_WritePin
+__aeabi_i2d
+ARM GAS  C:\Temp\ccwE4PWa.s 			page 21
+
+
+__aeabi_ddiv
+__aeabi_dsub
+__aeabi_dcmplt
+log
+printf

@@ -1,0 +1,150 @@
+ARM GAS  C:\Temp\ccfmv7kp.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"delay.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.delay_us,"ax",%progbits
+  18              		.align	1
+  19              		.global	delay_us
+  20              		.arch armv7e-m
+  21              		.syntax unified
+  22              		.thumb
+  23              		.thumb_func
+  24              		.fpu fpv4-sp-d16
+  26              	delay_us:
+  27              	.LVL0:
+  28              	.LFB133:
+  29              		.file 1 "Src/delay.c"
+   1:Src/delay.c   **** #include "index.h"
+   2:Src/delay.c   **** 
+   3:Src/delay.c   **** 
+   4:Src/delay.c   **** 
+   5:Src/delay.c   **** void delay_us(uint32_t us) {
+  30              		.loc 1 5 28 view -0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              		@ link register save eliminated.
+   6:Src/delay.c   **** 	SysTick->LOAD = 96 - 1; // reset value for count-down timer
+  35              		.loc 1 6 2 view .LVU1
+  36              		.loc 1 6 16 is_stmt 0 view .LVU2
+  37 0000 0B4B     		ldr	r3, .L4
+  38 0002 5F22     		movs	r2, #95
+  39 0004 5A60     		str	r2, [r3, #4]
+   7:Src/delay.c   **** 	SysTick->VAL = 0; // initial value
+  40              		.loc 1 7 2 is_stmt 1 view .LVU3
+  41              		.loc 1 7 15 is_stmt 0 view .LVU4
+  42 0006 0022     		movs	r2, #0
+  43 0008 9A60     		str	r2, [r3, #8]
+   8:Src/delay.c   **** 	SysTick->CTRL |= SysTick_CTRL_ENABLE_Msk; // count start
+  44              		.loc 1 8 2 is_stmt 1 view .LVU5
+  45              		.loc 1 8 16 is_stmt 0 view .LVU6
+  46 000a 1968     		ldr	r1, [r3]
+  47 000c 41F00101 		orr	r1, r1, #1
+  48 0010 1960     		str	r1, [r3]
+   9:Src/delay.c   **** 
+  10:Src/delay.c   **** 	for(uint32_t i=0; i<us; i++){
+ARM GAS  C:\Temp\ccfmv7kp.s 			page 2
+
+
+  49              		.loc 1 10 2 is_stmt 1 view .LVU7
+  50              	.LBB2:
+  51              		.loc 1 10 6 view .LVU8
+  52              	.LVL1:
+  53              		.loc 1 10 2 is_stmt 0 view .LVU9
+  54 0012 05E0     		b	.L2
+  55              	.LVL2:
+  56              	.L3:
+  11:Src/delay.c   **** 		while( !(SysTick->CTRL & SysTick_CTRL_COUNTFLAG_Msk) );
+  57              		.loc 1 11 57 is_stmt 1 discriminator 1 view .LVU10
+  58              		.loc 1 11 8 discriminator 1 view .LVU11
+  59              		.loc 1 11 19 is_stmt 0 discriminator 1 view .LVU12
+  60 0014 064B     		ldr	r3, .L4
+  61 0016 1B68     		ldr	r3, [r3]
+  62              		.loc 1 11 8 discriminator 1 view .LVU13
+  63 0018 13F4803F 		tst	r3, #65536
+  64 001c FAD0     		beq	.L3
+  10:Src/delay.c   **** 		while( !(SysTick->CTRL & SysTick_CTRL_COUNTFLAG_Msk) );
+  65              		.loc 1 10 26 is_stmt 1 discriminator 2 view .LVU14
+  10:Src/delay.c   **** 		while( !(SysTick->CTRL & SysTick_CTRL_COUNTFLAG_Msk) );
+  66              		.loc 1 10 27 is_stmt 0 discriminator 2 view .LVU15
+  67 001e 0132     		adds	r2, r2, #1
+  68              	.LVL3:
+  69              	.L2:
+  10:Src/delay.c   **** 		while( !(SysTick->CTRL & SysTick_CTRL_COUNTFLAG_Msk) );
+  70              		.loc 1 10 20 is_stmt 1 discriminator 1 view .LVU16
+  10:Src/delay.c   **** 		while( !(SysTick->CTRL & SysTick_CTRL_COUNTFLAG_Msk) );
+  71              		.loc 1 10 2 is_stmt 0 discriminator 1 view .LVU17
+  72 0020 8242     		cmp	r2, r0
+  73 0022 F7D3     		bcc	.L3
+  74              	.LBE2:
+  12:Src/delay.c   **** 	}
+  13:Src/delay.c   **** 	SysTick->CTRL &= ~SysTick_CTRL_ENABLE_Msk; // count stop
+  75              		.loc 1 13 2 is_stmt 1 view .LVU18
+  76              		.loc 1 13 16 is_stmt 0 view .LVU19
+  77 0024 024A     		ldr	r2, .L4
+  78              	.LVL4:
+  79              		.loc 1 13 16 view .LVU20
+  80 0026 1368     		ldr	r3, [r2]
+  81 0028 23F00103 		bic	r3, r3, #1
+  82 002c 1360     		str	r3, [r2]
+  14:Src/delay.c   **** }
+  83              		.loc 1 14 1 view .LVU21
+  84 002e 7047     		bx	lr
+  85              	.L5:
+  86              		.align	2
+  87              	.L4:
+  88 0030 10E000E0 		.word	-536813552
+  89              		.cfi_endproc
+  90              	.LFE133:
+  92              		.text
+  93              	.Letext0:
+  94              		.file 2 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\machine\\_default_t
+  95              		.file 3 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\lock.h"
+  96              		.file 4 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\_types.h"
+  97              		.file 5 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\lib\\gcc\\arm-none-eabi\\9.2.1\\include\\st
+  98              		.file 6 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\reent.h"
+ARM GAS  C:\Temp\ccfmv7kp.s 			page 3
+
+
+  99              		.file 7 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 100              		.file 8 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\math.h"
+ 101              		.file 9 "Drivers/CMSIS/Include/core_cm4.h"
+ 102              		.file 10 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h"
+ 103              		.file 11 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f413xx.h"
+ 104              		.file 12 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h"
+ 105              		.file 13 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
+ 106              		.file 14 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h"
+ 107              		.file 15 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_adc.h"
+ 108              		.file 16 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h"
+ 109              		.file 17 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h"
+ 110              		.file 18 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h"
+ 111              		.file 19 "Inc/adc.h"
+ 112              		.file 20 "Inc/spi.h"
+ 113              		.file 21 "Inc/tim.h"
+ 114              		.file 22 "Inc/usart.h"
+ 115              		.file 23 "Inc/index.h"
+ARM GAS  C:\Temp\ccfmv7kp.s 			page 4
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 delay.c
+  C:\Temp\ccfmv7kp.s:18     .text.delay_us:00000000 $t
+  C:\Temp\ccfmv7kp.s:26     .text.delay_us:00000000 delay_us
+  C:\Temp\ccfmv7kp.s:88     .text.delay_us:00000030 $d
+
+NO UNDEFINED SYMBOLS

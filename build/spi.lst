@@ -1,0 +1,706 @@
+ARM GAS  C:\Temp\ccgaH55H.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"spi.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.MX_SPI2_Init,"ax",%progbits
+  18              		.align	1
+  19              		.global	MX_SPI2_Init
+  20              		.arch armv7e-m
+  21              		.syntax unified
+  22              		.thumb
+  23              		.thumb_func
+  24              		.fpu fpv4-sp-d16
+  26              	MX_SPI2_Init:
+  27              	.LFB130:
+  28              		.file 1 "Src/spi.c"
+   1:Src/spi.c     **** /**
+   2:Src/spi.c     ****   ******************************************************************************
+   3:Src/spi.c     ****   * File Name          : SPI.c
+   4:Src/spi.c     ****   * Description        : This file provides code for the configuration
+   5:Src/spi.c     ****   *                      of the SPI instances.
+   6:Src/spi.c     ****   ******************************************************************************
+   7:Src/spi.c     ****   * @attention
+   8:Src/spi.c     ****   *
+   9:Src/spi.c     ****   * <h2><center>&copy; Copyright (c) 2020 STMicroelectronics.
+  10:Src/spi.c     ****   * All rights reserved.</center></h2>
+  11:Src/spi.c     ****   *
+  12:Src/spi.c     ****   * This software component is licensed by ST under BSD 3-Clause license,
+  13:Src/spi.c     ****   * the "License"; You may not use this file except in compliance with the
+  14:Src/spi.c     ****   * License. You may obtain a copy of the License at:
+  15:Src/spi.c     ****   *                        opensource.org/licenses/BSD-3-Clause
+  16:Src/spi.c     ****   *
+  17:Src/spi.c     ****   ******************************************************************************
+  18:Src/spi.c     ****   */
+  19:Src/spi.c     **** 
+  20:Src/spi.c     **** /* Includes ------------------------------------------------------------------*/
+  21:Src/spi.c     **** #include "spi.h"
+  22:Src/spi.c     **** 
+  23:Src/spi.c     **** /* USER CODE BEGIN 0 */
+  24:Src/spi.c     **** 
+  25:Src/spi.c     **** /* USER CODE END 0 */
+  26:Src/spi.c     **** 
+  27:Src/spi.c     **** SPI_HandleTypeDef hspi2;
+  28:Src/spi.c     **** DMA_HandleTypeDef hdma_spi2_rx;
+  29:Src/spi.c     **** DMA_HandleTypeDef hdma_spi2_tx;
+  30:Src/spi.c     **** 
+ARM GAS  C:\Temp\ccgaH55H.s 			page 2
+
+
+  31:Src/spi.c     **** /* SPI2 init function */
+  32:Src/spi.c     **** void MX_SPI2_Init(void)
+  33:Src/spi.c     **** {
+  29              		.loc 1 33 1 view -0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33 0000 08B5     		push	{r3, lr}
+  34              	.LCFI0:
+  35              		.cfi_def_cfa_offset 8
+  36              		.cfi_offset 3, -8
+  37              		.cfi_offset 14, -4
+  34:Src/spi.c     **** 
+  35:Src/spi.c     ****   hspi2.Instance = SPI2;
+  38              		.loc 1 35 3 view .LVU1
+  39              		.loc 1 35 18 is_stmt 0 view .LVU2
+  40 0002 0F48     		ldr	r0, .L5
+  41 0004 0F4B     		ldr	r3, .L5+4
+  42 0006 0360     		str	r3, [r0]
+  36:Src/spi.c     ****   hspi2.Init.Mode = SPI_MODE_MASTER;
+  43              		.loc 1 36 3 is_stmt 1 view .LVU3
+  44              		.loc 1 36 19 is_stmt 0 view .LVU4
+  45 0008 4FF48273 		mov	r3, #260
+  46 000c 4360     		str	r3, [r0, #4]
+  37:Src/spi.c     ****   hspi2.Init.Direction = SPI_DIRECTION_2LINES;
+  47              		.loc 1 37 3 is_stmt 1 view .LVU5
+  48              		.loc 1 37 24 is_stmt 0 view .LVU6
+  49 000e 0023     		movs	r3, #0
+  50 0010 8360     		str	r3, [r0, #8]
+  38:Src/spi.c     ****   hspi2.Init.DataSize = SPI_DATASIZE_8BIT;
+  51              		.loc 1 38 3 is_stmt 1 view .LVU7
+  52              		.loc 1 38 23 is_stmt 0 view .LVU8
+  53 0012 C360     		str	r3, [r0, #12]
+  39:Src/spi.c     ****   hspi2.Init.CLKPolarity = SPI_POLARITY_HIGH;
+  54              		.loc 1 39 3 is_stmt 1 view .LVU9
+  55              		.loc 1 39 26 is_stmt 0 view .LVU10
+  56 0014 0222     		movs	r2, #2
+  57 0016 0261     		str	r2, [r0, #16]
+  40:Src/spi.c     ****   hspi2.Init.CLKPhase = SPI_PHASE_2EDGE;
+  58              		.loc 1 40 3 is_stmt 1 view .LVU11
+  59              		.loc 1 40 23 is_stmt 0 view .LVU12
+  60 0018 0122     		movs	r2, #1
+  61 001a 4261     		str	r2, [r0, #20]
+  41:Src/spi.c     ****   hspi2.Init.NSS = SPI_NSS_SOFT;
+  62              		.loc 1 41 3 is_stmt 1 view .LVU13
+  63              		.loc 1 41 18 is_stmt 0 view .LVU14
+  64 001c 4FF40072 		mov	r2, #512
+  65 0020 8261     		str	r2, [r0, #24]
+  42:Src/spi.c     ****   hspi2.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_32;
+  66              		.loc 1 42 3 is_stmt 1 view .LVU15
+  67              		.loc 1 42 32 is_stmt 0 view .LVU16
+  68 0022 2022     		movs	r2, #32
+  69 0024 C261     		str	r2, [r0, #28]
+  43:Src/spi.c     ****   hspi2.Init.FirstBit = SPI_FIRSTBIT_MSB;
+  70              		.loc 1 43 3 is_stmt 1 view .LVU17
+  71              		.loc 1 43 23 is_stmt 0 view .LVU18
+  72 0026 0362     		str	r3, [r0, #32]
+ARM GAS  C:\Temp\ccgaH55H.s 			page 3
+
+
+  44:Src/spi.c     ****   hspi2.Init.TIMode = SPI_TIMODE_DISABLE;
+  73              		.loc 1 44 3 is_stmt 1 view .LVU19
+  74              		.loc 1 44 21 is_stmt 0 view .LVU20
+  75 0028 4362     		str	r3, [r0, #36]
+  45:Src/spi.c     ****   hspi2.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
+  76              		.loc 1 45 3 is_stmt 1 view .LVU21
+  77              		.loc 1 45 29 is_stmt 0 view .LVU22
+  78 002a 8362     		str	r3, [r0, #40]
+  46:Src/spi.c     ****   hspi2.Init.CRCPolynomial = 10;
+  79              		.loc 1 46 3 is_stmt 1 view .LVU23
+  80              		.loc 1 46 28 is_stmt 0 view .LVU24
+  81 002c 0A23     		movs	r3, #10
+  82 002e C362     		str	r3, [r0, #44]
+  47:Src/spi.c     ****   if (HAL_SPI_Init(&hspi2) != HAL_OK)
+  83              		.loc 1 47 3 is_stmt 1 view .LVU25
+  84              		.loc 1 47 7 is_stmt 0 view .LVU26
+  85 0030 FFF7FEFF 		bl	HAL_SPI_Init
+  86              	.LVL0:
+  87              		.loc 1 47 6 view .LVU27
+  88 0034 00B9     		cbnz	r0, .L4
+  89              	.L1:
+  48:Src/spi.c     ****   {
+  49:Src/spi.c     ****     Error_Handler();
+  50:Src/spi.c     ****   }
+  51:Src/spi.c     **** 
+  52:Src/spi.c     **** }
+  90              		.loc 1 52 1 view .LVU28
+  91 0036 08BD     		pop	{r3, pc}
+  92              	.L4:
+  49:Src/spi.c     ****   }
+  93              		.loc 1 49 5 is_stmt 1 view .LVU29
+  94 0038 FFF7FEFF 		bl	Error_Handler
+  95              	.LVL1:
+  96              		.loc 1 52 1 is_stmt 0 view .LVU30
+  97 003c FBE7     		b	.L1
+  98              	.L6:
+  99 003e 00BF     		.align	2
+ 100              	.L5:
+ 101 0040 00000000 		.word	hspi2
+ 102 0044 00380040 		.word	1073756160
+ 103              		.cfi_endproc
+ 104              	.LFE130:
+ 106              		.section	.text.HAL_SPI_MspInit,"ax",%progbits
+ 107              		.align	1
+ 108              		.global	HAL_SPI_MspInit
+ 109              		.syntax unified
+ 110              		.thumb
+ 111              		.thumb_func
+ 112              		.fpu fpv4-sp-d16
+ 114              	HAL_SPI_MspInit:
+ 115              	.LVL2:
+ 116              	.LFB131:
+  53:Src/spi.c     **** 
+  54:Src/spi.c     **** void HAL_SPI_MspInit(SPI_HandleTypeDef* spiHandle)
+  55:Src/spi.c     **** {
+ 117              		.loc 1 55 1 is_stmt 1 view -0
+ 118              		.cfi_startproc
+ARM GAS  C:\Temp\ccgaH55H.s 			page 4
+
+
+ 119              		@ args = 0, pretend = 0, frame = 32
+ 120              		@ frame_needed = 0, uses_anonymous_args = 0
+ 121              		.loc 1 55 1 is_stmt 0 view .LVU32
+ 122 0000 30B5     		push	{r4, r5, lr}
+ 123              	.LCFI1:
+ 124              		.cfi_def_cfa_offset 12
+ 125              		.cfi_offset 4, -12
+ 126              		.cfi_offset 5, -8
+ 127              		.cfi_offset 14, -4
+ 128 0002 89B0     		sub	sp, sp, #36
+ 129              	.LCFI2:
+ 130              		.cfi_def_cfa_offset 48
+  56:Src/spi.c     **** 
+  57:Src/spi.c     ****   GPIO_InitTypeDef GPIO_InitStruct = {0};
+ 131              		.loc 1 57 3 is_stmt 1 view .LVU33
+ 132              		.loc 1 57 20 is_stmt 0 view .LVU34
+ 133 0004 0023     		movs	r3, #0
+ 134 0006 0393     		str	r3, [sp, #12]
+ 135 0008 0493     		str	r3, [sp, #16]
+ 136 000a 0593     		str	r3, [sp, #20]
+ 137 000c 0693     		str	r3, [sp, #24]
+ 138 000e 0793     		str	r3, [sp, #28]
+  58:Src/spi.c     ****   if(spiHandle->Instance==SPI2)
+ 139              		.loc 1 58 3 is_stmt 1 view .LVU35
+ 140              		.loc 1 58 15 is_stmt 0 view .LVU36
+ 141 0010 0268     		ldr	r2, [r0]
+ 142              		.loc 1 58 5 view .LVU37
+ 143 0012 304B     		ldr	r3, .L15
+ 144 0014 9A42     		cmp	r2, r3
+ 145 0016 01D0     		beq	.L12
+ 146              	.LVL3:
+ 147              	.L7:
+  59:Src/spi.c     ****   {
+  60:Src/spi.c     ****   /* USER CODE BEGIN SPI2_MspInit 0 */
+  61:Src/spi.c     **** 
+  62:Src/spi.c     ****   /* USER CODE END SPI2_MspInit 0 */
+  63:Src/spi.c     ****     /* SPI2 clock enable */
+  64:Src/spi.c     ****     __HAL_RCC_SPI2_CLK_ENABLE();
+  65:Src/spi.c     ****   
+  66:Src/spi.c     ****     __HAL_RCC_GPIOB_CLK_ENABLE();
+  67:Src/spi.c     ****     /**SPI2 GPIO Configuration    
+  68:Src/spi.c     ****     PB13     ------> SPI2_SCK
+  69:Src/spi.c     ****     PB14     ------> SPI2_MISO
+  70:Src/spi.c     ****     PB15     ------> SPI2_MOSI 
+  71:Src/spi.c     ****     */
+  72:Src/spi.c     ****     GPIO_InitStruct.Pin = GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_15;
+  73:Src/spi.c     ****     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+  74:Src/spi.c     ****     GPIO_InitStruct.Pull = GPIO_NOPULL;
+  75:Src/spi.c     ****     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+  76:Src/spi.c     ****     GPIO_InitStruct.Alternate = GPIO_AF5_SPI2;
+  77:Src/spi.c     ****     HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+  78:Src/spi.c     **** 
+  79:Src/spi.c     ****     /* SPI2 DMA Init */
+  80:Src/spi.c     ****     /* SPI2_RX Init */
+  81:Src/spi.c     ****     hdma_spi2_rx.Instance = DMA1_Stream3;
+  82:Src/spi.c     ****     hdma_spi2_rx.Init.Channel = DMA_CHANNEL_0;
+  83:Src/spi.c     ****     hdma_spi2_rx.Init.Direction = DMA_PERIPH_TO_MEMORY;
+ARM GAS  C:\Temp\ccgaH55H.s 			page 5
+
+
+  84:Src/spi.c     ****     hdma_spi2_rx.Init.PeriphInc = DMA_PINC_DISABLE;
+  85:Src/spi.c     ****     hdma_spi2_rx.Init.MemInc = DMA_MINC_ENABLE;
+  86:Src/spi.c     ****     hdma_spi2_rx.Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
+  87:Src/spi.c     ****     hdma_spi2_rx.Init.MemDataAlignment = DMA_MDATAALIGN_BYTE;
+  88:Src/spi.c     ****     hdma_spi2_rx.Init.Mode = DMA_NORMAL;
+  89:Src/spi.c     ****     hdma_spi2_rx.Init.Priority = DMA_PRIORITY_HIGH;
+  90:Src/spi.c     ****     hdma_spi2_rx.Init.FIFOMode = DMA_FIFOMODE_DISABLE;
+  91:Src/spi.c     ****     if (HAL_DMA_Init(&hdma_spi2_rx) != HAL_OK)
+  92:Src/spi.c     ****     {
+  93:Src/spi.c     ****       Error_Handler();
+  94:Src/spi.c     ****     }
+  95:Src/spi.c     **** 
+  96:Src/spi.c     ****     __HAL_LINKDMA(spiHandle,hdmarx,hdma_spi2_rx);
+  97:Src/spi.c     **** 
+  98:Src/spi.c     ****     /* SPI2_TX Init */
+  99:Src/spi.c     ****     hdma_spi2_tx.Instance = DMA1_Stream4;
+ 100:Src/spi.c     ****     hdma_spi2_tx.Init.Channel = DMA_CHANNEL_0;
+ 101:Src/spi.c     ****     hdma_spi2_tx.Init.Direction = DMA_MEMORY_TO_PERIPH;
+ 102:Src/spi.c     ****     hdma_spi2_tx.Init.PeriphInc = DMA_PINC_DISABLE;
+ 103:Src/spi.c     ****     hdma_spi2_tx.Init.MemInc = DMA_MINC_ENABLE;
+ 104:Src/spi.c     ****     hdma_spi2_tx.Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
+ 105:Src/spi.c     ****     hdma_spi2_tx.Init.MemDataAlignment = DMA_MDATAALIGN_BYTE;
+ 106:Src/spi.c     ****     hdma_spi2_tx.Init.Mode = DMA_NORMAL;
+ 107:Src/spi.c     ****     hdma_spi2_tx.Init.Priority = DMA_PRIORITY_HIGH;
+ 108:Src/spi.c     ****     hdma_spi2_tx.Init.FIFOMode = DMA_FIFOMODE_DISABLE;
+ 109:Src/spi.c     ****     if (HAL_DMA_Init(&hdma_spi2_tx) != HAL_OK)
+ 110:Src/spi.c     ****     {
+ 111:Src/spi.c     ****       Error_Handler();
+ 112:Src/spi.c     ****     }
+ 113:Src/spi.c     **** 
+ 114:Src/spi.c     ****     __HAL_LINKDMA(spiHandle,hdmatx,hdma_spi2_tx);
+ 115:Src/spi.c     **** 
+ 116:Src/spi.c     ****   /* USER CODE BEGIN SPI2_MspInit 1 */
+ 117:Src/spi.c     **** 
+ 118:Src/spi.c     ****   /* USER CODE END SPI2_MspInit 1 */
+ 119:Src/spi.c     ****   }
+ 120:Src/spi.c     **** }
+ 148              		.loc 1 120 1 view .LVU38
+ 149 0018 09B0     		add	sp, sp, #36
+ 150              	.LCFI3:
+ 151              		.cfi_remember_state
+ 152              		.cfi_def_cfa_offset 12
+ 153              		@ sp needed
+ 154 001a 30BD     		pop	{r4, r5, pc}
+ 155              	.LVL4:
+ 156              	.L12:
+ 157              	.LCFI4:
+ 158              		.cfi_restore_state
+ 159              		.loc 1 120 1 view .LVU39
+ 160 001c 0446     		mov	r4, r0
+  64:Src/spi.c     ****   
+ 161              		.loc 1 64 5 is_stmt 1 view .LVU40
+ 162              	.LBB2:
+  64:Src/spi.c     ****   
+ 163              		.loc 1 64 5 view .LVU41
+ 164 001e 0025     		movs	r5, #0
+ 165 0020 0195     		str	r5, [sp, #4]
+ARM GAS  C:\Temp\ccgaH55H.s 			page 6
+
+
+  64:Src/spi.c     ****   
+ 166              		.loc 1 64 5 view .LVU42
+ 167 0022 03F50033 		add	r3, r3, #131072
+ 168 0026 1A6C     		ldr	r2, [r3, #64]
+ 169 0028 42F48042 		orr	r2, r2, #16384
+ 170 002c 1A64     		str	r2, [r3, #64]
+  64:Src/spi.c     ****   
+ 171              		.loc 1 64 5 view .LVU43
+ 172 002e 1A6C     		ldr	r2, [r3, #64]
+ 173 0030 02F48042 		and	r2, r2, #16384
+ 174 0034 0192     		str	r2, [sp, #4]
+  64:Src/spi.c     ****   
+ 175              		.loc 1 64 5 view .LVU44
+ 176 0036 019A     		ldr	r2, [sp, #4]
+ 177              	.LBE2:
+  64:Src/spi.c     ****   
+ 178              		.loc 1 64 5 view .LVU45
+  66:Src/spi.c     ****     /**SPI2 GPIO Configuration    
+ 179              		.loc 1 66 5 view .LVU46
+ 180              	.LBB3:
+  66:Src/spi.c     ****     /**SPI2 GPIO Configuration    
+ 181              		.loc 1 66 5 view .LVU47
+ 182 0038 0295     		str	r5, [sp, #8]
+  66:Src/spi.c     ****     /**SPI2 GPIO Configuration    
+ 183              		.loc 1 66 5 view .LVU48
+ 184 003a 1A6B     		ldr	r2, [r3, #48]
+ 185 003c 42F00202 		orr	r2, r2, #2
+ 186 0040 1A63     		str	r2, [r3, #48]
+  66:Src/spi.c     ****     /**SPI2 GPIO Configuration    
+ 187              		.loc 1 66 5 view .LVU49
+ 188 0042 1B6B     		ldr	r3, [r3, #48]
+ 189 0044 03F00203 		and	r3, r3, #2
+ 190 0048 0293     		str	r3, [sp, #8]
+  66:Src/spi.c     ****     /**SPI2 GPIO Configuration    
+ 191              		.loc 1 66 5 view .LVU50
+ 192 004a 029B     		ldr	r3, [sp, #8]
+ 193              	.LBE3:
+  66:Src/spi.c     ****     /**SPI2 GPIO Configuration    
+ 194              		.loc 1 66 5 view .LVU51
+  72:Src/spi.c     ****     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+ 195              		.loc 1 72 5 view .LVU52
+  72:Src/spi.c     ****     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+ 196              		.loc 1 72 25 is_stmt 0 view .LVU53
+ 197 004c 4FF46043 		mov	r3, #57344
+ 198 0050 0393     		str	r3, [sp, #12]
+  73:Src/spi.c     ****     GPIO_InitStruct.Pull = GPIO_NOPULL;
+ 199              		.loc 1 73 5 is_stmt 1 view .LVU54
+  73:Src/spi.c     ****     GPIO_InitStruct.Pull = GPIO_NOPULL;
+ 200              		.loc 1 73 26 is_stmt 0 view .LVU55
+ 201 0052 0223     		movs	r3, #2
+ 202 0054 0493     		str	r3, [sp, #16]
+  74:Src/spi.c     ****     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+ 203              		.loc 1 74 5 is_stmt 1 view .LVU56
+  74:Src/spi.c     ****     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+ 204              		.loc 1 74 26 is_stmt 0 view .LVU57
+ 205 0056 0595     		str	r5, [sp, #20]
+  75:Src/spi.c     ****     GPIO_InitStruct.Alternate = GPIO_AF5_SPI2;
+ARM GAS  C:\Temp\ccgaH55H.s 			page 7
+
+
+ 206              		.loc 1 75 5 is_stmt 1 view .LVU58
+  75:Src/spi.c     ****     GPIO_InitStruct.Alternate = GPIO_AF5_SPI2;
+ 207              		.loc 1 75 27 is_stmt 0 view .LVU59
+ 208 0058 0323     		movs	r3, #3
+ 209 005a 0693     		str	r3, [sp, #24]
+  76:Src/spi.c     ****     HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+ 210              		.loc 1 76 5 is_stmt 1 view .LVU60
+  76:Src/spi.c     ****     HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+ 211              		.loc 1 76 31 is_stmt 0 view .LVU61
+ 212 005c 0523     		movs	r3, #5
+ 213 005e 0793     		str	r3, [sp, #28]
+  77:Src/spi.c     **** 
+ 214              		.loc 1 77 5 is_stmt 1 view .LVU62
+ 215 0060 03A9     		add	r1, sp, #12
+ 216 0062 1D48     		ldr	r0, .L15+4
+ 217              	.LVL5:
+  77:Src/spi.c     **** 
+ 218              		.loc 1 77 5 is_stmt 0 view .LVU63
+ 219 0064 FFF7FEFF 		bl	HAL_GPIO_Init
+ 220              	.LVL6:
+  81:Src/spi.c     ****     hdma_spi2_rx.Init.Channel = DMA_CHANNEL_0;
+ 221              		.loc 1 81 5 is_stmt 1 view .LVU64
+  81:Src/spi.c     ****     hdma_spi2_rx.Init.Channel = DMA_CHANNEL_0;
+ 222              		.loc 1 81 27 is_stmt 0 view .LVU65
+ 223 0068 1C48     		ldr	r0, .L15+8
+ 224 006a 1D4B     		ldr	r3, .L15+12
+ 225 006c 0360     		str	r3, [r0]
+  82:Src/spi.c     ****     hdma_spi2_rx.Init.Direction = DMA_PERIPH_TO_MEMORY;
+ 226              		.loc 1 82 5 is_stmt 1 view .LVU66
+  82:Src/spi.c     ****     hdma_spi2_rx.Init.Direction = DMA_PERIPH_TO_MEMORY;
+ 227              		.loc 1 82 31 is_stmt 0 view .LVU67
+ 228 006e 4560     		str	r5, [r0, #4]
+  83:Src/spi.c     ****     hdma_spi2_rx.Init.PeriphInc = DMA_PINC_DISABLE;
+ 229              		.loc 1 83 5 is_stmt 1 view .LVU68
+  83:Src/spi.c     ****     hdma_spi2_rx.Init.PeriphInc = DMA_PINC_DISABLE;
+ 230              		.loc 1 83 33 is_stmt 0 view .LVU69
+ 231 0070 8560     		str	r5, [r0, #8]
+  84:Src/spi.c     ****     hdma_spi2_rx.Init.MemInc = DMA_MINC_ENABLE;
+ 232              		.loc 1 84 5 is_stmt 1 view .LVU70
+  84:Src/spi.c     ****     hdma_spi2_rx.Init.MemInc = DMA_MINC_ENABLE;
+ 233              		.loc 1 84 33 is_stmt 0 view .LVU71
+ 234 0072 C560     		str	r5, [r0, #12]
+  85:Src/spi.c     ****     hdma_spi2_rx.Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
+ 235              		.loc 1 85 5 is_stmt 1 view .LVU72
+  85:Src/spi.c     ****     hdma_spi2_rx.Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
+ 236              		.loc 1 85 30 is_stmt 0 view .LVU73
+ 237 0074 4FF48063 		mov	r3, #1024
+ 238 0078 0361     		str	r3, [r0, #16]
+  86:Src/spi.c     ****     hdma_spi2_rx.Init.MemDataAlignment = DMA_MDATAALIGN_BYTE;
+ 239              		.loc 1 86 5 is_stmt 1 view .LVU74
+  86:Src/spi.c     ****     hdma_spi2_rx.Init.MemDataAlignment = DMA_MDATAALIGN_BYTE;
+ 240              		.loc 1 86 43 is_stmt 0 view .LVU75
+ 241 007a 4561     		str	r5, [r0, #20]
+  87:Src/spi.c     ****     hdma_spi2_rx.Init.Mode = DMA_NORMAL;
+ 242              		.loc 1 87 5 is_stmt 1 view .LVU76
+  87:Src/spi.c     ****     hdma_spi2_rx.Init.Mode = DMA_NORMAL;
+ 243              		.loc 1 87 40 is_stmt 0 view .LVU77
+ARM GAS  C:\Temp\ccgaH55H.s 			page 8
+
+
+ 244 007c 8561     		str	r5, [r0, #24]
+  88:Src/spi.c     ****     hdma_spi2_rx.Init.Priority = DMA_PRIORITY_HIGH;
+ 245              		.loc 1 88 5 is_stmt 1 view .LVU78
+  88:Src/spi.c     ****     hdma_spi2_rx.Init.Priority = DMA_PRIORITY_HIGH;
+ 246              		.loc 1 88 28 is_stmt 0 view .LVU79
+ 247 007e C561     		str	r5, [r0, #28]
+  89:Src/spi.c     ****     hdma_spi2_rx.Init.FIFOMode = DMA_FIFOMODE_DISABLE;
+ 248              		.loc 1 89 5 is_stmt 1 view .LVU80
+  89:Src/spi.c     ****     hdma_spi2_rx.Init.FIFOMode = DMA_FIFOMODE_DISABLE;
+ 249              		.loc 1 89 32 is_stmt 0 view .LVU81
+ 250 0080 4FF40033 		mov	r3, #131072
+ 251 0084 0362     		str	r3, [r0, #32]
+  90:Src/spi.c     ****     if (HAL_DMA_Init(&hdma_spi2_rx) != HAL_OK)
+ 252              		.loc 1 90 5 is_stmt 1 view .LVU82
+  90:Src/spi.c     ****     if (HAL_DMA_Init(&hdma_spi2_rx) != HAL_OK)
+ 253              		.loc 1 90 32 is_stmt 0 view .LVU83
+ 254 0086 4562     		str	r5, [r0, #36]
+  91:Src/spi.c     ****     {
+ 255              		.loc 1 91 5 is_stmt 1 view .LVU84
+  91:Src/spi.c     ****     {
+ 256              		.loc 1 91 9 is_stmt 0 view .LVU85
+ 257 0088 FFF7FEFF 		bl	HAL_DMA_Init
+ 258              	.LVL7:
+  91:Src/spi.c     ****     {
+ 259              		.loc 1 91 8 view .LVU86
+ 260 008c D8B9     		cbnz	r0, .L13
+ 261              	.L9:
+  96:Src/spi.c     **** 
+ 262              		.loc 1 96 5 is_stmt 1 view .LVU87
+  96:Src/spi.c     **** 
+ 263              		.loc 1 96 5 view .LVU88
+ 264 008e 134B     		ldr	r3, .L15+8
+ 265 0090 E364     		str	r3, [r4, #76]
+  96:Src/spi.c     **** 
+ 266              		.loc 1 96 5 view .LVU89
+ 267 0092 9C63     		str	r4, [r3, #56]
+  96:Src/spi.c     **** 
+ 268              		.loc 1 96 5 view .LVU90
+  99:Src/spi.c     ****     hdma_spi2_tx.Init.Channel = DMA_CHANNEL_0;
+ 269              		.loc 1 99 5 view .LVU91
+  99:Src/spi.c     ****     hdma_spi2_tx.Init.Channel = DMA_CHANNEL_0;
+ 270              		.loc 1 99 27 is_stmt 0 view .LVU92
+ 271 0094 1348     		ldr	r0, .L15+16
+ 272 0096 144B     		ldr	r3, .L15+20
+ 273 0098 0360     		str	r3, [r0]
+ 100:Src/spi.c     ****     hdma_spi2_tx.Init.Direction = DMA_MEMORY_TO_PERIPH;
+ 274              		.loc 1 100 5 is_stmt 1 view .LVU93
+ 100:Src/spi.c     ****     hdma_spi2_tx.Init.Direction = DMA_MEMORY_TO_PERIPH;
+ 275              		.loc 1 100 31 is_stmt 0 view .LVU94
+ 276 009a 0023     		movs	r3, #0
+ 277 009c 4360     		str	r3, [r0, #4]
+ 101:Src/spi.c     ****     hdma_spi2_tx.Init.PeriphInc = DMA_PINC_DISABLE;
+ 278              		.loc 1 101 5 is_stmt 1 view .LVU95
+ 101:Src/spi.c     ****     hdma_spi2_tx.Init.PeriphInc = DMA_PINC_DISABLE;
+ 279              		.loc 1 101 33 is_stmt 0 view .LVU96
+ 280 009e 4022     		movs	r2, #64
+ 281 00a0 8260     		str	r2, [r0, #8]
+ARM GAS  C:\Temp\ccgaH55H.s 			page 9
+
+
+ 102:Src/spi.c     ****     hdma_spi2_tx.Init.MemInc = DMA_MINC_ENABLE;
+ 282              		.loc 1 102 5 is_stmt 1 view .LVU97
+ 102:Src/spi.c     ****     hdma_spi2_tx.Init.MemInc = DMA_MINC_ENABLE;
+ 283              		.loc 1 102 33 is_stmt 0 view .LVU98
+ 284 00a2 C360     		str	r3, [r0, #12]
+ 103:Src/spi.c     ****     hdma_spi2_tx.Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
+ 285              		.loc 1 103 5 is_stmt 1 view .LVU99
+ 103:Src/spi.c     ****     hdma_spi2_tx.Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
+ 286              		.loc 1 103 30 is_stmt 0 view .LVU100
+ 287 00a4 4FF48062 		mov	r2, #1024
+ 288 00a8 0261     		str	r2, [r0, #16]
+ 104:Src/spi.c     ****     hdma_spi2_tx.Init.MemDataAlignment = DMA_MDATAALIGN_BYTE;
+ 289              		.loc 1 104 5 is_stmt 1 view .LVU101
+ 104:Src/spi.c     ****     hdma_spi2_tx.Init.MemDataAlignment = DMA_MDATAALIGN_BYTE;
+ 290              		.loc 1 104 43 is_stmt 0 view .LVU102
+ 291 00aa 4361     		str	r3, [r0, #20]
+ 105:Src/spi.c     ****     hdma_spi2_tx.Init.Mode = DMA_NORMAL;
+ 292              		.loc 1 105 5 is_stmt 1 view .LVU103
+ 105:Src/spi.c     ****     hdma_spi2_tx.Init.Mode = DMA_NORMAL;
+ 293              		.loc 1 105 40 is_stmt 0 view .LVU104
+ 294 00ac 8361     		str	r3, [r0, #24]
+ 106:Src/spi.c     ****     hdma_spi2_tx.Init.Priority = DMA_PRIORITY_HIGH;
+ 295              		.loc 1 106 5 is_stmt 1 view .LVU105
+ 106:Src/spi.c     ****     hdma_spi2_tx.Init.Priority = DMA_PRIORITY_HIGH;
+ 296              		.loc 1 106 28 is_stmt 0 view .LVU106
+ 297 00ae C361     		str	r3, [r0, #28]
+ 107:Src/spi.c     ****     hdma_spi2_tx.Init.FIFOMode = DMA_FIFOMODE_DISABLE;
+ 298              		.loc 1 107 5 is_stmt 1 view .LVU107
+ 107:Src/spi.c     ****     hdma_spi2_tx.Init.FIFOMode = DMA_FIFOMODE_DISABLE;
+ 299              		.loc 1 107 32 is_stmt 0 view .LVU108
+ 300 00b0 4FF40032 		mov	r2, #131072
+ 301 00b4 0262     		str	r2, [r0, #32]
+ 108:Src/spi.c     ****     if (HAL_DMA_Init(&hdma_spi2_tx) != HAL_OK)
+ 302              		.loc 1 108 5 is_stmt 1 view .LVU109
+ 108:Src/spi.c     ****     if (HAL_DMA_Init(&hdma_spi2_tx) != HAL_OK)
+ 303              		.loc 1 108 32 is_stmt 0 view .LVU110
+ 304 00b6 4362     		str	r3, [r0, #36]
+ 109:Src/spi.c     ****     {
+ 305              		.loc 1 109 5 is_stmt 1 view .LVU111
+ 109:Src/spi.c     ****     {
+ 306              		.loc 1 109 9 is_stmt 0 view .LVU112
+ 307 00b8 FFF7FEFF 		bl	HAL_DMA_Init
+ 308              	.LVL8:
+ 109:Src/spi.c     ****     {
+ 309              		.loc 1 109 8 view .LVU113
+ 310 00bc 30B9     		cbnz	r0, .L14
+ 311              	.L10:
+ 114:Src/spi.c     **** 
+ 312              		.loc 1 114 5 is_stmt 1 view .LVU114
+ 114:Src/spi.c     **** 
+ 313              		.loc 1 114 5 view .LVU115
+ 314 00be 094B     		ldr	r3, .L15+16
+ 315 00c0 A364     		str	r3, [r4, #72]
+ 114:Src/spi.c     **** 
+ 316              		.loc 1 114 5 view .LVU116
+ 317 00c2 9C63     		str	r4, [r3, #56]
+ 114:Src/spi.c     **** 
+ARM GAS  C:\Temp\ccgaH55H.s 			page 10
+
+
+ 318              		.loc 1 114 5 view .LVU117
+ 319              		.loc 1 120 1 is_stmt 0 view .LVU118
+ 320 00c4 A8E7     		b	.L7
+ 321              	.L13:
+  93:Src/spi.c     ****     }
+ 322              		.loc 1 93 7 is_stmt 1 view .LVU119
+ 323 00c6 FFF7FEFF 		bl	Error_Handler
+ 324              	.LVL9:
+ 325 00ca E0E7     		b	.L9
+ 326              	.L14:
+ 111:Src/spi.c     ****     }
+ 327              		.loc 1 111 7 view .LVU120
+ 328 00cc FFF7FEFF 		bl	Error_Handler
+ 329              	.LVL10:
+ 330 00d0 F5E7     		b	.L10
+ 331              	.L16:
+ 332 00d2 00BF     		.align	2
+ 333              	.L15:
+ 334 00d4 00380040 		.word	1073756160
+ 335 00d8 00040240 		.word	1073873920
+ 336 00dc 00000000 		.word	hdma_spi2_rx
+ 337 00e0 58600240 		.word	1073897560
+ 338 00e4 00000000 		.word	hdma_spi2_tx
+ 339 00e8 70600240 		.word	1073897584
+ 340              		.cfi_endproc
+ 341              	.LFE131:
+ 343              		.section	.text.HAL_SPI_MspDeInit,"ax",%progbits
+ 344              		.align	1
+ 345              		.global	HAL_SPI_MspDeInit
+ 346              		.syntax unified
+ 347              		.thumb
+ 348              		.thumb_func
+ 349              		.fpu fpv4-sp-d16
+ 351              	HAL_SPI_MspDeInit:
+ 352              	.LVL11:
+ 353              	.LFB132:
+ 121:Src/spi.c     **** 
+ 122:Src/spi.c     **** void HAL_SPI_MspDeInit(SPI_HandleTypeDef* spiHandle)
+ 123:Src/spi.c     **** {
+ 354              		.loc 1 123 1 view -0
+ 355              		.cfi_startproc
+ 356              		@ args = 0, pretend = 0, frame = 0
+ 357              		@ frame_needed = 0, uses_anonymous_args = 0
+ 124:Src/spi.c     **** 
+ 125:Src/spi.c     ****   if(spiHandle->Instance==SPI2)
+ 358              		.loc 1 125 3 view .LVU122
+ 359              		.loc 1 125 15 is_stmt 0 view .LVU123
+ 360 0000 0268     		ldr	r2, [r0]
+ 361              		.loc 1 125 5 view .LVU124
+ 362 0002 0B4B     		ldr	r3, .L24
+ 363 0004 9A42     		cmp	r2, r3
+ 364 0006 00D0     		beq	.L23
+ 365 0008 7047     		bx	lr
+ 366              	.L23:
+ 123:Src/spi.c     **** 
+ 367              		.loc 1 123 1 view .LVU125
+ 368 000a 10B5     		push	{r4, lr}
+ARM GAS  C:\Temp\ccgaH55H.s 			page 11
+
+
+ 369              	.LCFI5:
+ 370              		.cfi_def_cfa_offset 8
+ 371              		.cfi_offset 4, -8
+ 372              		.cfi_offset 14, -4
+ 373 000c 0446     		mov	r4, r0
+ 126:Src/spi.c     ****   {
+ 127:Src/spi.c     ****   /* USER CODE BEGIN SPI2_MspDeInit 0 */
+ 128:Src/spi.c     **** 
+ 129:Src/spi.c     ****   /* USER CODE END SPI2_MspDeInit 0 */
+ 130:Src/spi.c     ****     /* Peripheral clock disable */
+ 131:Src/spi.c     ****     __HAL_RCC_SPI2_CLK_DISABLE();
+ 374              		.loc 1 131 5 is_stmt 1 view .LVU126
+ 375 000e 094A     		ldr	r2, .L24+4
+ 376 0010 136C     		ldr	r3, [r2, #64]
+ 377 0012 23F48043 		bic	r3, r3, #16384
+ 378 0016 1364     		str	r3, [r2, #64]
+ 132:Src/spi.c     ****   
+ 133:Src/spi.c     ****     /**SPI2 GPIO Configuration    
+ 134:Src/spi.c     ****     PB13     ------> SPI2_SCK
+ 135:Src/spi.c     ****     PB14     ------> SPI2_MISO
+ 136:Src/spi.c     ****     PB15     ------> SPI2_MOSI 
+ 137:Src/spi.c     ****     */
+ 138:Src/spi.c     ****     HAL_GPIO_DeInit(GPIOB, GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_15);
+ 379              		.loc 1 138 5 view .LVU127
+ 380 0018 4FF46041 		mov	r1, #57344
+ 381 001c 0648     		ldr	r0, .L24+8
+ 382              	.LVL12:
+ 383              		.loc 1 138 5 is_stmt 0 view .LVU128
+ 384 001e FFF7FEFF 		bl	HAL_GPIO_DeInit
+ 385              	.LVL13:
+ 139:Src/spi.c     **** 
+ 140:Src/spi.c     ****     /* SPI2 DMA DeInit */
+ 141:Src/spi.c     ****     HAL_DMA_DeInit(spiHandle->hdmarx);
+ 386              		.loc 1 141 5 is_stmt 1 view .LVU129
+ 387 0022 E06C     		ldr	r0, [r4, #76]
+ 388 0024 FFF7FEFF 		bl	HAL_DMA_DeInit
+ 389              	.LVL14:
+ 142:Src/spi.c     ****     HAL_DMA_DeInit(spiHandle->hdmatx);
+ 390              		.loc 1 142 5 view .LVU130
+ 391 0028 A06C     		ldr	r0, [r4, #72]
+ 392 002a FFF7FEFF 		bl	HAL_DMA_DeInit
+ 393              	.LVL15:
+ 143:Src/spi.c     ****   /* USER CODE BEGIN SPI2_MspDeInit 1 */
+ 144:Src/spi.c     **** 
+ 145:Src/spi.c     ****   /* USER CODE END SPI2_MspDeInit 1 */
+ 146:Src/spi.c     ****   }
+ 147:Src/spi.c     **** } 
+ 394              		.loc 1 147 1 is_stmt 0 view .LVU131
+ 395 002e 10BD     		pop	{r4, pc}
+ 396              	.LVL16:
+ 397              	.L25:
+ 398              		.loc 1 147 1 view .LVU132
+ 399              		.align	2
+ 400              	.L24:
+ 401 0030 00380040 		.word	1073756160
+ 402 0034 00380240 		.word	1073887232
+ 403 0038 00040240 		.word	1073873920
+ARM GAS  C:\Temp\ccgaH55H.s 			page 12
+
+
+ 404              		.cfi_endproc
+ 405              	.LFE132:
+ 407              		.comm	hdma_spi2_tx,96,4
+ 408              		.comm	hdma_spi2_rx,96,4
+ 409              		.comm	hspi2,88,4
+ 410              		.text
+ 411              	.Letext0:
+ 412              		.file 2 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\machine\\_default_t
+ 413              		.file 3 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 414              		.file 4 "Drivers/CMSIS/Include/core_cm4.h"
+ 415              		.file 5 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h"
+ 416              		.file 6 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f413xx.h"
+ 417              		.file 7 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
+ 418              		.file 8 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio.h"
+ 419              		.file 9 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h"
+ 420              		.file 10 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h"
+ 421              		.file 11 "Inc/spi.h"
+ 422              		.file 12 "Inc/main.h"
+ARM GAS  C:\Temp\ccgaH55H.s 			page 13
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 spi.c
+  C:\Temp\ccgaH55H.s:18     .text.MX_SPI2_Init:00000000 $t
+  C:\Temp\ccgaH55H.s:26     .text.MX_SPI2_Init:00000000 MX_SPI2_Init
+  C:\Temp\ccgaH55H.s:101    .text.MX_SPI2_Init:00000040 $d
+                            *COM*:00000058 hspi2
+  C:\Temp\ccgaH55H.s:107    .text.HAL_SPI_MspInit:00000000 $t
+  C:\Temp\ccgaH55H.s:114    .text.HAL_SPI_MspInit:00000000 HAL_SPI_MspInit
+  C:\Temp\ccgaH55H.s:334    .text.HAL_SPI_MspInit:000000d4 $d
+                            *COM*:00000060 hdma_spi2_rx
+                            *COM*:00000060 hdma_spi2_tx
+  C:\Temp\ccgaH55H.s:344    .text.HAL_SPI_MspDeInit:00000000 $t
+  C:\Temp\ccgaH55H.s:351    .text.HAL_SPI_MspDeInit:00000000 HAL_SPI_MspDeInit
+  C:\Temp\ccgaH55H.s:401    .text.HAL_SPI_MspDeInit:00000030 $d
+
+UNDEFINED SYMBOLS
+HAL_SPI_Init
+Error_Handler
+HAL_GPIO_Init
+HAL_DMA_Init
+HAL_GPIO_DeInit
+HAL_DMA_DeInit

@@ -1,0 +1,285 @@
+ARM GAS  C:\Temp\cceAaOAd.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"communication.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.Communication_Initialize,"ax",%progbits
+  18              		.align	1
+  19              		.global	Communication_Initialize
+  20              		.arch armv7e-m
+  21              		.syntax unified
+  22              		.thumb
+  23              		.thumb_func
+  24              		.fpu fpv4-sp-d16
+  26              	Communication_Initialize:
+  27              	.LFB133:
+  28              		.file 1 "Src/communication.c"
+   1:Src/communication.c **** /*
+   2:Src/communication.c ****  * communication.c
+   3:Src/communication.c ****  *
+   4:Src/communication.c ****  *  Created on: Jul 14, 2019
+   5:Src/communication.c ****  *      Author: 岡田 泰裕
+   6:Src/communication.c ****  */
+   7:Src/communication.c **** 
+   8:Src/communication.c **** 
+   9:Src/communication.c **** 
+  10:Src/communication.c **** #include "index.h"
+  11:Src/communication.c **** 
+  12:Src/communication.c **** /* ---------------------------------------------------------------
+  13:Src/communication.c **** 	printfとscanfを使用するための設定
+  14:Src/communication.c **** --------------------------------------------------------------- */
+  15:Src/communication.c **** void Communication_Initialize( void )
+  16:Src/communication.c **** {
+  29              		.loc 1 16 1 view -0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33 0000 10B5     		push	{r4, lr}
+  34              	.LCFI0:
+  35              		.cfi_def_cfa_offset 8
+  36              		.cfi_offset 4, -8
+  37              		.cfi_offset 14, -4
+  17:Src/communication.c **** 	setbuf(stdout, NULL);
+  38              		.loc 1 17 2 view .LVU1
+  39              		.loc 1 17 9 is_stmt 0 view .LVU2
+  40 0002 084C     		ldr	r4, .L3
+  41 0004 2368     		ldr	r3, [r4]
+ARM GAS  C:\Temp\cceAaOAd.s 			page 2
+
+
+  42              		.loc 1 17 2 view .LVU3
+  43 0006 0021     		movs	r1, #0
+  44 0008 9868     		ldr	r0, [r3, #8]
+  45 000a FFF7FEFF 		bl	setbuf
+  46              	.LVL0:
+  18:Src/communication.c **** 	setbuf(stdin, NULL);
+  47              		.loc 1 18 2 is_stmt 1 view .LVU4
+  48              		.loc 1 18 9 is_stmt 0 view .LVU5
+  49 000e 2368     		ldr	r3, [r4]
+  50              		.loc 1 18 2 view .LVU6
+  51 0010 0021     		movs	r1, #0
+  52 0012 5868     		ldr	r0, [r3, #4]
+  53 0014 FFF7FEFF 		bl	setbuf
+  54              	.LVL1:
+  19:Src/communication.c **** 	setbuf(stderr, NULL);
+  55              		.loc 1 19 2 is_stmt 1 view .LVU7
+  56              		.loc 1 19 9 is_stmt 0 view .LVU8
+  57 0018 2368     		ldr	r3, [r4]
+  58              		.loc 1 19 2 view .LVU9
+  59 001a 0021     		movs	r1, #0
+  60 001c D868     		ldr	r0, [r3, #12]
+  61 001e FFF7FEFF 		bl	setbuf
+  62              	.LVL2:
+  20:Src/communication.c **** }
+  63              		.loc 1 20 1 view .LVU10
+  64 0022 10BD     		pop	{r4, pc}
+  65              	.L4:
+  66              		.align	2
+  67              	.L3:
+  68 0024 00000000 		.word	_impure_ptr
+  69              		.cfi_endproc
+  70              	.LFE133:
+  72              		.section	.text.__io_putchar,"ax",%progbits
+  73              		.align	1
+  74              		.global	__io_putchar
+  75              		.syntax unified
+  76              		.thumb
+  77              		.thumb_func
+  78              		.fpu fpv4-sp-d16
+  80              	__io_putchar:
+  81              	.LVL3:
+  82              	.LFB134:
+  21:Src/communication.c **** 
+  22:Src/communication.c **** /* ---------------------------------------------------------------
+  23:Src/communication.c **** 	printfを使用するための設定
+  24:Src/communication.c **** --------------------------------------------------------------- */
+  25:Src/communication.c **** #ifdef __GNUC__
+  26:Src/communication.c **** #define PUTCHAR_PROTOTYPE int __io_putchar(int ch)
+  27:Src/communication.c **** #else
+  28:Src/communication.c **** #define PUTCHAR_PROTOTYPE int fputc(int ch, FILE *f)
+  29:Src/communication.c **** #endif /* __GNUC__ */
+  30:Src/communication.c **** void __io_putchar(uint8_t ch) {
+  83              		.loc 1 30 31 is_stmt 1 view -0
+  84              		.cfi_startproc
+  85              		@ args = 0, pretend = 0, frame = 8
+  86              		@ frame_needed = 0, uses_anonymous_args = 0
+  87              		.loc 1 30 31 is_stmt 0 view .LVU12
+ARM GAS  C:\Temp\cceAaOAd.s 			page 3
+
+
+  88 0000 00B5     		push	{lr}
+  89              	.LCFI1:
+  90              		.cfi_def_cfa_offset 4
+  91              		.cfi_offset 14, -4
+  92 0002 83B0     		sub	sp, sp, #12
+  93              	.LCFI2:
+  94              		.cfi_def_cfa_offset 16
+  95 0004 8DF80700 		strb	r0, [sp, #7]
+  31:Src/communication.c **** HAL_UART_Transmit(&huart1/*使用しているusartに変更すること*/, &ch, 1, 1);
+  96              		.loc 1 31 1 is_stmt 1 view .LVU13
+  97 0008 0123     		movs	r3, #1
+  98 000a 1A46     		mov	r2, r3
+  99 000c 0DF10701 		add	r1, sp, #7
+ 100 0010 0248     		ldr	r0, .L7
+ 101              	.LVL4:
+ 102              		.loc 1 31 1 is_stmt 0 view .LVU14
+ 103 0012 FFF7FEFF 		bl	HAL_UART_Transmit
+ 104              	.LVL5:
+  32:Src/communication.c **** }
+ 105              		.loc 1 32 1 view .LVU15
+ 106 0016 03B0     		add	sp, sp, #12
+ 107              	.LCFI3:
+ 108              		.cfi_def_cfa_offset 4
+ 109              		@ sp needed
+ 110 0018 5DF804FB 		ldr	pc, [sp], #4
+ 111              	.L8:
+ 112              		.align	2
+ 113              	.L7:
+ 114 001c 00000000 		.word	huart1
+ 115              		.cfi_endproc
+ 116              	.LFE134:
+ 118              		.section	.text.__io_getchar,"ax",%progbits
+ 119              		.align	1
+ 120              		.global	__io_getchar
+ 121              		.syntax unified
+ 122              		.thumb
+ 123              		.thumb_func
+ 124              		.fpu fpv4-sp-d16
+ 126              	__io_getchar:
+ 127              	.LFB135:
+  33:Src/communication.c **** 
+  34:Src/communication.c **** 
+  35:Src/communication.c **** /* ---------------------------------------------------------------
+  36:Src/communication.c **** 	scanfを使用するための設定
+  37:Src/communication.c **** --------------------------------------------------------------- */
+  38:Src/communication.c **** #ifdef __GNUC__
+  39:Src/communication.c **** #define GETCHAR_PROTOTYPE int __io_getchar(void)
+  40:Src/communication.c **** #else
+  41:Src/communication.c **** #define GETCHAR_PROTOTYPE int fgetc(FILE *f)
+  42:Src/communication.c **** #endif /* __GNUC__ */
+  43:Src/communication.c **** int __io_getchar(void) {
+ 128              		.loc 1 43 24 is_stmt 1 view -0
+ 129              		.cfi_startproc
+ 130              		@ args = 0, pretend = 0, frame = 8
+ 131              		@ frame_needed = 0, uses_anonymous_args = 0
+ 132 0000 00B5     		push	{lr}
+ 133              	.LCFI4:
+ARM GAS  C:\Temp\cceAaOAd.s 			page 4
+
+
+ 134              		.cfi_def_cfa_offset 4
+ 135              		.cfi_offset 14, -4
+ 136 0002 83B0     		sub	sp, sp, #12
+ 137              	.LCFI5:
+ 138              		.cfi_def_cfa_offset 16
+  44:Src/communication.c **** HAL_StatusTypeDef Status = HAL_BUSY;
+ 139              		.loc 1 44 1 view .LVU17
+ 140              	.LVL6:
+  45:Src/communication.c **** uint8_t Data;
+ 141              		.loc 1 45 1 view .LVU18
+  46:Src/communication.c **** 
+  47:Src/communication.c **** while(Status != HAL_OK)
+ 142              		.loc 1 47 1 view .LVU19
+  44:Src/communication.c **** uint8_t Data;
+ 143              		.loc 1 44 19 is_stmt 0 view .LVU20
+ 144 0004 0220     		movs	r0, #2
+ 145              	.LVL7:
+ 146              	.L10:
+ 147              		.loc 1 47 6 is_stmt 1 view .LVU21
+ 148 0006 38B1     		cbz	r0, .L13
+  48:Src/communication.c **** Status = HAL_UART_Receive(&huart1, &Data, 1, 10);
+ 149              		.loc 1 48 1 view .LVU22
+ 150              		.loc 1 48 10 is_stmt 0 view .LVU23
+ 151 0008 0A23     		movs	r3, #10
+ 152 000a 0122     		movs	r2, #1
+ 153 000c 0DF10701 		add	r1, sp, #7
+ 154 0010 0448     		ldr	r0, .L14
+ 155              	.LVL8:
+ 156              		.loc 1 48 10 view .LVU24
+ 157 0012 FFF7FEFF 		bl	HAL_UART_Receive
+ 158              	.LVL9:
+ 159              		.loc 1 48 10 view .LVU25
+ 160 0016 F6E7     		b	.L10
+ 161              	.L13:
+  49:Src/communication.c **** 
+  50:Src/communication.c **** return(Data);
+ 162              		.loc 1 50 1 is_stmt 1 view .LVU26
+  51:Src/communication.c **** }
+ 163              		.loc 1 51 1 is_stmt 0 view .LVU27
+ 164 0018 9DF80700 		ldrb	r0, [sp, #7]	@ zero_extendqisi2
+ 165              	.LVL10:
+ 166              		.loc 1 51 1 view .LVU28
+ 167 001c 03B0     		add	sp, sp, #12
+ 168              	.LCFI6:
+ 169              		.cfi_def_cfa_offset 4
+ 170              		@ sp needed
+ 171 001e 5DF804FB 		ldr	pc, [sp], #4
+ 172              	.L15:
+ 173 0022 00BF     		.align	2
+ 174              	.L14:
+ 175 0024 00000000 		.word	huart1
+ 176              		.cfi_endproc
+ 177              	.LFE135:
+ 179              		.text
+ 180              	.Letext0:
+ 181              		.file 2 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\machine\\_default_t
+ 182              		.file 3 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\lock.h"
+ARM GAS  C:\Temp\cceAaOAd.s 			page 5
+
+
+ 183              		.file 4 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\_types.h"
+ 184              		.file 5 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\lib\\gcc\\arm-none-eabi\\9.2.1\\include\\st
+ 185              		.file 6 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\reent.h"
+ 186              		.file 7 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 187              		.file 8 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\math.h"
+ 188              		.file 9 "Drivers/CMSIS/Include/core_cm4.h"
+ 189              		.file 10 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h"
+ 190              		.file 11 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f413xx.h"
+ 191              		.file 12 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h"
+ 192              		.file 13 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
+ 193              		.file 14 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h"
+ 194              		.file 15 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_adc.h"
+ 195              		.file 16 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h"
+ 196              		.file 17 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h"
+ 197              		.file 18 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h"
+ 198              		.file 19 "Inc/adc.h"
+ 199              		.file 20 "Inc/spi.h"
+ 200              		.file 21 "Inc/tim.h"
+ 201              		.file 22 "Inc/usart.h"
+ 202              		.file 23 "Inc/index.h"
+ 203              		.file 24 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\stdio.h"
+ARM GAS  C:\Temp\cceAaOAd.s 			page 6
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 communication.c
+  C:\Temp\cceAaOAd.s:18     .text.Communication_Initialize:00000000 $t
+  C:\Temp\cceAaOAd.s:26     .text.Communication_Initialize:00000000 Communication_Initialize
+  C:\Temp\cceAaOAd.s:68     .text.Communication_Initialize:00000024 $d
+  C:\Temp\cceAaOAd.s:73     .text.__io_putchar:00000000 $t
+  C:\Temp\cceAaOAd.s:80     .text.__io_putchar:00000000 __io_putchar
+  C:\Temp\cceAaOAd.s:114    .text.__io_putchar:0000001c $d
+  C:\Temp\cceAaOAd.s:119    .text.__io_getchar:00000000 $t
+  C:\Temp\cceAaOAd.s:126    .text.__io_getchar:00000000 __io_getchar
+  C:\Temp\cceAaOAd.s:175    .text.__io_getchar:00000024 $d
+
+UNDEFINED SYMBOLS
+setbuf
+_impure_ptr
+HAL_UART_Transmit
+huart1
+HAL_UART_Receive
