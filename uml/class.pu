@@ -1,0 +1,19 @@
+@startuml
+title クラス図
+
+class 走行モード
+Class 目標軌道
+class 速度
+class エンコーダー
+class 角速度
+class ジャイロ
+class 補正モード
+class IRセンサ
+class 探索ロジック
+class 最短経路導出ロジック
+class 速度制御方式
+class 角速度制御方式
+class モータ
+
+
+@enduml
