@@ -1,0 +1,19 @@
+@startuml
+title ユースケース図
+left to right direction
+actor player
+actor developer
+developer -|> player
+
+rectangle マイクロマウス {
+ player-->(迷路を探索する)
+ (迷路を探索する)..>(迷路を記録する)
+ player-->(迷路を最短経路で走行する)
+ (迷路を最短経路で走行する)..>(最短経路を導出する)
+ developer--> (走行ログを記録する)
+ (走行ログを記録する)..>(走行ログを出力する)
+developer --> (デバッグモードに設定する)
+(デバッグモードに設定する)..>(パラメータを調整する)
+ }
+
+@enduml
