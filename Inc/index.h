@@ -21,6 +21,8 @@
 #include "gpio.h"
 
 /*extern 宣言*/
+
+
 extern uint8_t mode_number;	//mode番号
 extern uint8_t mode_number_int; //m モードごとの割り込みフラグ
 extern uint8_t mode_count;  //modeカウンタ
