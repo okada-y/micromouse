@@ -30,6 +30,9 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "index.h"
+//目指せindex脱却
+#include "mode.h"
+
 /*from matlab*/
 #include "maze_init.h"
 #include "maze_solve.h"
@@ -90,7 +93,7 @@ void SystemClock_Config(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-	  int16_t i = 0;
+	  int16_t i = 0; //簡易タイマ
 
   /* USER CODE END 1 */
   
@@ -141,41 +144,10 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-
-	  if(stanby_mode == 0)//mスタンバイモードでないとき
-	  {
-		  Sensor_StopADC();
-		  mode_count = 0;			//modeカウンタ初期化
-		  while(stanby_mode == 0){	//stanby_modeに入るまでモード選択可能
-		  mode_select();
-//		  printf("mode_number =%d\r\n", mode_number);
-		  stanby_mode = modechangejud_stanby();	//stanby_mode 移行判断
-		  }
-		  for(int i=0; i<2; i++){ //stanby移行時、LEDを2回点灯させ、IRセンサ起動
-		  HAL_GPIO_WritePin(GPIOA,LED2_Pin|LED3_Pin|LED4_Pin|LED5_Pin, GPIO_PIN_SET);
-		  HAL_Delay(700);
-		  HAL_GPIO_WritePin(GPIOA,LED2_Pin|LED3_Pin|LED4_Pin|LED5_Pin, GPIO_PIN_RESET);
-		  HAL_Delay(300);
-		  }
-
-		  Sensor_Initialize( );	//irsensor計測開始
-
-		  /*m右前センサをモード開始のスイッチとする。*/
-		  while(1)
-		  {
-			  if( Sensor_GetValue(3) >= 1500)
-				{
-				  HAL_Delay(500);
-					  break;
-				}
-		  }
-
-		  mode_number_int = mode_number; //m 各モードナンバごとの割り込みフラグ
-		  mode_number = 0;//m モードナンバの初期化
-	  }
-
+	mode_main();//モードの選定、開始処理
+		
 	  /*x ここからモードごとの処理に移行　 x*/
-	  switch(mode_number_int){
+	  switch(get_mode_number()){
 
 	  case 0://m データ吐き出し用
 //		  printf("mode0_start\r\n");
@@ -307,9 +279,6 @@ int main(void)
 
 	  }
 
-	  Sensor_StopADC();			//m sennsor停止
-	  stanby_mode = 0;			//m　モード選択処理に移行
-	  mode_number_int = 0;		//m　モードごとの割り込みフラグクリア
 	  Motor_SetDuty_Right(0);	//motor_r 停止
 	  Motor_SetDuty_Left(0);	//motor_l 停止
 
