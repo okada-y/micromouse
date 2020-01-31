@@ -1,4 +1,4 @@
-ARM GAS  C:\Temp\ccPjIKdo.s 			page 1
+ARM GAS  C:\Temp\cchCzCZC.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,7 +58,7 @@ ARM GAS  C:\Temp\ccPjIKdo.s 			page 1
   28:Src/spi.c     **** DMA_HandleTypeDef hdma_spi2_rx;
   29:Src/spi.c     **** DMA_HandleTypeDef hdma_spi2_tx;
   30:Src/spi.c     **** 
-ARM GAS  C:\Temp\ccPjIKdo.s 			page 2
+ARM GAS  C:\Temp\cchCzCZC.s 			page 2
 
 
   31:Src/spi.c     **** /* SPI2 init function */
@@ -118,7 +118,7 @@ ARM GAS  C:\Temp\ccPjIKdo.s 			page 1
   70              		.loc 1 43 3 is_stmt 1 view .LVU17
   71              		.loc 1 43 23 is_stmt 0 view .LVU18
   72 0026 0362     		str	r3, [r0, #32]
-ARM GAS  C:\Temp\ccPjIKdo.s 			page 3
+ARM GAS  C:\Temp\cchCzCZC.s 			page 3
 
 
   44:Src/spi.c     ****   hspi2.Init.TIMode = SPI_TIMODE_DISABLE;
@@ -178,7 +178,7 @@ ARM GAS  C:\Temp\ccPjIKdo.s 			page 1
   55:Src/spi.c     **** {
  117              		.loc 1 55 1 is_stmt 1 view -0
  118              		.cfi_startproc
-ARM GAS  C:\Temp\ccPjIKdo.s 			page 4
+ARM GAS  C:\Temp\cchCzCZC.s 			page 4
 
 
  119              		@ args = 0, pretend = 0, frame = 32
@@ -238,7 +238,7 @@ ARM GAS  C:\Temp\ccPjIKdo.s 			page 1
   81:Src/spi.c     ****     hdma_spi2_rx.Instance = DMA1_Stream3;
   82:Src/spi.c     ****     hdma_spi2_rx.Init.Channel = DMA_CHANNEL_0;
   83:Src/spi.c     ****     hdma_spi2_rx.Init.Direction = DMA_PERIPH_TO_MEMORY;
-ARM GAS  C:\Temp\ccPjIKdo.s 			page 5
+ARM GAS  C:\Temp\cchCzCZC.s 			page 5
 
 
   84:Src/spi.c     ****     hdma_spi2_rx.Init.PeriphInc = DMA_PINC_DISABLE;
@@ -298,7 +298,7 @@ ARM GAS  C:\Temp\ccPjIKdo.s 			page 1
  163              		.loc 1 64 5 view .LVU41
  164 001e 0025     		movs	r5, #0
  165 0020 0195     		str	r5, [sp, #4]
-ARM GAS  C:\Temp\ccPjIKdo.s 			page 6
+ARM GAS  C:\Temp\cchCzCZC.s 			page 6
 
 
   64:Src/spi.c     ****   
@@ -358,7 +358,7 @@ ARM GAS  C:\Temp\ccPjIKdo.s 			page 1
  204              		.loc 1 74 26 is_stmt 0 view .LVU57
  205 0056 0595     		str	r5, [sp, #20]
   75:Src/spi.c     ****     GPIO_InitStruct.Alternate = GPIO_AF5_SPI2;
-ARM GAS  C:\Temp\ccPjIKdo.s 			page 7
+ARM GAS  C:\Temp\cchCzCZC.s 			page 7
 
 
  206              		.loc 1 75 5 is_stmt 1 view .LVU58
@@ -418,7 +418,7 @@ ARM GAS  C:\Temp\ccPjIKdo.s 			page 1
  242              		.loc 1 87 5 is_stmt 1 view .LVU76
   87:Src/spi.c     ****     hdma_spi2_rx.Init.Mode = DMA_NORMAL;
  243              		.loc 1 87 40 is_stmt 0 view .LVU77
-ARM GAS  C:\Temp\ccPjIKdo.s 			page 8
+ARM GAS  C:\Temp\cchCzCZC.s 			page 8
 
 
  244 007c 8561     		str	r5, [r0, #24]
@@ -478,7 +478,7 @@ ARM GAS  C:\Temp\ccPjIKdo.s 			page 1
  279              		.loc 1 101 33 is_stmt 0 view .LVU96
  280 009e 4022     		movs	r2, #64
  281 00a0 8260     		str	r2, [r0, #8]
-ARM GAS  C:\Temp\ccPjIKdo.s 			page 9
+ARM GAS  C:\Temp\cchCzCZC.s 			page 9
 
 
  102:Src/spi.c     ****     hdma_spi2_tx.Init.MemInc = DMA_MINC_ENABLE;
@@ -538,7 +538,7 @@ ARM GAS  C:\Temp\ccPjIKdo.s 			page 1
  316              		.loc 1 114 5 view .LVU116
  317 00c2 9C63     		str	r4, [r3, #56]
  114:Src/spi.c     **** 
-ARM GAS  C:\Temp\ccPjIKdo.s 			page 10
+ARM GAS  C:\Temp\cchCzCZC.s 			page 10
 
 
  318              		.loc 1 114 5 view .LVU117
@@ -598,7 +598,7 @@ ARM GAS  C:\Temp\ccPjIKdo.s 			page 1
  123:Src/spi.c     **** 
  367              		.loc 1 123 1 view .LVU125
  368 000a 10B5     		push	{r4, lr}
-ARM GAS  C:\Temp\ccPjIKdo.s 			page 11
+ARM GAS  C:\Temp\cchCzCZC.s 			page 11
 
 
  369              	.LCFI5:
@@ -658,7 +658,7 @@ ARM GAS  C:\Temp\ccPjIKdo.s 			page 1
  401 0030 00380040 		.word	1073756160
  402 0034 00380240 		.word	1073887232
  403 0038 00040240 		.word	1073873920
-ARM GAS  C:\Temp\ccPjIKdo.s 			page 12
+ARM GAS  C:\Temp\cchCzCZC.s 			page 12
 
 
  404              		.cfi_endproc
@@ -679,23 +679,23 @@ ARM GAS  C:\Temp\ccPjIKdo.s 			page 1
  420              		.file 10 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h"
  421              		.file 11 "Inc/spi.h"
  422              		.file 12 "Inc/main.h"
-ARM GAS  C:\Temp\ccPjIKdo.s 			page 13
+ARM GAS  C:\Temp\cchCzCZC.s 			page 13
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 spi.c
-  C:\Temp\ccPjIKdo.s:18     .text.MX_SPI2_Init:00000000 $t
-  C:\Temp\ccPjIKdo.s:26     .text.MX_SPI2_Init:00000000 MX_SPI2_Init
-  C:\Temp\ccPjIKdo.s:101    .text.MX_SPI2_Init:00000040 $d
+  C:\Temp\cchCzCZC.s:18     .text.MX_SPI2_Init:00000000 $t
+  C:\Temp\cchCzCZC.s:26     .text.MX_SPI2_Init:00000000 MX_SPI2_Init
+  C:\Temp\cchCzCZC.s:101    .text.MX_SPI2_Init:00000040 $d
                             *COM*:00000058 hspi2
-  C:\Temp\ccPjIKdo.s:107    .text.HAL_SPI_MspInit:00000000 $t
-  C:\Temp\ccPjIKdo.s:114    .text.HAL_SPI_MspInit:00000000 HAL_SPI_MspInit
-  C:\Temp\ccPjIKdo.s:334    .text.HAL_SPI_MspInit:000000d4 $d
+  C:\Temp\cchCzCZC.s:107    .text.HAL_SPI_MspInit:00000000 $t
+  C:\Temp\cchCzCZC.s:114    .text.HAL_SPI_MspInit:00000000 HAL_SPI_MspInit
+  C:\Temp\cchCzCZC.s:334    .text.HAL_SPI_MspInit:000000d4 $d
                             *COM*:00000060 hdma_spi2_rx
                             *COM*:00000060 hdma_spi2_tx
-  C:\Temp\ccPjIKdo.s:344    .text.HAL_SPI_MspDeInit:00000000 $t
-  C:\Temp\ccPjIKdo.s:351    .text.HAL_SPI_MspDeInit:00000000 HAL_SPI_MspDeInit
-  C:\Temp\ccPjIKdo.s:401    .text.HAL_SPI_MspDeInit:00000030 $d
+  C:\Temp\cchCzCZC.s:344    .text.HAL_SPI_MspDeInit:00000000 $t
+  C:\Temp\cchCzCZC.s:351    .text.HAL_SPI_MspDeInit:00000000 HAL_SPI_MspDeInit
+  C:\Temp\cchCzCZC.s:401    .text.HAL_SPI_MspDeInit:00000030 $d
 
 UNDEFINED SYMBOLS
 HAL_SPI_Init

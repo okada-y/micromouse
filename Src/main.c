@@ -30,6 +30,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "index.h"
+
 //目指せindex脱却
 #include "mode.h"
 
@@ -144,10 +145,12 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+	module_test( );//デバッグ用
+
 	mode_main();//モードの選定、開始処理
-		
-	  /*x ここからモードごとの処理に移行　 x*/
-	  switch(get_mode_number()){
+	
+	/*ここからモードごとの処理に移行*/
+	switch(get_mode_number()){
 
 	  case 0://m データ吐き出し用
 //		  printf("mode0_start\r\n");

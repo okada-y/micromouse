@@ -1,4 +1,4 @@
-ARM GAS  C:\Temp\cck2FY7Y.s 			page 1
+ARM GAS  C:\Temp\ccq8lEth.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -17,16 +17,16 @@ ARM GAS  C:\Temp\cck2FY7Y.s 			page 1
   14              		.text
   15              	.Ltext0:
   16              		.cfi_sections	.debug_frame
-  17              		.section	.text.mode_select,"ax",%progbits
+  17              		.section	.text.get_mode_state,"ax",%progbits
   18              		.align	1
-  19              		.global	mode_select
+  19              		.global	get_mode_state
   20              		.arch armv7e-m
   21              		.syntax unified
   22              		.thumb
   23              		.thumb_func
   24              		.fpu fpv4-sp-d16
-  26              	mode_select:
-  27              	.LFB133:
+  26              	get_mode_state:
+  27              	.LFB134:
   28              		.file 1 "Src/mode.c"
    1:Src/mode.c    **** /*
    2:Src/mode.c    ****  * mode.c
@@ -35,694 +35,1139 @@ ARM GAS  C:\Temp\cck2FY7Y.s 			page 1
    5:Src/mode.c    ****  *      Author: 岡田 泰裕
    6:Src/mode.c    ****  */
    7:Src/mode.c    **** #include "index.h"
-   8:Src/mode.c    **** 
-   9:Src/mode.c    **** uint8_t mode_number = 0; //mode番号
-  10:Src/mode.c    **** uint8_t stanby_mode = 0; //1=stanby 0:not_stanby
-  11:Src/mode.c    **** uint8_t mode_count = 0;  //modeカウンタ
-  12:Src/mode.c    **** 
-  13:Src/mode.c    **** void mode_select (void)
-  14:Src/mode.c    **** {
-  29              		.loc 1 14 1 view -0
+   8:Src/mode.c    **** #include "mode.h"
+   9:Src/mode.c    **** 
+  10:Src/mode.c    **** typedef enum{
+  11:Src/mode.c    **** 	before, //モード選択中
+  12:Src/mode.c    **** 	after	//モード実行準備完了
+  13:Src/mode.c    **** }MODE_DECIDE;
+  14:Src/mode.c    **** 
+  15:Src/mode.c    **** 
+  16:Src/mode.c    **** static uint8_t mode_count = 0;	  //mode選択用カウンタ
+  17:Src/mode.c    **** static uint8_t mode_number = 0;   //mode番号
+  18:Src/mode.c    **** static MODE_DECIDE ready_mode = before;
+  19:Src/mode.c    **** static MODE_STATE mode_state = preparation;
+  20:Src/mode.c    **** 
+  21:Src/mode.c    **** //機能 	:メインモード処理
+  22:Src/mode.c    **** //引数 	:なし
+  23:Src/mode.c    **** //返り値:なし
+  24:Src/mode.c    **** void mode_main(void)
+  25:Src/mode.c    **** {
+  26:Src/mode.c    **** 	//初期処理
+  27:Src/mode.c    **** 	ready_mode = before; 		//モード決定状態を決定前に
+  28:Src/mode.c    **** 	mode_state = preparation;	//モード開始状態を開始前に
+  29:Src/mode.c    **** 	mode_count = 0;				//modeカウンタ初期化
+  30:Src/mode.c    **** 	
+ARM GAS  C:\Temp\ccq8lEth.s 			page 2
+
+
+  31:Src/mode.c    **** 	Sensor_StopADC();	//IRセンサ停止
+  32:Src/mode.c    **** 		
+  33:Src/mode.c    **** 	while(ready_mode == before) //モード選択モードのとき
+  34:Src/mode.c    **** 	{	
+  35:Src/mode.c    **** 		mode_select();
+  36:Src/mode.c    **** 		ready_mode = mode_decide_jud();
+  37:Src/mode.c    **** 		printf("ready_mode is %d",ready_mode);
+  38:Src/mode.c    **** 	}
+  39:Src/mode.c    **** 	
+  40:Src/mode.c    **** 	//モード開始可能状態に遷移したとき、2回LEDを点滅させる。
+  41:Src/mode.c    **** 	for(int i=0; i<2; i++)
+  42:Src/mode.c    **** 	{ 
+  43:Src/mode.c    **** 		HAL_GPIO_WritePin(GPIOA,LED2_Pin|LED3_Pin|LED4_Pin|LED5_Pin, GPIO_PIN_SET);
+  44:Src/mode.c    **** 		HAL_Delay(700);
+  45:Src/mode.c    **** 		HAL_GPIO_WritePin(GPIOA,LED2_Pin|LED3_Pin|LED4_Pin|LED5_Pin, GPIO_PIN_RESET);
+  46:Src/mode.c    **** 		HAL_Delay(300);
+  47:Src/mode.c    **** 	}
+  48:Src/mode.c    **** 
+  49:Src/mode.c    **** 	//IRセンサを稼働させる。
+  50:Src/mode.c    **** 	Sensor_Initialize( );	
+  51:Src/mode.c    **** 
+  52:Src/mode.c    **** 	//モード開始を待機
+  53:Src/mode.c    **** 	mode_start();
+  54:Src/mode.c    **** }
+  55:Src/mode.c    **** 
+  56:Src/mode.c    **** 
+  57:Src/mode.c    **** //機能 	:モード実行状態を返す
+  58:Src/mode.c    **** //引数 	:なし
+  59:Src/mode.c    **** //返り値	:モード実行状態
+  60:Src/mode.c    **** uint8_t get_mode_state(void)
+  61:Src/mode.c    **** {
+  29              		.loc 1 61 1 view -0
   30              		.cfi_startproc
   31              		@ args = 0, pretend = 0, frame = 0
   32              		@ frame_needed = 0, uses_anonymous_args = 0
-  33 0000 10B5     		push	{r4, lr}
-  34              	.LCFI0:
-  35              		.cfi_def_cfa_offset 8
-  36              		.cfi_offset 4, -8
-  37              		.cfi_offset 14, -4
-  38              	.L2:
-  15:Src/mode.c    **** 
-  16:Src/mode.c    **** 
-  17:Src/mode.c    **** 	static uint8_t mode_number_old = 0;
-  18:Src/mode.c    **** 
-  19:Src/mode.c    **** 	while(speed_r != 0); //m いったんタイヤ停止するまで待ち
-  39              		.loc 1 19 21 discriminator 1 view .LVU1
-ARM GAS  C:\Temp\cck2FY7Y.s 			page 2
+  33              		@ link register save eliminated.
+  62:Src/mode.c    **** 	return mode_state;
+  34              		.loc 1 62 2 view .LVU1
+  63:Src/mode.c    **** }
+  35              		.loc 1 63 1 is_stmt 0 view .LVU2
+  36 0000 014B     		ldr	r3, .L2
+  37 0002 1878     		ldrb	r0, [r3]	@ zero_extendqisi2
+  38 0004 7047     		bx	lr
+  39              	.L3:
+  40 0006 00BF     		.align	2
+  41              	.L2:
+  42 0008 00000000 		.word	.LANCHOR0
+  43              		.cfi_endproc
+  44              	.LFE134:
+  46              		.section	.text.get_mode_number,"ax",%progbits
+  47              		.align	1
+  48              		.global	get_mode_number
+  49              		.syntax unified
+  50              		.thumb
+  51              		.thumb_func
+  52              		.fpu fpv4-sp-d16
+  54              	get_mode_number:
+ARM GAS  C:\Temp\ccq8lEth.s 			page 3
 
 
-  40              		.loc 1 19 7 discriminator 1 view .LVU2
-  41              		.loc 1 19 16 is_stmt 0 discriminator 1 view .LVU3
-  42 0002 8E4B     		ldr	r3, .L28
-  43 0004 D3ED007A 		vldr.32	s15, [r3]
-  44              		.loc 1 19 7 discriminator 1 view .LVU4
-  45 0008 F5EE407A 		vcmp.f32	s15, #0
-  46 000c F1EE10FA 		vmrs	APSR_nzcv, FPSCR
-  47 0010 F7D1     		bne	.L2
-  20:Src/mode.c    **** 
-  21:Src/mode.c    **** 	speed_r_max = 0;//m右タイヤ速度max初期化
-  48              		.loc 1 21 2 is_stmt 1 view .LVU5
-  49              		.loc 1 21 14 is_stmt 0 view .LVU6
-  50 0012 8B4C     		ldr	r4, .L28+4
-  51 0014 0023     		movs	r3, #0
-  52 0016 2360     		str	r3, [r4]	@ float
-  22:Src/mode.c    **** 	speed_r_min = 0;//m右タイヤ速度	min初期化
-  53              		.loc 1 22 2 is_stmt 1 view .LVU7
-  54              		.loc 1 22 14 is_stmt 0 view .LVU8
-  55 0018 8A4A     		ldr	r2, .L28+8
-  56 001a 1360     		str	r3, [r2]	@ float
-  23:Src/mode.c    **** 	speed_l_max = 0;//m左タイヤ速度max初期化
-  57              		.loc 1 23 2 is_stmt 1 view .LVU9
-  58              		.loc 1 23 14 is_stmt 0 view .LVU10
-  59 001c 8A4A     		ldr	r2, .L28+12
-  60 001e 1360     		str	r3, [r2]	@ float
-  24:Src/mode.c    **** 	speed_l_min = 0;//m左タイヤ速度	min初期化
-  61              		.loc 1 24 2 is_stmt 1 view .LVU11
-  62              		.loc 1 24 14 is_stmt 0 view .LVU12
-  63 0020 8A4A     		ldr	r2, .L28+16
-  64 0022 1360     		str	r3, [r2]	@ float
-  25:Src/mode.c    **** 
-  26:Src/mode.c    **** 	HAL_Delay(200);	//m タイヤ最大値更新時間
-  65              		.loc 1 26 2 is_stmt 1 view .LVU13
-  66 0024 C820     		movs	r0, #200
-  67 0026 FFF7FEFF 		bl	HAL_Delay
-  68              	.LVL0:
-  27:Src/mode.c    **** 
-  28:Src/mode.c    **** //	 printf("speed_r_max =%5.3f,speed_r_min =%5.3f \r\n",speed_r_max, speed_r_min);
-  29:Src/mode.c    **** 	if (speed_r_max > mode_count_up_th) //m右タイヤ速度＞正の閾値の時の処理
-  69              		.loc 1 29 2 view .LVU14
-  70              		.loc 1 29 18 is_stmt 0 view .LVU15
-  71 002a 94ED007A 		vldr.32	s14, [r4]
-  72              		.loc 1 29 5 view .LVU16
-  73 002e DFED887A 		vldr.32	s15, .L28+20
-  74 0032 B4EEE77A 		vcmpe.f32	s14, s15
-  75 0036 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
-  76 003a 03DD     		ble	.L3
-  30:Src/mode.c    **** 	{
-  31:Src/mode.c    **** 		mode_count	+= 1;
-  77              		.loc 1 31 3 is_stmt 1 view .LVU17
-  78              		.loc 1 31 14 is_stmt 0 view .LVU18
-  79 003c 854A     		ldr	r2, .L28+24
-  80 003e 1378     		ldrb	r3, [r2]	@ zero_extendqisi2
-  81 0040 0133     		adds	r3, r3, #1
-  82 0042 1370     		strb	r3, [r2]
-  83              	.L3:
-  32:Src/mode.c    **** 	}
-ARM GAS  C:\Temp\cck2FY7Y.s 			page 3
-
-
-  33:Src/mode.c    **** 
-  34:Src/mode.c    **** 	if (speed_r_min < mode_count_down_th) //m右タイヤ速度＜負の閾値の時の処理
-  84              		.loc 1 34 2 is_stmt 1 view .LVU19
-  85              		.loc 1 34 18 is_stmt 0 view .LVU20
-  86 0044 7F4B     		ldr	r3, .L28+8
-  87 0046 93ED007A 		vldr.32	s14, [r3]
-  88              		.loc 1 34 5 view .LVU21
-  89 004a DFED837A 		vldr.32	s15, .L28+28
-  90 004e B4EEE77A 		vcmpe.f32	s14, s15
-  91 0052 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
-  92 0056 03D5     		bpl	.L5
-  35:Src/mode.c    **** 	{
-  36:Src/mode.c    **** 		mode_count -= 1;
-  93              		.loc 1 36 3 is_stmt 1 view .LVU22
-  94              		.loc 1 36 14 is_stmt 0 view .LVU23
-  95 0058 7E4A     		ldr	r2, .L28+24
-  96 005a 1378     		ldrb	r3, [r2]	@ zero_extendqisi2
-  97 005c 013B     		subs	r3, r3, #1
-  98 005e 1370     		strb	r3, [r2]
-  99              	.L5:
-  37:Src/mode.c    **** 	}
-  38:Src/mode.c    **** 
-  39:Src/mode.c    **** 	mode_count &= 0b00001111;	//8bit->4bit
- 100              		.loc 1 39 2 is_stmt 1 view .LVU24
- 101              		.loc 1 39 13 is_stmt 0 view .LVU25
- 102 0060 7C4A     		ldr	r2, .L28+24
- 103 0062 1378     		ldrb	r3, [r2]	@ zero_extendqisi2
- 104 0064 03F00F03 		and	r3, r3, #15
- 105 0068 1370     		strb	r3, [r2]
-  40:Src/mode.c    **** 	mode_number = mode_count;
- 106              		.loc 1 40 2 is_stmt 1 view .LVU26
- 107              		.loc 1 40 14 is_stmt 0 view .LVU27
- 108 006a 7C4A     		ldr	r2, .L28+32
- 109 006c 1370     		strb	r3, [r2]
-  41:Src/mode.c    **** 
-  42:Src/mode.c    **** 	if (mode_number != mode_number_old){
- 110              		.loc 1 42 2 is_stmt 1 view .LVU28
- 111              		.loc 1 42 18 is_stmt 0 view .LVU29
- 112 006e 7C4A     		ldr	r2, .L28+36
- 113 0070 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
- 114              		.loc 1 42 5 view .LVU30
- 115 0072 9342     		cmp	r3, r2
- 116 0074 11D0     		beq	.L7
-  43:Src/mode.c    **** 		switch(mode_number){
- 117              		.loc 1 43 3 is_stmt 1 view .LVU31
- 118 0076 0F2B     		cmp	r3, #15
- 119 0078 0FD8     		bhi	.L7
- 120 007a DFE803F0 		tbb	[pc, r3]
- 121              	.L9:
- 122 007e 08       		.byte	(.L24-.L9)/2
- 123 007f 13       		.byte	(.L23-.L9)/2
- 124 0080 21       		.byte	(.L22-.L9)/2
- 125 0081 2F       		.byte	(.L21-.L9)/2
- 126 0082 3D       		.byte	(.L20-.L9)/2
- 127 0083 4B       		.byte	(.L19-.L9)/2
- 128 0084 59       		.byte	(.L18-.L9)/2
- 129 0085 67       		.byte	(.L17-.L9)/2
-ARM GAS  C:\Temp\cck2FY7Y.s 			page 4
-
-
- 130 0086 75       		.byte	(.L16-.L9)/2
- 131 0087 83       		.byte	(.L15-.L9)/2
- 132 0088 91       		.byte	(.L14-.L9)/2
- 133 0089 9F       		.byte	(.L13-.L9)/2
- 134 008a AD       		.byte	(.L12-.L9)/2
- 135 008b BB       		.byte	(.L11-.L9)/2
- 136 008c C9       		.byte	(.L10-.L9)/2
- 137 008d D7       		.byte	(.L8-.L9)/2
- 138              		.p2align 1
- 139              	.L24:
-  44:Src/mode.c    **** 		/*mode_numberに応じてLED点灯処理*/
-  45:Src/mode.c    **** 			case 0:
-  46:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED2_Pin|LED3_Pin|LED4_Pin|LED5_Pin, GPIO_PIN_RESET);//m 無点灯
- 140              		.loc 1 46 5 view .LVU32
- 141 008e 0022     		movs	r2, #0
- 142 0090 4FF46451 		mov	r1, #14592
- 143 0094 7348     		ldr	r0, .L28+40
- 144 0096 FFF7FEFF 		bl	HAL_GPIO_WritePin
- 145              	.LVL1:
-  47:Src/mode.c    **** 			break;
- 146              		.loc 1 47 4 view .LVU33
- 147              	.L7:
-  48:Src/mode.c    **** 
-  49:Src/mode.c    **** 			case 1:
-  50:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED3_Pin|LED4_Pin|LED5_Pin, GPIO_PIN_RESET);
-  51:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED2_Pin, GPIO_PIN_SET);
-  52:Src/mode.c    **** 			break;
-  53:Src/mode.c    **** 
-  54:Src/mode.c    **** 			case 2:
-  55:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED2_Pin|LED4_Pin|LED5_Pin, GPIO_PIN_RESET);
-  56:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED3_Pin, GPIO_PIN_SET);
-  57:Src/mode.c    **** 			break;
-  58:Src/mode.c    **** 
-  59:Src/mode.c    **** 			case 3:
-  60:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED4_Pin|LED5_Pin, GPIO_PIN_RESET);
-  61:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED2_Pin|LED3_Pin, GPIO_PIN_SET);
-  62:Src/mode.c    **** 			break;
-  63:Src/mode.c    **** 
-  64:Src/mode.c    **** 			case 4:
-  65:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED2_Pin|LED3_Pin|LED5_Pin, GPIO_PIN_RESET);
-  66:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED4_Pin, GPIO_PIN_SET);
-  67:Src/mode.c    **** 			break;
-  68:Src/mode.c    **** 
-  69:Src/mode.c    **** 			case 5:
-  70:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED3_Pin|LED5_Pin, GPIO_PIN_RESET);
-  71:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED2_Pin|LED4_Pin, GPIO_PIN_SET);
-  72:Src/mode.c    **** 			break;
+  55              	.LFB135:
+  64:Src/mode.c    **** 
+  65:Src/mode.c    **** 
+  66:Src/mode.c    **** //機能 	:モード番号を返す
+  67:Src/mode.c    **** //引数 	:なし
+  68:Src/mode.c    **** //返り値:モード番号
+  69:Src/mode.c    **** uint8_t get_mode_number(void)
+  70:Src/mode.c    **** {
+  56              		.loc 1 70 1 is_stmt 1 view -0
+  57              		.cfi_startproc
+  58              		@ args = 0, pretend = 0, frame = 0
+  59              		@ frame_needed = 0, uses_anonymous_args = 0
+  60              		@ link register save eliminated.
+  71:Src/mode.c    **** 	return mode_number;
+  61              		.loc 1 71 2 view .LVU4
+  72:Src/mode.c    **** }
+  62              		.loc 1 72 1 is_stmt 0 view .LVU5
+  63 0000 014B     		ldr	r3, .L5
+  64 0002 1878     		ldrb	r0, [r3]	@ zero_extendqisi2
+  65 0004 7047     		bx	lr
+  66              	.L6:
+  67 0006 00BF     		.align	2
+  68              	.L5:
+  69 0008 00000000 		.word	.LANCHOR1
+  70              		.cfi_endproc
+  71              	.LFE135:
+  73              		.section	.text.set_mode_number,"ax",%progbits
+  74              		.align	1
+  75              		.global	set_mode_number
+  76              		.syntax unified
+  77              		.thumb
+  78              		.thumb_func
+  79              		.fpu fpv4-sp-d16
+  81              	set_mode_number:
+  82              	.LVL0:
+  83              	.LFB136:
   73:Src/mode.c    **** 
-  74:Src/mode.c    **** 			case 6:
-  75:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED2_Pin|LED5_Pin, GPIO_PIN_RESET);
-  76:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED3_Pin|LED4_Pin, GPIO_PIN_SET);
-  77:Src/mode.c    **** 			break;
-  78:Src/mode.c    **** 
-  79:Src/mode.c    **** 			case 7:
-  80:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED5_Pin, GPIO_PIN_RESET);
-  81:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED2_Pin|LED3_Pin|LED4_Pin, GPIO_PIN_SET);
-  82:Src/mode.c    **** 			break;
-ARM GAS  C:\Temp\cck2FY7Y.s 			page 5
+  74:Src/mode.c    **** //機能 	:モード番号をセットする
+  75:Src/mode.c    **** //引数 	:新規のモード番号
+  76:Src/mode.c    **** //返り値	:なし
+  77:Src/mode.c    **** void set_mode_number(uint8_t mn)
+  78:Src/mode.c    **** {
+  84              		.loc 1 78 1 is_stmt 1 view -0
+  85              		.cfi_startproc
+  86              		@ args = 0, pretend = 0, frame = 0
+  87              		@ frame_needed = 0, uses_anonymous_args = 0
+  88              		@ link register save eliminated.
+  79:Src/mode.c    **** 	mode_number = mn;
+  89              		.loc 1 79 2 view .LVU7
+  90              		.loc 1 79 14 is_stmt 0 view .LVU8
+  91 0000 014B     		ldr	r3, .L8
+  92 0002 1870     		strb	r0, [r3]
+  80:Src/mode.c    **** }
+  93              		.loc 1 80 1 view .LVU9
+  94 0004 7047     		bx	lr
+  95              	.L9:
+  96 0006 00BF     		.align	2
+ARM GAS  C:\Temp\ccq8lEth.s 			page 4
 
 
-  83:Src/mode.c    **** 
-  84:Src/mode.c    **** 			case 8:
-  85:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED2_Pin|LED3_Pin|LED4_Pin, GPIO_PIN_RESET);
-  86:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED5_Pin, GPIO_PIN_SET);
-  87:Src/mode.c    **** 			break;
+  97              	.L8:
+  98 0008 00000000 		.word	.LANCHOR1
+  99              		.cfi_endproc
+ 100              	.LFE136:
+ 102              		.section	.text.mode_select,"ax",%progbits
+ 103              		.align	1
+ 104              		.global	mode_select
+ 105              		.syntax unified
+ 106              		.thumb
+ 107              		.thumb_func
+ 108              		.fpu fpv4-sp-d16
+ 110              	mode_select:
+ 111              	.LFB137:
+  81:Src/mode.c    **** 
+  82:Src/mode.c    **** //機能	:右タイヤの速度を入力に、モード番号を変更、LEDに出力
+  83:Src/mode.c    **** //引数	:なし
+  84:Src/mode.c    **** //返り値	:なし
+  85:Src/mode.c    **** void mode_select (void)
+  86:Src/mode.c    **** {
+ 112              		.loc 1 86 1 is_stmt 1 view -0
+ 113              		.cfi_startproc
+ 114              		@ args = 0, pretend = 0, frame = 0
+ 115              		@ frame_needed = 0, uses_anonymous_args = 0
+ 116 0000 10B5     		push	{r4, lr}
+ 117              	.LCFI0:
+ 118              		.cfi_def_cfa_offset 8
+ 119              		.cfi_offset 4, -8
+ 120              		.cfi_offset 14, -4
+ 121              	.L11:
+  87:Src/mode.c    **** 	static uint8_t mode_number_old = 0;
   88:Src/mode.c    **** 
-  89:Src/mode.c    **** 			case 9:
-  90:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED3_Pin|LED4_Pin, GPIO_PIN_RESET);
-  91:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED2_Pin|LED5_Pin, GPIO_PIN_SET);
-  92:Src/mode.c    **** 			break;
-  93:Src/mode.c    **** 
-  94:Src/mode.c    **** 			case 10:
-  95:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED2_Pin|LED4_Pin, GPIO_PIN_RESET);
-  96:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED3_Pin|LED5_Pin, GPIO_PIN_SET);
-  97:Src/mode.c    **** 			break;
-  98:Src/mode.c    **** 
-  99:Src/mode.c    **** 			case 11:
- 100:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED4_Pin, GPIO_PIN_RESET);
- 101:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED2_Pin|LED3_Pin|LED5_Pin, GPIO_PIN_SET);
- 102:Src/mode.c    **** 			break;
- 103:Src/mode.c    **** 
- 104:Src/mode.c    **** 			case 12:
- 105:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED2_Pin|LED3_Pin, GPIO_PIN_RESET);
- 106:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED4_Pin|LED5_Pin, GPIO_PIN_SET);
- 107:Src/mode.c    **** 			break;
- 108:Src/mode.c    **** 
- 109:Src/mode.c    **** 			case 13:
- 110:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED3_Pin, GPIO_PIN_RESET);
- 111:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED2_Pin|LED4_Pin|LED5_Pin, GPIO_PIN_SET);
- 112:Src/mode.c    **** 			break;
- 113:Src/mode.c    **** 
- 114:Src/mode.c    **** 			case 14:
- 115:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED2_Pin, GPIO_PIN_RESET);
- 116:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED3_Pin|LED4_Pin|LED5_Pin, GPIO_PIN_SET);
- 117:Src/mode.c    **** 			break;
- 118:Src/mode.c    **** 
- 119:Src/mode.c    **** 			case 15:
- 120:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED2_Pin|LED3_Pin|LED4_Pin|LED5_Pin, GPIO_PIN_SET);
- 121:Src/mode.c    **** 			break;
- 122:Src/mode.c    **** 			}
- 123:Src/mode.c    **** 		}
- 124:Src/mode.c    **** 
- 125:Src/mode.c    **** 	mode_number_old = mode_number;
- 148              		.loc 1 125 2 view .LVU34
- 149              		.loc 1 125 18 is_stmt 0 view .LVU35
- 150 009a 704B     		ldr	r3, .L28+32
- 151 009c 1A78     		ldrb	r2, [r3]	@ zero_extendqisi2
- 152 009e 704B     		ldr	r3, .L28+36
- 153 00a0 1A70     		strb	r2, [r3]
- 126:Src/mode.c    **** 
- 127:Src/mode.c    **** }
- 154              		.loc 1 127 1 view .LVU36
- 155 00a2 10BD     		pop	{r4, pc}
- 156              	.L23:
-  50:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED2_Pin, GPIO_PIN_SET);
- 157              		.loc 1 50 5 is_stmt 1 view .LVU37
- 158 00a4 6F4C     		ldr	r4, .L28+40
-ARM GAS  C:\Temp\cck2FY7Y.s 			page 6
+  89:Src/mode.c    **** 	while(speed_r != 0); //m いったんタイヤ停止するまで待ち
+ 122              		.loc 1 89 21 discriminator 1 view .LVU11
+ 123              		.loc 1 89 7 discriminator 1 view .LVU12
+ 124              		.loc 1 89 16 is_stmt 0 discriminator 1 view .LVU13
+ 125 0002 8E4B     		ldr	r3, .L37
+ 126 0004 D3ED007A 		vldr.32	s15, [r3]
+ 127              		.loc 1 89 7 discriminator 1 view .LVU14
+ 128 0008 F5EE407A 		vcmp.f32	s15, #0
+ 129 000c F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 130 0010 F7D1     		bne	.L11
+  90:Src/mode.c    **** 
+  91:Src/mode.c    **** 	speed_r_max = 0;//m右タイヤ速度max初期化
+ 131              		.loc 1 91 2 is_stmt 1 view .LVU15
+ 132              		.loc 1 91 14 is_stmt 0 view .LVU16
+ 133 0012 8B4C     		ldr	r4, .L37+4
+ 134 0014 0023     		movs	r3, #0
+ 135 0016 2360     		str	r3, [r4]	@ float
+  92:Src/mode.c    **** 	speed_r_min = 0;//m右タイヤ速度	min初期化
+ 136              		.loc 1 92 2 is_stmt 1 view .LVU17
+ 137              		.loc 1 92 14 is_stmt 0 view .LVU18
+ 138 0018 8A4A     		ldr	r2, .L37+8
+ 139 001a 1360     		str	r3, [r2]	@ float
+  93:Src/mode.c    **** 	speed_l_max = 0;//m左タイヤ速度max初期化
+ 140              		.loc 1 93 2 is_stmt 1 view .LVU19
+ 141              		.loc 1 93 14 is_stmt 0 view .LVU20
+ 142 001c 8A4A     		ldr	r2, .L37+12
+ARM GAS  C:\Temp\ccq8lEth.s 			page 5
 
 
- 159 00a6 0022     		movs	r2, #0
- 160 00a8 4FF4C851 		mov	r1, #6400
- 161 00ac 2046     		mov	r0, r4
- 162 00ae FFF7FEFF 		bl	HAL_GPIO_WritePin
- 163              	.LVL2:
-  51:Src/mode.c    **** 			break;
- 164              		.loc 1 51 5 view .LVU38
- 165 00b2 0122     		movs	r2, #1
- 166 00b4 4FF40051 		mov	r1, #8192
- 167 00b8 2046     		mov	r0, r4
- 168 00ba FFF7FEFF 		bl	HAL_GPIO_WritePin
- 169              	.LVL3:
-  52:Src/mode.c    **** 
- 170              		.loc 1 52 4 view .LVU39
- 171 00be ECE7     		b	.L7
- 172              	.L22:
-  55:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED3_Pin, GPIO_PIN_SET);
- 173              		.loc 1 55 5 view .LVU40
- 174 00c0 684C     		ldr	r4, .L28+40
- 175 00c2 0022     		movs	r2, #0
- 176 00c4 4FF42451 		mov	r1, #10496
- 177 00c8 2046     		mov	r0, r4
- 178 00ca FFF7FEFF 		bl	HAL_GPIO_WritePin
- 179              	.LVL4:
-  56:Src/mode.c    **** 			break;
- 180              		.loc 1 56 5 view .LVU41
- 181 00ce 0122     		movs	r2, #1
- 182 00d0 4FF48051 		mov	r1, #4096
- 183 00d4 2046     		mov	r0, r4
- 184 00d6 FFF7FEFF 		bl	HAL_GPIO_WritePin
- 185              	.LVL5:
-  57:Src/mode.c    **** 
- 186              		.loc 1 57 4 view .LVU42
- 187 00da DEE7     		b	.L7
- 188              	.L21:
-  60:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED2_Pin|LED3_Pin, GPIO_PIN_SET);
- 189              		.loc 1 60 5 view .LVU43
- 190 00dc 614C     		ldr	r4, .L28+40
- 191 00de 0022     		movs	r2, #0
- 192 00e0 4FF41061 		mov	r1, #2304
- 193 00e4 2046     		mov	r0, r4
- 194 00e6 FFF7FEFF 		bl	HAL_GPIO_WritePin
- 195              	.LVL6:
-  61:Src/mode.c    **** 			break;
- 196              		.loc 1 61 5 view .LVU44
- 197 00ea 0122     		movs	r2, #1
- 198 00ec 4FF44051 		mov	r1, #12288
- 199 00f0 2046     		mov	r0, r4
- 200 00f2 FFF7FEFF 		bl	HAL_GPIO_WritePin
- 201              	.LVL7:
-  62:Src/mode.c    **** 
- 202              		.loc 1 62 4 view .LVU45
- 203 00f6 D0E7     		b	.L7
- 204              	.L20:
-  65:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED4_Pin, GPIO_PIN_SET);
- 205              		.loc 1 65 5 view .LVU46
- 206 00f8 5A4C     		ldr	r4, .L28+40
-ARM GAS  C:\Temp\cck2FY7Y.s 			page 7
-
-
- 207 00fa 0022     		movs	r2, #0
- 208 00fc 4FF44451 		mov	r1, #12544
- 209 0100 2046     		mov	r0, r4
- 210 0102 FFF7FEFF 		bl	HAL_GPIO_WritePin
- 211              	.LVL8:
-  66:Src/mode.c    **** 			break;
- 212              		.loc 1 66 5 view .LVU47
- 213 0106 0122     		movs	r2, #1
- 214 0108 4FF40061 		mov	r1, #2048
- 215 010c 2046     		mov	r0, r4
- 216 010e FFF7FEFF 		bl	HAL_GPIO_WritePin
- 217              	.LVL9:
-  67:Src/mode.c    **** 
- 218              		.loc 1 67 4 view .LVU48
- 219 0112 C2E7     		b	.L7
- 220              	.L19:
-  70:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED2_Pin|LED4_Pin, GPIO_PIN_SET);
- 221              		.loc 1 70 5 view .LVU49
- 222 0114 534C     		ldr	r4, .L28+40
- 223 0116 0022     		movs	r2, #0
- 224 0118 4FF48851 		mov	r1, #4352
- 225 011c 2046     		mov	r0, r4
- 226 011e FFF7FEFF 		bl	HAL_GPIO_WritePin
- 227              	.LVL10:
-  71:Src/mode.c    **** 			break;
- 228              		.loc 1 71 5 view .LVU50
- 229 0122 0122     		movs	r2, #1
- 230 0124 4FF42051 		mov	r1, #10240
- 231 0128 2046     		mov	r0, r4
- 232 012a FFF7FEFF 		bl	HAL_GPIO_WritePin
- 233              	.LVL11:
-  72:Src/mode.c    **** 
- 234              		.loc 1 72 4 view .LVU51
- 235 012e B4E7     		b	.L7
- 236              	.L18:
-  75:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED3_Pin|LED4_Pin, GPIO_PIN_SET);
- 237              		.loc 1 75 5 view .LVU52
- 238 0130 4C4C     		ldr	r4, .L28+40
- 239 0132 0022     		movs	r2, #0
- 240 0134 4FF40451 		mov	r1, #8448
- 241 0138 2046     		mov	r0, r4
- 242 013a FFF7FEFF 		bl	HAL_GPIO_WritePin
- 243              	.LVL12:
-  76:Src/mode.c    **** 			break;
- 244              		.loc 1 76 5 view .LVU53
- 245 013e 0122     		movs	r2, #1
- 246 0140 4FF4C051 		mov	r1, #6144
- 247 0144 2046     		mov	r0, r4
- 248 0146 FFF7FEFF 		bl	HAL_GPIO_WritePin
- 249              	.LVL13:
-  77:Src/mode.c    **** 
- 250              		.loc 1 77 4 view .LVU54
- 251 014a A6E7     		b	.L7
- 252              	.L17:
-  80:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED2_Pin|LED3_Pin|LED4_Pin, GPIO_PIN_SET);
- 253              		.loc 1 80 5 view .LVU55
- 254 014c 454C     		ldr	r4, .L28+40
-ARM GAS  C:\Temp\cck2FY7Y.s 			page 8
-
-
- 255 014e 0022     		movs	r2, #0
- 256 0150 4FF48071 		mov	r1, #256
- 257 0154 2046     		mov	r0, r4
- 258 0156 FFF7FEFF 		bl	HAL_GPIO_WritePin
- 259              	.LVL14:
-  81:Src/mode.c    **** 			break;
- 260              		.loc 1 81 5 view .LVU56
- 261 015a 0122     		movs	r2, #1
- 262 015c 4FF46051 		mov	r1, #14336
- 263 0160 2046     		mov	r0, r4
- 264 0162 FFF7FEFF 		bl	HAL_GPIO_WritePin
- 265              	.LVL15:
-  82:Src/mode.c    **** 
- 266              		.loc 1 82 4 view .LVU57
- 267 0166 98E7     		b	.L7
- 268              	.L16:
-  85:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED5_Pin, GPIO_PIN_SET);
- 269              		.loc 1 85 5 view .LVU58
- 270 0168 3E4C     		ldr	r4, .L28+40
- 271 016a 0022     		movs	r2, #0
- 272 016c 4FF46051 		mov	r1, #14336
- 273 0170 2046     		mov	r0, r4
- 274 0172 FFF7FEFF 		bl	HAL_GPIO_WritePin
- 275              	.LVL16:
-  86:Src/mode.c    **** 			break;
- 276              		.loc 1 86 5 view .LVU59
- 277 0176 0122     		movs	r2, #1
- 278 0178 4FF48071 		mov	r1, #256
- 279 017c 2046     		mov	r0, r4
- 280 017e FFF7FEFF 		bl	HAL_GPIO_WritePin
- 281              	.LVL17:
-  87:Src/mode.c    **** 
- 282              		.loc 1 87 4 view .LVU60
- 283 0182 8AE7     		b	.L7
- 284              	.L15:
-  90:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED2_Pin|LED5_Pin, GPIO_PIN_SET);
- 285              		.loc 1 90 5 view .LVU61
- 286 0184 374C     		ldr	r4, .L28+40
- 287 0186 0022     		movs	r2, #0
- 288 0188 4FF4C051 		mov	r1, #6144
- 289 018c 2046     		mov	r0, r4
- 290 018e FFF7FEFF 		bl	HAL_GPIO_WritePin
- 291              	.LVL18:
-  91:Src/mode.c    **** 			break;
- 292              		.loc 1 91 5 view .LVU62
- 293 0192 0122     		movs	r2, #1
- 294 0194 4FF40451 		mov	r1, #8448
- 295 0198 2046     		mov	r0, r4
- 296 019a FFF7FEFF 		bl	HAL_GPIO_WritePin
- 297              	.LVL19:
-  92:Src/mode.c    **** 
- 298              		.loc 1 92 4 view .LVU63
- 299 019e 7CE7     		b	.L7
- 300              	.L14:
-  95:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED3_Pin|LED5_Pin, GPIO_PIN_SET);
- 301              		.loc 1 95 5 view .LVU64
- 302 01a0 304C     		ldr	r4, .L28+40
-ARM GAS  C:\Temp\cck2FY7Y.s 			page 9
-
-
- 303 01a2 0022     		movs	r2, #0
- 304 01a4 4FF42051 		mov	r1, #10240
- 305 01a8 2046     		mov	r0, r4
- 306 01aa FFF7FEFF 		bl	HAL_GPIO_WritePin
- 307              	.LVL20:
-  96:Src/mode.c    **** 			break;
- 308              		.loc 1 96 5 view .LVU65
- 309 01ae 0122     		movs	r2, #1
- 310 01b0 4FF48851 		mov	r1, #4352
- 311 01b4 2046     		mov	r0, r4
- 312 01b6 FFF7FEFF 		bl	HAL_GPIO_WritePin
- 313              	.LVL21:
+ 143 001e 1360     		str	r3, [r2]	@ float
+  94:Src/mode.c    **** 	speed_l_min = 0;//m左タイヤ速度	min初期化
+ 144              		.loc 1 94 2 is_stmt 1 view .LVU21
+ 145              		.loc 1 94 14 is_stmt 0 view .LVU22
+ 146 0020 8A4A     		ldr	r2, .L37+16
+ 147 0022 1360     		str	r3, [r2]	@ float
+  95:Src/mode.c    **** 
+  96:Src/mode.c    **** 	HAL_Delay(200);	//m タイヤ最大値更新時間
+ 148              		.loc 1 96 2 is_stmt 1 view .LVU23
+ 149 0024 C820     		movs	r0, #200
+ 150 0026 FFF7FEFF 		bl	HAL_Delay
+ 151              	.LVL1:
   97:Src/mode.c    **** 
- 314              		.loc 1 97 4 view .LVU66
- 315 01ba 6EE7     		b	.L7
- 316              	.L13:
- 100:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED2_Pin|LED3_Pin|LED5_Pin, GPIO_PIN_SET);
- 317              		.loc 1 100 5 view .LVU67
- 318 01bc 294C     		ldr	r4, .L28+40
- 319 01be 0022     		movs	r2, #0
- 320 01c0 4FF40061 		mov	r1, #2048
- 321 01c4 2046     		mov	r0, r4
- 322 01c6 FFF7FEFF 		bl	HAL_GPIO_WritePin
- 323              	.LVL22:
- 101:Src/mode.c    **** 			break;
- 324              		.loc 1 101 5 view .LVU68
- 325 01ca 0122     		movs	r2, #1
- 326 01cc 4FF44451 		mov	r1, #12544
- 327 01d0 2046     		mov	r0, r4
- 328 01d2 FFF7FEFF 		bl	HAL_GPIO_WritePin
- 329              	.LVL23:
+  98:Src/mode.c    **** 	if (speed_r_max > mode_count_up_th) //m右タイヤ速度＞正の閾値の時の処理
+ 152              		.loc 1 98 2 view .LVU24
+ 153              		.loc 1 98 18 is_stmt 0 view .LVU25
+ 154 002a 94ED007A 		vldr.32	s14, [r4]
+ 155              		.loc 1 98 5 view .LVU26
+ 156 002e DFED887A 		vldr.32	s15, .L37+20
+ 157 0032 B4EEE77A 		vcmpe.f32	s14, s15
+ 158 0036 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 159 003a 03DD     		ble	.L12
+  99:Src/mode.c    **** 	{
+ 100:Src/mode.c    **** 		mode_count	+= 1;
+ 160              		.loc 1 100 3 is_stmt 1 view .LVU27
+ 161              		.loc 1 100 14 is_stmt 0 view .LVU28
+ 162 003c 854A     		ldr	r2, .L37+24
+ 163 003e 1378     		ldrb	r3, [r2]	@ zero_extendqisi2
+ 164 0040 0133     		adds	r3, r3, #1
+ 165 0042 1370     		strb	r3, [r2]
+ 166              	.L12:
+ 101:Src/mode.c    **** 	}
  102:Src/mode.c    **** 
- 330              		.loc 1 102 4 view .LVU69
- 331 01d6 60E7     		b	.L7
- 332              	.L12:
- 105:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED4_Pin|LED5_Pin, GPIO_PIN_SET);
- 333              		.loc 1 105 5 view .LVU70
- 334 01d8 224C     		ldr	r4, .L28+40
- 335 01da 0022     		movs	r2, #0
- 336 01dc 4FF44051 		mov	r1, #12288
- 337 01e0 2046     		mov	r0, r4
- 338 01e2 FFF7FEFF 		bl	HAL_GPIO_WritePin
- 339              	.LVL24:
- 106:Src/mode.c    **** 			break;
- 340              		.loc 1 106 5 view .LVU71
- 341 01e6 0122     		movs	r2, #1
- 342 01e8 4FF41061 		mov	r1, #2304
- 343 01ec 2046     		mov	r0, r4
- 344 01ee FFF7FEFF 		bl	HAL_GPIO_WritePin
- 345              	.LVL25:
+ 103:Src/mode.c    **** 	if (speed_r_min < mode_count_down_th) //m右タイヤ速度＜負の閾値の時の処理
+ 167              		.loc 1 103 2 is_stmt 1 view .LVU29
+ 168              		.loc 1 103 18 is_stmt 0 view .LVU30
+ 169 0044 7F4B     		ldr	r3, .L37+8
+ 170 0046 93ED007A 		vldr.32	s14, [r3]
+ 171              		.loc 1 103 5 view .LVU31
+ 172 004a DFED837A 		vldr.32	s15, .L37+28
+ 173 004e B4EEE77A 		vcmpe.f32	s14, s15
+ 174 0052 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 175 0056 03D5     		bpl	.L14
+ 104:Src/mode.c    **** 	{
+ 105:Src/mode.c    **** 		mode_count -= 1;
+ 176              		.loc 1 105 3 is_stmt 1 view .LVU32
+ 177              		.loc 1 105 14 is_stmt 0 view .LVU33
+ 178 0058 7E4A     		ldr	r2, .L37+24
+ 179 005a 1378     		ldrb	r3, [r2]	@ zero_extendqisi2
+ 180 005c 013B     		subs	r3, r3, #1
+ 181 005e 1370     		strb	r3, [r2]
+ 182              	.L14:
+ 106:Src/mode.c    **** 	}
  107:Src/mode.c    **** 
- 346              		.loc 1 107 4 view .LVU72
- 347 01f2 52E7     		b	.L7
- 348              	.L11:
- 110:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED2_Pin|LED4_Pin|LED5_Pin, GPIO_PIN_SET);
- 349              		.loc 1 110 5 view .LVU73
- 350 01f4 1B4C     		ldr	r4, .L28+40
-ARM GAS  C:\Temp\cck2FY7Y.s 			page 10
+ 108:Src/mode.c    **** 	mode_count &= 0b00001111;	//8bit->4bit
+ 183              		.loc 1 108 2 is_stmt 1 view .LVU34
+ 184              		.loc 1 108 13 is_stmt 0 view .LVU35
+ARM GAS  C:\Temp\ccq8lEth.s 			page 6
 
 
- 351 01f6 0022     		movs	r2, #0
- 352 01f8 4FF48051 		mov	r1, #4096
- 353 01fc 2046     		mov	r0, r4
- 354 01fe FFF7FEFF 		bl	HAL_GPIO_WritePin
- 355              	.LVL26:
- 111:Src/mode.c    **** 			break;
- 356              		.loc 1 111 5 view .LVU74
- 357 0202 0122     		movs	r2, #1
- 358 0204 4FF42451 		mov	r1, #10496
- 359 0208 2046     		mov	r0, r4
- 360 020a FFF7FEFF 		bl	HAL_GPIO_WritePin
- 361              	.LVL27:
- 112:Src/mode.c    **** 
- 362              		.loc 1 112 4 view .LVU75
- 363 020e 44E7     		b	.L7
- 364              	.L10:
- 115:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED3_Pin|LED4_Pin|LED5_Pin, GPIO_PIN_SET);
- 365              		.loc 1 115 5 view .LVU76
- 366 0210 144C     		ldr	r4, .L28+40
- 367 0212 0022     		movs	r2, #0
- 368 0214 4FF40051 		mov	r1, #8192
- 369 0218 2046     		mov	r0, r4
- 370 021a FFF7FEFF 		bl	HAL_GPIO_WritePin
- 371              	.LVL28:
- 116:Src/mode.c    **** 			break;
- 372              		.loc 1 116 5 view .LVU77
- 373 021e 0122     		movs	r2, #1
- 374 0220 4FF4C851 		mov	r1, #6400
- 375 0224 2046     		mov	r0, r4
- 376 0226 FFF7FEFF 		bl	HAL_GPIO_WritePin
- 377              	.LVL29:
- 117:Src/mode.c    **** 
- 378              		.loc 1 117 4 view .LVU78
- 379 022a 36E7     		b	.L7
- 380              	.L8:
+ 185 0060 7C4A     		ldr	r2, .L37+24
+ 186 0062 1378     		ldrb	r3, [r2]	@ zero_extendqisi2
+ 187 0064 03F00F03 		and	r3, r3, #15
+ 188 0068 1370     		strb	r3, [r2]
+ 109:Src/mode.c    **** 
+ 110:Src/mode.c    **** 	if (mode_count != mode_number_old){
+ 189              		.loc 1 110 2 is_stmt 1 view .LVU36
+ 190              		.loc 1 110 17 is_stmt 0 view .LVU37
+ 191 006a 7C4A     		ldr	r2, .L37+32
+ 192 006c 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
+ 193              		.loc 1 110 5 view .LVU38
+ 194 006e 9342     		cmp	r3, r2
+ 195 0070 11D0     		beq	.L16
+ 111:Src/mode.c    **** 		switch(mode_count){
+ 196              		.loc 1 111 3 is_stmt 1 view .LVU39
+ 197 0072 0F2B     		cmp	r3, #15
+ 198 0074 0FD8     		bhi	.L16
+ 199 0076 DFE803F0 		tbb	[pc, r3]
+ 200              	.L18:
+ 201 007a 08       		.byte	(.L33-.L18)/2
+ 202 007b 15       		.byte	(.L32-.L18)/2
+ 203 007c 23       		.byte	(.L31-.L18)/2
+ 204 007d 31       		.byte	(.L30-.L18)/2
+ 205 007e 3F       		.byte	(.L29-.L18)/2
+ 206 007f 4D       		.byte	(.L28-.L18)/2
+ 207 0080 5B       		.byte	(.L27-.L18)/2
+ 208 0081 69       		.byte	(.L26-.L18)/2
+ 209 0082 77       		.byte	(.L25-.L18)/2
+ 210 0083 85       		.byte	(.L24-.L18)/2
+ 211 0084 93       		.byte	(.L23-.L18)/2
+ 212 0085 A1       		.byte	(.L22-.L18)/2
+ 213 0086 AF       		.byte	(.L21-.L18)/2
+ 214 0087 BD       		.byte	(.L20-.L18)/2
+ 215 0088 CB       		.byte	(.L19-.L18)/2
+ 216 0089 D9       		.byte	(.L17-.L18)/2
+ 217              		.p2align 1
+ 218              	.L33:
+ 112:Src/mode.c    **** 		/*mode_numberに応じてLED点灯処理*/
+ 113:Src/mode.c    **** 			case 0:
+ 114:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED2_Pin|LED3_Pin|LED4_Pin|LED5_Pin, GPIO_PIN_RESET);//m 無点灯
+ 219              		.loc 1 114 5 view .LVU40
+ 220 008a 0022     		movs	r2, #0
+ 221 008c 4FF46451 		mov	r1, #14592
+ 222 0090 7348     		ldr	r0, .L37+36
+ 223 0092 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 224              	.LVL2:
+ 115:Src/mode.c    **** 			break;
+ 225              		.loc 1 115 4 view .LVU41
+ 226              	.L16:
+ 116:Src/mode.c    **** 
+ 117:Src/mode.c    **** 			case 1:
+ 118:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED3_Pin|LED4_Pin|LED5_Pin, GPIO_PIN_RESET);
+ 119:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED2_Pin, GPIO_PIN_SET);
  120:Src/mode.c    **** 			break;
- 381              		.loc 1 120 5 view .LVU79
- 382 022c 0122     		movs	r2, #1
- 383 022e 4FF46451 		mov	r1, #14592
- 384 0232 0C48     		ldr	r0, .L28+40
- 385 0234 FFF7FEFF 		bl	HAL_GPIO_WritePin
- 386              	.LVL30:
- 121:Src/mode.c    **** 			}
- 387              		.loc 1 121 4 view .LVU80
- 388 0238 2FE7     		b	.L7
- 389              	.L29:
- 390 023a 00BF     		.align	2
- 391              	.L28:
- 392 023c 00000000 		.word	speed_r
- 393 0240 00000000 		.word	speed_r_max
- 394 0244 00000000 		.word	speed_r_min
- 395 0248 00000000 		.word	speed_l_max
- 396 024c 00000000 		.word	speed_l_min
- 397 0250 CDCCCC3D 		.word	1036831949
- 398 0254 00000000 		.word	.LANCHOR0
- 399 0258 CDCCCCBD 		.word	-1110651699
- 400 025c 00000000 		.word	.LANCHOR1
-ARM GAS  C:\Temp\cck2FY7Y.s 			page 11
+ 121:Src/mode.c    **** 
+ 122:Src/mode.c    **** 			case 2:
+ 123:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED2_Pin|LED4_Pin|LED5_Pin, GPIO_PIN_RESET);
+ARM GAS  C:\Temp\ccq8lEth.s 			page 7
 
 
- 401 0260 00000000 		.word	.LANCHOR2
- 402 0264 00000240 		.word	1073872896
- 403              		.cfi_endproc
- 404              	.LFE133:
- 406              		.section	.text.modechangejud_stanby,"ax",%progbits
- 407              		.align	1
- 408              		.global	modechangejud_stanby
- 409              		.syntax unified
- 410              		.thumb
- 411              		.thumb_func
- 412              		.fpu fpv4-sp-d16
- 414              	modechangejud_stanby:
- 415              	.LFB134:
- 128:Src/mode.c    **** 
- 129:Src/mode.c    **** uint8_t modechangejud_stanby(void) //stanbyモード移行判定関数
- 130:Src/mode.c    **** {
- 416              		.loc 1 130 1 view -0
- 417              		.cfi_startproc
- 418              		@ args = 0, pretend = 0, frame = 0
- 419              		@ frame_needed = 0, uses_anonymous_args = 0
- 420              		@ link register save eliminated.
- 131:Src/mode.c    **** 	if(mode_stanby_th < speed_l_max )
- 421              		.loc 1 131 2 view .LVU82
- 422              		.loc 1 131 20 is_stmt 0 view .LVU83
- 423 0000 064B     		ldr	r3, .L36
- 424 0002 93ED007A 		vldr.32	s14, [r3]
- 425              		.loc 1 131 4 view .LVU84
- 426 0006 DFED067A 		vldr.32	s15, .L36+4
- 427 000a B4EEE77A 		vcmpe.f32	s14, s15
- 428 000e F1EE10FA 		vmrs	APSR_nzcv, FPSCR
- 429 0012 01DD     		ble	.L35
- 132:Src/mode.c    **** 	{
- 133:Src/mode.c    **** //		printf ("ready \r\n");
- 134:Src/mode.c    **** 		return 1;
- 430              		.loc 1 134 10 view .LVU85
- 431 0014 0120     		movs	r0, #1
- 432 0016 7047     		bx	lr
- 433              	.L35:
- 135:Src/mode.c    **** 	}
- 136:Src/mode.c    **** 	else {
- 137:Src/mode.c    **** 		return 0;
- 434              		.loc 1 137 10 view .LVU86
- 435 0018 0020     		movs	r0, #0
- 138:Src/mode.c    **** 	}
- 139:Src/mode.c    **** }
- 436              		.loc 1 139 1 view .LVU87
- 437 001a 7047     		bx	lr
- 438              	.L37:
- 439              		.align	2
- 440              	.L36:
- 441 001c 00000000 		.word	speed_l_max
- 442 0020 CDCCCC3D 		.word	1036831949
- 443              		.cfi_endproc
- 444              	.LFE134:
- 446              		.global	mode_count
- 447              		.global	stanby_mode
- 448              		.global	mode_number
-ARM GAS  C:\Temp\cck2FY7Y.s 			page 12
+ 124:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED3_Pin, GPIO_PIN_SET);
+ 125:Src/mode.c    **** 			break;
+ 126:Src/mode.c    **** 
+ 127:Src/mode.c    **** 			case 3:
+ 128:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED4_Pin|LED5_Pin, GPIO_PIN_RESET);
+ 129:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED2_Pin|LED3_Pin, GPIO_PIN_SET);
+ 130:Src/mode.c    **** 			break;
+ 131:Src/mode.c    **** 
+ 132:Src/mode.c    **** 			case 4:
+ 133:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED2_Pin|LED3_Pin|LED5_Pin, GPIO_PIN_RESET);
+ 134:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED4_Pin, GPIO_PIN_SET);
+ 135:Src/mode.c    **** 			break;
+ 136:Src/mode.c    **** 
+ 137:Src/mode.c    **** 			case 5:
+ 138:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED3_Pin|LED5_Pin, GPIO_PIN_RESET);
+ 139:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED2_Pin|LED4_Pin, GPIO_PIN_SET);
+ 140:Src/mode.c    **** 			break;
+ 141:Src/mode.c    **** 
+ 142:Src/mode.c    **** 			case 6:
+ 143:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED2_Pin|LED5_Pin, GPIO_PIN_RESET);
+ 144:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED3_Pin|LED4_Pin, GPIO_PIN_SET);
+ 145:Src/mode.c    **** 			break;
+ 146:Src/mode.c    **** 
+ 147:Src/mode.c    **** 			case 7:
+ 148:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED5_Pin, GPIO_PIN_RESET);
+ 149:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED2_Pin|LED3_Pin|LED4_Pin, GPIO_PIN_SET);
+ 150:Src/mode.c    **** 			break;
+ 151:Src/mode.c    **** 
+ 152:Src/mode.c    **** 			case 8:
+ 153:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED2_Pin|LED3_Pin|LED4_Pin, GPIO_PIN_RESET);
+ 154:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED5_Pin, GPIO_PIN_SET);
+ 155:Src/mode.c    **** 			break;
+ 156:Src/mode.c    **** 
+ 157:Src/mode.c    **** 			case 9:
+ 158:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED3_Pin|LED4_Pin, GPIO_PIN_RESET);
+ 159:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED2_Pin|LED5_Pin, GPIO_PIN_SET);
+ 160:Src/mode.c    **** 			break;
+ 161:Src/mode.c    **** 
+ 162:Src/mode.c    **** 			case 10:
+ 163:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED2_Pin|LED4_Pin, GPIO_PIN_RESET);
+ 164:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED3_Pin|LED5_Pin, GPIO_PIN_SET);
+ 165:Src/mode.c    **** 			break;
+ 166:Src/mode.c    **** 
+ 167:Src/mode.c    **** 			case 11:
+ 168:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED4_Pin, GPIO_PIN_RESET);
+ 169:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED2_Pin|LED3_Pin|LED5_Pin, GPIO_PIN_SET);
+ 170:Src/mode.c    **** 			break;
+ 171:Src/mode.c    **** 
+ 172:Src/mode.c    **** 			case 12:
+ 173:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED2_Pin|LED3_Pin, GPIO_PIN_RESET);
+ 174:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED4_Pin|LED5_Pin, GPIO_PIN_SET);
+ 175:Src/mode.c    **** 			break;
+ 176:Src/mode.c    **** 
+ 177:Src/mode.c    **** 			case 13:
+ 178:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED3_Pin, GPIO_PIN_RESET);
+ 179:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED2_Pin|LED4_Pin|LED5_Pin, GPIO_PIN_SET);
+ 180:Src/mode.c    **** 			break;
+ARM GAS  C:\Temp\ccq8lEth.s 			page 8
 
 
- 449              		.section	.bss.mode_count,"aw",%nobits
- 450              		.set	.LANCHOR0,. + 0
- 453              	mode_count:
- 454 0000 00       		.space	1
- 455              		.section	.bss.mode_number,"aw",%nobits
- 456              		.set	.LANCHOR1,. + 0
- 459              	mode_number:
- 460 0000 00       		.space	1
- 461              		.section	.bss.mode_number_old.10170,"aw",%nobits
- 462              		.set	.LANCHOR2,. + 0
- 465              	mode_number_old.10170:
- 466 0000 00       		.space	1
- 467              		.section	.bss.stanby_mode,"aw",%nobits
- 470              	stanby_mode:
- 471 0000 00       		.space	1
- 472              		.text
- 473              	.Letext0:
- 474              		.file 2 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\machine\\_default_t
- 475              		.file 3 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\lock.h"
- 476              		.file 4 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\_types.h"
- 477              		.file 5 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\lib\\gcc\\arm-none-eabi\\9.2.1\\include\\st
- 478              		.file 6 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\reent.h"
- 479              		.file 7 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\_stdint.h"
- 480              		.file 8 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\math.h"
- 481              		.file 9 "Drivers/CMSIS/Include/core_cm4.h"
- 482              		.file 10 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h"
- 483              		.file 11 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f413xx.h"
- 484              		.file 12 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h"
- 485              		.file 13 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
- 486              		.file 14 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio.h"
- 487              		.file 15 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h"
- 488              		.file 16 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_adc.h"
- 489              		.file 17 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h"
- 490              		.file 18 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h"
- 491              		.file 19 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h"
- 492              		.file 20 "Inc/adc.h"
- 493              		.file 21 "Inc/spi.h"
- 494              		.file 22 "Inc/tim.h"
- 495              		.file 23 "Inc/usart.h"
- 496              		.file 24 "Inc/index.h"
- 497              		.file 25 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h"
-ARM GAS  C:\Temp\cck2FY7Y.s 			page 13
+ 181:Src/mode.c    **** 
+ 182:Src/mode.c    **** 			case 14:
+ 183:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED2_Pin, GPIO_PIN_RESET);
+ 184:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED3_Pin|LED4_Pin|LED5_Pin, GPIO_PIN_SET);
+ 185:Src/mode.c    **** 			break;
+ 186:Src/mode.c    **** 
+ 187:Src/mode.c    **** 			case 15:
+ 188:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED2_Pin|LED3_Pin|LED4_Pin|LED5_Pin, GPIO_PIN_SET);
+ 189:Src/mode.c    **** 			break;
+ 190:Src/mode.c    **** 			}
+ 191:Src/mode.c    **** 		}
+ 192:Src/mode.c    **** 
+ 193:Src/mode.c    **** 	mode_number_old = mode_count;
+ 227              		.loc 1 193 2 view .LVU42
+ 228              		.loc 1 193 18 is_stmt 0 view .LVU43
+ 229 0096 6F4B     		ldr	r3, .L37+24
+ 230 0098 1878     		ldrb	r0, [r3]	@ zero_extendqisi2
+ 231 009a 704B     		ldr	r3, .L37+32
+ 232 009c 1870     		strb	r0, [r3]
+ 194:Src/mode.c    **** 	set_mode_number(mode_count);//モード番号にセット
+ 233              		.loc 1 194 2 is_stmt 1 view .LVU44
+ 234 009e FFF7FEFF 		bl	set_mode_number
+ 235              	.LVL3:
+ 195:Src/mode.c    **** }
+ 236              		.loc 1 195 1 is_stmt 0 view .LVU45
+ 237 00a2 10BD     		pop	{r4, pc}
+ 238              	.L32:
+ 118:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED2_Pin, GPIO_PIN_SET);
+ 239              		.loc 1 118 5 is_stmt 1 view .LVU46
+ 240 00a4 6E4C     		ldr	r4, .L37+36
+ 241 00a6 0022     		movs	r2, #0
+ 242 00a8 4FF4C851 		mov	r1, #6400
+ 243 00ac 2046     		mov	r0, r4
+ 244 00ae FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 245              	.LVL4:
+ 119:Src/mode.c    **** 			break;
+ 246              		.loc 1 119 5 view .LVU47
+ 247 00b2 0122     		movs	r2, #1
+ 248 00b4 4FF40051 		mov	r1, #8192
+ 249 00b8 2046     		mov	r0, r4
+ 250 00ba FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 251              	.LVL5:
+ 120:Src/mode.c    **** 
+ 252              		.loc 1 120 4 view .LVU48
+ 253 00be EAE7     		b	.L16
+ 254              	.L31:
+ 123:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED3_Pin, GPIO_PIN_SET);
+ 255              		.loc 1 123 5 view .LVU49
+ 256 00c0 674C     		ldr	r4, .L37+36
+ 257 00c2 0022     		movs	r2, #0
+ 258 00c4 4FF42451 		mov	r1, #10496
+ 259 00c8 2046     		mov	r0, r4
+ 260 00ca FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 261              	.LVL6:
+ 124:Src/mode.c    **** 			break;
+ 262              		.loc 1 124 5 view .LVU50
+ 263 00ce 0122     		movs	r2, #1
+ARM GAS  C:\Temp\ccq8lEth.s 			page 9
+
+
+ 264 00d0 4FF48051 		mov	r1, #4096
+ 265 00d4 2046     		mov	r0, r4
+ 266 00d6 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 267              	.LVL7:
+ 125:Src/mode.c    **** 
+ 268              		.loc 1 125 4 view .LVU51
+ 269 00da DCE7     		b	.L16
+ 270              	.L30:
+ 128:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED2_Pin|LED3_Pin, GPIO_PIN_SET);
+ 271              		.loc 1 128 5 view .LVU52
+ 272 00dc 604C     		ldr	r4, .L37+36
+ 273 00de 0022     		movs	r2, #0
+ 274 00e0 4FF41061 		mov	r1, #2304
+ 275 00e4 2046     		mov	r0, r4
+ 276 00e6 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 277              	.LVL8:
+ 129:Src/mode.c    **** 			break;
+ 278              		.loc 1 129 5 view .LVU53
+ 279 00ea 0122     		movs	r2, #1
+ 280 00ec 4FF44051 		mov	r1, #12288
+ 281 00f0 2046     		mov	r0, r4
+ 282 00f2 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 283              	.LVL9:
+ 130:Src/mode.c    **** 
+ 284              		.loc 1 130 4 view .LVU54
+ 285 00f6 CEE7     		b	.L16
+ 286              	.L29:
+ 133:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED4_Pin, GPIO_PIN_SET);
+ 287              		.loc 1 133 5 view .LVU55
+ 288 00f8 594C     		ldr	r4, .L37+36
+ 289 00fa 0022     		movs	r2, #0
+ 290 00fc 4FF44451 		mov	r1, #12544
+ 291 0100 2046     		mov	r0, r4
+ 292 0102 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 293              	.LVL10:
+ 134:Src/mode.c    **** 			break;
+ 294              		.loc 1 134 5 view .LVU56
+ 295 0106 0122     		movs	r2, #1
+ 296 0108 4FF40061 		mov	r1, #2048
+ 297 010c 2046     		mov	r0, r4
+ 298 010e FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 299              	.LVL11:
+ 135:Src/mode.c    **** 
+ 300              		.loc 1 135 4 view .LVU57
+ 301 0112 C0E7     		b	.L16
+ 302              	.L28:
+ 138:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED2_Pin|LED4_Pin, GPIO_PIN_SET);
+ 303              		.loc 1 138 5 view .LVU58
+ 304 0114 524C     		ldr	r4, .L37+36
+ 305 0116 0022     		movs	r2, #0
+ 306 0118 4FF48851 		mov	r1, #4352
+ 307 011c 2046     		mov	r0, r4
+ 308 011e FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 309              	.LVL12:
+ 139:Src/mode.c    **** 			break;
+ 310              		.loc 1 139 5 view .LVU59
+ 311 0122 0122     		movs	r2, #1
+ARM GAS  C:\Temp\ccq8lEth.s 			page 10
+
+
+ 312 0124 4FF42051 		mov	r1, #10240
+ 313 0128 2046     		mov	r0, r4
+ 314 012a FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 315              	.LVL13:
+ 140:Src/mode.c    **** 
+ 316              		.loc 1 140 4 view .LVU60
+ 317 012e B2E7     		b	.L16
+ 318              	.L27:
+ 143:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED3_Pin|LED4_Pin, GPIO_PIN_SET);
+ 319              		.loc 1 143 5 view .LVU61
+ 320 0130 4B4C     		ldr	r4, .L37+36
+ 321 0132 0022     		movs	r2, #0
+ 322 0134 4FF40451 		mov	r1, #8448
+ 323 0138 2046     		mov	r0, r4
+ 324 013a FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 325              	.LVL14:
+ 144:Src/mode.c    **** 			break;
+ 326              		.loc 1 144 5 view .LVU62
+ 327 013e 0122     		movs	r2, #1
+ 328 0140 4FF4C051 		mov	r1, #6144
+ 329 0144 2046     		mov	r0, r4
+ 330 0146 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 331              	.LVL15:
+ 145:Src/mode.c    **** 
+ 332              		.loc 1 145 4 view .LVU63
+ 333 014a A4E7     		b	.L16
+ 334              	.L26:
+ 148:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED2_Pin|LED3_Pin|LED4_Pin, GPIO_PIN_SET);
+ 335              		.loc 1 148 5 view .LVU64
+ 336 014c 444C     		ldr	r4, .L37+36
+ 337 014e 0022     		movs	r2, #0
+ 338 0150 4FF48071 		mov	r1, #256
+ 339 0154 2046     		mov	r0, r4
+ 340 0156 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 341              	.LVL16:
+ 149:Src/mode.c    **** 			break;
+ 342              		.loc 1 149 5 view .LVU65
+ 343 015a 0122     		movs	r2, #1
+ 344 015c 4FF46051 		mov	r1, #14336
+ 345 0160 2046     		mov	r0, r4
+ 346 0162 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 347              	.LVL17:
+ 150:Src/mode.c    **** 
+ 348              		.loc 1 150 4 view .LVU66
+ 349 0166 96E7     		b	.L16
+ 350              	.L25:
+ 153:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED5_Pin, GPIO_PIN_SET);
+ 351              		.loc 1 153 5 view .LVU67
+ 352 0168 3D4C     		ldr	r4, .L37+36
+ 353 016a 0022     		movs	r2, #0
+ 354 016c 4FF46051 		mov	r1, #14336
+ 355 0170 2046     		mov	r0, r4
+ 356 0172 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 357              	.LVL18:
+ 154:Src/mode.c    **** 			break;
+ 358              		.loc 1 154 5 view .LVU68
+ 359 0176 0122     		movs	r2, #1
+ARM GAS  C:\Temp\ccq8lEth.s 			page 11
+
+
+ 360 0178 4FF48071 		mov	r1, #256
+ 361 017c 2046     		mov	r0, r4
+ 362 017e FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 363              	.LVL19:
+ 155:Src/mode.c    **** 
+ 364              		.loc 1 155 4 view .LVU69
+ 365 0182 88E7     		b	.L16
+ 366              	.L24:
+ 158:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED2_Pin|LED5_Pin, GPIO_PIN_SET);
+ 367              		.loc 1 158 5 view .LVU70
+ 368 0184 364C     		ldr	r4, .L37+36
+ 369 0186 0022     		movs	r2, #0
+ 370 0188 4FF4C051 		mov	r1, #6144
+ 371 018c 2046     		mov	r0, r4
+ 372 018e FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 373              	.LVL20:
+ 159:Src/mode.c    **** 			break;
+ 374              		.loc 1 159 5 view .LVU71
+ 375 0192 0122     		movs	r2, #1
+ 376 0194 4FF40451 		mov	r1, #8448
+ 377 0198 2046     		mov	r0, r4
+ 378 019a FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 379              	.LVL21:
+ 160:Src/mode.c    **** 
+ 380              		.loc 1 160 4 view .LVU72
+ 381 019e 7AE7     		b	.L16
+ 382              	.L23:
+ 163:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED3_Pin|LED5_Pin, GPIO_PIN_SET);
+ 383              		.loc 1 163 5 view .LVU73
+ 384 01a0 2F4C     		ldr	r4, .L37+36
+ 385 01a2 0022     		movs	r2, #0
+ 386 01a4 4FF42051 		mov	r1, #10240
+ 387 01a8 2046     		mov	r0, r4
+ 388 01aa FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 389              	.LVL22:
+ 164:Src/mode.c    **** 			break;
+ 390              		.loc 1 164 5 view .LVU74
+ 391 01ae 0122     		movs	r2, #1
+ 392 01b0 4FF48851 		mov	r1, #4352
+ 393 01b4 2046     		mov	r0, r4
+ 394 01b6 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 395              	.LVL23:
+ 165:Src/mode.c    **** 
+ 396              		.loc 1 165 4 view .LVU75
+ 397 01ba 6CE7     		b	.L16
+ 398              	.L22:
+ 168:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED2_Pin|LED3_Pin|LED5_Pin, GPIO_PIN_SET);
+ 399              		.loc 1 168 5 view .LVU76
+ 400 01bc 284C     		ldr	r4, .L37+36
+ 401 01be 0022     		movs	r2, #0
+ 402 01c0 4FF40061 		mov	r1, #2048
+ 403 01c4 2046     		mov	r0, r4
+ 404 01c6 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 405              	.LVL24:
+ 169:Src/mode.c    **** 			break;
+ 406              		.loc 1 169 5 view .LVU77
+ 407 01ca 0122     		movs	r2, #1
+ARM GAS  C:\Temp\ccq8lEth.s 			page 12
+
+
+ 408 01cc 4FF44451 		mov	r1, #12544
+ 409 01d0 2046     		mov	r0, r4
+ 410 01d2 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 411              	.LVL25:
+ 170:Src/mode.c    **** 
+ 412              		.loc 1 170 4 view .LVU78
+ 413 01d6 5EE7     		b	.L16
+ 414              	.L21:
+ 173:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED4_Pin|LED5_Pin, GPIO_PIN_SET);
+ 415              		.loc 1 173 5 view .LVU79
+ 416 01d8 214C     		ldr	r4, .L37+36
+ 417 01da 0022     		movs	r2, #0
+ 418 01dc 4FF44051 		mov	r1, #12288
+ 419 01e0 2046     		mov	r0, r4
+ 420 01e2 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 421              	.LVL26:
+ 174:Src/mode.c    **** 			break;
+ 422              		.loc 1 174 5 view .LVU80
+ 423 01e6 0122     		movs	r2, #1
+ 424 01e8 4FF41061 		mov	r1, #2304
+ 425 01ec 2046     		mov	r0, r4
+ 426 01ee FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 427              	.LVL27:
+ 175:Src/mode.c    **** 
+ 428              		.loc 1 175 4 view .LVU81
+ 429 01f2 50E7     		b	.L16
+ 430              	.L20:
+ 178:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED2_Pin|LED4_Pin|LED5_Pin, GPIO_PIN_SET);
+ 431              		.loc 1 178 5 view .LVU82
+ 432 01f4 1A4C     		ldr	r4, .L37+36
+ 433 01f6 0022     		movs	r2, #0
+ 434 01f8 4FF48051 		mov	r1, #4096
+ 435 01fc 2046     		mov	r0, r4
+ 436 01fe FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 437              	.LVL28:
+ 179:Src/mode.c    **** 			break;
+ 438              		.loc 1 179 5 view .LVU83
+ 439 0202 0122     		movs	r2, #1
+ 440 0204 4FF42451 		mov	r1, #10496
+ 441 0208 2046     		mov	r0, r4
+ 442 020a FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 443              	.LVL29:
+ 180:Src/mode.c    **** 
+ 444              		.loc 1 180 4 view .LVU84
+ 445 020e 42E7     		b	.L16
+ 446              	.L19:
+ 183:Src/mode.c    **** 				HAL_GPIO_WritePin(GPIOA,LED3_Pin|LED4_Pin|LED5_Pin, GPIO_PIN_SET);
+ 447              		.loc 1 183 5 view .LVU85
+ 448 0210 134C     		ldr	r4, .L37+36
+ 449 0212 0022     		movs	r2, #0
+ 450 0214 4FF40051 		mov	r1, #8192
+ 451 0218 2046     		mov	r0, r4
+ 452 021a FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 453              	.LVL30:
+ 184:Src/mode.c    **** 			break;
+ 454              		.loc 1 184 5 view .LVU86
+ 455 021e 0122     		movs	r2, #1
+ARM GAS  C:\Temp\ccq8lEth.s 			page 13
+
+
+ 456 0220 4FF4C851 		mov	r1, #6400
+ 457 0224 2046     		mov	r0, r4
+ 458 0226 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 459              	.LVL31:
+ 185:Src/mode.c    **** 
+ 460              		.loc 1 185 4 view .LVU87
+ 461 022a 34E7     		b	.L16
+ 462              	.L17:
+ 188:Src/mode.c    **** 			break;
+ 463              		.loc 1 188 5 view .LVU88
+ 464 022c 0122     		movs	r2, #1
+ 465 022e 4FF46451 		mov	r1, #14592
+ 466 0232 0B48     		ldr	r0, .L37+36
+ 467 0234 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 468              	.LVL32:
+ 189:Src/mode.c    **** 			}
+ 469              		.loc 1 189 4 view .LVU89
+ 470 0238 2DE7     		b	.L16
+ 471              	.L38:
+ 472 023a 00BF     		.align	2
+ 473              	.L37:
+ 474 023c 00000000 		.word	speed_r
+ 475 0240 00000000 		.word	speed_r_max
+ 476 0244 00000000 		.word	speed_r_min
+ 477 0248 00000000 		.word	speed_l_max
+ 478 024c 00000000 		.word	speed_l_min
+ 479 0250 CDCCCC3D 		.word	1036831949
+ 480 0254 00000000 		.word	.LANCHOR2
+ 481 0258 CDCCCCBD 		.word	-1110651699
+ 482 025c 00000000 		.word	.LANCHOR3
+ 483 0260 00000240 		.word	1073872896
+ 484              		.cfi_endproc
+ 485              	.LFE137:
+ 487              		.global	__aeabi_f2d
+ 488              		.section	.rodata.mode_decide_jud.str1.4,"aMS",%progbits,1
+ 489              		.align	2
+ 490              	.LC0:
+ 491 0000 6D6F6465 		.ascii	"mode decide. speed is %f \015\012\000"
+ 491      20646563 
+ 491      6964652E 
+ 491      20737065 
+ 491      65642069 
+ 492              		.section	.text.mode_decide_jud,"ax",%progbits
+ 493              		.align	1
+ 494              		.global	mode_decide_jud
+ 495              		.syntax unified
+ 496              		.thumb
+ 497              		.thumb_func
+ 498              		.fpu fpv4-sp-d16
+ 500              	mode_decide_jud:
+ 501              	.LFB138:
+ 196:Src/mode.c    **** 
+ 197:Src/mode.c    **** //機能	:左タイヤ速度を入力とし、モードを決定する。
+ 198:Src/mode.c    **** //引数	:なし
+ 199:Src/mode.c    **** //返り値	:モード決定状態
+ 200:Src/mode.c    **** uint8_t mode_decide_jud(void)
+ 201:Src/mode.c    **** {
+ARM GAS  C:\Temp\ccq8lEth.s 			page 14
+
+
+ 502              		.loc 1 201 1 view -0
+ 503              		.cfi_startproc
+ 504              		@ args = 0, pretend = 0, frame = 0
+ 505              		@ frame_needed = 0, uses_anonymous_args = 0
+ 506 0000 08B5     		push	{r3, lr}
+ 507              	.LCFI1:
+ 508              		.cfi_def_cfa_offset 8
+ 509              		.cfi_offset 3, -8
+ 510              		.cfi_offset 14, -4
+ 202:Src/mode.c    **** 	MODE_DECIDE temp;
+ 511              		.loc 1 202 2 view .LVU91
+ 203:Src/mode.c    **** 
+ 204:Src/mode.c    **** 	if(mode_stanby_th < speed_l_max )
+ 512              		.loc 1 204 2 view .LVU92
+ 513              		.loc 1 204 20 is_stmt 0 view .LVU93
+ 514 0002 0B4B     		ldr	r3, .L44
+ 515 0004 D3ED007A 		vldr.32	s15, [r3]
+ 516              		.loc 1 204 4 view .LVU94
+ 517 0008 9FED0A7A 		vldr.32	s14, .L44+4
+ 518 000c F4EEC77A 		vcmpe.f32	s15, s14
+ 519 0010 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 520 0014 01DD     		ble	.L43
+ 205:Src/mode.c    **** 	{
+ 206:Src/mode.c    **** 		temp = before;
+ 521              		.loc 1 206 8 view .LVU95
+ 522 0016 0020     		movs	r0, #0
+ 523              	.L40:
+ 524              	.LVL33:
+ 207:Src/mode.c    **** 	}
+ 208:Src/mode.c    **** 	else {
+ 209:Src/mode.c    **** 		temp = after;
+ 210:Src/mode.c    **** 		printf("mode decide. speed is %f \r\n", speed_l_max);
+ 211:Src/mode.c    **** 	}
+ 212:Src/mode.c    **** 
+ 213:Src/mode.c    **** 	return temp;
+ 525              		.loc 1 213 2 is_stmt 1 view .LVU96
+ 214:Src/mode.c    **** }
+ 526              		.loc 1 214 1 is_stmt 0 view .LVU97
+ 527 0018 08BD     		pop	{r3, pc}
+ 528              	.LVL34:
+ 529              	.L43:
+ 209:Src/mode.c    **** 		printf("mode decide. speed is %f \r\n", speed_l_max);
+ 530              		.loc 1 209 3 is_stmt 1 view .LVU98
+ 210:Src/mode.c    **** 	}
+ 531              		.loc 1 210 3 view .LVU99
+ 532 001a 17EE900A 		vmov	r0, s15
+ 533 001e FFF7FEFF 		bl	__aeabi_f2d
+ 534              	.LVL35:
+ 535 0022 0246     		mov	r2, r0
+ 536 0024 0B46     		mov	r3, r1
+ 537 0026 0448     		ldr	r0, .L44+8
+ 538 0028 FFF7FEFF 		bl	printf
+ 539              	.LVL36:
+ 209:Src/mode.c    **** 		printf("mode decide. speed is %f \r\n", speed_l_max);
+ 540              		.loc 1 209 8 is_stmt 0 view .LVU100
+ 541 002c 0120     		movs	r0, #1
+ 542 002e F3E7     		b	.L40
+ARM GAS  C:\Temp\ccq8lEth.s 			page 15
+
+
+ 543              	.L45:
+ 544              		.align	2
+ 545              	.L44:
+ 546 0030 00000000 		.word	speed_l_max
+ 547 0034 CDCCCC3D 		.word	1036831949
+ 548 0038 00000000 		.word	.LC0
+ 549              		.cfi_endproc
+ 550              	.LFE138:
+ 552              		.section	.text.mode_start,"ax",%progbits
+ 553              		.align	1
+ 554              		.global	mode_start
+ 555              		.syntax unified
+ 556              		.thumb
+ 557              		.thumb_func
+ 558              		.fpu fpv4-sp-d16
+ 560              	mode_start:
+ 561              	.LFB139:
+ 215:Src/mode.c    **** 
+ 216:Src/mode.c    **** //機能	:IRセンサによるモード動作開始SW
+ 217:Src/mode.c    **** //引数	:なし
+ 218:Src/mode.c    **** //返り値	:なし
+ 219:Src/mode.c    **** void mode_start(void)
+ 220:Src/mode.c    **** {
+ 562              		.loc 1 220 1 is_stmt 1 view -0
+ 563              		.cfi_startproc
+ 564              		@ args = 0, pretend = 0, frame = 0
+ 565              		@ frame_needed = 0, uses_anonymous_args = 0
+ 566 0000 08B5     		push	{r3, lr}
+ 567              	.LCFI2:
+ 568              		.cfi_def_cfa_offset 8
+ 569              		.cfi_offset 3, -8
+ 570              		.cfi_offset 14, -4
+ 571              	.L47:
+ 221:Src/mode.c    **** 	while(1)/*m右前センサをモード開始のスイッチとする。*/
+ 572              		.loc 1 221 2 view .LVU102
+ 222:Src/mode.c    **** 	{
+ 223:Src/mode.c    **** 		if( Sensor_GetValue(3) >= 1500)
+ 573              		.loc 1 223 3 view .LVU103
+ 574              		.loc 1 223 7 is_stmt 0 view .LVU104
+ 575 0002 0320     		movs	r0, #3
+ 576 0004 FFF7FEFF 		bl	Sensor_GetValue
+ 577              	.LVL37:
+ 578              		.loc 1 223 5 view .LVU105
+ 579 0008 40F2DB53 		movw	r3, #1499
+ 580 000c 9842     		cmp	r0, r3
+ 581 000e F8DD     		ble	.L47
+ 224:Src/mode.c    **** 		{
+ 225:Src/mode.c    **** 			HAL_Delay(500);
+ 582              		.loc 1 225 4 is_stmt 1 view .LVU106
+ 583 0010 4FF4FA70 		mov	r0, #500
+ 584 0014 FFF7FEFF 		bl	HAL_Delay
+ 585              	.LVL38:
+ 226:Src/mode.c    **** 			mode_state = process;//モードを実行中に遷移
+ 586              		.loc 1 226 4 view .LVU107
+ 587              		.loc 1 226 15 is_stmt 0 view .LVU108
+ 588 0018 014B     		ldr	r3, .L49
+ 589 001a 0122     		movs	r2, #1
+ARM GAS  C:\Temp\ccq8lEth.s 			page 16
+
+
+ 590 001c 1A70     		strb	r2, [r3]
+ 227:Src/mode.c    **** 			break;
+ 591              		.loc 1 227 4 is_stmt 1 view .LVU109
+ 228:Src/mode.c    **** 		}
+ 229:Src/mode.c    **** 	}
+ 230:Src/mode.c    **** }...
+ 592              		.loc 1 230 1 is_stmt 0 view .LVU110
+ 593 001e 08BD     		pop	{r3, pc}
+ 594              	.L50:
+ 595              		.align	2
+ 596              	.L49:
+ 597 0020 00000000 		.word	.LANCHOR0
+ 598              		.cfi_endproc
+ 599              	.LFE139:
+ 601              		.section	.rodata.mode_main.str1.4,"aMS",%progbits,1
+ 602              		.align	2
+ 603              	.LC1:
+ 604 0000 72656164 		.ascii	"ready_mode is %d\000"
+ 604      795F6D6F 
+ 604      64652069 
+ 604      73202564 
+ 604      00
+ 605              		.section	.text.mode_main,"ax",%progbits
+ 606              		.align	1
+ 607              		.global	mode_main
+ 608              		.syntax unified
+ 609              		.thumb
+ 610              		.thumb_func
+ 611              		.fpu fpv4-sp-d16
+ 613              	mode_main:
+ 614              	.LFB133:
+  25:Src/mode.c    **** {
+ 615              		.loc 1 25 1 is_stmt 1 view -0
+ 616              		.cfi_startproc
+ 617              		@ args = 0, pretend = 0, frame = 0
+ 618              		@ frame_needed = 0, uses_anonymous_args = 0
+ 619 0000 38B5     		push	{r3, r4, r5, lr}
+ 620              	.LCFI3:
+ 621              		.cfi_def_cfa_offset 16
+ 622              		.cfi_offset 3, -16
+ 623              		.cfi_offset 4, -12
+ 624              		.cfi_offset 5, -8
+ 625              		.cfi_offset 14, -4
+  27:Src/mode.c    **** 	ready_mode = before; 		//モード決定状態を決定前に
+ 626              		.loc 1 27 2 view .LVU112
+  27:Src/mode.c    **** 	ready_mode = before; 		//モード決定状態を決定前に
+ 627              		.loc 1 27 13 is_stmt 0 view .LVU113
+ 628 0002 0023     		movs	r3, #0
+ 629 0004 1A4A     		ldr	r2, .L58
+ 630 0006 1370     		strb	r3, [r2]
+  28:Src/mode.c    **** 	mode_state = preparation;	//モード開始状態を開始前に
+ 631              		.loc 1 28 2 is_stmt 1 view .LVU114
+  28:Src/mode.c    **** 	mode_state = preparation;	//モード開始状態を開始前に
+ 632              		.loc 1 28 13 is_stmt 0 view .LVU115
+ 633 0008 1A4A     		ldr	r2, .L58+4
+ 634 000a 1370     		strb	r3, [r2]
+  29:Src/mode.c    **** 	mode_count = 0;				//modeカウンタ初期化
+ARM GAS  C:\Temp\ccq8lEth.s 			page 17
+
+
+ 635              		.loc 1 29 2 is_stmt 1 view .LVU116
+  29:Src/mode.c    **** 	mode_count = 0;				//modeカウンタ初期化
+ 636              		.loc 1 29 13 is_stmt 0 view .LVU117
+ 637 000c 1A4A     		ldr	r2, .L58+8
+ 638 000e 1370     		strb	r3, [r2]
+  31:Src/mode.c    **** 	Sensor_StopADC();	//IRセンサ停止
+ 639              		.loc 1 31 2 is_stmt 1 view .LVU118
+ 640 0010 FFF7FEFF 		bl	Sensor_StopADC
+ 641              	.LVL39:
+  33:Src/mode.c    **** 	while(ready_mode == before) //モード選択モードのとき
+ 642              		.loc 1 33 2 view .LVU119
+ 643              	.L52:
+  33:Src/mode.c    **** 	while(ready_mode == before) //モード選択モードのとき
+ 644              		.loc 1 33 7 view .LVU120
+  33:Src/mode.c    **** 	while(ready_mode == before) //モード選択モードのとき
+ 645              		.loc 1 33 19 is_stmt 0 view .LVU121
+ 646 0014 164B     		ldr	r3, .L58
+ 647 0016 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+  33:Src/mode.c    **** 	while(ready_mode == before) //モード選択モードのとき
+ 648              		.loc 1 33 7 view .LVU122
+ 649 0018 53B9     		cbnz	r3, .L57
+  35:Src/mode.c    **** 		mode_select();
+ 650              		.loc 1 35 3 is_stmt 1 view .LVU123
+ 651 001a FFF7FEFF 		bl	mode_select
+ 652              	.LVL40:
+  36:Src/mode.c    **** 		ready_mode = mode_decide_jud();
+ 653              		.loc 1 36 3 view .LVU124
+  36:Src/mode.c    **** 		ready_mode = mode_decide_jud();
+ 654              		.loc 1 36 16 is_stmt 0 view .LVU125
+ 655 001e FFF7FEFF 		bl	mode_decide_jud
+ 656              	.LVL41:
+ 657 0022 0146     		mov	r1, r0
+  36:Src/mode.c    **** 		ready_mode = mode_decide_jud();
+ 658              		.loc 1 36 14 view .LVU126
+ 659 0024 124B     		ldr	r3, .L58
+ 660 0026 1870     		strb	r0, [r3]
+  37:Src/mode.c    **** 		printf("ready_mode is %d",ready_mode);
+ 661              		.loc 1 37 3 is_stmt 1 view .LVU127
+ 662 0028 1448     		ldr	r0, .L58+12
+ 663 002a FFF7FEFF 		bl	printf
+ 664              	.LVL42:
+ 665 002e F1E7     		b	.L52
+ 666              	.L57:
+ 667              	.LBB2:
+  41:Src/mode.c    **** 	for(int i=0; i<2; i++)
+ 668              		.loc 1 41 10 is_stmt 0 view .LVU128
+ 669 0030 0024     		movs	r4, #0
+ 670 0032 15E0     		b	.L54
+ 671              	.LVL43:
+ 672              	.L55:
+  43:Src/mode.c    **** 		HAL_GPIO_WritePin(GPIOA,LED2_Pin|LED3_Pin|LED4_Pin|LED5_Pin, GPIO_PIN_SET);
+ 673              		.loc 1 43 3 is_stmt 1 discriminator 3 view .LVU129
+ 674 0034 124D     		ldr	r5, .L58+16
+ 675 0036 0122     		movs	r2, #1
+ 676 0038 4FF46451 		mov	r1, #14592
+ 677 003c 2846     		mov	r0, r5
+ 678 003e FFF7FEFF 		bl	HAL_GPIO_WritePin
+ARM GAS  C:\Temp\ccq8lEth.s 			page 18
+
+
+ 679              	.LVL44:
+  44:Src/mode.c    **** 		HAL_Delay(700);
+ 680              		.loc 1 44 3 discriminator 3 view .LVU130
+ 681 0042 4FF42F70 		mov	r0, #700
+ 682 0046 FFF7FEFF 		bl	HAL_Delay
+ 683              	.LVL45:
+  45:Src/mode.c    **** 		HAL_GPIO_WritePin(GPIOA,LED2_Pin|LED3_Pin|LED4_Pin|LED5_Pin, GPIO_PIN_RESET);
+ 684              		.loc 1 45 3 discriminator 3 view .LVU131
+ 685 004a 0022     		movs	r2, #0
+ 686 004c 4FF46451 		mov	r1, #14592
+ 687 0050 2846     		mov	r0, r5
+ 688 0052 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 689              	.LVL46:
+  46:Src/mode.c    **** 		HAL_Delay(300);
+ 690              		.loc 1 46 3 discriminator 3 view .LVU132
+ 691 0056 4FF49670 		mov	r0, #300
+ 692 005a FFF7FEFF 		bl	HAL_Delay
+ 693              	.LVL47:
+  41:Src/mode.c    **** 	for(int i=0; i<2; i++)
+ 694              		.loc 1 41 20 discriminator 3 view .LVU133
+  41:Src/mode.c    **** 	for(int i=0; i<2; i++)
+ 695              		.loc 1 41 21 is_stmt 0 discriminator 3 view .LVU134
+ 696 005e 0134     		adds	r4, r4, #1
+ 697              	.LVL48:
+ 698              	.L54:
+  41:Src/mode.c    **** 	for(int i=0; i<2; i++)
+ 699              		.loc 1 41 15 is_stmt 1 discriminator 1 view .LVU135
+  41:Src/mode.c    **** 	for(int i=0; i<2; i++)
+ 700              		.loc 1 41 2 is_stmt 0 discriminator 1 view .LVU136
+ 701 0060 012C     		cmp	r4, #1
+ 702 0062 E7DD     		ble	.L55
+ 703              	.LBE2:
+  50:Src/mode.c    **** 	Sensor_Initialize( );	
+ 704              		.loc 1 50 2 is_stmt 1 view .LVU137
+ 705 0064 FFF7FEFF 		bl	Sensor_Initialize
+ 706              	.LVL49:
+  53:Src/mode.c    **** 	mode_start();
+ 707              		.loc 1 53 2 view .LVU138
+ 708 0068 FFF7FEFF 		bl	mode_start
+ 709              	.LVL50:
+  54:Src/mode.c    **** }
+ 710              		.loc 1 54 1 is_stmt 0 view .LVU139
+ 711 006c 38BD     		pop	{r3, r4, r5, pc}
+ 712              	.LVL51:
+ 713              	.L59:
+  54:Src/mode.c    **** }
+ 714              		.loc 1 54 1 view .LVU140
+ 715 006e 00BF     		.align	2
+ 716              	.L58:
+ 717 0070 00000000 		.word	.LANCHOR4
+ 718 0074 00000000 		.word	.LANCHOR0
+ 719 0078 00000000 		.word	.LANCHOR2
+ 720 007c 00000000 		.word	.LC1
+ 721 0080 00000240 		.word	1073872896
+ 722              		.cfi_endproc
+ 723              	.LFE133:
+ 725              		.section	.bss.mode_count,"aw",%nobits
+ARM GAS  C:\Temp\ccq8lEth.s 			page 19
+
+
+ 726              		.set	.LANCHOR2,. + 0
+ 729              	mode_count:
+ 730 0000 00       		.space	1
+ 731              		.section	.bss.mode_number,"aw",%nobits
+ 732              		.set	.LANCHOR1,. + 0
+ 735              	mode_number:
+ 736 0000 00       		.space	1
+ 737              		.section	.bss.mode_number_old.10208,"aw",%nobits
+ 738              		.set	.LANCHOR3,. + 0
+ 741              	mode_number_old.10208:
+ 742 0000 00       		.space	1
+ 743              		.section	.bss.mode_state,"aw",%nobits
+ 744              		.set	.LANCHOR0,. + 0
+ 747              	mode_state:
+ 748 0000 00       		.space	1
+ 749              		.section	.bss.ready_mode,"aw",%nobits
+ 750              		.set	.LANCHOR4,. + 0
+ 753              	ready_mode:
+ 754 0000 00       		.space	1
+ 755              		.text
+ 756              	.Letext0:
+ 757              		.file 2 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\machine\\_default_t
+ 758              		.file 3 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\lock.h"
+ 759              		.file 4 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\_types.h"
+ 760              		.file 5 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\lib\\gcc\\arm-none-eabi\\9.2.1\\include\\st
+ 761              		.file 6 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\reent.h"
+ 762              		.file 7 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 763              		.file 8 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\math.h"
+ 764              		.file 9 "Drivers/CMSIS/Include/core_cm4.h"
+ 765              		.file 10 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h"
+ 766              		.file 11 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f413xx.h"
+ 767              		.file 12 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h"
+ 768              		.file 13 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
+ 769              		.file 14 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio.h"
+ 770              		.file 15 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h"
+ 771              		.file 16 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_adc.h"
+ 772              		.file 17 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h"
+ 773              		.file 18 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h"
+ 774              		.file 19 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h"
+ 775              		.file 20 "Inc/adc.h"
+ 776              		.file 21 "Inc/spi.h"
+ 777              		.file 22 "Inc/tim.h"
+ 778              		.file 23 "Inc/usart.h"
+ 779              		.file 24 "Inc/index.h"
+ 780              		.file 25 "Inc/mode.h"
+ 781              		.file 26 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h"
+ 782              		.file 27 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\stdio.h"
+ARM GAS  C:\Temp\ccq8lEth.s 			page 20
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 mode.c
-  C:\Temp\cck2FY7Y.s:18     .text.mode_select:00000000 $t
-  C:\Temp\cck2FY7Y.s:26     .text.mode_select:00000000 mode_select
-  C:\Temp\cck2FY7Y.s:122    .text.mode_select:0000007e $d
-  C:\Temp\cck2FY7Y.s:138    .text.mode_select:0000008e $t
-  C:\Temp\cck2FY7Y.s:392    .text.mode_select:0000023c $d
-  C:\Temp\cck2FY7Y.s:407    .text.modechangejud_stanby:00000000 $t
-  C:\Temp\cck2FY7Y.s:414    .text.modechangejud_stanby:00000000 modechangejud_stanby
-  C:\Temp\cck2FY7Y.s:441    .text.modechangejud_stanby:0000001c $d
-  C:\Temp\cck2FY7Y.s:453    .bss.mode_count:00000000 mode_count
-  C:\Temp\cck2FY7Y.s:470    .bss.stanby_mode:00000000 stanby_mode
-  C:\Temp\cck2FY7Y.s:459    .bss.mode_number:00000000 mode_number
-  C:\Temp\cck2FY7Y.s:454    .bss.mode_count:00000000 $d
-  C:\Temp\cck2FY7Y.s:460    .bss.mode_number:00000000 $d
-  C:\Temp\cck2FY7Y.s:465    .bss.mode_number_old.10170:00000000 mode_number_old.10170
-  C:\Temp\cck2FY7Y.s:466    .bss.mode_number_old.10170:00000000 $d
-  C:\Temp\cck2FY7Y.s:471    .bss.stanby_mode:00000000 $d
+  C:\Temp\ccq8lEth.s:18     .text.get_mode_state:00000000 $t
+  C:\Temp\ccq8lEth.s:26     .text.get_mode_state:00000000 get_mode_state
+  C:\Temp\ccq8lEth.s:42     .text.get_mode_state:00000008 $d
+  C:\Temp\ccq8lEth.s:47     .text.get_mode_number:00000000 $t
+  C:\Temp\ccq8lEth.s:54     .text.get_mode_number:00000000 get_mode_number
+  C:\Temp\ccq8lEth.s:69     .text.get_mode_number:00000008 $d
+  C:\Temp\ccq8lEth.s:74     .text.set_mode_number:00000000 $t
+  C:\Temp\ccq8lEth.s:81     .text.set_mode_number:00000000 set_mode_number
+  C:\Temp\ccq8lEth.s:98     .text.set_mode_number:00000008 $d
+  C:\Temp\ccq8lEth.s:103    .text.mode_select:00000000 $t
+  C:\Temp\ccq8lEth.s:110    .text.mode_select:00000000 mode_select
+  C:\Temp\ccq8lEth.s:201    .text.mode_select:0000007a $d
+  C:\Temp\ccq8lEth.s:217    .text.mode_select:0000008a $t
+  C:\Temp\ccq8lEth.s:474    .text.mode_select:0000023c $d
+  C:\Temp\ccq8lEth.s:489    .rodata.mode_decide_jud.str1.4:00000000 $d
+  C:\Temp\ccq8lEth.s:493    .text.mode_decide_jud:00000000 $t
+  C:\Temp\ccq8lEth.s:500    .text.mode_decide_jud:00000000 mode_decide_jud
+  C:\Temp\ccq8lEth.s:546    .text.mode_decide_jud:00000030 $d
+  C:\Temp\ccq8lEth.s:553    .text.mode_start:00000000 $t
+  C:\Temp\ccq8lEth.s:560    .text.mode_start:00000000 mode_start
+  C:\Temp\ccq8lEth.s:597    .text.mode_start:00000020 $d
+  C:\Temp\ccq8lEth.s:602    .rodata.mode_main.str1.4:00000000 $d
+  C:\Temp\ccq8lEth.s:606    .text.mode_main:00000000 $t
+  C:\Temp\ccq8lEth.s:613    .text.mode_main:00000000 mode_main
+  C:\Temp\ccq8lEth.s:717    .text.mode_main:00000070 $d
+  C:\Temp\ccq8lEth.s:729    .bss.mode_count:00000000 mode_count
+  C:\Temp\ccq8lEth.s:730    .bss.mode_count:00000000 $d
+  C:\Temp\ccq8lEth.s:735    .bss.mode_number:00000000 mode_number
+  C:\Temp\ccq8lEth.s:736    .bss.mode_number:00000000 $d
+  C:\Temp\ccq8lEth.s:741    .bss.mode_number_old.10208:00000000 mode_number_old.10208
+  C:\Temp\ccq8lEth.s:742    .bss.mode_number_old.10208:00000000 $d
+  C:\Temp\ccq8lEth.s:747    .bss.mode_state:00000000 mode_state
+  C:\Temp\ccq8lEth.s:748    .bss.mode_state:00000000 $d
+  C:\Temp\ccq8lEth.s:753    .bss.ready_mode:00000000 ready_mode
+  C:\Temp\ccq8lEth.s:754    .bss.ready_mode:00000000 $d
 
 UNDEFINED SYMBOLS
 HAL_Delay
@@ -732,3 +1177,8 @@ speed_r_max
 speed_r_min
 speed_l_max
 speed_l_min
+__aeabi_f2d
+printf
+Sensor_GetValue
+Sensor_StopADC
+Sensor_Initialize

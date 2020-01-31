@@ -30,12 +30,14 @@ void mode_main(void)
 	
 	Sensor_StopADC();	//IRセンサ停止
 		
-	while(mode_decide_jud() == before) //モード選択モードのとき
+	while(ready_mode == before) //モード選択モードのとき
 	{	
 		mode_select();
+		ready_mode = mode_decide_jud();
+		printf("ready_mode is %d",ready_mode);
 	}
 	
-	//モード開始可能状態に遷移したとき、LEDを点滅させる。
+	//モード開始可能状態に遷移したとき、2回LEDを点滅させる。
 	for(int i=0; i<2; i++)
 	{ 
 		HAL_GPIO_WritePin(GPIOA,LED2_Pin|LED3_Pin|LED4_Pin|LED5_Pin, GPIO_PIN_SET);
@@ -205,7 +207,9 @@ uint8_t mode_decide_jud(void)
 	}
 	else {
 		temp = after;
+		printf("mode decide. speed is %f \r\n", speed_l_max);
 	}
+
 	return temp;
 }
 

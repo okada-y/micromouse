@@ -30,8 +30,9 @@ build/main.o: Src/main.c Inc/main.h \
  Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h Inc/adc.h \
  Inc/main.h Inc/dma.h Inc/spi.h Inc/tim.h Inc/usart.h Inc/gpio.h \
  Inc/index.h Inc/adc.h Inc/dma.h Inc/spi.h Inc/tim.h Inc/usart.h \
- Inc/gpio.h Inc/maze_init.h Inc/rtwtypes.h Inc/matlab_code_gen_types.h \
- Inc/maze_solve.h Inc/matlab_code_gen_data.h Inc/index.h
+ Inc/gpio.h Inc/mode.h Inc/maze_init.h Inc/rtwtypes.h \
+ Inc/matlab_code_gen_types.h Inc/maze_solve.h Inc/matlab_code_gen_data.h \
+ Inc/index.h
 
 Inc/main.h:
 
@@ -124,6 +125,8 @@ Inc/tim.h:
 Inc/usart.h:
 
 Inc/gpio.h:
+
+Inc/mode.h:
 
 Inc/maze_init.h:
 

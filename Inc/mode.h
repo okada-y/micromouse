@@ -8,9 +8,6 @@
 #ifndef MODE_H_
 #define MODE_H_
 
-#include <stdio.h>
-#include <math.h>
-
 typedef enum{
 	preparation, //モード準備中
 	process	//モード実行中

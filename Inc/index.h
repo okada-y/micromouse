@@ -22,12 +22,6 @@
 
 /*extern 宣言*/
 
-
-extern uint8_t mode_number;	//mode番号
-extern uint8_t mode_number_int; //m モードごとの割り込みフラグ
-extern uint8_t mode_count;  //modeカウンタ
-
-extern uint8_t stanby_mode; 		//1=stanby 0:not_stanby
 extern float speed_r;				//	右タイヤ速度[m/s]
 extern float speed_r_max;			// m最大右タイヤ速度（デバッグ用
 extern float speed_r_min;			// m最小右タイヤ速度（デバッグ用
