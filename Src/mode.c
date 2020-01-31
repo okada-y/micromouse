@@ -5,15 +5,83 @@
  *      Author: 岡田 泰裕
  */
 #include "index.h"
+#include "mode.h"
 
-uint8_t mode_number = 0; //mode番号
-uint8_t stanby_mode = 0; //1=stanby 0:not_stanby
-uint8_t mode_count = 0;  //modeカウンタ
+typedef enum{
+	before, //モード選択中
+	after	//モード実行準備完了
+}MODE_DECIDE;
 
+
+static uint8_t mode_count = 0;	  //mode選択用カウンタ
+static uint8_t mode_number = 0;   //mode番号
+static MODE_DECIDE ready_mode = before;
+static MODE_STATE mode_state = preparation;
+
+//機能 	:メインモード処理
+//引数 	:なし
+//返り値:なし
+void mode_main(void)
+{
+	//初期処理
+	ready_mode = before; 		//モード決定状態を決定前に
+	mode_state = preparation;	//モード開始状態を開始前に
+	mode_count = 0;				//modeカウンタ初期化
+	
+	Sensor_StopADC();	//IRセンサ停止
+		
+	while(mode_decide_jud() == before) //モード選択モードのとき
+	{	
+		mode_select();
+	}
+	
+	//モード開始可能状態に遷移したとき、LEDを点滅させる。
+	for(int i=0; i<2; i++)
+	{ 
+		HAL_GPIO_WritePin(GPIOA,LED2_Pin|LED3_Pin|LED4_Pin|LED5_Pin, GPIO_PIN_SET);
+		HAL_Delay(700);
+		HAL_GPIO_WritePin(GPIOA,LED2_Pin|LED3_Pin|LED4_Pin|LED5_Pin, GPIO_PIN_RESET);
+		HAL_Delay(300);
+	}
+
+	//IRセンサを稼働させる。
+	Sensor_Initialize( );	
+
+	//モード開始を待機
+	mode_start();
+}
+
+
+//機能 	:モード実行状態を返す
+//引数 	:なし
+//返り値	:モード実行状態
+uint8_t get_mode_state(void)
+{
+	return mode_state;
+}
+
+
+//機能 	:モード番号を返す
+//引数 	:なし
+//返り値:モード番号
+uint8_t get_mode_number(void)
+{
+	return mode_number;
+}
+
+//機能 	:モード番号をセットする
+//引数 	:新規のモード番号
+//返り値	:なし
+void set_mode_number(uint8_t mn)
+{
+	mode_number = mn;
+}
+
+//機能	:右タイヤの速度を入力に、モード番号を変更、LEDに出力
+//引数	:なし
+//返り値	:なし
 void mode_select (void)
 {
-
-
 	static uint8_t mode_number_old = 0;
 
 	while(speed_r != 0); //m いったんタイヤ停止するまで待ち
@@ -25,7 +93,6 @@ void mode_select (void)
 
 	HAL_Delay(200);	//m タイヤ最大値更新時間
 
-//	 printf("speed_r_max =%5.3f,speed_r_min =%5.3f \r\n",speed_r_max, speed_r_min);
 	if (speed_r_max > mode_count_up_th) //m右タイヤ速度＞正の閾値の時の処理
 	{
 		mode_count	+= 1;
@@ -37,10 +104,9 @@ void mode_select (void)
 	}
 
 	mode_count &= 0b00001111;	//8bit->4bit
-	mode_number = mode_count;
 
-	if (mode_number != mode_number_old){
-		switch(mode_number){
+	if (mode_count != mode_number_old){
+		switch(mode_count){
 		/*mode_numberに応じてLED点灯処理*/
 			case 0:
 				HAL_GPIO_WritePin(GPIOA,LED2_Pin|LED3_Pin|LED4_Pin|LED5_Pin, GPIO_PIN_RESET);//m 無点灯
@@ -122,19 +188,39 @@ void mode_select (void)
 			}
 		}
 
-	mode_number_old = mode_number;
-
+	mode_number_old = mode_count;
+	set_mode_number(mode_count);//モード番号にセット
 }
 
-uint8_t modechangejud_stanby(void) //stanbyモード移行判定関数
+//機能	:左タイヤ速度を入力とし、モードを決定する。
+//引数	:なし
+//返り値	:モード決定状態
+uint8_t mode_decide_jud(void)
 {
+	MODE_DECIDE temp;
+
 	if(mode_stanby_th < speed_l_max )
 	{
-//		printf ("ready \r\n");
-		return 1;
+		temp = before;
 	}
 	else {
-		return 0;
+		temp = after;
 	}
+	return temp;
 }
 
+//機能	:IRセンサによるモード動作開始SW
+//引数	:なし
+//返り値	:なし
+void mode_start(void)
+{
+	while(1)/*m右前センサをモード開始のスイッチとする。*/
+	{
+		if( Sensor_GetValue(3) >= 1500)
+		{
+			HAL_Delay(500);
+			mode_state = process;//モードを実行中に遷移
+			break;
+		}
+	}
+}
