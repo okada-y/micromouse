@@ -29,11 +29,12 @@ void mode_main(void)
 	mode_count = 0;				//modeカウンタ初期化
 	
 	Sensor_StopADC();	//IRセンサ停止
-		
+	
 	while(ready_mode == before) //モード選択モードのとき
 	{	
 		mode_select();
 		ready_mode = mode_decide_jud();
+		printf("jud is %d",mode_decide_jud());
 		printf("ready_mode is %d",ready_mode);
 	}
 	
@@ -199,17 +200,16 @@ void mode_select (void)
 //返り値	:モード決定状態
 uint8_t mode_decide_jud(void)
 {
-	MODE_DECIDE temp;
-
+	uint8_t temp = 0;
+	
 	if(mode_stanby_th < speed_l_max )
+	{
+		temp = after;
+	}
+	else
 	{
 		temp = before;
 	}
-	else {
-		temp = after;
-		printf("mode decide. speed is %f \r\n", speed_l_max);
-	}
-
 	return temp;
 }
 

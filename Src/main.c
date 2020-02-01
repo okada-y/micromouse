@@ -145,34 +145,23 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	module_test( );//デバッグ用
-
-	mode_main();//モードの選定、開始処理
+	  mode_main();//モードの選定、開始処理
 	
 	/*ここからモードごとの処理に移行*/
-	switch(get_mode_number()){
+	  switch(get_mode_number()){
 
-	  case 0://m データ吐き出し用
-//		  printf("mode0_start\r\n");
-		  data_read();
-	  break;
+	    case 0://データ吐き出し用
+  	  data_read();
+	    break;
 
 	  case 1:
-//		  printf("mode1_start\r\n");
-		  accel_dir_flg = 1; //m減速モード
-		  fornt_wall_calibrate();
-//		  HAL_Delay(5000);
-//		  fornt_wall_calibrate();//壁補正
-//		  turn_clk_90();
-//		  fornt_wall_calibrate();
-//		  turn_clk_90();
-//		  HAL_Delay(1000);
+	    accel_dir_flg = 1; //減速モード
+	    fornt_wall_calibrate();
 		  break;
 
 	  case 2:
-//		  printf("mode2_start\r\n");
-		  accel_dir_flg = 1; //m減速モード
-		  move_dir_flg = 0;////m前進モード
+      accel_dir_flg = 1; //減速モード
+		  move_dir_flg = 0; //前進モード
 		  real_distance_m_clr();
 		  real_distance_w_clr();
 		  log_init();
@@ -181,9 +170,9 @@ int main(void)
 		  break;
 
 	  case 3:
-//		  printf("mode3_start\r\n");
-		  accel_dir_flg = 1; //m減速モード
-		  rotation_dir_flg = 0;////m反時計モード
+    
+		  accel_dir_flg = 1; //減速モード
+		  rotation_dir_flg = 0;///m反時計モード
 
 		  real_distance_m_clr();
 		  real_distance_w_clr();
