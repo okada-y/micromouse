@@ -37,6 +37,7 @@ BUILD_DIR = build
 # C sources
 C_SOURCES =  \
 Src/main.c \
+Src/mouse_state.c \
 Src/gpio.c \
 Src/adc.c \
 Src/dma.c \

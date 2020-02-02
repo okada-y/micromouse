@@ -6,6 +6,7 @@
  */
 
 #include "index.h"
+#include "ir_sensor.h"
 
 float target_speed_m = 0; 		//m 並進方向の目標速度[m/s]
 float target_speed_m_fin = 0;	//m 区間終了時の目標速度[ m/s]

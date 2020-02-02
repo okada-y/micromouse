@@ -7,6 +7,7 @@
 
 
 #include "index.h"
+#include "ir_sensor.h"
 
 
 uint16_t log_counter = 0 ; //m ログ取得開始からの時間監視用カウンタ[ms]

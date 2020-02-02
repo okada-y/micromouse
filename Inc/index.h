@@ -87,15 +87,6 @@ extern uint8_t left_calib_flg; 	//m 前壁補正用フラグ
 #define MAX3(a, b, c) 		((a) > (MAX(b, c)) ? (a) : (MAX(b, c)))
 #define MIN3(a, b, c) 		((a) < (MIN(b, c)) ? (a) : (MIN(b, c)))
 
-
-/*m速度算出まわりの定数*/
-#define m_ave_num			(10)	//m 並進方向速度、加速度の移動平均個数
-
-/*mモード選択の閾値*/
-#define mode_count_up_th 	(0.10f)//m モードカウントアップの右タイヤ速度閾値
-#define mode_count_down_th 	(-0.10f)//m モードカウントダウンの右タイヤ速度閾値
-#define mode_stanby_th 		(0.10f)//m モードカウントアップの左タイヤ速度閾値
-
 /*m データ取得周りの定数*/
 #define log_count_lim		(5000)	//m　データ取得する期間[ms]
 #define log_count_step		(5)		//m データを取得する時間間隔[ms]
@@ -216,19 +207,6 @@ void		IMU_Initialize( void );						// m 慣性センサの初期設定
 void 		IMU_ResetReference( void );					// m 慣性センサのリファレンスを補正する
 float 		IMU_GetAccel_X( void );						// X軸加速度計の加速度を取得する[m/s^2]
 float 		IMU_GetGyro_Z( void );						// Z軸ジャイロの角速度を取得する[rad/s]
-
-/* m 赤外センサ関数群(ir_sensor.c) */
-void 		Sensor_Initialize( void );					// AD変換の初期設定
-void 		Sensor_StartADC( void );					// AD変換を開始する
-void 		Sensor_StopADC( void );						// AD変換を停止する
-uint16_t 	Sensor_GetBatteryValue( void );				// m 電源電圧のAD値を取得する
-int16_t 	Sensor_GetValue( uint8_t );					// m 赤外センサのLEDオンオフ差分値を取得する
-														// 0:前左、1:横左、2:横右、3:前右
-double 		SensorValue2length( uint8_t);				//壁センサの距離変換
-
-void		Sensor_DebugPrintf(void);
-void		ADC_Start_DMA(void);
-void		ADC_Stop_DMA(void);
 
 /* m バッテリー関数群(battery.c) */
 float 		Battery_GetVoltage( void );					// m バッテリの電圧を取得する[V]

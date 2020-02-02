@@ -8,15 +8,11 @@
 
 
 #include "index.h"
-
-#define ENC_CNT_L		(TIM3 -> CNT)
-#define ENC_CNT_R		(TIM2 -> CNT)
-#define ENC_CNT_SR_L	(TIM3 -> SR)	//TIM3のstatus register
-#define ENC_CNT_SR_R	(TIM2 -> SR) 	//TIM2のstatus register
+#include "encorder.h"
+#include "param.h"
 
 
-#define ENC_ZERO		(32767 - 1)		/* encoderの初期値 */
-#define ENC_RESOLUTION 	(1024 - 1)		/* encoderの分解能 */
+
 
 
 
@@ -43,11 +39,24 @@ typedef struct {	//a 移動平均用構造体の定義
 	float   accel_m;			// m 目標速度(m/s)
 } ave_struct;
 
-static ave_struct ave_store[m_ave_num];  // データ格納用の構造体
+static ave_struct ave_store[ave_num];  // データ格納用の構造体
 
 
+//機能	:右タイヤのカウンタ値を取得
+//引数	:なし
+//返り値	:右タイヤのカウンタ値
+uint16_t get_encordercount_r ( void )
+{
+	return ENC_CNT_R;
+}
 
-
+//機能	:左タイヤのカウンタ値を取得
+//引数	:なし
+//返り値	:左タイヤのカウンタ値
+uint16_t get_encordercount_l ( void )
+{
+	return ENC_CNT_L;
+}
 
 /* ---------------------------------------------------------------
 	位相係数モードのタイマーを開始し、位相カウントを初期化する関数
@@ -58,8 +67,6 @@ void Encoder_Initialize( void )
 	HAL_TIM_Encoder_Start( &htim3, TIM_CHANNEL_ALL );
 	Encoder_ResetCount_Left();
 	Encoder_ResetCount_Right();
-	enc_cnt_r_old	=	ENC_CNT_R;
-	enc_cnt_l_old	=	ENC_CNT_L;
 }
 
 /* ---------------------------------------------------------------
@@ -211,19 +218,19 @@ void speed_m_average( void )
 	float l_sum_speed_m = 0; 	//m 並進方向速度合計
 	float l_sum_accel_m = 0;	//m 並進方向加速度合計
 
-	i = l_ave_counter % m_ave_num;
+	i = l_ave_counter % ave_num;
 
 	ave_store[i].speed_m = speed_m;
 	ave_store[i].accel_m = IMU_GetAccel_X();
 
-	for(j=0; j < m_ave_num; j++)
+	for(j=0; j < ave_num; j++)
 	{
 		l_sum_speed_m += ave_store[j].speed_m;
 		l_sum_accel_m += ave_store[j].accel_m;
 	}
 
-	l_ave_speed_m = l_sum_speed_m / m_ave_num;
-	l_ave_accel_m = l_sum_accel_m / m_ave_num;
+	l_ave_speed_m = l_sum_speed_m / ave_num;
+	l_ave_accel_m = l_sum_accel_m / ave_num;
 
 	/*加速度センサのぶれを補正、閾値範囲内を０とする*/
 	if(ABS(l_ave_accel_m) < 0.5)
@@ -232,7 +239,7 @@ void speed_m_average( void )
 	}
 
 	/*m 遅れ補正*/
-	l_ave_speed_m += 0.5 * ( l_ave_accel_m * (m_ave_num * 0.001)); //m 平均速度＋0.5(　加速度平均[m/s2]　・　平均時間[s])
+	l_ave_speed_m += 0.5 * ( l_ave_accel_m * (ave_num * 0.001)); //m 平均速度＋0.5(　加速度平均[m/s2]　・　平均時間[s])
 
 
 	g_ave_speed_m = l_ave_speed_m;

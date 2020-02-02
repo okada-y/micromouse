@@ -1,4 +1,4 @@
-build/mode.o: Src/mode.c Inc/main.h \
+build/mouse_state.o: Src/mouse_state.c Inc/param.h Inc/index.h Inc/main.h \
  Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h \
  Inc/stm32f4xx_hal_conf.h \
  Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h \
@@ -27,8 +27,12 @@ build/mode.o: Src/mode.c Inc/main.h \
  Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h \
  Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h \
  Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h \
- Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h Inc/param.h \
- Inc/mouse_state.h Inc/mode.h Inc/ir_sensor.h
+ Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h Inc/adc.h \
+ Inc/dma.h Inc/spi.h Inc/tim.h Inc/usart.h Inc/gpio.h Inc/encorder.h
+
+Inc/param.h:
+
+Inc/index.h:
 
 Inc/main.h:
 
@@ -94,10 +98,16 @@ Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h:
 
 Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h:
 
-Inc/param.h:
+Inc/adc.h:
 
-Inc/mouse_state.h:
+Inc/dma.h:
 
-Inc/mode.h:
+Inc/spi.h:
 
-Inc/ir_sensor.h:
+Inc/tim.h:
+
+Inc/usart.h:
+
+Inc/gpio.h:
+
+Inc/encorder.h:

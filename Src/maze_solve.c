@@ -17,6 +17,7 @@
 
 /*Include original*/
 #include "index.h"
+#include "ir_sensor.h"
 
 /*original parameter*/
 uint8_t front_calib_flg;

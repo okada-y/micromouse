@@ -4,14 +4,16 @@
  *  Created on: 2019/08/22
  *      Author: 岡田 泰裕
  */
-#include "index.h"
+#include "main.h"
+#include "param.h"
+#include "mouse_state.h"
 #include "mode.h"
+#include "ir_sensor.h"
 
 typedef enum{
 	before, //モード選択中
 	after	//モード実行準備完了
 }MODE_DECIDE;
-
 
 static uint8_t mode_count = 0;	  //mode選択用カウンタ
 static uint8_t mode_number = 0;   //mode番号
@@ -87,21 +89,18 @@ void mode_select (void)
 {
 	static uint8_t mode_number_old = 0;
 
-	while(speed_r != 0); //m いったんタイヤ停止するまで待ち
+	while(get_tire_r_speed() != 0); //いったんタイヤ停止するまで待ち
 
-	speed_r_max = 0;//m右タイヤ速度max初期化
-	speed_r_min = 0;//m右タイヤ速度	min初期化
-	speed_l_max = 0;//m左タイヤ速度max初期化
-	speed_l_min = 0;//m左タイヤ速度	min初期化
+	init_tire_speed(); //タイヤの最大、最低速度初期化
 
-	HAL_Delay(200);	//m タイヤ最大値更新時間
+	HAL_Delay(200);	//タイヤ最大値更新時間
 
-	if (speed_r_max > mode_count_up_th) //m右タイヤ速度＞正の閾値の時の処理
+	if (get_tire_r_speed_max() > mode_count_up_th) //m右タイヤ速度＞正の閾値の時の処理
 	{
 		mode_count	+= 1;
 	}
 
-	if (speed_r_min < mode_count_down_th) //m右タイヤ速度＜負の閾値の時の処理
+	if (get_tire_r_speed_min() < mode_count_down_th) //m右タイヤ速度＜負の閾値の時の処理
 	{
 		mode_count -= 1;
 	}
@@ -202,7 +201,7 @@ uint8_t mode_decide_jud(void)
 {
 	uint8_t temp = 0;
 	
-	if(mode_stanby_th < speed_l_max )
+	if(mode_stanby_th < get_tire_l_speed_max() )
 	{
 		temp = after;
 	}

@@ -28,7 +28,8 @@ build/interrupt.o: Src/interrupt.c Inc/index.h Inc/main.h \
  Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h \
  Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h \
  Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h Inc/adc.h \
- Inc/dma.h Inc/spi.h Inc/tim.h Inc/usart.h Inc/gpio.h Inc/mode.h
+ Inc/dma.h Inc/spi.h Inc/tim.h Inc/usart.h Inc/gpio.h Inc/mode.h \
+ Inc/mouse_state.h
 
 Inc/index.h:
 
@@ -109,3 +110,5 @@ Inc/usart.h:
 Inc/gpio.h:
 
 Inc/mode.h:
+
+Inc/mouse_state.h:

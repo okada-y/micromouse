@@ -63,11 +63,11 @@ typedef enum {
 
 /* USER CODE BEGIN PV */
 /*迷路パラメータ設定*/
-uint8_t maze_x_size = 5;//x方向の壁の枚数(x方向のマスの数+1)
-uint8_t maze_y_size = 5;//y方向の壁の枚数(y方向のマスの数+1)
-uint8_t goal_size = 1; //m ゴールのマスの数
-uint8_t maze_goal[18] = {1, 0, 0, 0, 0, 0, 0, 0, 0,    	 //mゴールのx座標
-		  	  	  	  	 4, 0, 0, 0, 0, 0, 0, 0, 0};	 //mゴールのy座標
+uint8_t maze_x_size = 8;//x方向の壁の枚数(x方向のマスの数+1)
+uint8_t maze_y_size = 17;//y方向の壁の枚数(y方向のマスの数+1)
+uint8_t goal_size = 4; //m ゴールのマスの数
+uint8_t maze_goal[18] = {2, 2, 3, 3, 0, 0, 0, 0, 0,    	 //mゴールのx座標
+		  	  	  	  	 1, 2, 1, 2, 0, 0, 0, 0, 0};	 //mゴールのy座標
 uint8_t m_wall_tmp[1024];//迷路情報格納用配列
 uint8_t m_search_tmp[1024];//探索情報格納用配列
 

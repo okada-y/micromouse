@@ -1,3 +1,7 @@
 {
-    "C_Cpp.dimInactiveRegions": true
+    "C_Cpp.dimInactiveRegions": true,
+    "files.associations": {
+        "param.h": "c",
+        "ir_sensor.h": "c"
+    }
 }

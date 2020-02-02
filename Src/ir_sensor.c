@@ -1,5 +1,7 @@
-#include "index.h"
-
+#include "main.h"
+#include "tim.h"
+#include "adc.h"
+#include "ir_sensor.h"
 
 
 #define SENSOR_ALL_OFF()			HAL_GPIO_WritePin(GPIOA, LED_FR_Pin|LED_SL_Pin|LED_SR_Pin|LED_FL_Pin, GPIO_PIN_RESET)
@@ -27,7 +29,7 @@ typedef enum {
 	front_right	= 3,
 } t_sensor_dir;
 
-typedef struct {	//a センサ情報用構造体
+typedef struct {	// センサ情報用構造体
 	uint16_t	off;		// LEDオフ時の値
 	uint16_t	on;			// LEDオン時の値
 } t_sensor_value;
@@ -35,7 +37,7 @@ typedef struct {	//a センサ情報用構造体
 static uint16_t		sensor_on_pattern;		// LED点灯コマンド
 static uint16_t		sensor_off_pattern;		// LED消灯コマンド
 
-static uint8_t			sensor_mode;		// a センシングパターン
+static uint8_t			sensor_mode;		// センシングパターン
 
 static uint16_t			adc_value[5];		// AD変換値
 static uint16_t			battery_value;		// a バッテリ電圧の生データ

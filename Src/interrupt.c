@@ -8,6 +8,7 @@
 
 #include "index.h"
 #include "mode.h"
+#include "mouse_state.h"
 
 #define TIMER_COUNT		(__HAL_TIM_GET_COUNTER(&htim6))
 #define TIMER_LOAD		(__HAL_TIM_GET_AUTORELOAD(&htim6))
@@ -26,8 +27,8 @@ static float		boot_time = 0.f;
 void Interrupt_Main( void )
 {
 
-	Get_speed();
-	speed_m_average();
+	calc_move_speed();
+	filter_move_speed();
 
 	if(get_mode_state() == process)
 	{
