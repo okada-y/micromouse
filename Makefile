@@ -38,6 +38,10 @@ BUILD_DIR = build
 C_SOURCES =  \
 Src/main.c \
 Src/mouse_state.c \
+Src/control.c \
+Src/adjust.c \
+Src/movement.c \
+Src/exvol.c \
 Src/gpio.c \
 Src/adc.c \
 Src/dma.c \
