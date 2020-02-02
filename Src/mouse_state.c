@@ -64,8 +64,8 @@ void calc_move_speed ( void )
     float delta_angle_tire_l = 0;
    
 	/* 各タイヤの角速度計算[rad/s] */
-	delta_angle_tire_r = -1 * 1000 * 2 * PI * (float)get_encordercount_r() / (float)ENC_RESOLUTION;
-	delta_angle_tire_l =  1 * 1000 * 2 * PI * (float)get_encordercount_l() / (float)ENC_RESOLUTION;
+	delta_angle_tire_r = -1 * 1000 * 2 * PI * (float)Get_diff_right_count() / (float)ENC_RESOLUTION;
+	delta_angle_tire_l =  1 * 1000 * 2 * PI * (float)Get_diff_left_count() / (float)ENC_RESOLUTION;
 
 	/*各タイヤの速度計算[m/s]*/
 	tire_r_speed = Tire_diameter * 0.5 * delta_angle_tire_r;
