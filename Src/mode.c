@@ -36,8 +36,6 @@ void mode_main(void)
 	{	
 		mode_select();
 		ready_mode = mode_decide_jud();
-		printf("jud is %d",mode_decide_jud());
-		printf("ready_mode is %d",ready_mode);
 	}
 	
 	//モード開始可能状態に遷移したとき、2回LEDを点滅させる。
