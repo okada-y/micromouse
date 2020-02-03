@@ -1,6 +1,30 @@
 //irセンサによる補正記述予定
 static uint16_t fornt_wall_calibrate_tim = 0; //m 前壁補正用カウンタ
 
+	/*m 壁補正用*/
+    double l_front_sensor_r = 0; 		//m 右前センサ値のバッファ
+    double l_front_sensor_l = 0; 		//m 左前センサ値のバッファ
+    double l_front_sensor_r_err = 0;   //m 右前センサの偏差
+    double l_front_sensor_l_err = 0;	//m 左前センサの偏差
+    double l_front_sensor_m_err = 0;   //m センサの偏差の和
+    double l_front_sensor_w_err = 0;	//m センサの偏差の差
+    static double l_front_sensor_m_err_I = 0;   	//m 偏差和積分
+    static double l_front_sensor_w_err_I = 0;   	//m 偏差差積分
+    static double l_front_sensor_m_err_prev = 0;   	//m 前回偏差和
+    static double l_front_sensor_w_err_prev = 0;   	//m 前回偏差差
+    static double l_front_sensor_m_D_prev = 0;   	//m 前回偏差和微分
+    static double l_front_sensor_w_D_prev = 0;   	//m 前回偏差差微分
+
+    double l_front_sensor_m_err_P = 0;
+    double l_front_sensor_w_err_P = 0;
+    double l_front_sensor_m_err_D = 0;
+    double l_front_sensor_w_err_D = 0;
+
+    double l_front_sensor_m_PID = 0;
+    double l_front_sensor_w_PID = 0;
+
+
+
 
 	/*m 前壁補正*/
 	if(correction_mode == 1){

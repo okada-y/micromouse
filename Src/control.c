@@ -6,7 +6,6 @@
 static float target_vol_r_cont = 0;		//右タイヤの操作量[ duty % ]
 static float target_vol_l_cont = 0;		//左タイヤの操作量[ duty % ]
 
-
 //機能	: 軌道制御による右モータ印加電圧を取得する
 //引数	: なし
 //返り値	: 軌道制御による右モータ印加電圧
