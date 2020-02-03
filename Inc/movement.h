@@ -4,8 +4,8 @@
 
 typedef enum {
 	start 	= 0, //走行開始
-	other 	= 1, //それ以外
-} serch_start;
+	already = 1, //それ以外
+} run_start;
 
 
 #endif /* MOVEMENT_H_*/
