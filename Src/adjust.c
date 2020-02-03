@@ -1,4 +1,6 @@
 //irセンサによる補正記述予定
+static uint16_t fornt_wall_calibrate_tim = 0; //m 前壁補正用カウンタ
+
 
 	/*m 前壁補正*/
 	if(correction_mode == 1){
@@ -40,3 +42,64 @@
 	    l_front_sensor_w_err_prev = l_front_sensor_w_err;   		//m 前回偏差差
 	    l_front_sensor_m_D_prev = l_front_sensor_m_err_D;		   	//m 前回偏差和微分
 	    l_front_sensor_w_D_prev = l_front_sensor_w_err_D;		   	//m 前回偏差差微分
+
+////////////////////////////////////////
+/* a マウス位置補正関数					*/
+/* a 壁を使った位置の補正用関数				*/
+////////////////////////////////////////
+
+/* memo:前壁補正
+ * param:
+ *  * */
+void fornt_wall_calibrate (void)
+{
+	double temp_r;
+	double temp_l;
+	double temp;
+
+
+	  correction_mode = 1; //m 前壁補正モードに切り替え
+	  fornt_wall_calibrate_tim = 0; //m前壁補正タイマを初期化
+
+	  while(1)
+	  {
+		  temp_r = ABS(front_sensor_r_ref - SensorValue2length(3));
+		  temp_l = ABS(front_sensor_l_ref - SensorValue2length(0));
+		  temp = MAX(temp_r,temp_l);
+		  //mセンサ値が基準より差を持つとき、タイマをリセット
+		  if(temp > front_sensor_th){
+			  fornt_wall_calibrate_tim = 0;
+		  }
+		  //m キャリブレーション時間を超えるとき、ブレイク
+		  if(fornt_wall_calibrate_tim >= calib_tim ){
+			  break;
+		  }
+		  printf("temp: %8.5f,time:%8.5d \r\n",temp,fornt_wall_calibrate_tim);
+	  }
+
+	  //m 補正終了時、移動距離、角度を初期化
+	  real_distance_m_clr();
+	  real_distance_w_clr();
+	  target_distance_m_clr();
+	  target_distance_w_clr();
+	  ideal_distance_m_clr();
+	  ideal_distance_w_clr();
+
+	  //m 補正モードを目標速度に変更
+	  correction_mode = 0;
+}
+
+/* memo:前壁補正用タイマ
+ * param:
+ *  * */
+void calibrate_tim (void){
+
+	fornt_wall_calibrate_tim += 1;
+
+	if(fornt_wall_calibrate_tim > calib_tim){
+		fornt_wall_calibrate_tim = calib_tim;
+	}
+}
+
+
+
