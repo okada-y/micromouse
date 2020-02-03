@@ -45,7 +45,8 @@
 #define rotate_speed_P		(0.34802f)	//角速度制御のPゲイン
 #define rotate_speed_I		(9.1729f)	//角速度制御のIゲイン
 
-
+//movement
+#define comp_th             (0.0002f)   
 
 
 

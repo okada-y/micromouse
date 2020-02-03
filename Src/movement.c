@@ -9,6 +9,14 @@
 
 static run_start run_first_flg = 0;		// 走行開始フラグ 0:走行開始時　1:それ以外
 
+//機能	: 移動完了判断
+//引数	: なし
+//返り値	: 判断結果(0:未完,1:完了)
+uint8_t move_comp_jud ( void )
+{
+    return (uint8_t)((get_target_length() - get_ideal_length()) < comp_th);
+}
+
 //機能	: スタート時加速
 //引数	: なし
 //返り値	: なし
@@ -19,30 +27,30 @@ void start_acceleration (void)
 	set_accel_mode(acceleration);
     set_target_length(0.060286-0.045);
 
-    /*m 半区画進むまで待機*/
+    /*半区画進むまで待機*/
     while (1)
     {
-    	if(ABS(get_target_length() - get_ideal_length()) < 0.0002)//0.1mm手前まできたらブレイク
+    	if(ABS(get_target_length() - get_ideal_length()) < 0.0002)//0.2mm手前まできたらブレイク
     	{
     		break;
     	}
     }
 }
 
-/* memo:半区画加速
- * param:
- *  * */
+//機能	: 半分区画加速
+//引数	: なし
+//返り値	: なし
 void half_acceleration (void)
 {
-	/*m移動方向、加速モード設定*/
-	move_dir_flg = forward_mode;
-	accel_dir_flg = acceleration;
-    target_distance_m_set(0.045);
+	/*移動方向、加速モード設定*/
+	set_direction_mode(forward_mode);
+	set_accel_mode(acceleration);
+    set_target_length(0.045);
 
-    /*m 半区画進むまで待機*/
+    /*半区画進むまで待機*/
     while (1)
     {
-    	if(ABS(target_distance_m - ideal_distance_m) < 0.0002)//0.1mm手前まできたらブレイク
+    	if(ABS(get_target_length() - get_ideal_length()) < 0.0002)//0.2mm手前まできたらブレイク
     	{
     		break;
     	}
@@ -50,40 +58,40 @@ void half_acceleration (void)
 }
 
 
-/* memo:半区画減速
- * param:
- *  * */
+//機能	: 反区画減速
+//引数	: なし
+//返り値	: なし
 void half_deceleration (void)
 {
 	/*m移動方向、加速モード設定*/
-	move_dir_flg = forward_mode;
-	accel_dir_flg = deceleration;
-    target_distance_m_set(0.045);
+	set_direction_mode(forward_mode);
+	set_accel_mode(deceleration);
+    set_target_length(0.045);
 
     /*m 半区画進むまで待機*/
     while (1)
     {
-    	if(ABS(target_distance_m - ideal_distance_m) < 0.0002)//0.1mm手前まできたらブレイク
+    	if(ABS(get_target_length() - get_ideal_length()) < 0.0002)//0.2mm手前まできたらブレイク
     	{
     		break;
     	}
     }
 }
 
-/* memo:一区画定速
- * param:
- *  * */
+//機能	: 一区画定速
+//引数	: なし
+//返り値	: なし
 void constant_speed (void)
 {
 	/*m移動方向、加速モード設定*/
-	move_dir_flg = forward_mode;
-	accel_dir_flg = acceleration;
-    target_distance_m_set(0.09);
+	set_direction_mode(forward_mode);
+    set_accel_mode(acceleration);
+    set_target_length(0.09);
 
     /*m 一区画進むまで待機*/
     while (1)
     {
-    	if(ABS(target_distance_m - ideal_distance_m) < 0.0002)//0.1mm手前まできたらブレイク
+    	if(ABS(get_target_length() - get_ideal_length()) < 0.0002)//0.1mm手前まできたらブレイク
     	{
     		break;
     	}
