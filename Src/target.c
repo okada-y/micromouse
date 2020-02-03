@@ -37,6 +37,30 @@ void target_1ms ( void )
 	calc_target_rotation_speed();	//目標角速度更新
 }
 
+//機能	: 移動方向モードをセットする
+//引数	: 移動方向モード(forward,back)
+//返り値	: なし
+void set_direction_mode ( direction_mode dmode )
+{
+	move_dir_flg = dmode;
+}
+
+//機能	: 回転方向モードをセットする
+//引数	: 回転方向モード(counter_clocwise,clockwise)
+//返り値	: なし
+void set_rotation_mode ( rotation_mode rmode )
+{
+	rotation_dir_flg = rmode;
+}
+
+//機能	: 加速モードをセットする
+//引数	: 加速モード(acceleration,deceleration)
+//返り値	: なし
+void set_accel_mode ( accel_mode amode )
+{
+	accel_dir_flg = amode;
+}
+
 
 //機能	: 目標移動速度[m/s]取得
 //引数	: なし
@@ -53,6 +77,40 @@ float get_target_rotation_speed ( void )
 {
 	return target_rotation_speed;
 }
+
+//機能	: 目標移動距離取得
+//引数	: なし
+//返り値	: 目標移動距離
+float get_target_length ( void )
+{
+	return target_length;
+}
+
+//機能	: 理想移動距離取得
+//引数	: なし
+//返り値	: 理想移動距離
+float get_ideal_length ( void )
+{
+	return ideal_length;
+}
+
+//機能	: 目標角度取得
+//引数	: なし
+//返り値	: 目標角度
+float get_target_angle ( void )
+{
+	return target_angle;
+}
+
+//機能	: 理想角度取得
+//引数	: なし
+//返り値	: 理想角度
+float get_ideal_angle ( void )
+{
+	return ideal_angle;
+}
+
+
 
 //機能	: 目標移動距離更新
 //引数	: 加算する移動距離[m]
