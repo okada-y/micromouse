@@ -39,6 +39,13 @@
 #define move_speed_max      (0.3f)      //最大移動速度[m/s]
 #define rotat_speed_max     (2*PI)      //最大角速度[rad/s]
 
+//control
+#define move_speed_P		(2.674f)	//移動速度制御のPゲイン
+#define move_speed_I		(39.4724f)	//移動速度制御のIゲイン
+#define rotate_speed_P		(0.34802f)	//角速度制御のPゲイン
+#define rotate_speed_I		(9.1729f)	//角速度制御のIゲイン
+
+
 
 
 
