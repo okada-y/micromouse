@@ -2,30 +2,27 @@
 
 
 
+#include <stdio.h>
+#include "param.h"
+#include "target.h"
+#include "movement.h"
 
+static run_start run_first_flg = 0;		// 走行開始フラグ 0:走行開始時　1:それ以外
 
-static uint8_t run_first_flg = 0;			//m 走行開始フラグ 0:走行開始時　1:それ以外
-
-
-////////////////////////////////////////
-/* a マウス動作設定関数			 		*/
-/* a 距離、角度に応じた速度の加減速を設定する。 */
-////////////////////////////////////////
-
-/* memo:スタート時加速
- * param:
- *  * */
+//機能	: スタート時加速
+//引数	: なし
+//返り値	: なし
 void start_acceleration (void)
 {
-	/*m移動方向、加速モード設定*/
-	move_dir_flg = forward_mode;
-	accel_dir_flg = acceleration;
-    target_distance_m_set(0.060286-0.045);
+	/*移動方向、加速モード設定*/
+	set_direction_mode(forward_mode);
+	set_accel_mode(acceleration);
+    set_target_length(0.060286-0.045);
 
     /*m 半区画進むまで待機*/
     while (1)
     {
-    	if(ABS(target_distance_m - ideal_distance_m) < 0.0002)//0.1mm手前まできたらブレイク
+    	if(ABS(get_target_length() - get_ideal_length()) < 0.0002)//0.1mm手前まできたらブレイク
     	{
     		break;
     	}
