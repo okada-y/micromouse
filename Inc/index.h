@@ -89,29 +89,6 @@ extern uint8_t left_calib_flg; 	//m 前壁補正用フラグ
 //#define motor_ohm			(4.5f)						//m モータ抵抗[Ω]
 
 /*m制御周りの定数*/
-#define speed_m_KP			(2.674f)				//m 並進方向のPゲイン
-#define speed_m_KI			(39.4724f)				//m 並進方向のIゲイン
-#define speed_w_KP			(0.34802f)				//m 回転方向のPゲイン
-#define speed_w_KI			(9.1729f)				//m 回転方向のIゲイン
-#define speed_w_KD			(0.0f)					//m 回転方向のDゲイン
-#define speed_w_fil			(207.632819982745f)		//m 回転方向のフィルタ係数
-
-//#define speed_w_b			(0.020141f)				//m　回転方向のFF重みづけ
-//
-//#define speed_w_KP			(0.23448f)			//m 回転方向のPゲイン
-//#define speed_w_KI			(3.6716f)			//m 回転方向のIゲイン
-//#define speed_w_b			(0.020141140849473)		//m　回転方向のFF重みづけ
-
-
-//#define ff_m_a_gain			(0.1188f)					//m 並進方向の加速度項のゲイン
-//#define ff_m_v_gain			(0.4771f)					//m 並進方向の速度項のゲイン
-//#define ff_m_f_gain			(0.0000f)					//m 並進方向の摩擦項のゲイン(0.1447f)(オフセット電圧にて対処)
-//
-//#define ff_w_a_gain			(0.0018f)					//m 回転方向の加速度項のゲイン
-//#define ff_w_v_gain			(0.0144f)					//m 回転方向の速度項のゲイン
-//#define ff_w_f_gain			(0.0000f)					//m 回転方向の摩擦項のゲイン(0.1366f)(オフセット電圧にて対処)
-
-
 
 #define ff_gain				(1.0f)						//m FF項のゲイン
 #define fb_gain				(1.0f)						//m FB項のゲイン
@@ -134,12 +111,6 @@ extern uint8_t left_calib_flg; 	//m 前壁補正用フラグ
 #define front_sensor_th  	(0.0002)				//m 前壁補正時の補正閾値(0.3mm)
 #define calib_tim           (100)					//m 前壁補正時間(100ms)
 
-
-/*m 目標速度算出周りの定数 */
-#define speed_m_max 		(0.3f)						//m 最大速度[m/s]
-#define speed_w_max 		(2*PI)						//m 最大角速度[rad/s]
-#define accelation_m		(1.5f)						//m 加速度[m/s^2]
-#define accelation_w		(2*PI)						//m 角加速度[rad/s^2]
 
 /* LED関数群 */
 #define LED_D2_ON()			HAL_GPIO_WritePin( LED2_GPIO_Port, 	 LED2_Pin,	GPIO_PIN_SET)		// D2のLEDを点灯する
