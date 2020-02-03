@@ -68,24 +68,6 @@ extern uint8_t front_calib_flg; //m 前壁補正用フラグ
 extern uint8_t right_calib_flg; //m 前壁補正用フラグ
 extern uint8_t left_calib_flg; 	//m 前壁補正用フラグ
 
-/* m便利な定数群 */
-#define G					(9.80665f)					// m重量加速度[m/s^2]
-#define PI					(3.1415926f)				// m円周率
-#define SQRT2				(1.41421356237f)			// mルート2
-#define SQRT3				(1.73205080757f)			// mルート3
-#define SQRT5				(2.2360679775f)				// mルート5
-#define SQRT7				(2.64575131106f)			// mルート7
-
-/* m便利なマクロ関数群 */
-#define DEG2RAD(x)			(((x)/180.0f)*PI)			// m度数法からラジアンに変換
-#define RAD2DEG(x)			(180.0f*((x)/PI))			// mラジアンから度数法に変換
-#define SWAP(a, b) 			((a != b) && (a += b, b = a - b, a -= b))	//aとbの入れ替え
-#define ABS(x) 				((x) < 0 ? -(x) : (x))		// m絶対値
-#define SIGN(x)				((x) < 0 ? -1 : 1)			// m符号
-#define MAX(a, b) 			((a) > (b) ? (a) : (b))		// 2つのうち大きい方を返します
-#define MIN(a, b) 			((a) < (b) ? (a) : (b))		// 2つのうち小さい方を返します
-#define MAX3(a, b, c) 		((a) > (MAX(b, c)) ? (a) : (MAX(b, c)))
-#define MIN3(a, b, c) 		((a) < (MIN(b, c)) ? (a) : (MIN(b, c)))
 
 /*m データ取得周りの定数*/
 #define log_count_lim		(5000)	//m　データ取得する期間[ms]
