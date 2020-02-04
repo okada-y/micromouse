@@ -5,8 +5,9 @@
  *      Author: 岡田 泰裕
  */
 
+#include <stdio.h>
 #include "param.h"
-#include "index.h"
+//#include "index.h"
 #include "encorder.h"
 
 static float tire_r_speed = 0;

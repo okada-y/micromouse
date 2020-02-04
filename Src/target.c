@@ -10,8 +10,6 @@
 #include "target.h"
 
 
-//ここから新規作成
-//target.c用
 static float target_move_speed = 0;			//目標移動速度[m/s]
 static float target_move_speed_fin = 0;		//目標終端速度[m/s]
 static float target_rotation_speed = 0;		//目標角速度[rad/s]
@@ -316,7 +314,5 @@ void calc_target_rotation_speed ( void )
 	ideal_angle += target_rotation_speed * 0.001;
 
 }
-
-
 
 

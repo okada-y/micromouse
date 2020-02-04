@@ -32,6 +32,7 @@
 
 //mouse_state
 #define ave_num 			(10)	    //速度の移動平均フィルタの長さ
+#define Tire_diameter		(0.0128365f)//タイヤの直径    
 
 //target
 #define move_accel          (1.5f)      //移動加速度[m/ss]
@@ -46,8 +47,21 @@
 #define rotate_speed_I		(9.1729f)	//角速度制御のIゲイン
 
 //movement
-#define comp_th             (0.0002f)   
+#define move_comp_th        (0.0002f)   //移動完了の閾値
+#define rotate_comp_th      (0.005f)    //回転完了の閾値
 
+//adjust
+#define front_sensor_r_ref      (0.0115f)	        //前壁補正時の右前距離目標値(1cm)
+#define front_sensor_l_ref      (0.0095f)	        //前壁補正時の左前距離目標値(1cm)
+#define chassis_width           (0.036787f)         //シャシー幅
+#define front_sensor_move_KP	(124.412292054546f)	//前壁距離のPゲイン
+#define front_sensor_move_KI	(26.2444668681538f)	//前壁距離のIゲイン
+#define front_sensor_move_KD	(3.28431998107001f)	//前壁距離のDゲイン
+#define front_sensor_move_fil	(23.9567963129851f)	//前壁距離フィルタ係数
+#define front_sensor_rotate_KP	(6.40482660641506f)	//前壁角度のPゲイン
+#define front_sensor_rotate_KI	(2.52037335129739f)	//前壁角度のIゲイン
+#define front_sensor_rotate_KD	(0.206728439324594f)//前壁補正のDゲイン
+#define front_sensor_rotate_fil	(44.5570260812328f)	//前壁角度フィルタ係数
 
 
 

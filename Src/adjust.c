@@ -1,71 +1,82 @@
 //irセンサによる補正記述予定
-static uint16_t fornt_wall_calibrate_tim = 0; //m 前壁補正用カウンタ
 
-	/*m 壁補正用*/
-    double l_front_sensor_r = 0; 		//m 右前センサ値のバッファ
-    double l_front_sensor_l = 0; 		//m 左前センサ値のバッファ
-    double l_front_sensor_r_err = 0;   //m 右前センサの偏差
-    double l_front_sensor_l_err = 0;	//m 左前センサの偏差
-    double l_front_sensor_m_err = 0;   //m センサの偏差の和
-    double l_front_sensor_w_err = 0;	//m センサの偏差の差
-    static double l_front_sensor_m_err_I = 0;   	//m 偏差和積分
-    static double l_front_sensor_w_err_I = 0;   	//m 偏差差積分
-    static double l_front_sensor_m_err_prev = 0;   	//m 前回偏差和
-    static double l_front_sensor_w_err_prev = 0;   	//m 前回偏差差
-    static double l_front_sensor_m_D_prev = 0;   	//m 前回偏差和微分
-    static double l_front_sensor_w_D_prev = 0;   	//m 前回偏差差微分
-
-    double l_front_sensor_m_err_P = 0;
-    double l_front_sensor_w_err_P = 0;
-    double l_front_sensor_m_err_D = 0;
-    double l_front_sensor_w_err_D = 0;
-
-    double l_front_sensor_m_PID = 0;
-    double l_front_sensor_w_PID = 0;
+#include <stdio.h>
+#include "param.h"
+#include "ir_sensor.h"
 
 
+static double front_sensor_move_err_I = 0;   	//偏差和のI項
+static double front_sensor_rotate_err_I = 0;   	//偏差差のI項
+static double front_sensor_move_err_prev = 0;   //前回偏差和
+static double front_sensor_rotate_err_prev = 0; //前回偏差差
+static double front_sensor_move_D_prev = 0; 	//前回偏差和微分
+static double front_sensor_rotate_D_prev = 0;   //前回偏差差微分
+
+static float target_vol_r_frontwall = 0;		//前壁制御による右モータ印加電圧[V]
+static float target_vol_r_frontwall = 0;		//前壁制御による左モータ印加電圧[V]
+
+static uint16_t fornt_wall_calibrate_tim = 0;  	//前壁補正用カウンタ
+
+//機能	: 前壁制御におけるモータ印加電圧を計算する。
+//引数	: なし
+//返り値	: なし
+//備考	:1msタスク
+void calc_motor_vol_front_wall ( void )
+{
+	double front_sensor_r = 0; 				//右前センサ値
+    double front_sensor_l = 0; 				//左前センサ値
+    double front_sensor_r_err = 0;   		//右前センサの偏差
+    double front_sensor_l_err = 0;			//左前センサの偏差
+    double front_sensor_move_err = 0;   	//センサの偏差の和
+    double front_sensor_rotate_err = 0;		//センサの偏差の差
+
+    double front_sensor_move_err_P = 0;   	//偏差和のP項
+    double front_sensor_rotate_err_P = 0;   //偏差差のP項
+    double front_sensor_move_err_D = 0;   	//偏差和のD項
+    double front_sensor_rotate_err_D = 0;   //偏差差のD項
+    double front_sensor_move_PID = 0;  		//
+    double front_sensor_rotate_PID = 0;   		//
 
 
-	/*m 前壁補正*/
-	if(correction_mode == 1){
-		l_front_sensor_l = SensorValue2length(0);
-		l_front_sensor_r = SensorValue2length(3);
+	//センサ値取得
+	front_sensor_l = SensorValue2length(0);
+	front_sensor_r = SensorValue2length(3);
 
-		/*m 偏差取得*/
-		l_front_sensor_l_err = l_front_sensor_l - front_sensor_l_ref ;		//m 目標距離　－　センサ距離
-		l_front_sensor_r_err = l_front_sensor_r - front_sensor_r_ref ;		//m 目標距離　－　センサ距離
+	//偏差取得
+	front_sensor_l_err = front_sensor_l - front_sensor_l_ref ;
+	front_sensor_r_err = front_sensor_r - front_sensor_r_ref ;
 
-		/* m 偏差変換*/
-		l_front_sensor_m_err = l_front_sensor_r_err + l_front_sensor_l_err;
-		l_front_sensor_w_err = (l_front_sensor_r_err - l_front_sensor_l_err)/chassis_width; //角度に変換(atanを0近傍で線形化)
+	/* 偏差変換*/
+	front_sensor_move_err = front_sensor_r_err + front_sensor_l_err;
+	front_sensor_rotate_err = (front_sensor_r_err - front_sensor_l_err)/chassis_width; //角度に変換(atanを0近傍で線形化)
 
-		/*m 偏差積分(I項)*/
-		l_front_sensor_m_err_I  += front_sensor_m_KI * 0.001 * l_front_sensor_m_err;
-		l_front_sensor_w_err_I  += front_sensor_w_KI * 0.001 * l_front_sensor_w_err;
+	/*偏差積分(I項)*/
+	front_sensor_move_err_I  += front_sensor_move_KI * 0.001 * front_sensor_move_err;
+	front_sensor_rotate_err_I  += front_sensor_rotate_KI * 0.001 * front_sensor_rotate_err;
+	/*P項*/
+	front_sensor_move_err_P = front_sensor_move_KP * front_sensor_move_err;
+	front_sensor_rotate_err_P = front_sensor_rotate_KP * front_sensor_rotate_err;
+	/*D項*/
+	front_sensor_move_err_D = (front_sensor_move_D_prev + front_sensor_move_KD * front_sensor_move_fil * (front_sensor_move_err - front_sensor_move_err_prev))
+								/(1+front_sensor_move_fil*0.001);
+	front_sensor_rotate_err_D = (front_sensor_rotate_D_prev + front_sensor_rotate_KD * front_sensor_rotate_fil * (front_sensor_rotate_err - front_sensor_rotate_err_prev))
+								/(1+front_sensor_rotate_fil*0.001);
+	/*PID*/
+	front_sensor_move_PID = front_sensor_move_err_P + front_sensor_move_err_I + front_sensor_move_err_D;
+    front_sensor_rotate_PID = front_sensor_rotate_err_P + front_sensor_rotate_err_I + front_sensor_rotate_err_D;
 
-		/*P項*/
-		l_front_sensor_m_err_P = front_sensor_m_KP * l_front_sensor_m_err;
-		l_front_sensor_w_err_P = front_sensor_w_KP * l_front_sensor_w_err;
+    /*m 印加電圧算出*/
+	target_vol_r_frontwall = (front_sensor_move_PID + front_sensor_rotate_PID)/2;
+	target_vol_r_frontwall = (front_sensor_move_PID - front_sensor_rotate_PID)/2;
 
-		/*D項*/
-		l_front_sensor_m_err_D = (l_front_sensor_m_D_prev+front_sensor_m_KD*front_sensor_m_fil*(l_front_sensor_m_err - l_front_sensor_m_err_prev))
-									/(1+front_sensor_m_fil*0.001);
-		l_front_sensor_w_err_D = (l_front_sensor_w_D_prev+front_sensor_w_KD*front_sensor_w_fil*(l_front_sensor_w_err - l_front_sensor_w_err_prev))
-									/(1+front_sensor_w_fil*0.001);
+	/*パラメータ更新*/
+    front_sensor_move_err_prev = front_sensor_move_err;   	
+	front_sensor_rotate_err_prev = front_sensor_rotate_err; 
+    front_sensor_move_D_prev = front_sensor_move_err_D;		
+    front_sensor_rotate_D_prev = front_sensor_rotate_err_D;
 
-		/*PID*/
-		l_front_sensor_m_PID = l_front_sensor_m_err_P + l_front_sensor_m_err_I + l_front_sensor_m_err_D;
-	    l_front_sensor_w_PID = l_front_sensor_w_err_P + l_front_sensor_w_err_I + l_front_sensor_w_err_D;
+}
 
-	    /*m 印加電圧算出*/
-		target_vol_r = (l_front_sensor_m_PID + l_front_sensor_w_PID)/2;
-		target_vol_l = (l_front_sensor_m_PID - l_front_sensor_w_PID)/2;
-
-		/*m パラメータ更新*/
-	    l_front_sensor_m_err_prev = l_front_sensor_m_err;   		//m 前回偏差和
-	    l_front_sensor_w_err_prev = l_front_sensor_w_err;   		//m 前回偏差差
-	    l_front_sensor_m_D_prev = l_front_sensor_m_err_D;		   	//m 前回偏差和微分
-	    l_front_sensor_w_D_prev = l_front_sensor_w_err_D;		   	//m 前回偏差差微分
 
 ////////////////////////////////////////
 /* a マウス位置補正関数					*/

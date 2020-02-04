@@ -73,22 +73,7 @@ extern uint8_t left_calib_flg; 	//m 前壁補正用フラグ
 #define log_count_lim		(5000)	//m　データ取得する期間[ms]
 #define log_count_step		(5)		//m データを取得する時間間隔[ms]
 
-/*mハード周りの定数*/
-#define mouse_weight		(0.017f)							//mouse 本体重さ[kg]
-#define mouse_inertia		(0.000002754f)						//mouse 本体慣性モーメント[kg・m^2] (m マウスを円板として近似=(0.000002754f)
-
-#define Tire_diameter		(0.0128365f)						//tire直径[ m]
-#define chassis_width		(0.036787f)							//m シャシー幅[ m]
-#define pinion_gear_num		(9.0f)								//m ピニオンギヤ数
-#define wheel_gear_num		(37.0f)								//mホイールギア数
-#define gear_rate			(wheel_gear_num/pinion_gear_num)	//m変速比（ギア比）
-//
-//#define counter_v_cons		(0.00059205638f)					//m 逆起電圧定数[ V・s/rad]
-//#define torque_cons			(0.00059205638f)					//m トルク定数[ N・m/A]
-//
-//#define motor_ohm			(4.5f)						//m モータ抵抗[Ω]
-
-/*m制御周りの定数*/
+/*制御周りの定数*/
 
 #define ff_gain				(1.0f)						//m FF項のゲイン
 #define fb_gain				(1.0f)						//m FB項のゲイン
