@@ -24,6 +24,9 @@
 /////////////////////////////////////
 //           パラメータ             //
 /////////////////////////////////////
+/*module_test*/
+#define log_count_lim		(5000)	//データ取得する期間[ms]
+#define log_count_step		(5)		//データを取得する時間間隔[ms]
 
 //mode
 #define mode_count_up_th 	(0.10f)     //モードカウントアップの右タイヤ速度閾値
@@ -62,6 +65,15 @@
 #define front_sensor_rotate_KI	(2.52037335129739f)	//前壁角度のIゲイン
 #define front_sensor_rotate_KD	(0.206728439324594f)//前壁補正のDゲイン
 #define front_sensor_rotate_fil	(44.5570260812328f)	//前壁角度フィルタ係数
+#define front_sensor_th  	(0.0003)				//前壁補正時の補正閾値(0.3mm)
+#define calib_tim           (100)					//前壁補正時間(100ms)
+
+//imu
+#define REFFERENCE_NUM		(1000)		//何回の平均をもってジャイロのリファレンス電圧とするか
+#define GYRO_Z_SIGN			(-1.f)		//ジャイロの出力の符号（自分の座標系に合った方向に、1.0fか－1.0fを掛けて修正する）
+#define GYRO_Z_SENSITIVITY	(16.752f)	
+#define ACCEL_X_SIGN		(1.f)		//加速度計の出力の符号（自分の座標系に合った方向に、1.0fか－1.0fを掛けて修正する）
+#define ACCEL_X_SENSITIVITY	(4096.f)
 
 
 

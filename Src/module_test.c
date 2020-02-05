@@ -6,36 +6,42 @@
  */
 
 
-#include "index.h"
+//#include "index.h"
+#include "module_test.h"
 #include "ir_sensor.h"
+#include "imu.h"
+#include "param.h"
+#include "mouse_state.h"
+#include "target.h"
+#include "exvol.h"
 
 
-uint16_t log_counter = 0 ; //m ログ取得開始からの時間監視用カウンタ[ms]
+static uint16_t log_counter = 0 ; //ログ取得開始からの時間監視用カウンタ[ms]
 
-typedef struct {	//a データ格納用構造体の定義（最大２０個とすること（４秒の時））
-	float	time;				// m測定開始からの時間[m/s]
-	float	target_d_m;			// m目標移動距離[m]
-	float 	ideal_d_m;			// m理想の並進方向移動距離[m]
-	float	real_d_m;			// m並進方向移動距離[m]
-	float   target_speed_m;		// m目標速度[m/s]
-	float	speed_m;			// m並進方向の速度[m/s]
-	float	speed_m_ave;		// m並進方向の速度平均[m/s]
-	float   accel_m;			// m並進方向の加速度(m/s)
-	float	accel_m_ave;		// m並進方向の加速度平均(m/s)
-	float	target_d_w;			// m目標角度
-	float	ideal_d_w;			// m理想角度
-	float	real_d_w;			// m回転角度(rad)
-	float   target_speed_w;		// m目標角速度(rad/s)
-	float	speed_w;			// m実際の角速度(rad/s)
-	float   duty_r;				// m右モータ操作量（duty)
-	float   duty_l;				// m左モータ操作量(duty)
-	float   front_sensor_r;		// m右前壁センサ値
-	float   front_sensor_l;		// m左前壁センサ値
-	float   side_sensor_r;		// m右横壁センサ値
-	float   side_sensor_l;		// m左横壁センサ値
-	float   front_r;			// m壁との距離（右前センサ）(m)
-	float   front_l;			// m壁との距離（左前センサ）(m)）
-	float 	V_battery;			// mバッテリー電圧
+typedef struct {	//データ格納用構造体の定義（最大２０個とすること（４秒の時））
+	float	time;				//測定開始からの時間[m/s]
+	float	target_d_m;			//目標移動距離[m]
+	float 	ideal_d_m;			//理想の並進方向移動距離[m]
+	float	real_d_m;			//並進方向移動距離[m]
+	float   target_speed_m;		//目標速度[m/s]
+	float	speed_m;			//並進方向の速度[m/s]
+	float	speed_m_ave;		//並進方向の速度平均[m/s]
+	float   accel_m;			//並進方向の加速度(m/s)
+	float	accel_m_ave;		//並進方向の加速度平均(m/s)
+	float	target_d_w;			//目標角度
+	float	ideal_d_w;			//理想角度
+	float	real_d_w;			//回転角度(rad)
+	float   target_speed_w;		//目標角速度(rad/s)
+	float	speed_w;			//実際の角速度(rad/s)
+	float   duty_r;				//右モータ操作量（duty)
+	float   duty_l;				//左モータ操作量(duty)
+	float   front_sensor_r;		//右前壁センサ値
+	float   front_sensor_l;		//左前壁センサ値
+	float   side_sensor_r;		//右横壁センサ値
+	float   side_sensor_l;		//左横壁センサ値
+	float   front_r;			//壁との距離（右前センサ）(m)
+	float   front_l;			//壁との距離（左前センサ）(m)）
+	float 	V_battery;			//バッテリー電圧
 } log_struct;
 
 static log_struct log_store[log_count_lim / log_count_step];  // データ格納用の構造体
@@ -46,7 +52,7 @@ static log_struct log_store[log_count_lim / log_count_step];  // データ格納
 --------------------------------------------------------------- */
 void log_init (void)
 {
-	log_counter = 0; //m ログカウンタの初期化
+	log_counter = 0; //ログカウンタの初期化
 }
 
 /* ---------------------------------------------------------------
@@ -63,21 +69,21 @@ void data_get (void)
 		if( (log_counter % log_count_step) == 0)
 		{
 			log_store[i].time = (float)log_counter;
-			log_store[i].target_d_m = (float)target_distance_m;
-			log_store[i].ideal_d_m = (float)ideal_distance_m;
-			log_store[i].real_d_m = (float)real_distance_m;
-			log_store[i].target_speed_m =  (float)target_speed_m;
-			log_store[i].speed_m = (float)speed_m;
-			log_store[i].speed_m_ave = (float)g_ave_speed_m;
+			log_store[i].target_d_m = (float)get_target_length();
+			log_store[i].ideal_d_m = (float)get_ideal_length();
+			log_store[i].real_d_m = (float)get_move_length();
+			log_store[i].target_speed_m =  (float)get_target_move_speed();
+			log_store[i].speed_m = (float)get_move_speed();
+			log_store[i].speed_m_ave = (float)get_move_speed_ave();
 			log_store[i].accel_m = (float)IMU_GetAccel_X();
-			log_store[i].accel_m_ave = (float)g_ave_accel_m;
-			log_store[i].target_d_w = (float)target_distance_w;
-			log_store[i].ideal_d_w = (float)ideal_distance_w;
-			log_store[i].real_d_w = (float)real_distance_w;
-			log_store[i].target_speed_w = (float)target_speed_w;
-			log_store[i].speed_w = (float)IMU_GetGyro_Z();
-			log_store[i].duty_r = (float)g_duty_r;
-			log_store[i].duty_l = (float)g_duty_l;
+			log_store[i].accel_m_ave = (float)get_move_accel_ave();
+			log_store[i].target_d_w = (float)get_target_angle();
+			log_store[i].ideal_d_w = (float)get_ideal_angle();
+			log_store[i].real_d_w = (float)get_rotation_angle();
+			log_store[i].target_speed_w = (float)get_target_rotation_speed();
+			log_store[i].speed_w = (float)get_rotation_speed();
+			log_store[i].duty_r = (float)get_target_duty_r();
+			log_store[i].duty_l = (float)get_target_duty_l();
 			log_store[i].front_sensor_r = (float)Sensor_GetValue(3);
 			log_store[i].front_sensor_l = (float)Sensor_GetValue(0);
 			log_store[i].side_sensor_r = (float)Sensor_GetValue(2);

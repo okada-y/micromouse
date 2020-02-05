@@ -6,9 +6,13 @@
  */
 
 
-#include "index.h"
+//#include "index.h"
+#include "stm32f4xx_hal.h"
 #include "mode.h"
+#include "tim.h"
 #include "mouse_state.h"
+#include "target.h"
+#include "adjust.h"
 
 #define TIMER_COUNT		(__HAL_TIM_GET_COUNTER(&htim6))
 #define TIMER_LOAD		(__HAL_TIM_GET_AUTORELOAD(&htim6))
@@ -34,38 +38,24 @@ void Interrupt_Main( void )
 	{
 		switch(get_mode_number())
 		{
-			case 0 ://m 初期起動時にとおるので、つかわないこと。(ログ出力用）
+			case 0 ://ログ出力用
 				break;
 
 			case 1 :
 				data_get();
-				calibrate_tim(); 			//m前壁補正用カウンタ
-				real_distance_m_calc();		//m現在速度を積分して距離算出
-				real_distance_w_calc();		//m現在角速度を積分して角度算出
-				target_speed_m_calc();		//m現在距離と目標距離に応じて加速度を切り替え
-				target_speed_w_calc();		//m現在角度と目標角度に応じて角加速度を切り替え
-				target_speed_inc();			//m加速度、角加速度を目標速度に加算
-				Operation_amount_calc();
+				mouse_state_1ms();		//マウスの速度、角速度、移動距離、角度を計算
+				target_1ms();			//目標距離、角度から目標速度、角速度、加速度、角加速度を計算
+				calc_motor_vol_ctrl();	//速度、角速度制御による印加電圧を計算
+				adjust_1ms();			//壁制御による印加電圧を計算
+				motor_1ms();			//制御モードに応じた印加電圧を出力
 				break;
 
 			case 2 :
 				data_get();
-				real_distance_m_calc();		//m現在速度を積分して距離算出
-				real_distance_w_calc();		//m現在角速度を積分して角度算出
-				target_speed_m_calc();		//m現在距離と目標距離に応じて加速度を切り替え
-				target_speed_w_calc();		//m現在角度と目標角度に応じて角加速度を切り替え
-				target_speed_inc();			//m加速度、角加速度を目標速度に加算
-				Operation_amount_calc();	//m目標速度と現在速度の偏差に応じて各モータの電圧演算
 				break;
 
 			case 3 :
 				data_get();
-				real_distance_m_calc();		//m現在速度を積分して距離算出
-				real_distance_w_calc();		//m現在角速度を積分して角度算出
-				target_speed_m_calc();		//m現在距離と目標距離に応じて加速度を切り替え
-				target_speed_w_calc();		//m現在角度と目標角度に応じて角加速度を切り替え
-				target_speed_inc();			//m加速度、角加速度を目標速度に加算
-				Operation_amount_calc();	//m目標速度と現在速度の偏差に応じて各モータの電圧演算
 				break;
 
 			case 4 :
@@ -78,23 +68,10 @@ void Interrupt_Main( void )
 
 			case 6 :
 				data_get();
-				real_distance_m_calc();		//m現在速度を積分して距離算出
-				real_distance_w_calc();		//m現在角速度を積分して角度算出
-				target_speed_m_calc();		//m現在距離と目標距離に応じて加速度を切り替え
-				target_speed_w_calc();		//m現在角度と目標角度に応じて角加速度を切り替え
-				target_speed_inc();			//m加速度、角加速度を目標速度に加算
-				Operation_amount_calc();	//m目標速度と現在速度の偏差に応じて各モータの電圧演算
 				break;
 
 			case 7 :
 				data_get();
-				calibrate_tim(); //m前壁補正用カウンタ
-				real_distance_m_calc();		//m現在速度を積分して距離算出
-				real_distance_w_calc();		//m現在角速度を積分して角度算出
-				target_speed_m_calc();		//m現在距離と目標距離に応じて加速度を切り替え
-				target_speed_w_calc();		//m現在角度と目標角度に応じて角加速度を切り替え
-				target_speed_inc();			//m加速度、角加速度を目標速度に加算
-				Operation_amount_calc();
 				break;
 
 			case 15 :

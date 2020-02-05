@@ -7,8 +7,8 @@
 
 #include <stdio.h>
 #include "param.h"
-//#include "index.h"
 #include "encorder.h"
+#include "imu.h"
 
 static float tire_r_speed = 0;
 static float tire_l_speed = 0;
@@ -18,9 +18,22 @@ static float tire_l_speed_max = 0;
 static float tire_l_speed_min = 0; 
 static float move_speed = 0;
 static float move_speed_ave = 0;
+static float move_accel_ave = 0;
 static float move_length = 0;
 static float rotation_speed = 0;
 static float rotation_angle = 0;
+
+//機能	: mouse_stateの1msタスクまとめ
+//引数	: なし
+//返り値	: なし
+void mouse_state_1ms ( void )
+{
+	calc_move_speed();		//速度計算
+	calc_rotation_speed();	//角速度計算
+	filter_move_speed();	//速度をフィルタ処理
+	calc_move_length();		//移動距離を計算
+	calc_rotation_angle();	//回転角度を計算
+}
 
 //機能	: 右タイヤのエンコーダのカウント差を取得する
 //引数	: なし
@@ -214,6 +227,7 @@ void filter_move_speed( void )
 	speed_ave += 0.5 * ( accel_ave * (ave_num * 0.001)); 
 
 	move_speed_ave = speed_ave;
+	move_accel_ave = accel_ave;
 
 	ave_counter += 1 ;
 }
@@ -226,6 +240,13 @@ float get_move_speed_ave ( void )
     return move_speed_ave;
 }
 
+//機能	: 移動平均処理後の移動加速度[m/ss]を取得する
+//引数	: なし
+//返り値	: 移動平均処理後の移動速度[m/ss]
+float get_move_accel_ave ( void )
+{
+    return move_accel_ave;
+}
 //機能	: マウスの移動距離[m]を計算する
 //引数	: なし
 //返り値	: なし
@@ -233,6 +254,22 @@ float get_move_speed_ave ( void )
 void calc_move_length ( void )
 {
     move_length += get_move_speed_ave() * 0.001; // [m/s] * [s]
+}
+
+//機能	: マウスの移動距離[m]を取得する
+//引数	: なし
+//返り値	: なし
+float get_move_length ( void )
+{
+    return move_length;
+}
+
+//機能	: マウスの移動距離[m]を設定する
+//引数	: なし
+//返り値	: なし
+void set_move_length ( float length )
+{
+    move_length = length;
 }
 
 //機能	: マウスの角速度[rad/s]を算出する
@@ -254,6 +291,7 @@ float get_rotation_speed ( void )
 //機能	: マウスの角度[rad/s]を算出する
 //引数	: なし
 //返り値	: なし
+//備考 :1msタスク
 void calc_rotation_angle ( void )
 {
     rotation_angle += rotation_speed * 0.001; // [rad/s] * [s]
@@ -265,4 +303,12 @@ void calc_rotation_angle ( void )
 float get_rotation_angle ( void )
 {
     return rotation_angle;
+}
+
+//機能	: マウスの角度を取得する
+//引数	: なし
+//返り値	: なし
+void set_rotation_angle ( float angle )
+{
+    rotation_angle = angle;
 }

@@ -7,7 +7,11 @@
 #include "target.h"
 #include "movement.h"
 
-static run_start run_first_flg = 0;		// 走行開始フラグ 0:走行開始時　1:それ以外
+static run_start run_first_flg = 0;			// 走行開始フラグ 0:走行開始時　1:それ以外
+static wall_flg	front_wall_flg = nowall;	//　前壁の有無フラグ
+static wall_flg	right_wall_flg = nowall;	//　右壁の有無フラグ
+static wall_flg	left_wall_flg = nowall;		//　左壁の有無フラグ
+
 
 //機能	: 移動完了判断
 //引数	: なし
@@ -166,10 +170,62 @@ void turn_conclk_180 (void)
 
 }
 
+//機能	: 走行開始フラグのクリア
+//引数	: なし
+//返り値	: なし
+void clr_run_first_flg (void)
+{
+	run_first_flg = start;
+}
+
+//機能	: 走行開始フラグセット
+//引数	: なし
+//返り値	: なし
+void set_run_first_flg (void)
+{
+	run_first_flg = already;
+}
+
+
+//機能	: 壁の有無フラグのクリア
+//引数	: なし
+//返り値	: なし
+void clr_wall_flg (void)
+{
+	front_wall_flg = nowall;
+	right_wall_flg = nowall;
+	left_wall_flg = nowall;
+}
+
+//機能	: 前壁フラグセット
+//引数	: なし
+//返り値	: なし
+void set_front_wall_flg ( void )
+{
+	front_wall_flg = wall;
+}
+
+//機能	: 右壁フラグセット
+//引数	: なし
+//返り値	: なし
+void set_rigth_wall_flg ( void )
+{
+	right_wall_flg = wall;
+}
+
+//機能	: 左壁フラグセット
+//引数	: なし
+//返り値	: なし
+void set_left_wall_flg ( void )
+{
+	left_wall_flg = wall;
+}
+
 
 ////////////////////////////////////////
 /* 軌跡生成関数						*/
 ////////////////////////////////////////
+
 
 //機能	: 前進
 //引数	: なし
@@ -185,7 +241,7 @@ void move_front (void)
 		constant_speed();//定速で一マス前進
 	}
 	run_first_flg = already;
-	front_wall_calib_flg_clr();
+	clr_wall_flg();
 }
 
 //機能	: 右折
@@ -194,7 +250,7 @@ void move_front (void)
 void move_right (void)
 {
 	if(run_first_flg == start){
-		if(front_calib_flg == 1){
+		if(front_wall_flg == wall){
 			fornt_wall_calibrate();
 		}
 		turn_clk_90();		//m時計回りに90度回転
@@ -202,14 +258,14 @@ void move_right (void)
 	}
 	if(run_first_flg == already){
 		half_deceleration();//m半区画減速で中央に停止
-		if(front_calib_flg == 1){
+		if(front_wall_flg == wall){
 			fornt_wall_calibrate();
 		}
 		turn_clk_90();		//m時計回りに90度回転
 		half_acceleration();//m半区画加速
 	}
 	run_first_flg = already;
-	front_wall_calib_flg_clr();
+	clr_wall_flg();
 }
 
 //機能	: 左折
@@ -218,7 +274,7 @@ void move_right (void)
 void move_left (void)
 {
 	if(run_first_flg == start){
-		if(front_calib_flg == 1){
+		if(front_wall_flg == wall){
 			fornt_wall_calibrate();
 		}
 		turn_conclk_90();	//m反時計回りに90度回転
@@ -226,14 +282,14 @@ void move_left (void)
 	}
 	if(run_first_flg == already){
 		half_deceleration();//m半区画減速で中央に停止
-		if(front_calib_flg == 1){
+		if(front_wall_flg == wall){
 			fornt_wall_calibrate();
 		}
 		turn_conclk_90();	//m反時計回りに90度回転
 		half_acceleration();//m半区画加速
 	}
 	run_first_flg = already;
-	front_wall_calib_flg_clr();
+	clr_wall_flg();
 }
 
 //機能	: 後進
@@ -243,14 +299,14 @@ void move_back (void)
 {
 	if(run_first_flg == start){
 
-		if(front_calib_flg == 1){
+		if(front_wall_flg == wall){
 			fornt_wall_calibrate();
-			if(right_calib_flg == 1){
+			if(right_wall_flg == wall){
 				turn_clk_90();
 				fornt_wall_calibrate();
 				turn_clk_90();
 			}
-			else if(left_calib_flg == 1){
+			else if(left_wall_flg == wall){
 					turn_conclk_90();
 					fornt_wall_calibrate();
 					turn_conclk_90();
@@ -263,14 +319,14 @@ void move_back (void)
 	}
 	if(run_first_flg == already){
 		half_deceleration();//m半区画減速で中央に停止
-		if(front_calib_flg == 1){
+		if(front_wall_flg == wall){
 			fornt_wall_calibrate();
-			if(right_calib_flg == 1){
+			if(right_wall_flg == wall){
 				turn_clk_90();
 				fornt_wall_calibrate();
 				turn_clk_90();
 			}
-			else if(left_calib_flg == 1){
+			else if(left_wall_flg == wall){
 					turn_conclk_90();
 					fornt_wall_calibrate();
 					turn_conclk_90();
@@ -282,5 +338,6 @@ void move_back (void)
 		half_acceleration();//m半区画加速
 	}
 	run_first_flg = already;
-	front_wall_calib_flg_clr();
+	clr_wall_flg();
 }
+

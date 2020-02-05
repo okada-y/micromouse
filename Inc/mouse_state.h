@@ -16,11 +16,15 @@ void init_tire_speed ( void );
 float get_move_speed ( void );
 void filter_move_speed( void );
 float get_move_speed_ave ( void );
+float get_move_accel_ave ( void );
 void calc_move_length ( void );
 void calc_rotation_speed ( void );
 float get_rotation_speed ( void );
 void calc_rotation_angle ( void );
 float get_rotation_angle ( void );
+float get_move_length ( void );
+void set_move_length ( float );
+void set_rotation_angle ( float );
 
 
 #endif /* MOUSE_STATE_H_*/

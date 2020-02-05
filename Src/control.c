@@ -3,6 +3,10 @@
 #include "control.h"
 #include "mouse_state.h"
 
+
+static float move_speed_err_I = 0; 			//移動速度偏差積分
+static float rotate_speed_err_I = 0;	    //角速度偏差積分
+
 static float target_vol_r_ctrl = 0;		//右タイヤの操作量[ duty % ]
 static float target_vol_l_ctrl = 0;		//左タイヤの操作量[ duty % ]
 
@@ -28,13 +32,11 @@ float get_target_vol_l_ctrl ( void )
 //備考  : 1msタスク
 void calc_motor_vol_ctrl(void)
 {
-	static float move_speed_err = 0; 			//移動速度偏差
-    static float move_speed_err_I = 0; 			//移動速度偏差積分
-	static float rotate_speed_err = 0;			//角速度偏差
-	static float rotate_speed_err_I = 0;	    //角速度偏差積分
+	float move_speed_err = 0; 			        //移動速度偏差
+	float rotate_speed_err = 0;	        		//角速度偏差
 
-	static float move_speed_err_PI = 0; 		//移動速度偏差によるPIコントローラ出力
-	static float rotate_speed_err_PI = 0;		//角速度偏差によるPIコントローラ出力
+	float move_speed_err_PI = 0; 		//移動速度偏差によるPIコントローラ出力
+	float rotate_speed_err_PI = 0;		//角速度偏差によるPIコントローラ出力
 
     /*偏差取得*/
     move_speed_err = get_target_move_speed() - get_move_speed_ave();
@@ -53,3 +55,11 @@ void calc_motor_vol_ctrl(void)
     target_vol_l_ctrl = move_speed_err_PI - rotate_speed_err_PI;
 }
 
+//機能	: 軌跡制御の操作履歴クリア
+//引数	: なし
+//返り値	: なし
+void clr_trace_operate_history ( void )
+{
+    move_speed_err_I = 0; 		//移動速度偏差積分
+    rotate_speed_err_I = 0;	    //角速度偏差積分
+}

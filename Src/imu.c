@@ -4,25 +4,18 @@
  *  Created on: Jul 27, 2019
  *      Author: 岡田 泰裕
  */
-#include "index.h"
+//#include "index.h"
+#include <stdio.h>
+#include "main.h"
+#include "spi.h"
 #include "ICM20648_Register.h"
-
-#define REFFERENCE_NUM		(1000)		// a何回の平均をもってジャイロのリファレンス電圧とするか
-
-// aジャイロ関連マクロ
-#define GYRO_Z_SIGN			(-1.f)		// aジャイロの出力の符号（自分の座標系に合った方向に、1.0fか－1.0fを掛けて修正する）
-#define GYRO_Z_SENSITIVITY	(16.752f)		//(16.4f)
-
-// a加速度計関連マクロ
-#define ACCEL_X_SIGN		(1.f)		// a加速度計の出力の符号（自分の座標系に合った方向に、1.0fか－1.0fを掛けて修正する）
-#define ACCEL_X_SENSITIVITY	(4096.f)
+#include "param.h"
+#include "imu.h"
 
 
-// a ローカル関数宣言
 void 	IMU_Write1byte( uint8_t , uint8_t );
 uint8_t IMU_Read1byte( uint8_t );
 
-// aグローバル変数宣言
 static uint8_t  imu_address = ACCEL_XOUT_H | 0x80;	//a 加速度、ジャイロデータの先頭データ（X方向加速度のH側データかつread設定
 static uint8_t	imu_value[13];			// value[0]はダミーデータが入るため注意
 

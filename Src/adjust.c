@@ -1,7 +1,10 @@
-//irセンサによる補正記述予定
+
 
 #include <stdio.h>
 #include "param.h"
+#include "exvol.h"
+#include "mouse_state.h"
+#include "target.h"
 #include "ir_sensor.h"
 
 
@@ -13,9 +16,19 @@ static double front_sensor_move_D_prev = 0; 	//前回偏差和微分
 static double front_sensor_rotate_D_prev = 0;   //前回偏差差微分
 
 static float target_vol_r_frontwall = 0;		//前壁制御による右モータ印加電圧[V]
-static float target_vol_r_frontwall = 0;		//前壁制御による左モータ印加電圧[V]
+static float target_vol_l_frontwall = 0;		//前壁制御による左モータ印加電圧[V]
 
 static uint16_t fornt_wall_calibrate_tim = 0;  	//前壁補正用カウンタ
+
+//機能	: adjust.cの1msタスクまとめ
+//引数	: なし
+//返り値	: なし
+void adjust_1ms (void)
+{
+	calc_motor_vol_front_wall();	//前壁制御における印加電圧計算
+	calibrate_tim();				//前壁制御用タイマ
+}
+
 
 //機能	: 前壁制御におけるモータ印加電圧を計算する。
 //引数	: なし
@@ -65,9 +78,9 @@ void calc_motor_vol_front_wall ( void )
 	front_sensor_move_PID = front_sensor_move_err_P + front_sensor_move_err_I + front_sensor_move_err_D;
     front_sensor_rotate_PID = front_sensor_rotate_err_P + front_sensor_rotate_err_I + front_sensor_rotate_err_D;
 
-    /*m 印加電圧算出*/
+    /*印加電圧算出*/
 	target_vol_r_frontwall = (front_sensor_move_PID + front_sensor_rotate_PID)/2;
-	target_vol_r_frontwall = (front_sensor_move_PID - front_sensor_rotate_PID)/2;
+	target_vol_l_frontwall = (front_sensor_move_PID - front_sensor_rotate_PID)/2;
 
 	/*パラメータ更新*/
     front_sensor_move_err_prev = front_sensor_move_err;   	
@@ -77,10 +90,39 @@ void calc_motor_vol_front_wall ( void )
 
 }
 
+//機能	: 前壁補正による右モータ印加電圧を取得する
+//引数	: なし
+//返り値	: 前壁補正による右モータ印加電圧
+float get_target_vol_r_frontwall ( void )
+{
+	return target_vol_r_frontwall;
+}
+
+//機能	: 前壁補正による左モータ印加電圧を取得する
+//引数	: なし
+//返り値	: 前壁補正による右モータ印加電圧
+float get_target_vol_l_frontwall ( void )
+{
+	return target_vol_r_frontwall;
+}
+
+//機能	: 前壁制御の操作履歴を消す
+//引数	: なし
+//返り値	: なし
+void clr_frontwall_operate_history ( void )
+{
+	front_sensor_move_err_I = 0;   		
+	front_sensor_rotate_err_I = 0; 	  	
+	front_sensor_move_err_prev = 0;	   	
+	front_sensor_rotate_err_prev = 0; 	
+	front_sensor_move_D_prev = 0; 		
+	front_sensor_rotate_D_prev = 0;	   	
+}
+
 
 ////////////////////////////////////////
-/* a マウス位置補正関数					*/
-/* a 壁を使った位置の補正用関数				*/
+/* マウス位置補正関数		　			*/
+/* 壁を使った位置の補正用関数			*/
 ////////////////////////////////////////
 
 /* memo:前壁補正
@@ -92,36 +134,33 @@ void fornt_wall_calibrate (void)
 	double temp_l;
 	double temp;
 
+	set_mode_ctrl(front_wall); 		//制御モードを前壁補正モードに
+	fornt_wall_calibrate_tim = 0; 	//前壁制御用タイマを初期化
 
-	  correction_mode = 1; //m 前壁補正モードに切り替え
-	  fornt_wall_calibrate_tim = 0; //m前壁補正タイマを初期化
-
-	  while(1)
-	  {
-		  temp_r = ABS(front_sensor_r_ref - SensorValue2length(3));
-		  temp_l = ABS(front_sensor_l_ref - SensorValue2length(0));
-		  temp = MAX(temp_r,temp_l);
-		  //mセンサ値が基準より差を持つとき、タイマをリセット
-		  if(temp > front_sensor_th){
-			  fornt_wall_calibrate_tim = 0;
-		  }
-		  //m キャリブレーション時間を超えるとき、ブレイク
-		  if(fornt_wall_calibrate_tim >= calib_tim ){
-			  break;
-		  }
-		  printf("temp: %8.5f,time:%8.5d \r\n",temp,fornt_wall_calibrate_tim);
-	  }
-
-	  //m 補正終了時、移動距離、角度を初期化
-	  real_distance_m_clr();
-	  real_distance_w_clr();
-	  target_distance_m_clr();
-	  target_distance_w_clr();
-	  ideal_distance_m_clr();
-	  ideal_distance_w_clr();
-
-	  //m 補正モードを目標速度に変更
-	  correction_mode = 0;
+	while(1)
+	{
+		//偏差取得
+		temp_r = ABS(front_sensor_r_ref - SensorValue2length(3));
+		temp_l = ABS(front_sensor_l_ref - SensorValue2length(0));
+		//偏差の最大値取得
+		temp = MAX(temp_r,temp_l);
+		//センサ値が基準より差を持つとき、タイマをリセット
+		if(temp > front_sensor_th)
+		{
+		 fornt_wall_calibrate_tim = 0;
+		}
+		//キャリブレーション時間を超えるとき、ブレイク
+		if(fornt_wall_calibrate_tim >= calib_tim )
+		{
+		 break;
+		}
+	}
+	//補正終了時、移動距離、角度に理想値を代入
+	set_move_length(get_ideal_length());
+	set_rotation_angle(get_ideal_angle());
+	
+	//制御モードを軌跡制御に変更
+	set_mode_ctrl(trace);
 }
 
 /* memo:前壁補正用タイマ

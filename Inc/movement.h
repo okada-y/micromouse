@@ -7,5 +7,29 @@ typedef enum {
 	already = 1, //それ以外
 } run_start;
 
+typedef enum {
+	nowall 	= 0, //壁なし
+	wall 	= 1, //壁あり
+} wall_flg;
+
+uint8_t move_comp_jud ( void );
+uint8_t rotate_comp_jud ( void );
+void start_acceleration (void);
+void half_acceleration (void);
+void half_deceleration (void);
+void constant_speed (void);
+void turn_clk_90 (void);
+void turn_conclk_90 (void);
+void turn_conclk_180 (void);
+void clr_run_first_flg (void);
+void clr_wall_flg (void);
+void set_front_wall_flg ( void );
+void set_rigth_wall_flg ( void );
+void set_left_wall_flg ( void );
+void move_front (void);
+void move_right (void);
+void move_left (void);
+void move_back (void);
+
 
 #endif /* MOVEMENT_H_*/

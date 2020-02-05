@@ -5,23 +5,23 @@
  *      Author: 岡田 泰裕
  */
 
-//#include "index.h"
+#include "motor.h"
+#include "stm32f4xx_hal.h"
+#include "tim.h"
 
-#include "index.h"
+#define PCLK			(HAL_RCC_GetPCLK2Freq())	//マイコンの動作周波数[Hz]
+#define PWMFREQ			(100000)					//モータの動作周波数[Hz]
+#define MOT_DUTY_MIN	(30)						//モータの最低Duty
+#define MOT_DUTY_MAX	(950)						//モータの最大Duty
 
-#define PCLK			(HAL_RCC_GetPCLK2Freq())	// aマイコンの動作周波数[Hz]
-#define PWMFREQ			(100000)					// aモータの動作周波数[Hz]
-#define MOT_DUTY_MIN	(30)						// aモータの最低Duty
-#define MOT_DUTY_MAX	(950)						// aモータの最大Duty
-
-// aモータの向き設定
+//モータの向き設定
 #define MOT_SET_COMPARE_L_REVERSE(x)	__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, x)
 #define MOT_SET_COMPARE_L_FORWARD(x)	__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_2, x)
 #define MOT_SET_COMPARE_R_FORWARD(x)	__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_3, x)
 #define MOT_SET_COMPARE_R_REVERSE(x)	__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_4, x)
 
-int16_t g_duty_r;
-int16_t g_duty_l;
+static int16_t duty_r;
+static int16_t duty_l;
 
 /* ---------------------------------------------------------------
 	モータ用のタイマーを開始する関数
@@ -48,11 +48,11 @@ void Motor_StopPWM( void )
 /* ---------------------------------------------------------------
 	左モータを指定のDuty（0～1000）で回転させる関数
 --------------------------------------------------------------- */
-void Motor_SetDuty_Left( int16_t duty_l )
+void set_duty_l( int16_t duty_l_tmp )
 {
 	uint32_t	pulse_l;
 
-	g_duty_l = duty_l;
+	duty_l = duty_l_tmp;
 	if( ABS(duty_l) > MOT_DUTY_MAX ) {
 		pulse_l = (uint32_t)(PCLK / PWMFREQ * MOT_DUTY_MAX / 1000) - 1;
 	} else if( ABS(duty_l) < MOT_DUTY_MIN ) {
@@ -76,10 +76,10 @@ void Motor_SetDuty_Left( int16_t duty_l )
 /* ---------------------------------------------------------------
 	右モータを指定のDuty（0～1000）で回転させる関数
 --------------------------------------------------------------- */
-void Motor_SetDuty_Right( int16_t duty_r )
+void set_duty_r( int16_t duty_r_tmp )
 {
 	uint32_t	pulse_r;
-	g_duty_r = duty_r;
+	duty_r = duty_r_tmp;
 	if( ABS(duty_r) > MOT_DUTY_MAX ) {
 		pulse_r = (uint32_t)(PCLK / PWMFREQ * MOT_DUTY_MAX / 1000) - 1;
 	} else if( ABS(duty_r) < MOT_DUTY_MIN ) {
@@ -100,4 +100,18 @@ void Motor_SetDuty_Right( int16_t duty_r )
 	}
 }
 
+//機能	: 右モータの変調率を取得する
+//引数	: なし
+//返り値	: 右モータの変調率
+int16_t get_duty_r ( void )
+{
+	return duty_r;
+}
 
+//機能	: 左モータの変調率を取得する
+//引数	: なし
+//返り値	: 左モータの変調率
+int16_t get_duty_l ( void )
+{
+	return duty_l;
+}

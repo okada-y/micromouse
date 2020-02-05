@@ -46,9 +46,6 @@ extern float real_distance_w;		//m 現在角度[rad]
 extern float delta_angle_motor_r;	//m 右モータの回転数[rpm]
 extern float delta_angle_motor_l;	//m 左モータの回転数[rpm]
 
-extern int16_t g_duty_r;			//m 右モータのduty[*0.1%]
-extern int16_t g_duty_l;			//m 左モータのduty[*0.1%]
-
 extern uint8_t move_dir_flg;			//m　移動方向フラグ　0:前進 1:後進
 extern uint8_t rotation_dir_flg;		//m　回転方向フラグ　0:時計周り 1:反時計周り
 extern uint8_t accel_dir_flg;		    //m　加速方向フラグ　0:加速 1:減速
@@ -69,9 +66,6 @@ extern uint8_t right_calib_flg; //m 前壁補正用フラグ
 extern uint8_t left_calib_flg; 	//m 前壁補正用フラグ
 
 
-/*m データ取得周りの定数*/
-#define log_count_lim		(5000)	//m　データ取得する期間[ms]
-#define log_count_step		(5)		//m データを取得する時間間隔[ms]
 
 /*制御周りの定数*/
 
@@ -93,8 +87,6 @@ extern uint8_t left_calib_flg; 	//m 前壁補正用フラグ
 #define front_sensor_w_fil	(44.5570260812328f)				//m 前壁角度フィルタ係数
 
 
-#define front_sensor_th  	(0.0002)				//m 前壁補正時の補正閾値(0.3mm)
-#define calib_tim           (100)					//m 前壁補正時間(100ms)
 
 
 /* LED関数群 */
@@ -124,11 +116,7 @@ uint8_t 	Communication_TerminalRecv( void );			// 1文字受信
 void 		Communication_Initialize( void );			// printfとscanfを使用するための設定
 void 		Communication_ClearScreen( void );			// m画面クリア&カーソル初期化
 
-/* mモータ関数群(motor.c) */
-void 		Motor_Initialize( void );					// mモータ駆動用タイマーの開始
-void 		Motor_StopPWM( void );						// mモータを停止
-void 		Motor_SetDuty_Left( int16_t );				// m左モータを指定したDutyで回転させる[0-1000]
-void 		Motor_SetDuty_Right( int16_t );				// m右モータを指定したDutyで回転させる[0-1000]
+
 
 /* mエンコーダ関数群(encoder.c) */
 void 		Encoder_Initialize( void );					// mエンコーダ用タイマーの開始
@@ -138,13 +126,6 @@ float 		Encoder_GetAngle_Left( void );				// m左タイヤの角度を取得す�
 float 		Encoder_GetAngle_Right( void );				// m右タイヤの角度を取得する[rad]
 void		Get_speed(void);							// m角速度、速度算出(1msタスク)
 void 		speed_m_average( void );					// m 並進方向速度移動平均算出(1msタスク)
-
-/* m慣性センサ関数群(imu.c) */
-uint8_t		IMU_CheckWHOAMI( void );					// m 慣性センサの動作確認関数(0xE0が返ってくれば正常)
-void		IMU_Initialize( void );						// m 慣性センサの初期設定
-void 		IMU_ResetReference( void );					// m 慣性センサのリファレンスを補正する
-float 		IMU_GetAccel_X( void );						// X軸加速度計の加速度を取得する[m/s^2]
-float 		IMU_GetGyro_Z( void );						// Z軸ジャイロの角速度を取得する[rad/s]
 
 /* m バッテリー関数群(battery.c) */
 float 		Battery_GetVoltage( void );					// m バッテリの電圧を取得する[V]
