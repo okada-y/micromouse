@@ -3,30 +3,30 @@
 #include "control.h"
 #include "mouse_state.h"
 
-static float target_vol_r_cont = 0;		//右タイヤの操作量[ duty % ]
-static float target_vol_l_cont = 0;		//左タイヤの操作量[ duty % ]
+static float target_vol_r_ctrl = 0;		//右タイヤの操作量[ duty % ]
+static float target_vol_l_ctrl = 0;		//左タイヤの操作量[ duty % ]
 
 //機能	: 軌道制御による右モータ印加電圧を取得する
 //引数	: なし
 //返り値	: 軌道制御による右モータ印加電圧
-float get_target_vol_r_cont ( void )
+float get_target_vol_r_ctrl ( void )
 {
-    return target_vol_r_cont;
+    return target_vol_r_ctrl;
 }
 
 //機能	: 軌道制御による左モータ印加電圧を取得する
 //引数	: なし
 //返り値	: 軌道制御による左モータ印加電圧
-float get_target_vol_l_cont ( void )
+float get_target_vol_l_ctrl ( void )
 {
-    return target_vol_l_cont;
+    return target_vol_l_ctrl;
 }
 
 //機能	: 軌道制御により、左右のモータ印加電圧を計算する
 //引数	: なし
 //返り値	: なし
 //備考  : 1msタスク
-void calc_motor_vol_cont(void)
+void calc_motor_vol_ctrl(void)
 {
 	static float move_speed_err = 0; 			//移動速度偏差
     static float move_speed_err_I = 0; 			//移動速度偏差積分
@@ -49,7 +49,7 @@ void calc_motor_vol_cont(void)
     rotate_speed_err_PI = rotate_speed_P * rotate_speed_err + rotate_speed_err_I;
 
     /*モータ印加電圧計算*/
-    target_vol_r_cont = move_speed_err_PI + rotate_speed_err_PI;
-    target_vol_l_cont = move_speed_err_PI - rotate_speed_err_PI;
+    target_vol_r_ctrl = move_speed_err_PI + rotate_speed_err_PI;
+    target_vol_l_ctrl = move_speed_err_PI - rotate_speed_err_PI;
 }
 
