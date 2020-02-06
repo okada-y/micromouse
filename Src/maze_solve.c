@@ -17,12 +17,9 @@
 
 /*Include original*/
 #include "index.h"
+#include "movement.h"
 #include "ir_sensor.h"
 
-/*original parameter*/
-uint8_t front_calib_flg;
-uint8_t right_calib_flg;
-uint8_t left_calib_flg;
 
 /* Type Definitions */
 #ifndef typedef_coder_internal_ref
@@ -1455,7 +1452,7 @@ static void search_adachi(const coder_internal_ref_2 *wall, const
     if (wall_sensor_front > wall_sensor_front_th) {
       /* 壁情報取得 */
       wall_write[*current_dir % 4] = wall->contents.wall;
-      front_calib_flg = 1; //m 前壁補正フラグを立てる
+      set_front_wall_flg();//前壁補正フラグを立てる
     }
 
     /* 探索情報取更新 */
@@ -1472,7 +1469,7 @@ static void search_adachi(const coder_internal_ref_2 *wall, const
       }
 
       wall_write[i10 % 4] = wall->contents.wall;
-      right_calib_flg = 1; //m 前壁補正フラグを立てる
+      set_rigth_wall_flg(); //前壁補正フラグを立てる
     }
 
     /* 探索情報取更新 */
@@ -1495,7 +1492,7 @@ static void search_adachi(const coder_internal_ref_2 *wall, const
       }
 
       wall_write[i10 % 4] = wall->contents.wall;
-      left_calib_flg = 1; //m 前壁補正フラグを立てる
+      set_left_wall_flg(); //前壁補正フラグを立てる
 
     }
 
@@ -2388,11 +2385,6 @@ void maze_solve(unsigned char maze_wall[1024], unsigned char maze_wall_search
   unsigned char u2;
   b_goal_size.contents = goal_size;
 
-  /*original parameter*/
-  front_calib_flg = 0; //m　前壁補正フラグの初期化
-  right_calib_flg = 0; //m　前壁補正フラグの初期化
-  left_calib_flg = 0; //m　前壁補正フラグの初期化
-
   /* ローカル変数宣言 */
   for (N = 0; N < 18; N++) {
     new_goal[N] = 0U;
@@ -2418,20 +2410,20 @@ void maze_solve(unsigned char maze_wall[1024], unsigned char maze_wall_search
   search.contents.unknown = 0U;
   search.contents.known = 1U;
 
-  /* m走行モード定義 */
-  /* m探索時 */
+  /* 走行モード定義 */
+  /* 探索時 */
   if (run_mode == 0) {
-    /* mマウスの初期位置設定 */
-    /* m一マス前進 */
+    /* マウスの初期位置設定 */
+    /* 一マス前進 */
 
-	start_acceleration(  );//mスタート時の加速
+	start_acceleration(  );//スタート時の加速
 
     current_x.contents = 1U;
     current_y.contents = 1U;
     move_step(&g_direction, &current_x.contents, &current_y.contents, 0U);
     move_front();
 
-    /* m足立法による探索 */
+    /* 足立法による探索 */
     current_dir.contents = g_direction.contents.North;
     search_adachi(&wall, &search, &g_direction, &l_direction,
                   &current_x.contents, &current_y.contents,
@@ -2440,7 +2432,7 @@ void maze_solve(unsigned char maze_wall[1024], unsigned char maze_wall_search
 
     HAL_Delay(1000);
 
-    /* mゴールをすべて探索 */
+    /* ゴールをすべて探索 */
     do {
       exitg1 = 0;
       search_flag = 0U;
@@ -2459,7 +2451,7 @@ void maze_solve(unsigned char maze_wall[1024], unsigned char maze_wall_search
       }
 
       if (search_flag == 1) {
-    	run_first_flg = 0; //m走行開始フラグのクリア
+    	clr_run_first_flg(); //走行開始フラグのクリア
         search_adachi(&wall, &search, &g_direction, &l_direction,
                       &current_x.contents, &current_y.contents,
                       &current_dir.contents, maze_row_size, maze_col_size,
@@ -2474,7 +2466,7 @@ void maze_solve(unsigned char maze_wall[1024], unsigned char maze_wall_search
     /* mスタートを目的地として足立法で再探索 */
     new_goal[0] = 1U;
     new_goal[9] = 1U;
-    run_first_flg = 0; //m走行開始フラグのクリア
+    clr_run_first_flg(); //走行開始フラグのクリア
     search_adachi(&wall, &search, &g_direction, &l_direction,
                   &current_x.contents, &current_y.contents,
                   &current_dir.contents, maze_row_size, maze_col_size, maze_wall,
