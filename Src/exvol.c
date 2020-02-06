@@ -7,6 +7,7 @@
 #include "motor.h"
 #include "control.h"
 #include "adjust.h"
+#include "battery.h"
 
 
 static ctrl_mode_num ctrl_mode = trace;
@@ -112,7 +113,7 @@ void clr_operate_history(void)
 			break;
 
 		case front_wall:
-			clr_operate_history();			//軌跡制御の操作履歴をクリア
+			clr_trace_operate_history();			//軌跡制御の操作履歴をクリア
 			break;
 		
 		case side_wall:

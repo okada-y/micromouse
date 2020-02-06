@@ -1,4 +1,4 @@
-ARM GAS  C:\Temp\cciOO3vf.s 			page 1
+ARM GAS  C:\Temp\cc97aEtV.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -17,11 +17,64 @@ ARM GAS  C:\Temp\cciOO3vf.s 			page 1
   14              		.text
   15              	.Ltext0:
   16              		.cfi_sections	.debug_frame
-  17              	.Letext0:
-ARM GAS  C:\Temp\cciOO3vf.s 			page 2
+  17              		.section	.text.set_calib_flg,"ax",%progbits
+  18              		.align	1
+  19              		.global	set_calib_flg
+  20              		.arch armv7e-m
+  21              		.syntax unified
+  22              		.thumb
+  23              		.thumb_func
+  24              		.fpu fpv4-sp-d16
+  26              	set_calib_flg:
+  27              	.LVL0:
+  28              	.LFB0:
+  29              		.file 1 "Src/maze.c"
+   1:Src/maze.c    **** /*
+   2:Src/maze.c    ****  * maze.c
+   3:Src/maze.c    ****  * matlabとCの統合
+   4:Src/maze.c    ****  *  Created on: 2019/10/07
+   5:Src/maze.c    ****  *      Author: 岡田 泰裕
+   6:Src/maze.c    ****  */
+   7:Src/maze.c    **** 
+   8:Src/maze.c    **** typedef enum
+   9:Src/maze.c    **** {
+  10:Src/maze.c    ****     no_calib,   //補正しない
+  11:Src/maze.c    ****     calib       //補正する
+  12:Src/maze.c    **** }run_calib;
+  13:Src/maze.c    **** 
+  14:Src/maze.c    **** struct fwallcalib
+  15:Src/maze.c    **** {
+  16:Src/maze.c    ****     run_calib right_wall;
+  17:Src/maze.c    ****     run_calib front_wall;
+  18:Src/maze.c    ****     run_calib left_wall;
+  19:Src/maze.c    **** }front_wall_calib_flg;
+  20:Src/maze.c    **** 
+  21:Src/maze.c    **** void set_calib_flg(run_calib wall)
+  22:Src/maze.c    **** {
+  30              		.loc 1 22 1 view -0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              		@ link register save eliminated.
+  23:Src/maze.c    ****     
+  24:Src/maze.c    **** }...
+ARM GAS  C:\Temp\cc97aEtV.s 			page 2
+
+
+  35              		.loc 1 24 1 view .LVU1
+  36 0000 7047     		bx	lr
+  37              		.cfi_endproc
+  38              	.LFE0:
+  40              		.comm	front_wall_calib_flg,3,4
+  41              		.text
+  42              	.Letext0:
+ARM GAS  C:\Temp\cc97aEtV.s 			page 3
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 maze.c
+  C:\Temp\cc97aEtV.s:18     .text.set_calib_flg:00000000 $t
+  C:\Temp\cc97aEtV.s:26     .text.set_calib_flg:00000000 set_calib_flg
+                            *COM*:00000003 front_wall_calib_flg
 
 NO UNDEFINED SYMBOLS

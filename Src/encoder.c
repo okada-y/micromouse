@@ -10,6 +10,7 @@
 #include "index.h"
 #include "encorder.h"
 #include "param.h"
+#include "imu.h"
 
 
 

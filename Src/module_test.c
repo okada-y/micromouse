@@ -9,11 +9,15 @@
 //#include "index.h"
 #include "module_test.h"
 #include "ir_sensor.h"
+#include "battery.h"
 #include "imu.h"
 #include "param.h"
 #include "mouse_state.h"
 #include "target.h"
 #include "exvol.h"
+#include "stm32f4xx_hal.h"
+#include "encorder.h"
+#include "interrupt.h"
 
 
 static uint16_t log_counter = 0 ; //ログ取得開始からの時間監視用カウンタ[ms]
@@ -178,7 +182,7 @@ void module_test( void )
 
 		// aマウスのスピード表示 from encoder
 		printf("<mouse_speed> speed_m : %5.3f[m/s]  spwwd_w : %5.3f[m/s] \r\n ",
-				speed_m,IMU_GetGyro_Z());line++;
+				get_move_speed(),IMU_GetGyro_Z());line++;
 
 		// aバッテリー電圧の表示
 		printf("<Battery> %3.2f[V]\r\n", Battery_GetVoltage()); line++;
@@ -199,15 +203,11 @@ void module_test( void )
 		// 壁センサ
 		printf("front_sensor_ref - real, r: %5.8f  l: %5.8f \r\n",ABS(front_sensor_r_ref - SensorValue2length(3)),ABS(front_sensor_l_ref - SensorValue2length(0)) );line++;
 
-		Motor_SetDuty_Left(duty_l);
-		Motor_SetDuty_Right(duty_r);
-
 		fflush(stdout);
 		HAL_Delay(500);
 		// a画面のクリア
 		printf("%c[0J", 0x1b);
 		printf("%c[%dA", 0x1b, line);
 	}
-	Motor_StopPWM();
 }
 

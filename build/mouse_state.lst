@@ -1,4 +1,4 @@
-ARM GAS  C:\Temp\ccCzKJNb.s 			page 1
+ARM GAS  C:\Temp\ccjZgElw.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -26,7 +26,7 @@ ARM GAS  C:\Temp\ccCzKJNb.s 			page 1
   23              		.thumb_func
   24              		.fpu fpv4-sp-d16
   26              	Get_diff_right_count:
-  27              	.LFB133:
+  27              	.LFB4:
   28              		.file 1 "Src/mouse_state.c"
    1:Src/mouse_state.c **** /*
    2:Src/mouse_state.c ****  * mouse_state.c
@@ -35,32 +35,47 @@ ARM GAS  C:\Temp\ccCzKJNb.s 			page 1
    5:Src/mouse_state.c ****  *      Author: 岡田 泰裕
    6:Src/mouse_state.c ****  */
    7:Src/mouse_state.c **** 
-   8:Src/mouse_state.c **** #include "param.h"
-   9:Src/mouse_state.c **** #include "index.h"
+   8:Src/mouse_state.c **** #include <stdio.h>
+   9:Src/mouse_state.c **** #include "param.h"
   10:Src/mouse_state.c **** #include "encorder.h"
-  11:Src/mouse_state.c **** 
-  12:Src/mouse_state.c **** static float tire_r_speed = 0;
-  13:Src/mouse_state.c **** static float tire_l_speed = 0;
-  14:Src/mouse_state.c **** static float tire_r_speed_max = 0;
-  15:Src/mouse_state.c **** static float tire_r_speed_min = 0;
-  16:Src/mouse_state.c **** static float tire_l_speed_max = 0;
-  17:Src/mouse_state.c **** static float tire_l_speed_min = 0; 
-  18:Src/mouse_state.c **** static float move_speed = 0;
-  19:Src/mouse_state.c **** static float move_speed_ave = 0;
-  20:Src/mouse_state.c **** static float move_length = 0;
-  21:Src/mouse_state.c **** static float rotation_speed = 0;
-  22:Src/mouse_state.c **** static float rotation_angle = 0;
-  23:Src/mouse_state.c **** 
-  24:Src/mouse_state.c **** //機能	: 右タイヤのエンコーダのカウント差を取得する
-  25:Src/mouse_state.c **** //引数	: なし
-  26:Src/mouse_state.c **** //返り値	: 右タイヤのエンコーダのカウント差
-  27:Src/mouse_state.c **** int16_t Get_diff_right_count( void )
-  28:Src/mouse_state.c **** {
-  29              		.loc 1 28 1 view -0
+  11:Src/mouse_state.c **** #include "imu.h"
+  12:Src/mouse_state.c **** #include "mouse_state.h"
+  13:Src/mouse_state.c **** 
+  14:Src/mouse_state.c **** static float tire_r_speed = 0;
+  15:Src/mouse_state.c **** static float tire_l_speed = 0;
+  16:Src/mouse_state.c **** static float tire_r_speed_max = 0;
+  17:Src/mouse_state.c **** static float tire_r_speed_min = 0;
+  18:Src/mouse_state.c **** static float tire_l_speed_max = 0;
+  19:Src/mouse_state.c **** static float tire_l_speed_min = 0; 
+  20:Src/mouse_state.c **** static float move_speed = 0;
+  21:Src/mouse_state.c **** static float move_speed_ave = 0;
+  22:Src/mouse_state.c **** static float move_accel_ave = 0;
+  23:Src/mouse_state.c **** static float move_length = 0;
+  24:Src/mouse_state.c **** static float rotation_speed = 0;
+  25:Src/mouse_state.c **** static float rotation_angle = 0;
+  26:Src/mouse_state.c **** 
+  27:Src/mouse_state.c **** //機能	: mouse_stateの1msタスクまとめ
+  28:Src/mouse_state.c **** //引数	: なし
+  29:Src/mouse_state.c **** //返り値	: なし
+  30:Src/mouse_state.c **** void mouse_state_1ms ( void )
+ARM GAS  C:\Temp\ccjZgElw.s 			page 2
+
+
+  31:Src/mouse_state.c **** {
+  32:Src/mouse_state.c **** //	calc_move_speed();		//速度計算
+  33:Src/mouse_state.c **** 	calc_rotation_speed();	//角速度計算
+  34:Src/mouse_state.c **** //	filter_move_speed();	//速度をフィルタ処理
+  35:Src/mouse_state.c **** 	calc_move_length();		//移動距離を計算
+  36:Src/mouse_state.c **** 	calc_rotation_angle();	//回転角度を計算
+  37:Src/mouse_state.c **** }
+  38:Src/mouse_state.c **** 
+  39:Src/mouse_state.c **** //機能	: 右タイヤのエンコーダのカウント差を取得する
+  40:Src/mouse_state.c **** //引数	: なし
+  41:Src/mouse_state.c **** //返り値	: 右タイヤのエンコーダのカウント差
+  42:Src/mouse_state.c **** int16_t Get_diff_right_count( void )
+  43:Src/mouse_state.c **** {
+  29              		.loc 1 43 1 view -0
   30              		.cfi_startproc
-ARM GAS  C:\Temp\ccCzKJNb.s 			page 2
-
-
   31              		@ args = 0, pretend = 0, frame = 0
   32              		@ frame_needed = 0, uses_anonymous_args = 0
   33 0000 08B5     		push	{r3, lr}
@@ -68,47 +83,50 @@ ARM GAS  C:\Temp\ccCzKJNb.s 			page 1
   35              		.cfi_def_cfa_offset 8
   36              		.cfi_offset 3, -8
   37              		.cfi_offset 14, -4
-  29:Src/mouse_state.c ****     static uint16_t right_count_old = ENC_ZERO;
-  38              		.loc 1 29 5 view .LVU1
-  30:Src/mouse_state.c ****     uint16_t right_count = 0;
-  39              		.loc 1 30 5 view .LVU2
+  44:Src/mouse_state.c ****     static uint16_t right_count_old = ENC_ZERO;
+  38              		.loc 1 44 5 view .LVU1
+  45:Src/mouse_state.c ****     uint16_t right_count = 0;
+  39              		.loc 1 45 5 view .LVU2
   40              	.LVL0:
-  31:Src/mouse_state.c ****     int16_t delta_right_count = 0;
-  41              		.loc 1 31 5 view .LVU3
-  32:Src/mouse_state.c **** 
-  33:Src/mouse_state.c ****     right_count =  get_encordercount_r();
-  42              		.loc 1 33 5 view .LVU4
-  43              		.loc 1 33 20 is_stmt 0 view .LVU5
+  46:Src/mouse_state.c ****     int16_t delta_right_count = 0;
+  41              		.loc 1 46 5 view .LVU3
+  47:Src/mouse_state.c **** 
+  48:Src/mouse_state.c ****     right_count =  get_encordercount_r();
+  42              		.loc 1 48 5 view .LVU4
+  43              		.loc 1 48 20 is_stmt 0 view .LVU5
   44 0002 FFF7FEFF 		bl	get_encordercount_r
   45              	.LVL1:
-  34:Src/mouse_state.c ****     delta_right_count = (int16_t)( right_count - right_count_old);
-  46              		.loc 1 34 5 is_stmt 1 view .LVU6
-  47              		.loc 1 34 48 is_stmt 0 view .LVU7
+  49:Src/mouse_state.c ****     delta_right_count = (int16_t)( right_count - right_count_old);
+  46              		.loc 1 49 5 is_stmt 1 view .LVU6
+  47              		.loc 1 49 48 is_stmt 0 view .LVU7
   48 0006 034A     		ldr	r2, .L3
   49 0008 1388     		ldrh	r3, [r2]
   50 000a C31A     		subs	r3, r0, r3
   51              	.LVL2:
-  35:Src/mouse_state.c **** 
-  36:Src/mouse_state.c ****     right_count_old = right_count;//カウンタ更新
-  52              		.loc 1 36 5 is_stmt 1 view .LVU8
-  53              		.loc 1 36 21 is_stmt 0 view .LVU9
+  50:Src/mouse_state.c **** 
+  51:Src/mouse_state.c ****     right_count_old = right_count;//カウンタ更新
+  52              		.loc 1 51 5 is_stmt 1 view .LVU8
+  53              		.loc 1 51 21 is_stmt 0 view .LVU9
   54 000c 1080     		strh	r0, [r2]	@ movhi
-  37:Src/mouse_state.c ****     return delta_right_count;
-  55              		.loc 1 37 5 is_stmt 1 view .LVU10
-  38:Src/mouse_state.c **** }
-  56              		.loc 1 38 1 is_stmt 0 view .LVU11
+  52:Src/mouse_state.c ****     return delta_right_count;
+  55              		.loc 1 52 5 is_stmt 1 view .LVU10
+  53:Src/mouse_state.c **** }
+  56              		.loc 1 53 1 is_stmt 0 view .LVU11
   57 000e 18B2     		sxth	r0, r3
   58              	.LVL3:
-  59              		.loc 1 38 1 view .LVU12
+  59              		.loc 1 53 1 view .LVU12
   60 0010 08BD     		pop	{r3, pc}
   61              	.LVL4:
   62              	.L4:
-  63              		.loc 1 38 1 view .LVU13
+ARM GAS  C:\Temp\ccjZgElw.s 			page 3
+
+
+  63              		.loc 1 53 1 view .LVU13
   64 0012 00BF     		.align	2
   65              	.L3:
   66 0014 00000000 		.word	.LANCHOR0
   67              		.cfi_endproc
-  68              	.LFE133:
+  68              	.LFE4:
   70              		.section	.text.Get_diff_left_count,"ax",%progbits
   71              		.align	1
   72              		.global	Get_diff_left_count
@@ -117,17 +135,14 @@ ARM GAS  C:\Temp\ccCzKJNb.s 			page 1
   75              		.thumb_func
   76              		.fpu fpv4-sp-d16
   78              	Get_diff_left_count:
-  79              	.LFB134:
-ARM GAS  C:\Temp\ccCzKJNb.s 			page 3
-
-
-  39:Src/mouse_state.c **** 
-  40:Src/mouse_state.c **** //機能	: 左タイヤのエンコーダのカウント差を取得する
-  41:Src/mouse_state.c **** //引数	: なし
-  42:Src/mouse_state.c **** //返り値	: 左タイヤのエンコーダのカウント差
-  43:Src/mouse_state.c **** int16_t Get_diff_left_count( void )
-  44:Src/mouse_state.c **** {
-  80              		.loc 1 44 1 is_stmt 1 view -0
+  79              	.LFB5:
+  54:Src/mouse_state.c **** 
+  55:Src/mouse_state.c **** //機能	: 左タイヤのエンコーダのカウント差を取得する
+  56:Src/mouse_state.c **** //引数	: なし
+  57:Src/mouse_state.c **** //返り値	: 左タイヤのエンコーダのカウント差
+  58:Src/mouse_state.c **** int16_t Get_diff_left_count( void )
+  59:Src/mouse_state.c **** {
+  80              		.loc 1 59 1 is_stmt 1 view -0
   81              		.cfi_startproc
   82              		@ args = 0, pretend = 0, frame = 0
   83              		@ frame_needed = 0, uses_anonymous_args = 0
@@ -136,51 +151,51 @@ ARM GAS  C:\Temp\ccCzKJNb.s 			page 1
   86              		.cfi_def_cfa_offset 8
   87              		.cfi_offset 3, -8
   88              		.cfi_offset 14, -4
-  45:Src/mouse_state.c ****     static uint16_t left_count_old = ENC_ZERO;
-  89              		.loc 1 45 5 view .LVU15
-  46:Src/mouse_state.c ****     uint16_t left_count = 0;
-  90              		.loc 1 46 5 view .LVU16
+  60:Src/mouse_state.c ****     static uint16_t left_count_old = ENC_ZERO;
+  89              		.loc 1 60 5 view .LVU15
+  61:Src/mouse_state.c ****     uint16_t left_count = 0;
+  90              		.loc 1 61 5 view .LVU16
   91              	.LVL5:
-  47:Src/mouse_state.c ****     int16_t delta_left_count = 0;
-  92              		.loc 1 47 5 view .LVU17
-  48:Src/mouse_state.c **** 
-  49:Src/mouse_state.c ****     left_count =  get_encordercount_l();
-  93              		.loc 1 49 5 view .LVU18
-  94              		.loc 1 49 19 is_stmt 0 view .LVU19
+  62:Src/mouse_state.c ****     int16_t delta_left_count = 0;
+  92              		.loc 1 62 5 view .LVU17
+  63:Src/mouse_state.c **** 
+  64:Src/mouse_state.c ****     left_count =  get_encordercount_l();
+  93              		.loc 1 64 5 view .LVU18
+  94              		.loc 1 64 19 is_stmt 0 view .LVU19
   95 0002 FFF7FEFF 		bl	get_encordercount_l
   96              	.LVL6:
-  50:Src/mouse_state.c ****     delta_left_count = (int16_t)( left_count - left_count_old);
-  97              		.loc 1 50 5 is_stmt 1 view .LVU20
-  98              		.loc 1 50 46 is_stmt 0 view .LVU21
+  65:Src/mouse_state.c ****     delta_left_count = (int16_t)( left_count - left_count_old);
+  97              		.loc 1 65 5 is_stmt 1 view .LVU20
+  98              		.loc 1 65 46 is_stmt 0 view .LVU21
   99 0006 034A     		ldr	r2, .L7
  100 0008 1388     		ldrh	r3, [r2]
  101 000a C31A     		subs	r3, r0, r3
  102              	.LVL7:
-  51:Src/mouse_state.c **** 
-  52:Src/mouse_state.c ****     left_count_old = left_count;//カウンタ更新
- 103              		.loc 1 52 5 is_stmt 1 view .LVU22
- 104              		.loc 1 52 20 is_stmt 0 view .LVU23
+  66:Src/mouse_state.c **** 
+  67:Src/mouse_state.c ****     left_count_old = left_count;//カウンタ更新
+ 103              		.loc 1 67 5 is_stmt 1 view .LVU22
+ 104              		.loc 1 67 20 is_stmt 0 view .LVU23
  105 000c 1080     		strh	r0, [r2]	@ movhi
-  53:Src/mouse_state.c ****     return delta_left_count;
- 106              		.loc 1 53 5 is_stmt 1 view .LVU24
-  54:Src/mouse_state.c **** }
- 107              		.loc 1 54 1 is_stmt 0 view .LVU25
+  68:Src/mouse_state.c ****     return delta_left_count;
+ 106              		.loc 1 68 5 is_stmt 1 view .LVU24
+ARM GAS  C:\Temp\ccjZgElw.s 			page 4
+
+
+  69:Src/mouse_state.c **** }
+ 107              		.loc 1 69 1 is_stmt 0 view .LVU25
  108 000e 18B2     		sxth	r0, r3
  109              	.LVL8:
- 110              		.loc 1 54 1 view .LVU26
+ 110              		.loc 1 69 1 view .LVU26
  111 0010 08BD     		pop	{r3, pc}
  112              	.LVL9:
  113              	.L8:
- 114              		.loc 1 54 1 view .LVU27
+ 114              		.loc 1 69 1 view .LVU27
  115 0012 00BF     		.align	2
  116              	.L7:
  117 0014 00000000 		.word	.LANCHOR1
  118              		.cfi_endproc
- 119              	.LFE134:
+ 119              	.LFE5:
  121              		.section	.text.calc_move_speed,"ax",%progbits
-ARM GAS  C:\Temp\ccCzKJNb.s 			page 4
-
-
  122              		.align	1
  123              		.global	calc_move_speed
  124              		.syntax unified
@@ -188,15 +203,15 @@ ARM GAS  C:\Temp\ccCzKJNb.s 			page 1
  126              		.thumb_func
  127              		.fpu fpv4-sp-d16
  129              	calc_move_speed:
- 130              	.LFB135:
-  55:Src/mouse_state.c **** 
-  56:Src/mouse_state.c **** //機能	: エンコーダのカウント差から、マウスの速度を算出する
-  57:Src/mouse_state.c **** //引数	: なし
-  58:Src/mouse_state.c **** //返り値	: タイヤの速度
-  59:Src/mouse_state.c **** //備考  : 1msタスク
-  60:Src/mouse_state.c **** void calc_move_speed ( void )
-  61:Src/mouse_state.c **** {
- 131              		.loc 1 61 1 is_stmt 1 view -0
+ 130              	.LFB6:
+  70:Src/mouse_state.c **** 
+  71:Src/mouse_state.c **** //機能	: エンコーダのカウント差から、マウスの速度を算出する
+  72:Src/mouse_state.c **** //引数	: なし
+  73:Src/mouse_state.c **** //返り値	: タイヤの速度
+  74:Src/mouse_state.c **** //備考  : 1msタスク
+  75:Src/mouse_state.c **** void calc_move_speed ( void )
+  76:Src/mouse_state.c **** {
+ 131              		.loc 1 76 1 is_stmt 1 view -0
  132              		.cfi_startproc
  133              		@ args = 0, pretend = 0, frame = 0
  134              		@ frame_needed = 0, uses_anonymous_args = 0
@@ -210,125 +225,125 @@ ARM GAS  C:\Temp\ccCzKJNb.s 			page 1
  142              		.cfi_def_cfa_offset 16
  143              		.cfi_offset 80, -16
  144              		.cfi_offset 81, -12
-  62:Src/mouse_state.c **** 
-  63:Src/mouse_state.c ****     float delta_angle_tire_r = 0;
- 145              		.loc 1 63 5 view .LVU29
+  77:Src/mouse_state.c **** 
+  78:Src/mouse_state.c ****     float delta_angle_tire_r = 0;
+ 145              		.loc 1 78 5 view .LVU29
  146              	.LVL10:
-  64:Src/mouse_state.c ****     float delta_angle_tire_l = 0;
- 147              		.loc 1 64 5 view .LVU30
-  65:Src/mouse_state.c ****    
-  66:Src/mouse_state.c **** 	/* 各タイヤの角速度計算[rad/s] */
-  67:Src/mouse_state.c **** 	delta_angle_tire_r = -1 * 1000 * 2 * PI * (float)Get_diff_right_count() / (float)ENC_RESOLUTION;
- 148              		.loc 1 67 2 view .LVU31
- 149              		.loc 1 67 51 is_stmt 0 view .LVU32
+  79:Src/mouse_state.c ****     float delta_angle_tire_l = 0;
+ 147              		.loc 1 79 5 view .LVU30
+  80:Src/mouse_state.c ****    
+  81:Src/mouse_state.c **** 	/* 各タイヤの角速度計算[rad/s] */
+  82:Src/mouse_state.c **** 	delta_angle_tire_r = -1 * 1000 * 2 * PI * (float)Get_diff_right_count() / (float)ENC_RESOLUTION;
+ 148              		.loc 1 82 2 view .LVU31
+ 149              		.loc 1 82 51 is_stmt 0 view .LVU32
  150 0006 FFF7FEFF 		bl	Get_diff_right_count
  151              	.LVL11:
+ARM GAS  C:\Temp\ccjZgElw.s 			page 5
+
+
  152 000a 07EE900A 		vmov	s15, r0	@ int
- 153              		.loc 1 67 44 view .LVU33
+ 153              		.loc 1 82 44 view .LVU33
  154 000e F8EEE77A 		vcvt.f32.s32	s15, s15
- 155              		.loc 1 67 42 view .LVU34
+ 155              		.loc 1 82 42 view .LVU34
  156 0012 9FED2B7A 		vldr.32	s14, .L25
  157 0016 67EE877A 		vmul.f32	s15, s15, s14
- 158              		.loc 1 67 21 view .LVU35
+ 158              		.loc 1 82 21 view .LVU35
  159 001a DFED2A8A 		vldr.32	s17, .L25+4
  160 001e 87EEA88A 		vdiv.f32	s16, s15, s17
  161              	.LVL12:
-  68:Src/mouse_state.c **** 	delta_angle_tire_l =  1 * 1000 * 2 * PI * (float)Get_diff_left_count() / (float)ENC_RESOLUTION;
- 162              		.loc 1 68 2 is_stmt 1 view .LVU36
- 163              		.loc 1 68 51 is_stmt 0 view .LVU37
+  83:Src/mouse_state.c **** 	delta_angle_tire_l =  1 * 1000 * 2 * PI * (float)Get_diff_left_count() / (float)ENC_RESOLUTION;
+ 162              		.loc 1 83 2 is_stmt 1 view .LVU36
+ 163              		.loc 1 83 51 is_stmt 0 view .LVU37
  164 0022 FFF7FEFF 		bl	Get_diff_left_count
  165              	.LVL13:
-ARM GAS  C:\Temp\ccCzKJNb.s 			page 5
-
-
  166 0026 07EE900A 		vmov	s15, r0	@ int
- 167              		.loc 1 68 44 view .LVU38
+ 167              		.loc 1 83 44 view .LVU38
  168 002a F8EEE77A 		vcvt.f32.s32	s15, s15
- 169              		.loc 1 68 42 view .LVU39
+ 169              		.loc 1 83 42 view .LVU39
  170 002e 9FED267A 		vldr.32	s14, .L25+8
  171 0032 67EE877A 		vmul.f32	s15, s15, s14
- 172              		.loc 1 68 21 view .LVU40
+ 172              		.loc 1 83 21 view .LVU40
  173 0036 87EEA87A 		vdiv.f32	s14, s15, s17
  174              	.LVL14:
-  69:Src/mouse_state.c **** 
-  70:Src/mouse_state.c **** 	/*各タイヤの速度計算[m/s]*/
-  71:Src/mouse_state.c **** 	tire_r_speed = Tire_diameter * 0.5 * delta_angle_tire_r;
- 175              		.loc 1 71 2 is_stmt 1 view .LVU41
- 176              		.loc 1 71 15 is_stmt 0 view .LVU42
+  84:Src/mouse_state.c **** 
+  85:Src/mouse_state.c **** 	/*各タイヤの速度計算[m/s]*/
+  86:Src/mouse_state.c **** 	tire_r_speed = Tire_diameter * 0.5 * delta_angle_tire_r;
+ 175              		.loc 1 86 2 is_stmt 1 view .LVU41
+ 176              		.loc 1 86 15 is_stmt 0 view .LVU42
  177 003a DFED246A 		vldr.32	s13, .L25+12
  178 003e 68EE267A 		vmul.f32	s15, s16, s13
  179 0042 234B     		ldr	r3, .L25+16
  180 0044 C3ED007A 		vstr.32	s15, [r3]
-  72:Src/mouse_state.c **** 	tire_l_speed = Tire_diameter * 0.5 * delta_angle_tire_l;
- 181              		.loc 1 72 2 is_stmt 1 view .LVU43
- 182              		.loc 1 72 15 is_stmt 0 view .LVU44
+  87:Src/mouse_state.c **** 	tire_l_speed = Tire_diameter * 0.5 * delta_angle_tire_l;
+ 181              		.loc 1 87 2 is_stmt 1 view .LVU43
+ 182              		.loc 1 87 15 is_stmt 0 view .LVU44
  183 0048 27EE267A 		vmul.f32	s14, s14, s13
  184              	.LVL15:
- 185              		.loc 1 72 15 view .LVU45
+ 185              		.loc 1 87 15 view .LVU45
  186 004c 214B     		ldr	r3, .L25+20
  187 004e 83ED007A 		vstr.32	s14, [r3]
-  73:Src/mouse_state.c **** 
-  74:Src/mouse_state.c ****     /*各タイヤの最大、最小速度更新*/
-  75:Src/mouse_state.c ****     //右
-  76:Src/mouse_state.c ****     if(tire_r_speed > tire_r_speed_max)
- 188              		.loc 1 76 5 is_stmt 1 view .LVU46
- 189              		.loc 1 76 21 is_stmt 0 view .LVU47
+  88:Src/mouse_state.c **** 
+  89:Src/mouse_state.c ****     /*各タイヤの最大、最小速度更新*/
+  90:Src/mouse_state.c ****     //右
+  91:Src/mouse_state.c ****     if(tire_r_speed > tire_r_speed_max)
+ 188              		.loc 1 91 5 is_stmt 1 view .LVU46
+ 189              		.loc 1 91 21 is_stmt 0 view .LVU47
  190 0052 214B     		ldr	r3, .L25+24
  191 0054 D3ED006A 		vldr.32	s13, [r3]
- 192              		.loc 1 76 7 view .LVU48
+ 192              		.loc 1 91 7 view .LVU48
  193 0058 F4EEE67A 		vcmpe.f32	s15, s13
  194 005c F1EE10FA 		vmrs	APSR_nzcv, FPSCR
  195 0060 17DD     		ble	.L22
-  77:Src/mouse_state.c **** 	{   
-  78:Src/mouse_state.c **** 		tire_r_speed_max = tire_r_speed;
- 196              		.loc 1 78 3 is_stmt 1 view .LVU49
- 197              		.loc 1 78 20 is_stmt 0 view .LVU50
+  92:Src/mouse_state.c **** 	{   
+  93:Src/mouse_state.c **** 		tire_r_speed_max = tire_r_speed;
+ 196              		.loc 1 93 3 is_stmt 1 view .LVU49
+ 197              		.loc 1 93 20 is_stmt 0 view .LVU50
+ARM GAS  C:\Temp\ccjZgElw.s 			page 6
+
+
  198 0062 C3ED007A 		vstr.32	s15, [r3]
  199              	.L12:
-  79:Src/mouse_state.c **** 	}
-  80:Src/mouse_state.c **** 	else if(tire_r_speed < tire_r_speed_min)
-  81:Src/mouse_state.c **** 	{
-  82:Src/mouse_state.c **** 		tire_r_speed_min = tire_r_speed;
-  83:Src/mouse_state.c **** 	}
-  84:Src/mouse_state.c ****     //左
-  85:Src/mouse_state.c **** 	if(tire_l_speed > tire_l_speed_max)
- 200              		.loc 1 85 2 is_stmt 1 view .LVU51
- 201              		.loc 1 85 18 is_stmt 0 view .LVU52
+  94:Src/mouse_state.c **** 	}
+  95:Src/mouse_state.c **** 	else if(tire_r_speed < tire_r_speed_min)
+  96:Src/mouse_state.c **** 	{
+  97:Src/mouse_state.c **** 		tire_r_speed_min = tire_r_speed;
+  98:Src/mouse_state.c **** 	}
+  99:Src/mouse_state.c ****     //左
+ 100:Src/mouse_state.c **** 	if(tire_l_speed > tire_l_speed_max)
+ 200              		.loc 1 100 2 is_stmt 1 view .LVU51
+ 201              		.loc 1 100 18 is_stmt 0 view .LVU52
  202 0066 1D4B     		ldr	r3, .L25+28
  203 0068 D3ED006A 		vldr.32	s13, [r3]
- 204              		.loc 1 85 4 view .LVU53
+ 204              		.loc 1 100 4 view .LVU53
  205 006c B4EEE67A 		vcmpe.f32	s14, s13
-ARM GAS  C:\Temp\ccCzKJNb.s 			page 6
-
-
  206 0070 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
  207 0074 18DD     		ble	.L23
-  86:Src/mouse_state.c **** 	{
-  87:Src/mouse_state.c **** 		tire_l_speed_max = tire_l_speed;
- 208              		.loc 1 87 3 is_stmt 1 view .LVU54
- 209              		.loc 1 87 20 is_stmt 0 view .LVU55
+ 101:Src/mouse_state.c **** 	{
+ 102:Src/mouse_state.c **** 		tire_l_speed_max = tire_l_speed;
+ 208              		.loc 1 102 3 is_stmt 1 view .LVU54
+ 209              		.loc 1 102 20 is_stmt 0 view .LVU55
  210 0076 83ED007A 		vstr.32	s14, [r3]
  211              	.L16:
-  88:Src/mouse_state.c **** 	}
-  89:Src/mouse_state.c **** 	else if(tire_l_speed < tire_l_speed_min)
-  90:Src/mouse_state.c **** 	{
-  91:Src/mouse_state.c **** 		tire_l_speed_min = tire_l_speed;
-  92:Src/mouse_state.c **** 	}
-  93:Src/mouse_state.c **** 
-  94:Src/mouse_state.c ****     /*マウスの速度計算[m/s]*/
-  95:Src/mouse_state.c ****     move_speed = (tire_r_speed + tire_l_speed)/2;
- 212              		.loc 1 95 5 is_stmt 1 view .LVU56
- 213              		.loc 1 95 32 is_stmt 0 view .LVU57
+ 103:Src/mouse_state.c **** 	}
+ 104:Src/mouse_state.c **** 	else if(tire_l_speed < tire_l_speed_min)
+ 105:Src/mouse_state.c **** 	{
+ 106:Src/mouse_state.c **** 		tire_l_speed_min = tire_l_speed;
+ 107:Src/mouse_state.c **** 	}
+ 108:Src/mouse_state.c **** 
+ 109:Src/mouse_state.c ****     /*マウスの速度計算[m/s]*/
+ 110:Src/mouse_state.c ****     move_speed = (tire_r_speed + tire_l_speed)/2;
+ 212              		.loc 1 110 5 is_stmt 1 view .LVU56
+ 213              		.loc 1 110 32 is_stmt 0 view .LVU57
  214 007a 77EE877A 		vadd.f32	s15, s15, s14
- 215              		.loc 1 95 47 view .LVU58
+ 215              		.loc 1 110 47 view .LVU58
  216 007e B6EE007A 		vmov.f32	s14, #5.0e-1
  217 0082 67EE877A 		vmul.f32	s15, s15, s14
- 218              		.loc 1 95 16 view .LVU59
+ 218              		.loc 1 110 16 view .LVU59
  219 0086 164B     		ldr	r3, .L25+32
  220 0088 C3ED007A 		vstr.32	s15, [r3]
-  96:Src/mouse_state.c **** 
-  97:Src/mouse_state.c **** }
- 221              		.loc 1 97 1 view .LVU60
+ 111:Src/mouse_state.c **** 
+ 112:Src/mouse_state.c **** }
+ 221              		.loc 1 112 1 view .LVU60
  222 008c BDEC028B 		vldm	sp!, {d8}
  223              	.LCFI4:
  224              		.cfi_remember_state
@@ -336,48 +351,48 @@ ARM GAS  C:\Temp\ccCzKJNb.s 			page 1
  226              		.cfi_restore 81
  227              		.cfi_def_cfa_offset 8
  228              	.LVL16:
- 229              		.loc 1 97 1 view .LVU61
+ 229              		.loc 1 112 1 view .LVU61
  230 0090 08BD     		pop	{r3, pc}
  231              	.LVL17:
  232              	.L22:
  233              	.LCFI5:
  234              		.cfi_restore_state
-  80:Src/mouse_state.c **** 	{
- 235              		.loc 1 80 7 is_stmt 1 view .LVU62
-  80:Src/mouse_state.c **** 	{
- 236              		.loc 1 80 23 is_stmt 0 view .LVU63
+  95:Src/mouse_state.c **** 	{
+ARM GAS  C:\Temp\ccjZgElw.s 			page 7
+
+
+ 235              		.loc 1 95 7 is_stmt 1 view .LVU62
+  95:Src/mouse_state.c **** 	{
+ 236              		.loc 1 95 23 is_stmt 0 view .LVU63
  237 0092 144B     		ldr	r3, .L25+36
  238 0094 D3ED006A 		vldr.32	s13, [r3]
-  80:Src/mouse_state.c **** 	{
- 239              		.loc 1 80 9 view .LVU64
+  95:Src/mouse_state.c **** 	{
+ 239              		.loc 1 95 9 view .LVU64
  240 0098 F4EEE67A 		vcmpe.f32	s15, s13
  241 009c F1EE10FA 		vmrs	APSR_nzcv, FPSCR
  242 00a0 E1D5     		bpl	.L12
-  82:Src/mouse_state.c **** 	}
- 243              		.loc 1 82 3 is_stmt 1 view .LVU65
-  82:Src/mouse_state.c **** 	}
- 244              		.loc 1 82 20 is_stmt 0 view .LVU66
+  97:Src/mouse_state.c **** 	}
+ 243              		.loc 1 97 3 is_stmt 1 view .LVU65
+  97:Src/mouse_state.c **** 	}
+ 244              		.loc 1 97 20 is_stmt 0 view .LVU66
  245 00a2 C3ED007A 		vstr.32	s15, [r3]
-ARM GAS  C:\Temp\ccCzKJNb.s 			page 7
-
-
  246 00a6 DEE7     		b	.L12
  247              	.L23:
-  89:Src/mouse_state.c **** 	{
- 248              		.loc 1 89 7 is_stmt 1 view .LVU67
-  89:Src/mouse_state.c **** 	{
- 249              		.loc 1 89 23 is_stmt 0 view .LVU68
+ 104:Src/mouse_state.c **** 	{
+ 248              		.loc 1 104 7 is_stmt 1 view .LVU67
+ 104:Src/mouse_state.c **** 	{
+ 249              		.loc 1 104 23 is_stmt 0 view .LVU68
  250 00a8 0F4B     		ldr	r3, .L25+40
  251 00aa D3ED006A 		vldr.32	s13, [r3]
-  89:Src/mouse_state.c **** 	{
- 252              		.loc 1 89 9 view .LVU69
+ 104:Src/mouse_state.c **** 	{
+ 252              		.loc 1 104 9 view .LVU69
  253 00ae B4EEE67A 		vcmpe.f32	s14, s13
  254 00b2 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
  255 00b6 E0D5     		bpl	.L16
-  91:Src/mouse_state.c **** 	}
- 256              		.loc 1 91 3 is_stmt 1 view .LVU70
-  91:Src/mouse_state.c **** 	}
- 257              		.loc 1 91 20 is_stmt 0 view .LVU71
+ 106:Src/mouse_state.c **** 	}
+ 256              		.loc 1 106 3 is_stmt 1 view .LVU70
+ 106:Src/mouse_state.c **** 	}
+ 257              		.loc 1 106 20 is_stmt 0 view .LVU71
  258 00b8 83ED007A 		vstr.32	s14, [r3]
  259 00bc DDE7     		b	.L16
  260              	.L26:
@@ -395,7 +410,7 @@ ARM GAS  C:\Temp\ccCzKJNb.s 			page 1
  272 00e4 00000000 		.word	.LANCHOR5
  273 00e8 00000000 		.word	.LANCHOR7
  274              		.cfi_endproc
- 275              	.LFE135:
+ 275              	.LFE6:
  277              		.section	.text.get_tire_r_speed,"ax",%progbits
  278              		.align	1
  279              		.global	get_tire_r_speed
@@ -403,26 +418,26 @@ ARM GAS  C:\Temp\ccCzKJNb.s 			page 1
  281              		.thumb
  282              		.thumb_func
  283              		.fpu fpv4-sp-d16
+ARM GAS  C:\Temp\ccjZgElw.s 			page 8
+
+
  285              	get_tire_r_speed:
- 286              	.LFB136:
-  98:Src/mouse_state.c **** 
-  99:Src/mouse_state.c **** //機能	: 右タイヤの速度[m/s]を取得する
- 100:Src/mouse_state.c **** //引数	: なし
- 101:Src/mouse_state.c **** //返り値	: 右タイヤの移動速度[m/s]
- 102:Src/mouse_state.c **** float get_tire_r_speed ( void )
- 103:Src/mouse_state.c **** {
- 287              		.loc 1 103 1 is_stmt 1 view -0
+ 286              	.LFB7:
+ 113:Src/mouse_state.c **** 
+ 114:Src/mouse_state.c **** //機能	: 右タイヤの速度[m/s]を取得する
+ 115:Src/mouse_state.c **** //引数	: なし
+ 116:Src/mouse_state.c **** //返り値	: 右タイヤの移動速度[m/s]
+ 117:Src/mouse_state.c **** float get_tire_r_speed ( void )
+ 118:Src/mouse_state.c **** {
+ 287              		.loc 1 118 1 is_stmt 1 view -0
  288              		.cfi_startproc
  289              		@ args = 0, pretend = 0, frame = 0
  290              		@ frame_needed = 0, uses_anonymous_args = 0
  291              		@ link register save eliminated.
- 104:Src/mouse_state.c ****     return tire_r_speed;
- 292              		.loc 1 104 5 view .LVU73
-ARM GAS  C:\Temp\ccCzKJNb.s 			page 8
-
-
- 105:Src/mouse_state.c **** }
- 293              		.loc 1 105 1 is_stmt 0 view .LVU74
+ 119:Src/mouse_state.c ****     return tire_r_speed;
+ 292              		.loc 1 119 5 view .LVU73
+ 120:Src/mouse_state.c **** }
+ 293              		.loc 1 120 1 is_stmt 0 view .LVU74
  294 0000 014B     		ldr	r3, .L28
  295 0002 93ED000A 		vldr.32	s0, [r3]
  296 0006 7047     		bx	lr
@@ -431,7 +446,7 @@ ARM GAS  C:\Temp\ccCzKJNb.s 			page 1
  299              	.L28:
  300 0008 00000000 		.word	.LANCHOR2
  301              		.cfi_endproc
- 302              	.LFE136:
+ 302              	.LFE7:
  304              		.section	.text.get_tire_r_speed_max,"ax",%progbits
  305              		.align	1
  306              		.global	get_tire_r_speed_max
@@ -440,22 +455,22 @@ ARM GAS  C:\Temp\ccCzKJNb.s 			page 1
  309              		.thumb_func
  310              		.fpu fpv4-sp-d16
  312              	get_tire_r_speed_max:
- 313              	.LFB137:
- 106:Src/mouse_state.c **** 
- 107:Src/mouse_state.c **** //機能	: 右タイヤの最大速度[m/s]を取得する
- 108:Src/mouse_state.c **** //引数	: なし
- 109:Src/mouse_state.c **** //返り値	: 右タイヤの最大速度[m/s]
- 110:Src/mouse_state.c **** float get_tire_r_speed_max ( void )
- 111:Src/mouse_state.c **** {
- 314              		.loc 1 111 1 is_stmt 1 view -0
+ 313              	.LFB8:
+ 121:Src/mouse_state.c **** 
+ 122:Src/mouse_state.c **** //機能	: 右タイヤの最大速度[m/s]を取得する
+ 123:Src/mouse_state.c **** //引数	: なし
+ 124:Src/mouse_state.c **** //返り値	: 右タイヤの最大速度[m/s]
+ 125:Src/mouse_state.c **** float get_tire_r_speed_max ( void )
+ 126:Src/mouse_state.c **** {
+ 314              		.loc 1 126 1 is_stmt 1 view -0
  315              		.cfi_startproc
  316              		@ args = 0, pretend = 0, frame = 0
  317              		@ frame_needed = 0, uses_anonymous_args = 0
  318              		@ link register save eliminated.
- 112:Src/mouse_state.c ****     return tire_r_speed_max;
- 319              		.loc 1 112 5 view .LVU76
- 113:Src/mouse_state.c **** }
- 320              		.loc 1 113 1 is_stmt 0 view .LVU77
+ 127:Src/mouse_state.c ****     return tire_r_speed_max;
+ 319              		.loc 1 127 5 view .LVU76
+ 128:Src/mouse_state.c **** }
+ 320              		.loc 1 128 1 is_stmt 0 view .LVU77
  321 0000 014B     		ldr	r3, .L31
  322 0002 93ED000A 		vldr.32	s0, [r3]
  323 0006 7047     		bx	lr
@@ -463,8 +478,11 @@ ARM GAS  C:\Temp\ccCzKJNb.s 			page 1
  325              		.align	2
  326              	.L31:
  327 0008 00000000 		.word	.LANCHOR4
+ARM GAS  C:\Temp\ccjZgElw.s 			page 9
+
+
  328              		.cfi_endproc
- 329              	.LFE137:
+ 329              	.LFE8:
  331              		.section	.text.get_tire_r_speed_min,"ax",%progbits
  332              		.align	1
  333              		.global	get_tire_r_speed_min
@@ -473,25 +491,22 @@ ARM GAS  C:\Temp\ccCzKJNb.s 			page 1
  336              		.thumb_func
  337              		.fpu fpv4-sp-d16
  339              	get_tire_r_speed_min:
- 340              	.LFB138:
- 114:Src/mouse_state.c **** 
- 115:Src/mouse_state.c **** //機能	: 右タイヤの最低速度[m/s]を取得する
- 116:Src/mouse_state.c **** //引数	: なし
- 117:Src/mouse_state.c **** //返り値	: 右タイヤの最低速度[m/s]
-ARM GAS  C:\Temp\ccCzKJNb.s 			page 9
-
-
- 118:Src/mouse_state.c **** float get_tire_r_speed_min ( void )
- 119:Src/mouse_state.c **** {
- 341              		.loc 1 119 1 is_stmt 1 view -0
+ 340              	.LFB9:
+ 129:Src/mouse_state.c **** 
+ 130:Src/mouse_state.c **** //機能	: 右タイヤの最低速度[m/s]を取得する
+ 131:Src/mouse_state.c **** //引数	: なし
+ 132:Src/mouse_state.c **** //返り値	: 右タイヤの最低速度[m/s]
+ 133:Src/mouse_state.c **** float get_tire_r_speed_min ( void )
+ 134:Src/mouse_state.c **** {
+ 341              		.loc 1 134 1 is_stmt 1 view -0
  342              		.cfi_startproc
  343              		@ args = 0, pretend = 0, frame = 0
  344              		@ frame_needed = 0, uses_anonymous_args = 0
  345              		@ link register save eliminated.
- 120:Src/mouse_state.c ****     return tire_r_speed_min;
- 346              		.loc 1 120 5 view .LVU79
- 121:Src/mouse_state.c **** }
- 347              		.loc 1 121 1 is_stmt 0 view .LVU80
+ 135:Src/mouse_state.c ****     return tire_r_speed_min;
+ 346              		.loc 1 135 5 view .LVU79
+ 136:Src/mouse_state.c **** }
+ 347              		.loc 1 136 1 is_stmt 0 view .LVU80
  348 0000 014B     		ldr	r3, .L34
  349 0002 93ED000A 		vldr.32	s0, [r3]
  350 0006 7047     		bx	lr
@@ -500,7 +515,7 @@ ARM GAS  C:\Temp\ccCzKJNb.s 			page 1
  353              	.L34:
  354 0008 00000000 		.word	.LANCHOR5
  355              		.cfi_endproc
- 356              	.LFE138:
+ 356              	.LFE9:
  358              		.section	.text.get_tire_l_speed,"ax",%progbits
  359              		.align	1
  360              		.global	get_tire_l_speed
@@ -509,22 +524,25 @@ ARM GAS  C:\Temp\ccCzKJNb.s 			page 1
  363              		.thumb_func
  364              		.fpu fpv4-sp-d16
  366              	get_tire_l_speed:
- 367              	.LFB139:
- 122:Src/mouse_state.c **** 
- 123:Src/mouse_state.c **** //機能	: 左タイヤの速度[m/s]を取得する
- 124:Src/mouse_state.c **** //引数	: なし
- 125:Src/mouse_state.c **** //返り値	: 左タイヤの速度[m/s]
- 126:Src/mouse_state.c **** float get_tire_l_speed ( void )
- 127:Src/mouse_state.c **** {
- 368              		.loc 1 127 1 is_stmt 1 view -0
+ 367              	.LFB10:
+ 137:Src/mouse_state.c **** 
+ 138:Src/mouse_state.c **** //機能	: 左タイヤの速度[m/s]を取得する
+ 139:Src/mouse_state.c **** //引数	: なし
+ 140:Src/mouse_state.c **** //返り値	: 左タイヤの速度[m/s]
+ 141:Src/mouse_state.c **** float get_tire_l_speed ( void )
+ 142:Src/mouse_state.c **** {
+ 368              		.loc 1 142 1 is_stmt 1 view -0
  369              		.cfi_startproc
  370              		@ args = 0, pretend = 0, frame = 0
  371              		@ frame_needed = 0, uses_anonymous_args = 0
  372              		@ link register save eliminated.
- 128:Src/mouse_state.c ****     return tire_l_speed;
- 373              		.loc 1 128 5 view .LVU82
- 129:Src/mouse_state.c **** }
- 374              		.loc 1 129 1 is_stmt 0 view .LVU83
+ 143:Src/mouse_state.c ****     return tire_l_speed;
+ 373              		.loc 1 143 5 view .LVU82
+ARM GAS  C:\Temp\ccjZgElw.s 			page 10
+
+
+ 144:Src/mouse_state.c **** }
+ 374              		.loc 1 144 1 is_stmt 0 view .LVU83
  375 0000 014B     		ldr	r3, .L37
  376 0002 93ED000A 		vldr.32	s0, [r3]
  377 0006 7047     		bx	lr
@@ -533,34 +551,31 @@ ARM GAS  C:\Temp\ccCzKJNb.s 			page 1
  380              	.L37:
  381 0008 00000000 		.word	.LANCHOR3
  382              		.cfi_endproc
- 383              	.LFE139:
+ 383              	.LFE10:
  385              		.section	.text.get_tire_l_speed_max,"ax",%progbits
  386              		.align	1
  387              		.global	get_tire_l_speed_max
  388              		.syntax unified
-ARM GAS  C:\Temp\ccCzKJNb.s 			page 10
-
-
  389              		.thumb
  390              		.thumb_func
  391              		.fpu fpv4-sp-d16
  393              	get_tire_l_speed_max:
- 394              	.LFB140:
- 130:Src/mouse_state.c **** 
- 131:Src/mouse_state.c **** //機能	: 左タイヤの最大速度[m/s]を取得する
- 132:Src/mouse_state.c **** //引数	: なし
- 133:Src/mouse_state.c **** //返り値	: 左タイヤの最大速度[m/s]
- 134:Src/mouse_state.c **** float get_tire_l_speed_max ( void )
- 135:Src/mouse_state.c **** {
- 395              		.loc 1 135 1 is_stmt 1 view -0
+ 394              	.LFB11:
+ 145:Src/mouse_state.c **** 
+ 146:Src/mouse_state.c **** //機能	: 左タイヤの最大速度[m/s]を取得する
+ 147:Src/mouse_state.c **** //引数	: なし
+ 148:Src/mouse_state.c **** //返り値	: 左タイヤの最大速度[m/s]
+ 149:Src/mouse_state.c **** float get_tire_l_speed_max ( void )
+ 150:Src/mouse_state.c **** {
+ 395              		.loc 1 150 1 is_stmt 1 view -0
  396              		.cfi_startproc
  397              		@ args = 0, pretend = 0, frame = 0
  398              		@ frame_needed = 0, uses_anonymous_args = 0
  399              		@ link register save eliminated.
- 136:Src/mouse_state.c ****     return tire_l_speed_max;
- 400              		.loc 1 136 5 view .LVU85
- 137:Src/mouse_state.c **** }
- 401              		.loc 1 137 1 is_stmt 0 view .LVU86
+ 151:Src/mouse_state.c ****     return tire_l_speed_max;
+ 400              		.loc 1 151 5 view .LVU85
+ 152:Src/mouse_state.c **** }
+ 401              		.loc 1 152 1 is_stmt 0 view .LVU86
  402 0000 014B     		ldr	r3, .L40
  403 0002 93ED000A 		vldr.32	s0, [r3]
  404 0006 7047     		bx	lr
@@ -569,7 +584,7 @@ ARM GAS  C:\Temp\ccCzKJNb.s 			page 1
  407              	.L40:
  408 0008 00000000 		.word	.LANCHOR6
  409              		.cfi_endproc
- 410              	.LFE140:
+ 410              	.LFE11:
  412              		.section	.text.get_tire_l_speed_min,"ax",%progbits
  413              		.align	1
  414              		.global	get_tire_l_speed_min
@@ -578,34 +593,34 @@ ARM GAS  C:\Temp\ccCzKJNb.s 			page 1
  417              		.thumb_func
  418              		.fpu fpv4-sp-d16
  420              	get_tire_l_speed_min:
- 421              	.LFB141:
- 138:Src/mouse_state.c **** 
- 139:Src/mouse_state.c **** //機能	: 左タイヤの最低速度[m/s]を取得する
- 140:Src/mouse_state.c **** //引数	: なし
- 141:Src/mouse_state.c **** //返り値	: 左タイヤの最低速度[m/s]
- 142:Src/mouse_state.c **** float get_tire_l_speed_min ( void )
- 143:Src/mouse_state.c **** {
- 422              		.loc 1 143 1 is_stmt 1 view -0
+ 421              	.LFB12:
+ 153:Src/mouse_state.c **** 
+ 154:Src/mouse_state.c **** //機能	: 左タイヤの最低速度[m/s]を取得する
+ 155:Src/mouse_state.c **** //引数	: なし
+ 156:Src/mouse_state.c **** //返り値	: 左タイヤの最低速度[m/s]
+ARM GAS  C:\Temp\ccjZgElw.s 			page 11
+
+
+ 157:Src/mouse_state.c **** float get_tire_l_speed_min ( void )
+ 158:Src/mouse_state.c **** {
+ 422              		.loc 1 158 1 is_stmt 1 view -0
  423              		.cfi_startproc
  424              		@ args = 0, pretend = 0, frame = 0
  425              		@ frame_needed = 0, uses_anonymous_args = 0
  426              		@ link register save eliminated.
- 144:Src/mouse_state.c ****     return tire_l_speed_min;
- 427              		.loc 1 144 5 view .LVU88
- 145:Src/mouse_state.c **** }
- 428              		.loc 1 145 1 is_stmt 0 view .LVU89
+ 159:Src/mouse_state.c ****     return tire_l_speed_min;
+ 427              		.loc 1 159 5 view .LVU88
+ 160:Src/mouse_state.c **** }
+ 428              		.loc 1 160 1 is_stmt 0 view .LVU89
  429 0000 014B     		ldr	r3, .L43
  430 0002 93ED000A 		vldr.32	s0, [r3]
  431 0006 7047     		bx	lr
  432              	.L44:
-ARM GAS  C:\Temp\ccCzKJNb.s 			page 11
-
-
  433              		.align	2
  434              	.L43:
  435 0008 00000000 		.word	.LANCHOR7
  436              		.cfi_endproc
- 437              	.LFE141:
+ 437              	.LFE12:
  439              		.section	.text.init_tire_speed,"ax",%progbits
  440              		.align	1
  441              		.global	init_tire_speed
@@ -614,42 +629,45 @@ ARM GAS  C:\Temp\ccCzKJNb.s 			page 1
  444              		.thumb_func
  445              		.fpu fpv4-sp-d16
  447              	init_tire_speed:
- 448              	.LFB142:
- 146:Src/mouse_state.c **** 
- 147:Src/mouse_state.c **** //機能	: 各タイヤの最大、最低速度を初期化する
- 148:Src/mouse_state.c **** //引数	: なし
- 149:Src/mouse_state.c **** //返り値	: なし
- 150:Src/mouse_state.c **** void init_tire_speed ( void )
- 151:Src/mouse_state.c **** {
- 449              		.loc 1 151 1 is_stmt 1 view -0
+ 448              	.LFB13:
+ 161:Src/mouse_state.c **** 
+ 162:Src/mouse_state.c **** //機能	: 各タイヤの最大、最低速度を初期化する
+ 163:Src/mouse_state.c **** //引数	: なし
+ 164:Src/mouse_state.c **** //返り値	: なし
+ 165:Src/mouse_state.c **** void init_tire_speed ( void )
+ 166:Src/mouse_state.c **** {
+ 449              		.loc 1 166 1 is_stmt 1 view -0
  450              		.cfi_startproc
  451              		@ args = 0, pretend = 0, frame = 0
  452              		@ frame_needed = 0, uses_anonymous_args = 0
  453              		@ link register save eliminated.
- 152:Src/mouse_state.c ****     tire_r_speed_min = 0;
- 454              		.loc 1 152 5 view .LVU91
- 455              		.loc 1 152 22 is_stmt 0 view .LVU92
+ 167:Src/mouse_state.c ****     tire_r_speed_min = 0;
+ 454              		.loc 1 167 5 view .LVU91
+ 455              		.loc 1 167 22 is_stmt 0 view .LVU92
  456 0000 0023     		movs	r3, #0
  457 0002 044A     		ldr	r2, .L46
  458 0004 1360     		str	r3, [r2]	@ float
- 153:Src/mouse_state.c ****     tire_r_speed_max = 0;
- 459              		.loc 1 153 5 is_stmt 1 view .LVU93
- 460              		.loc 1 153 22 is_stmt 0 view .LVU94
+ 168:Src/mouse_state.c ****     tire_r_speed_max = 0;
+ 459              		.loc 1 168 5 is_stmt 1 view .LVU93
+ 460              		.loc 1 168 22 is_stmt 0 view .LVU94
  461 0006 044A     		ldr	r2, .L46+4
  462 0008 1360     		str	r3, [r2]	@ float
- 154:Src/mouse_state.c ****     tire_l_speed_min = 0;
- 463              		.loc 1 154 5 is_stmt 1 view .LVU95
- 464              		.loc 1 154 22 is_stmt 0 view .LVU96
+ 169:Src/mouse_state.c ****     tire_l_speed_min = 0;
+ 463              		.loc 1 169 5 is_stmt 1 view .LVU95
+ 464              		.loc 1 169 22 is_stmt 0 view .LVU96
  465 000a 044A     		ldr	r2, .L46+8
  466 000c 1360     		str	r3, [r2]	@ float
- 155:Src/mouse_state.c ****     tire_l_speed_max = 0;
- 467              		.loc 1 155 5 is_stmt 1 view .LVU97
- 468              		.loc 1 155 22 is_stmt 0 view .LVU98
+ 170:Src/mouse_state.c ****     tire_l_speed_max = 0;
+ARM GAS  C:\Temp\ccjZgElw.s 			page 12
+
+
+ 467              		.loc 1 170 5 is_stmt 1 view .LVU97
+ 468              		.loc 1 170 22 is_stmt 0 view .LVU98
  469 000e 044A     		ldr	r2, .L46+12
  470 0010 1360     		str	r3, [r2]	@ float
- 156:Src/mouse_state.c **** 
- 157:Src/mouse_state.c **** }
- 471              		.loc 1 157 1 view .LVU99
+ 171:Src/mouse_state.c **** 
+ 172:Src/mouse_state.c **** }
+ 471              		.loc 1 172 1 view .LVU99
  472 0012 7047     		bx	lr
  473              	.L47:
  474              		.align	2
@@ -658,11 +676,8 @@ ARM GAS  C:\Temp\ccCzKJNb.s 			page 1
  477 0018 00000000 		.word	.LANCHOR4
  478 001c 00000000 		.word	.LANCHOR7
  479 0020 00000000 		.word	.LANCHOR6
-ARM GAS  C:\Temp\ccCzKJNb.s 			page 12
-
-
  480              		.cfi_endproc
- 481              	.LFE142:
+ 481              	.LFE13:
  483              		.section	.text.get_move_speed,"ax",%progbits
  484              		.align	1
  485              		.global	get_move_speed
@@ -671,22 +686,22 @@ ARM GAS  C:\Temp\ccCzKJNb.s 			page 1
  488              		.thumb_func
  489              		.fpu fpv4-sp-d16
  491              	get_move_speed:
- 492              	.LFB143:
- 158:Src/mouse_state.c **** 
- 159:Src/mouse_state.c **** //機能	: マウスの移動速度[m/s]を取得する
- 160:Src/mouse_state.c **** //引数	: なし
- 161:Src/mouse_state.c **** //返り値	: マウスの移動速度
- 162:Src/mouse_state.c **** float get_move_speed ( void )
- 163:Src/mouse_state.c **** {
- 493              		.loc 1 163 1 is_stmt 1 view -0
+ 492              	.LFB14:
+ 173:Src/mouse_state.c **** 
+ 174:Src/mouse_state.c **** //機能	: マウスの移動速度[m/s]を取得する
+ 175:Src/mouse_state.c **** //引数	: なし
+ 176:Src/mouse_state.c **** //返り値	: マウスの移動速度
+ 177:Src/mouse_state.c **** float get_move_speed ( void )
+ 178:Src/mouse_state.c **** {
+ 493              		.loc 1 178 1 is_stmt 1 view -0
  494              		.cfi_startproc
  495              		@ args = 0, pretend = 0, frame = 0
  496              		@ frame_needed = 0, uses_anonymous_args = 0
  497              		@ link register save eliminated.
- 164:Src/mouse_state.c ****     return move_speed;
- 498              		.loc 1 164 5 view .LVU101
- 165:Src/mouse_state.c **** }
- 499              		.loc 1 165 1 is_stmt 0 view .LVU102
+ 179:Src/mouse_state.c ****     return move_speed;
+ 498              		.loc 1 179 5 view .LVU101
+ 180:Src/mouse_state.c **** }
+ 499              		.loc 1 180 1 is_stmt 0 view .LVU102
  500 0000 014B     		ldr	r3, .L49
  501 0002 93ED000A 		vldr.32	s0, [r3]
  502 0006 7047     		bx	lr
@@ -695,7 +710,7 @@ ARM GAS  C:\Temp\ccCzKJNb.s 			page 1
  505              	.L49:
  506 0008 00000000 		.word	.LANCHOR8
  507              		.cfi_endproc
- 508              	.LFE143:
+ 508              	.LFE14:
  510              		.global	__aeabi_f2d
  511              		.global	__aeabi_dmul
  512              		.global	__aeabi_dadd
@@ -703,24 +718,24 @@ ARM GAS  C:\Temp\ccCzKJNb.s 			page 1
  514              		.section	.text.filter_move_speed,"ax",%progbits
  515              		.align	1
  516              		.global	filter_move_speed
+ARM GAS  C:\Temp\ccjZgElw.s 			page 13
+
+
  517              		.syntax unified
  518              		.thumb
  519              		.thumb_func
  520              		.fpu fpv4-sp-d16
  522              	filter_move_speed:
- 523              	.LFB144:
- 166:Src/mouse_state.c **** 
- 167:Src/mouse_state.c **** //機能	: マウスの速度に移動平均フィルタをかける。
- 168:Src/mouse_state.c **** //引数	: なし
- 169:Src/mouse_state.c **** //返り値	: なし
- 170:Src/mouse_state.c **** //備考  : ジャイロの加速度を用いて、遅れを補完する。
- 171:Src/mouse_state.c **** //      : 1msタスク 
- 172:Src/mouse_state.c **** void filter_move_speed( void )
- 173:Src/mouse_state.c **** {
- 524              		.loc 1 173 1 is_stmt 1 view -0
-ARM GAS  C:\Temp\ccCzKJNb.s 			page 13
-
-
+ 523              	.LFB15:
+ 181:Src/mouse_state.c **** 
+ 182:Src/mouse_state.c **** //機能	: マウスの速度に移動平均フィルタをかける。
+ 183:Src/mouse_state.c **** //引数	: なし
+ 184:Src/mouse_state.c **** //返り値	: なし
+ 185:Src/mouse_state.c **** //備考  : ジャイロの加速度を用いて、遅れを補完する。
+ 186:Src/mouse_state.c **** //      : 1msタスク 
+ 187:Src/mouse_state.c **** void filter_move_speed( void )
+ 188:Src/mouse_state.c **** {
+ 524              		.loc 1 188 1 is_stmt 1 view -0
  525              		.cfi_startproc
  526              		@ args = 0, pretend = 0, frame = 0
  527              		@ frame_needed = 0, uses_anonymous_args = 0
@@ -736,36 +751,39 @@ ARM GAS  C:\Temp\ccCzKJNb.s 			page 1
  537              		.cfi_def_cfa_offset 24
  538              		.cfi_offset 80, -24
  539              		.cfi_offset 81, -20
- 174:Src/mouse_state.c ****     typedef struct {
- 540              		.loc 1 174 5 view .LVU104
- 175:Src/mouse_state.c **** 	float	speed;			
- 176:Src/mouse_state.c **** 	float   accel;			
- 177:Src/mouse_state.c ****     } ave_temp;
- 178:Src/mouse_state.c **** 
- 179:Src/mouse_state.c ****     static ave_temp ave_store[ave_num];  // データ格納用の構造体
- 541              		.loc 1 179 5 view .LVU105
- 180:Src/mouse_state.c **** 
- 181:Src/mouse_state.c **** 	static uint16_t ave_counter = 0;
- 542              		.loc 1 181 2 view .LVU106
- 182:Src/mouse_state.c **** 	uint16_t i = 0;
- 543              		.loc 1 182 2 view .LVU107
+ 189:Src/mouse_state.c ****     typedef struct {
+ 540              		.loc 1 189 5 view .LVU104
+ 190:Src/mouse_state.c **** 	float	speed;			
+ 191:Src/mouse_state.c **** 	float   accel;			
+ 192:Src/mouse_state.c ****     } ave_temp;
+ 193:Src/mouse_state.c **** 
+ 194:Src/mouse_state.c ****     static ave_temp ave_store[ave_num];  // データ格納用の構造体
+ 541              		.loc 1 194 5 view .LVU105
+ 195:Src/mouse_state.c **** 
+ 196:Src/mouse_state.c **** 	static uint16_t ave_counter = 0;
+ 542              		.loc 1 196 2 view .LVU106
+ 197:Src/mouse_state.c **** 	uint16_t i = 0;
+ 543              		.loc 1 197 2 view .LVU107
  544              	.LVL18:
- 183:Src/mouse_state.c **** 	uint16_t j = 0;
- 545              		.loc 1 183 2 view .LVU108
- 184:Src/mouse_state.c **** 
- 185:Src/mouse_state.c **** 	float speed_ave = 0;	//並進方向速度平均
- 546              		.loc 1 185 2 view .LVU109
- 186:Src/mouse_state.c **** 	float accel_ave = 0;	//並進方向加速度平均
- 547              		.loc 1 186 2 view .LVU110
- 187:Src/mouse_state.c **** 
- 188:Src/mouse_state.c **** 	float speed_sum = 0; 	//並進方向速度合計
- 548              		.loc 1 188 2 view .LVU111
- 189:Src/mouse_state.c **** 	float accel_sum = 0;	//並進方向加速度合計
- 549              		.loc 1 189 2 view .LVU112
- 190:Src/mouse_state.c **** 
- 191:Src/mouse_state.c **** 	i = ave_counter % ave_num;
- 550              		.loc 1 191 2 view .LVU113
- 551              		.loc 1 191 4 is_stmt 0 view .LVU114
+ 198:Src/mouse_state.c **** 	uint16_t j = 0;
+ 545              		.loc 1 198 2 view .LVU108
+ 199:Src/mouse_state.c **** 
+ 200:Src/mouse_state.c **** 	float speed_ave = 0;	//並進方向速度平均
+ 546              		.loc 1 200 2 view .LVU109
+ 201:Src/mouse_state.c **** 	float accel_ave = 0;	//並進方向加速度平均
+ 547              		.loc 1 201 2 view .LVU110
+ 202:Src/mouse_state.c **** 
+ 203:Src/mouse_state.c **** 	float speed_sum = 0; 	//並進方向速度合計
+ 548              		.loc 1 203 2 view .LVU111
+ 204:Src/mouse_state.c **** 	float accel_sum = 0;	//並進方向加速度合計
+ 549              		.loc 1 204 2 view .LVU112
+ 205:Src/mouse_state.c **** 
+ARM GAS  C:\Temp\ccjZgElw.s 			page 14
+
+
+ 206:Src/mouse_state.c **** 	i = ave_counter % ave_num;
+ 550              		.loc 1 206 2 view .LVU113
+ 551              		.loc 1 206 4 is_stmt 0 view .LVU114
  552 0006 3A4B     		ldr	r3, .L64+8
  553 0008 1A88     		ldrh	r2, [r3]
  554 000a 3A4B     		ldr	r3, .L64+12
@@ -775,147 +793,144 @@ ARM GAS  C:\Temp\ccCzKJNb.s 			page 1
  558 0016 A2EB4303 		sub	r3, r2, r3, lsl #1
  559 001a 9CB2     		uxth	r4, r3
  560              	.LVL19:
- 192:Src/mouse_state.c **** 	ave_store[i].speed = get_move_speed();
- 561              		.loc 1 192 2 is_stmt 1 view .LVU115
- 562              		.loc 1 192 23 is_stmt 0 view .LVU116
-ARM GAS  C:\Temp\ccCzKJNb.s 			page 14
-
-
+ 207:Src/mouse_state.c **** 	ave_store[i].speed = get_move_speed();
+ 561              		.loc 1 207 2 is_stmt 1 view .LVU115
+ 562              		.loc 1 207 23 is_stmt 0 view .LVU116
  563 001c FFF7FEFF 		bl	get_move_speed
  564              	.LVL20:
- 565              		.loc 1 192 21 view .LVU117
+ 565              		.loc 1 207 21 view .LVU117
  566 0020 354A     		ldr	r2, .L64+16
  567 0022 02EBC404 		add	r4, r2, r4, lsl #3
  568              	.LVL21:
- 569              		.loc 1 192 21 view .LVU118
+ 569              		.loc 1 207 21 view .LVU118
  570 0026 84ED000A 		vstr.32	s0, [r4]
- 193:Src/mouse_state.c **** 	ave_store[i].accel = IMU_GetAccel_X();
- 571              		.loc 1 193 2 is_stmt 1 view .LVU119
- 572              		.loc 1 193 23 is_stmt 0 view .LVU120
+ 208:Src/mouse_state.c **** 	ave_store[i].accel = IMU_GetAccel_X();
+ 571              		.loc 1 208 2 is_stmt 1 view .LVU119
+ 572              		.loc 1 208 23 is_stmt 0 view .LVU120
  573 002a FFF7FEFF 		bl	IMU_GetAccel_X
  574              	.LVL22:
- 575              		.loc 1 193 21 view .LVU121
+ 575              		.loc 1 208 21 view .LVU121
  576 002e 84ED010A 		vstr.32	s0, [r4, #4]
- 194:Src/mouse_state.c **** 
- 195:Src/mouse_state.c ****     /*移動平均処理*/
- 196:Src/mouse_state.c **** 	for(j=0; j < ave_num; j++)
- 577              		.loc 1 196 2 is_stmt 1 view .LVU122
- 189:Src/mouse_state.c **** 
- 578              		.loc 1 189 8 is_stmt 0 view .LVU123
+ 209:Src/mouse_state.c **** 
+ 210:Src/mouse_state.c ****     /*移動平均処理*/
+ 211:Src/mouse_state.c **** 	for(j=0; j < ave_num; j++)
+ 577              		.loc 1 211 2 is_stmt 1 view .LVU122
+ 204:Src/mouse_state.c **** 
+ 578              		.loc 1 204 8 is_stmt 0 view .LVU123
  579 0032 DFED327A 		vldr.32	s15, .L64+20
- 188:Src/mouse_state.c **** 	float accel_sum = 0;	//並進方向加速度合計
- 580              		.loc 1 188 8 view .LVU124
+ 203:Src/mouse_state.c **** 	float accel_sum = 0;	//並進方向加速度合計
+ 580              		.loc 1 203 8 view .LVU124
  581 0036 B0EE677A 		vmov.f32	s14, s15
- 582              		.loc 1 196 7 view .LVU125
+ 582              		.loc 1 211 7 view .LVU125
  583 003a 0023     		movs	r3, #0
  584              	.LVL23:
  585              	.L52:
- 586              		.loc 1 196 11 is_stmt 1 discriminator 1 view .LVU126
- 587              		.loc 1 196 2 is_stmt 0 discriminator 1 view .LVU127
+ 586              		.loc 1 211 11 is_stmt 1 discriminator 1 view .LVU126
+ 587              		.loc 1 211 2 is_stmt 0 discriminator 1 view .LVU127
  588 003c 092B     		cmp	r3, #9
  589 003e 0DD8     		bhi	.L62
- 197:Src/mouse_state.c **** 	{
- 198:Src/mouse_state.c **** 		speed_sum += ave_store[j].speed;
- 590              		.loc 1 198 3 is_stmt 1 discriminator 3 view .LVU128
- 591              		.loc 1 198 28 is_stmt 0 discriminator 3 view .LVU129
+ 212:Src/mouse_state.c **** 	{
+ 213:Src/mouse_state.c **** 		speed_sum += ave_store[j].speed;
+ 590              		.loc 1 213 3 is_stmt 1 discriminator 3 view .LVU128
+ 591              		.loc 1 213 28 is_stmt 0 discriminator 3 view .LVU129
  592 0040 2D4A     		ldr	r2, .L64+16
  593 0042 02EBC302 		add	r2, r2, r3, lsl #3
  594 0046 D2ED006A 		vldr.32	s13, [r2]
- 595              		.loc 1 198 13 discriminator 3 view .LVU130
+ 595              		.loc 1 213 13 discriminator 3 view .LVU130
  596 004a 37EE267A 		vadd.f32	s14, s14, s13
+ARM GAS  C:\Temp\ccjZgElw.s 			page 15
+
+
  597              	.LVL24:
- 199:Src/mouse_state.c **** 		accel_sum += ave_store[j].accel;
- 598              		.loc 1 199 3 is_stmt 1 discriminator 3 view .LVU131
- 599              		.loc 1 199 28 is_stmt 0 discriminator 3 view .LVU132
+ 214:Src/mouse_state.c **** 		accel_sum += ave_store[j].accel;
+ 598              		.loc 1 214 3 is_stmt 1 discriminator 3 view .LVU131
+ 599              		.loc 1 214 28 is_stmt 0 discriminator 3 view .LVU132
  600 004e D2ED016A 		vldr.32	s13, [r2, #4]
- 601              		.loc 1 199 13 discriminator 3 view .LVU133
+ 601              		.loc 1 214 13 discriminator 3 view .LVU133
  602 0052 77EEA67A 		vadd.f32	s15, s15, s13
  603              	.LVL25:
- 196:Src/mouse_state.c **** 	{
- 604              		.loc 1 196 24 is_stmt 1 discriminator 3 view .LVU134
- 196:Src/mouse_state.c **** 	{
- 605              		.loc 1 196 25 is_stmt 0 discriminator 3 view .LVU135
+ 211:Src/mouse_state.c **** 	{
+ 604              		.loc 1 211 24 is_stmt 1 discriminator 3 view .LVU134
+ 211:Src/mouse_state.c **** 	{
+ 605              		.loc 1 211 25 is_stmt 0 discriminator 3 view .LVU135
  606 0056 0133     		adds	r3, r3, #1
  607              	.LVL26:
- 196:Src/mouse_state.c **** 	{
-ARM GAS  C:\Temp\ccCzKJNb.s 			page 15
-
-
- 608              		.loc 1 196 25 discriminator 3 view .LVU136
+ 211:Src/mouse_state.c **** 	{
+ 608              		.loc 1 211 25 discriminator 3 view .LVU136
  609 0058 9BB2     		uxth	r3, r3
  610              	.LVL27:
- 196:Src/mouse_state.c **** 	{
- 611              		.loc 1 196 25 discriminator 3 view .LVU137
+ 211:Src/mouse_state.c **** 	{
+ 611              		.loc 1 211 25 discriminator 3 view .LVU137
  612 005a EFE7     		b	.L52
  613              	.L62:
- 200:Src/mouse_state.c **** 	}
- 201:Src/mouse_state.c **** 
- 202:Src/mouse_state.c **** 	speed_ave = speed_sum / ave_num;
- 614              		.loc 1 202 2 is_stmt 1 view .LVU138
- 615              		.loc 1 202 12 is_stmt 0 view .LVU139
+ 215:Src/mouse_state.c **** 	}
+ 216:Src/mouse_state.c **** 
+ 217:Src/mouse_state.c **** 	speed_ave = speed_sum / ave_num;
+ 614              		.loc 1 217 2 is_stmt 1 view .LVU138
+ 615              		.loc 1 217 12 is_stmt 0 view .LVU139
  616 005c F2EE046A 		vmov.f32	s13, #1.0e+1
- 617 0060 87EE268A 		vdiv.f32	s16, s14, s13
+ 617 0060 C7EE268A 		vdiv.f32	s17, s14, s13
  618              	.LVL28:
- 203:Src/mouse_state.c **** 	accel_ave = accel_sum / ave_num;
- 619              		.loc 1 203 2 is_stmt 1 view .LVU140
- 620              		.loc 1 203 12 is_stmt 0 view .LVU141
- 621 0064 87EEA67A 		vdiv.f32	s14, s15, s13
+ 218:Src/mouse_state.c **** 	accel_ave = accel_sum / ave_num;
+ 619              		.loc 1 218 2 is_stmt 1 view .LVU140
+ 620              		.loc 1 218 12 is_stmt 0 view .LVU141
+ 621 0064 87EEA68A 		vdiv.f32	s16, s15, s13
  622              	.LVL29:
- 204:Src/mouse_state.c **** 
- 205:Src/mouse_state.c **** 	/*加速度センサのぶれを補正、閾値範囲内を０とする*/
- 206:Src/mouse_state.c **** 	if(ABS(accel_ave) < 0.5)
- 623              		.loc 1 206 2 is_stmt 1 view .LVU142
- 624              		.loc 1 206 20 is_stmt 0 view .LVU143
- 625 0068 B5EEC07A 		vcmpe.f32	s14, #0
+ 219:Src/mouse_state.c **** 
+ 220:Src/mouse_state.c **** 	/*加速度センサのぶれを補正、閾値範囲内を０とする*/
+ 221:Src/mouse_state.c **** 	if(ABS(accel_ave) < 0.5)
+ 623              		.loc 1 221 2 is_stmt 1 view .LVU142
+ 624              		.loc 1 221 20 is_stmt 0 view .LVU143
+ 625 0068 B5EEC08A 		vcmpe.f32	s16, #0
  626 006c F1EE10FA 		vmrs	APSR_nzcv, FPSCR
- 627 0070 2DD4     		bmi	.L63
- 628              		.loc 1 206 20 discriminator 2 view .LVU144
+ 627 0070 30D4     		bmi	.L63
+ 628              		.loc 1 221 20 discriminator 2 view .LVU144
  629 0072 F6EE007A 		vmov.f32	s15, #5.0e-1
  630              	.LVL30:
- 631              		.loc 1 206 20 discriminator 2 view .LVU145
- 632 0076 B4EEE77A 		vcmpe.f32	s14, s15
+ 631              		.loc 1 221 20 discriminator 2 view .LVU145
+ 632 0076 B4EEE78A 		vcmpe.f32	s16, s15
  633 007a F1EE10FA 		vmrs	APSR_nzcv, FPSCR
  634 007e 4CBF     		ite	mi
  635 0080 0123     		movmi	r3, #1
  636              	.LVL31:
- 637              		.loc 1 206 20 discriminator 2 view .LVU146
+ 637              		.loc 1 221 20 discriminator 2 view .LVU146
  638 0082 0023     		movpl	r3, #0
  639              	.L56:
- 640              		.loc 1 206 4 discriminator 4 view .LVU147
+ 640              		.loc 1 221 4 discriminator 4 view .LVU147
  641 0084 0BB1     		cbz	r3, .L57
- 207:Src/mouse_state.c **** 	{
- 208:Src/mouse_state.c **** 		accel_ave = 0;
- 642              		.loc 1 208 13 view .LVU148
- 643 0086 9FED1D7A 		vldr.32	s14, .L64+20
+ARM GAS  C:\Temp\ccjZgElw.s 			page 16
+
+
+ 222:Src/mouse_state.c **** 	{
+ 223:Src/mouse_state.c **** 		accel_ave = 0;
+ 642              		.loc 1 223 13 view .LVU148
+ 643 0086 9FED1D8A 		vldr.32	s16, .L64+20
  644              	.LVL32:
  645              	.L57:
- 209:Src/mouse_state.c **** 	}
- 210:Src/mouse_state.c **** 
- 211:Src/mouse_state.c **** 	/*遅れ補正*/
- 212:Src/mouse_state.c ****     //平均速度＋0.5(加速度平均[m/s2]・平均時間[s])
- 213:Src/mouse_state.c **** 	speed_ave += 0.5 * ( accel_ave * (ave_num * 0.001)); 
- 646              		.loc 1 213 2 is_stmt 1 view .LVU149
- 647              		.loc 1 213 33 is_stmt 0 view .LVU150
- 648 008a 17EE100A 		vmov	r0, s14
+ 224:Src/mouse_state.c **** 	}
+ 225:Src/mouse_state.c **** 
+ 226:Src/mouse_state.c **** 	/*遅れ補正*/
+ 227:Src/mouse_state.c ****     //平均速度＋0.5(加速度平均[m/s2]・平均時間[s])
+ 228:Src/mouse_state.c **** 	speed_ave += 0.5 * ( accel_ave * (ave_num * 0.001)); 
+ 646              		.loc 1 228 2 is_stmt 1 view .LVU149
+ 647              		.loc 1 228 33 is_stmt 0 view .LVU150
+ 648 008a 18EE100A 		vmov	r0, s16
  649 008e FFF7FEFF 		bl	__aeabi_f2d
-ARM GAS  C:\Temp\ccCzKJNb.s 			page 16
-
-
  650              	.LVL33:
- 651              		.loc 1 213 33 view .LVU151
+ 651              		.loc 1 228 33 view .LVU151
  652 0092 15A3     		adr	r3, .L64
  653 0094 D3E90023 		ldrd	r2, [r3]
  654 0098 FFF7FEFF 		bl	__aeabi_dmul
  655              	.LVL34:
- 656              		.loc 1 213 19 view .LVU152
+ 656              		.loc 1 228 19 view .LVU152
  657 009c 0022     		movs	r2, #0
  658 009e 184B     		ldr	r3, .L64+24
  659 00a0 FFF7FEFF 		bl	__aeabi_dmul
  660              	.LVL35:
  661 00a4 0446     		mov	r4, r0
  662 00a6 0D46     		mov	r5, r1
- 663              		.loc 1 213 12 view .LVU153
- 664 00a8 18EE100A 		vmov	r0, s16
+ 663              		.loc 1 228 12 view .LVU153
+ 664 00a8 18EE900A 		vmov	r0, s17
  665 00ac FFF7FEFF 		bl	__aeabi_f2d
  666              	.LVL36:
  667 00b0 2246     		mov	r2, r4
@@ -924,547 +939,744 @@ ARM GAS  C:\Temp\ccCzKJNb.s 			page 1
  670              	.LVL37:
  671 00b8 FFF7FEFF 		bl	__aeabi_d2f
  672              	.LVL38:
- 214:Src/mouse_state.c **** 
- 215:Src/mouse_state.c **** 	move_speed_ave = speed_ave;
- 673              		.loc 1 215 2 is_stmt 1 view .LVU154
- 674              		.loc 1 215 17 is_stmt 0 view .LVU155
+ 229:Src/mouse_state.c **** 
+ 230:Src/mouse_state.c **** 	move_speed_ave = speed_ave;
+ 673              		.loc 1 230 2 is_stmt 1 view .LVU154
+ 674              		.loc 1 230 17 is_stmt 0 view .LVU155
  675 00bc 114B     		ldr	r3, .L64+28
  676 00be 1860     		str	r0, [r3]	@ float
- 216:Src/mouse_state.c **** 
- 217:Src/mouse_state.c **** 	ave_counter += 1 ;
- 677              		.loc 1 217 2 is_stmt 1 view .LVU156
- 678              		.loc 1 217 14 is_stmt 0 view .LVU157
- 679 00c0 0B4A     		ldr	r2, .L64+8
- 680 00c2 1388     		ldrh	r3, [r2]
- 681 00c4 0133     		adds	r3, r3, #1
- 682 00c6 1380     		strh	r3, [r2]	@ movhi
- 218:Src/mouse_state.c **** }
- 683              		.loc 1 218 1 view .LVU158
- 684 00c8 BDEC028B 		vldm	sp!, {d8}
- 685              	.LCFI8:
- 686              		.cfi_remember_state
- 687              		.cfi_restore 80
- 688              		.cfi_restore 81
- 689              		.cfi_def_cfa_offset 16
- 690 00cc 38BD     		pop	{r3, r4, r5, pc}
- 691              	.LVL39:
- 692              	.L63:
- 693              	.LCFI9:
- 694              		.cfi_restore_state
- 206:Src/mouse_state.c **** 	{
- 695              		.loc 1 206 20 discriminator 1 view .LVU159
- 696 00ce FEEE007A 		vmov.f32	s15, #-5.0e-1
+ 231:Src/mouse_state.c **** 	move_accel_ave = accel_ave;
+ 677              		.loc 1 231 2 is_stmt 1 view .LVU156
+ 678              		.loc 1 231 17 is_stmt 0 view .LVU157
+ 679 00c0 114B     		ldr	r3, .L64+32
+ 680 00c2 83ED008A 		vstr.32	s16, [r3]
+ 232:Src/mouse_state.c **** 
+ 233:Src/mouse_state.c **** 	ave_counter += 1 ;
+ 681              		.loc 1 233 2 is_stmt 1 view .LVU158
+ 682              		.loc 1 233 14 is_stmt 0 view .LVU159
+ 683 00c6 0A4A     		ldr	r2, .L64+8
+ 684 00c8 1388     		ldrh	r3, [r2]
+ 685 00ca 0133     		adds	r3, r3, #1
+ 686 00cc 1380     		strh	r3, [r2]	@ movhi
+ARM GAS  C:\Temp\ccjZgElw.s 			page 17
+
+
+ 234:Src/mouse_state.c **** }
+ 687              		.loc 1 234 1 view .LVU160
+ 688 00ce BDEC028B 		vldm	sp!, {d8}
+ 689              	.LCFI8:
+ 690              		.cfi_remember_state
+ 691              		.cfi_restore 80
+ 692              		.cfi_restore 81
+ 693              		.cfi_def_cfa_offset 16
+ 694              	.LVL39:
+ 695              		.loc 1 234 1 view .LVU161
+ 696 00d2 38BD     		pop	{r3, r4, r5, pc}
  697              	.LVL40:
- 206:Src/mouse_state.c **** 	{
- 698              		.loc 1 206 20 discriminator 1 view .LVU160
- 699 00d2 B4EEE77A 		vcmpe.f32	s14, s15
-ARM GAS  C:\Temp\ccCzKJNb.s 			page 17
-
-
- 700 00d6 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
- 701 00da CCBF     		ite	gt
- 702 00dc 0123     		movgt	r3, #1
+ 698              	.L63:
+ 699              	.LCFI9:
+ 700              		.cfi_restore_state
+ 221:Src/mouse_state.c **** 	{
+ 701              		.loc 1 221 20 discriminator 1 view .LVU162
+ 702 00d4 FEEE007A 		vmov.f32	s15, #-5.0e-1
  703              	.LVL41:
- 206:Src/mouse_state.c **** 	{
- 704              		.loc 1 206 20 discriminator 1 view .LVU161
- 705 00de 0023     		movle	r3, #0
- 706 00e0 D0E7     		b	.L56
- 707              	.L65:
- 708 00e2 00BFAFF3 		.align	3
- 708      0080
- 709              	.L64:
- 710 00e8 7B14AE47 		.word	1202590843
- 711 00ec E17A843F 		.word	1065646817
- 712 00f0 00000000 		.word	.LANCHOR9
- 713 00f4 CDCCCCCC 		.word	-858993459
- 714 00f8 00000000 		.word	.LANCHOR10
- 715 00fc 00000000 		.word	0
- 716 0100 0000E03F 		.word	1071644672
- 717 0104 00000000 		.word	.LANCHOR11
- 718              		.cfi_endproc
- 719              	.LFE144:
- 721              		.section	.text.get_move_speed_ave,"ax",%progbits
- 722              		.align	1
- 723              		.global	get_move_speed_ave
- 724              		.syntax unified
- 725              		.thumb
- 726              		.thumb_func
- 727              		.fpu fpv4-sp-d16
- 729              	get_move_speed_ave:
- 730              	.LFB145:
- 219:Src/mouse_state.c **** 
- 220:Src/mouse_state.c **** //機能	: 移動平均処理後の移動速度[m/s]を取得する
- 221:Src/mouse_state.c **** //引数	: なし
- 222:Src/mouse_state.c **** //返り値	: 移動平均処理後の移動速度[m/s]
- 223:Src/mouse_state.c **** float get_move_speed_ave ( void )
- 224:Src/mouse_state.c **** {
- 731              		.loc 1 224 1 is_stmt 1 view -0
- 732              		.cfi_startproc
- 733              		@ args = 0, pretend = 0, frame = 0
- 734              		@ frame_needed = 0, uses_anonymous_args = 0
- 735              		@ link register save eliminated.
- 225:Src/mouse_state.c ****     return move_speed_ave;
- 736              		.loc 1 225 5 view .LVU163
- 226:Src/mouse_state.c **** }
- 737              		.loc 1 226 1 is_stmt 0 view .LVU164
- 738 0000 014B     		ldr	r3, .L67
- 739 0002 93ED000A 		vldr.32	s0, [r3]
- 740 0006 7047     		bx	lr
- 741              	.L68:
- 742              		.align	2
- 743              	.L67:
- 744 0008 00000000 		.word	.LANCHOR11
- 745              		.cfi_endproc
- 746              	.LFE145:
- 748              		.section	.text.calc_move_length,"ax",%progbits
- 749              		.align	1
-ARM GAS  C:\Temp\ccCzKJNb.s 			page 18
+ 221:Src/mouse_state.c **** 	{
+ 704              		.loc 1 221 20 discriminator 1 view .LVU163
+ 705 00d8 B4EEE78A 		vcmpe.f32	s16, s15
+ 706 00dc F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 707 00e0 CCBF     		ite	gt
+ 708 00e2 0123     		movgt	r3, #1
+ 709              	.LVL42:
+ 221:Src/mouse_state.c **** 	{
+ 710              		.loc 1 221 20 discriminator 1 view .LVU164
+ 711 00e4 0023     		movle	r3, #0
+ 712 00e6 CDE7     		b	.L56
+ 713              	.L65:
+ 714              		.align	3
+ 715              	.L64:
+ 716 00e8 7B14AE47 		.word	1202590843
+ 717 00ec E17A843F 		.word	1065646817
+ 718 00f0 00000000 		.word	.LANCHOR9
+ 719 00f4 CDCCCCCC 		.word	-858993459
+ 720 00f8 00000000 		.word	.LANCHOR10
+ 721 00fc 00000000 		.word	0
+ 722 0100 0000E03F 		.word	1071644672
+ 723 0104 00000000 		.word	.LANCHOR11
+ 724 0108 00000000 		.word	.LANCHOR12
+ 725              		.cfi_endproc
+ 726              	.LFE15:
+ 728              		.section	.text.get_move_speed_ave,"ax",%progbits
+ 729              		.align	1
+ 730              		.global	get_move_speed_ave
+ 731              		.syntax unified
+ 732              		.thumb
+ 733              		.thumb_func
+ 734              		.fpu fpv4-sp-d16
+ 736              	get_move_speed_ave:
+ 737              	.LFB16:
+ 235:Src/mouse_state.c **** 
+ 236:Src/mouse_state.c **** //機能	: 移動平均処理後の移動速度[m/s]を取得する
+ 237:Src/mouse_state.c **** //引数	: なし
+ 238:Src/mouse_state.c **** //返り値	: 移動平均処理後の移動速度[m/s]
+ARM GAS  C:\Temp\ccjZgElw.s 			page 18
 
 
- 750              		.global	calc_move_length
- 751              		.syntax unified
- 752              		.thumb
- 753              		.thumb_func
- 754              		.fpu fpv4-sp-d16
- 756              	calc_move_length:
- 757              	.LFB146:
- 227:Src/mouse_state.c **** 
- 228:Src/mouse_state.c **** //機能	: マウスの移動距離[m]を計算する
- 229:Src/mouse_state.c **** //引数	: なし
- 230:Src/mouse_state.c **** //返り値	: なし
- 231:Src/mouse_state.c **** //備考  :1msタスク
- 232:Src/mouse_state.c **** void calc_move_length ( void )
- 233:Src/mouse_state.c **** {
- 758              		.loc 1 233 1 is_stmt 1 view -0
- 759              		.cfi_startproc
- 760              		@ args = 0, pretend = 0, frame = 0
- 761              		@ frame_needed = 0, uses_anonymous_args = 0
- 762 0000 70B5     		push	{r4, r5, r6, lr}
- 763              	.LCFI10:
- 764              		.cfi_def_cfa_offset 16
- 765              		.cfi_offset 4, -16
- 766              		.cfi_offset 5, -12
- 767              		.cfi_offset 6, -8
- 768              		.cfi_offset 14, -4
- 234:Src/mouse_state.c ****     move_length += get_move_speed_ave() * 0.001; // [m/s] * [s]
- 769              		.loc 1 234 5 view .LVU166
- 770              		.loc 1 234 20 is_stmt 0 view .LVU167
- 771 0002 FFF7FEFF 		bl	get_move_speed_ave
- 772              	.LVL42:
- 773 0006 10EE100A 		vmov	r0, s0
- 774 000a FFF7FEFF 		bl	__aeabi_f2d
- 775              	.LVL43:
- 776              		.loc 1 234 41 view .LVU168
- 777 000e 0BA3     		adr	r3, .L71+4
- 778 0010 D3E90023 		ldrd	r2, [r3]
- 779 0014 FFF7FEFF 		bl	__aeabi_dmul
- 780              	.LVL44:
- 781 0018 0446     		mov	r4, r0
- 782 001a 0D46     		mov	r5, r1
- 783              		.loc 1 234 17 view .LVU169
- 784 001c 064E     		ldr	r6, .L71
- 785 001e 3068     		ldr	r0, [r6]	@ float
- 786 0020 FFF7FEFF 		bl	__aeabi_f2d
- 787              	.LVL45:
- 788 0024 2246     		mov	r2, r4
- 789 0026 2B46     		mov	r3, r5
- 790 0028 FFF7FEFF 		bl	__aeabi_dadd
- 791              	.LVL46:
- 792 002c FFF7FEFF 		bl	__aeabi_d2f
- 793              	.LVL47:
- 794 0030 3060     		str	r0, [r6]	@ float
- 235:Src/mouse_state.c **** }
- 795              		.loc 1 235 1 view .LVU170
- 796 0032 70BD     		pop	{r4, r5, r6, pc}
- 797              	.L72:
- 798 0034 AFF30080 		.align	3
-ARM GAS  C:\Temp\ccCzKJNb.s 			page 19
+ 239:Src/mouse_state.c **** float get_move_speed_ave ( void )
+ 240:Src/mouse_state.c **** {
+ 738              		.loc 1 240 1 is_stmt 1 view -0
+ 739              		.cfi_startproc
+ 740              		@ args = 0, pretend = 0, frame = 0
+ 741              		@ frame_needed = 0, uses_anonymous_args = 0
+ 742              		@ link register save eliminated.
+ 241:Src/mouse_state.c ****     return move_speed_ave;
+ 743              		.loc 1 241 5 view .LVU166
+ 242:Src/mouse_state.c **** }
+ 744              		.loc 1 242 1 is_stmt 0 view .LVU167
+ 745 0000 014B     		ldr	r3, .L67
+ 746 0002 93ED000A 		vldr.32	s0, [r3]
+ 747 0006 7047     		bx	lr
+ 748              	.L68:
+ 749              		.align	2
+ 750              	.L67:
+ 751 0008 00000000 		.word	.LANCHOR11
+ 752              		.cfi_endproc
+ 753              	.LFE16:
+ 755              		.section	.text.get_move_accel_ave,"ax",%progbits
+ 756              		.align	1
+ 757              		.global	get_move_accel_ave
+ 758              		.syntax unified
+ 759              		.thumb
+ 760              		.thumb_func
+ 761              		.fpu fpv4-sp-d16
+ 763              	get_move_accel_ave:
+ 764              	.LFB17:
+ 243:Src/mouse_state.c **** 
+ 244:Src/mouse_state.c **** //機能	: 移動平均処理後の移動加速度[m/ss]を取得する
+ 245:Src/mouse_state.c **** //引数	: なし
+ 246:Src/mouse_state.c **** //返り値	: 移動平均処理後の移動速度[m/ss]
+ 247:Src/mouse_state.c **** float get_move_accel_ave ( void )
+ 248:Src/mouse_state.c **** {
+ 765              		.loc 1 248 1 is_stmt 1 view -0
+ 766              		.cfi_startproc
+ 767              		@ args = 0, pretend = 0, frame = 0
+ 768              		@ frame_needed = 0, uses_anonymous_args = 0
+ 769              		@ link register save eliminated.
+ 249:Src/mouse_state.c ****     return move_accel_ave;
+ 770              		.loc 1 249 5 view .LVU169
+ 250:Src/mouse_state.c **** }
+ 771              		.loc 1 250 1 is_stmt 0 view .LVU170
+ 772 0000 014B     		ldr	r3, .L70
+ 773 0002 93ED000A 		vldr.32	s0, [r3]
+ 774 0006 7047     		bx	lr
+ 775              	.L71:
+ 776              		.align	2
+ 777              	.L70:
+ 778 0008 00000000 		.word	.LANCHOR12
+ 779              		.cfi_endproc
+ 780              	.LFE17:
+ 782              		.section	.text.calc_move_length,"ax",%progbits
+ 783              		.align	1
+ 784              		.global	calc_move_length
+ 785              		.syntax unified
+ARM GAS  C:\Temp\ccjZgElw.s 			page 19
 
 
- 799              	.L71:
- 800 0038 00000000 		.word	.LANCHOR12
- 801 003c FCA9F1D2 		.word	-755914244
- 802 0040 4D62503F 		.word	1062232653
- 803              		.cfi_endproc
- 804              	.LFE146:
- 806              		.section	.text.calc_rotation_speed,"ax",%progbits
- 807              		.align	1
- 808              		.global	calc_rotation_speed
- 809              		.syntax unified
- 810              		.thumb
- 811              		.thumb_func
- 812              		.fpu fpv4-sp-d16
- 814              	calc_rotation_speed:
- 815              	.LFB147:
- 236:Src/mouse_state.c **** 
- 237:Src/mouse_state.c **** //機能	: マウスの角速度[rad/s]を算出する
- 238:Src/mouse_state.c **** //引数	: なし
- 239:Src/mouse_state.c **** //返り値	: なし
- 240:Src/mouse_state.c **** void calc_rotation_speed ( void )
- 241:Src/mouse_state.c **** {
- 816              		.loc 1 241 1 is_stmt 1 view -0
- 817              		.cfi_startproc
- 818              		@ args = 0, pretend = 0, frame = 0
- 819              		@ frame_needed = 0, uses_anonymous_args = 0
- 820 0000 08B5     		push	{r3, lr}
- 821              	.LCFI11:
- 822              		.cfi_def_cfa_offset 8
- 823              		.cfi_offset 3, -8
- 824              		.cfi_offset 14, -4
- 242:Src/mouse_state.c ****     rotation_speed = IMU_GetGyro_Z();
- 825              		.loc 1 242 5 view .LVU172
- 826              		.loc 1 242 22 is_stmt 0 view .LVU173
- 827 0002 FFF7FEFF 		bl	IMU_GetGyro_Z
- 828              	.LVL48:
- 829              		.loc 1 242 20 view .LVU174
- 830 0006 024B     		ldr	r3, .L75
- 831 0008 83ED000A 		vstr.32	s0, [r3]
- 243:Src/mouse_state.c **** }
- 832              		.loc 1 243 1 view .LVU175
- 833 000c 08BD     		pop	{r3, pc}
- 834              	.L76:
- 835 000e 00BF     		.align	2
- 836              	.L75:
- 837 0010 00000000 		.word	.LANCHOR13
- 838              		.cfi_endproc
- 839              	.LFE147:
- 841              		.section	.text.get_rotation_speed,"ax",%progbits
- 842              		.align	1
- 843              		.global	get_rotation_speed
- 844              		.syntax unified
- 845              		.thumb
- 846              		.thumb_func
- 847              		.fpu fpv4-sp-d16
- 849              	get_rotation_speed:
- 850              	.LFB148:
- 244:Src/mouse_state.c **** 
-ARM GAS  C:\Temp\ccCzKJNb.s 			page 20
+ 786              		.thumb
+ 787              		.thumb_func
+ 788              		.fpu fpv4-sp-d16
+ 790              	calc_move_length:
+ 791              	.LFB18:
+ 251:Src/mouse_state.c **** //機能	: マウスの移動距離[m]を計算する
+ 252:Src/mouse_state.c **** //引数	: なし
+ 253:Src/mouse_state.c **** //返り値	: なし
+ 254:Src/mouse_state.c **** //備考  :1msタスク
+ 255:Src/mouse_state.c **** void calc_move_length ( void )
+ 256:Src/mouse_state.c **** {
+ 792              		.loc 1 256 1 is_stmt 1 view -0
+ 793              		.cfi_startproc
+ 794              		@ args = 0, pretend = 0, frame = 0
+ 795              		@ frame_needed = 0, uses_anonymous_args = 0
+ 796 0000 70B5     		push	{r4, r5, r6, lr}
+ 797              	.LCFI10:
+ 798              		.cfi_def_cfa_offset 16
+ 799              		.cfi_offset 4, -16
+ 800              		.cfi_offset 5, -12
+ 801              		.cfi_offset 6, -8
+ 802              		.cfi_offset 14, -4
+ 257:Src/mouse_state.c ****     move_length += get_move_speed_ave() * 0.001; // [m/s] * [s]
+ 803              		.loc 1 257 5 view .LVU172
+ 804              		.loc 1 257 20 is_stmt 0 view .LVU173
+ 805 0002 FFF7FEFF 		bl	get_move_speed_ave
+ 806              	.LVL43:
+ 807 0006 10EE100A 		vmov	r0, s0
+ 808 000a FFF7FEFF 		bl	__aeabi_f2d
+ 809              	.LVL44:
+ 810              		.loc 1 257 41 view .LVU174
+ 811 000e 0BA3     		adr	r3, .L74+4
+ 812 0010 D3E90023 		ldrd	r2, [r3]
+ 813 0014 FFF7FEFF 		bl	__aeabi_dmul
+ 814              	.LVL45:
+ 815 0018 0446     		mov	r4, r0
+ 816 001a 0D46     		mov	r5, r1
+ 817              		.loc 1 257 17 view .LVU175
+ 818 001c 064E     		ldr	r6, .L74
+ 819 001e 3068     		ldr	r0, [r6]	@ float
+ 820 0020 FFF7FEFF 		bl	__aeabi_f2d
+ 821              	.LVL46:
+ 822 0024 2246     		mov	r2, r4
+ 823 0026 2B46     		mov	r3, r5
+ 824 0028 FFF7FEFF 		bl	__aeabi_dadd
+ 825              	.LVL47:
+ 826 002c FFF7FEFF 		bl	__aeabi_d2f
+ 827              	.LVL48:
+ 828 0030 3060     		str	r0, [r6]	@ float
+ 258:Src/mouse_state.c **** }
+ 829              		.loc 1 258 1 view .LVU176
+ 830 0032 70BD     		pop	{r4, r5, r6, pc}
+ 831              	.L75:
+ 832 0034 AFF30080 		.align	3
+ 833              	.L74:
+ 834 0038 00000000 		.word	.LANCHOR13
+ 835 003c FCA9F1D2 		.word	-755914244
+ARM GAS  C:\Temp\ccjZgElw.s 			page 20
 
 
- 245:Src/mouse_state.c **** //機能	: マウスの角速度を取得する
- 246:Src/mouse_state.c **** //引数	: なし
- 247:Src/mouse_state.c **** //返り値	: マウスの角速度[rad/s]
- 248:Src/mouse_state.c **** float get_rotation_speed ( void )
- 249:Src/mouse_state.c **** {
- 851              		.loc 1 249 1 is_stmt 1 view -0
- 852              		.cfi_startproc
- 853              		@ args = 0, pretend = 0, frame = 0
- 854              		@ frame_needed = 0, uses_anonymous_args = 0
- 855              		@ link register save eliminated.
- 250:Src/mouse_state.c ****     return rotation_speed;
- 856              		.loc 1 250 5 view .LVU177
- 251:Src/mouse_state.c **** }
- 857              		.loc 1 251 1 is_stmt 0 view .LVU178
- 858 0000 014B     		ldr	r3, .L78
- 859 0002 93ED000A 		vldr.32	s0, [r3]
- 860 0006 7047     		bx	lr
- 861              	.L79:
- 862              		.align	2
- 863              	.L78:
- 864 0008 00000000 		.word	.LANCHOR13
- 865              		.cfi_endproc
- 866              	.LFE148:
- 868              		.section	.text.calc_rotation_angle,"ax",%progbits
- 869              		.align	1
- 870              		.global	calc_rotation_angle
- 871              		.syntax unified
- 872              		.thumb
- 873              		.thumb_func
- 874              		.fpu fpv4-sp-d16
- 876              	calc_rotation_angle:
- 877              	.LFB149:
- 252:Src/mouse_state.c **** 
- 253:Src/mouse_state.c **** //機能	: マウスの角度[rad/s]を算出する
- 254:Src/mouse_state.c **** //引数	: なし
- 255:Src/mouse_state.c **** //返り値	: なし
- 256:Src/mouse_state.c **** void calc_rotation_angle ( void )
- 257:Src/mouse_state.c **** {
- 878              		.loc 1 257 1 is_stmt 1 view -0
+ 836 0040 4D62503F 		.word	1062232653
+ 837              		.cfi_endproc
+ 838              	.LFE18:
+ 840              		.section	.text.get_move_length,"ax",%progbits
+ 841              		.align	1
+ 842              		.global	get_move_length
+ 843              		.syntax unified
+ 844              		.thumb
+ 845              		.thumb_func
+ 846              		.fpu fpv4-sp-d16
+ 848              	get_move_length:
+ 849              	.LFB19:
+ 259:Src/mouse_state.c **** 
+ 260:Src/mouse_state.c **** //機能	: マウスの移動距離[m]を取得する
+ 261:Src/mouse_state.c **** //引数	: なし
+ 262:Src/mouse_state.c **** //返り値	: なし
+ 263:Src/mouse_state.c **** float get_move_length ( void )
+ 264:Src/mouse_state.c **** {
+ 850              		.loc 1 264 1 is_stmt 1 view -0
+ 851              		.cfi_startproc
+ 852              		@ args = 0, pretend = 0, frame = 0
+ 853              		@ frame_needed = 0, uses_anonymous_args = 0
+ 854              		@ link register save eliminated.
+ 265:Src/mouse_state.c ****     return move_length;
+ 855              		.loc 1 265 5 view .LVU178
+ 266:Src/mouse_state.c **** }
+ 856              		.loc 1 266 1 is_stmt 0 view .LVU179
+ 857 0000 014B     		ldr	r3, .L77
+ 858 0002 93ED000A 		vldr.32	s0, [r3]
+ 859 0006 7047     		bx	lr
+ 860              	.L78:
+ 861              		.align	2
+ 862              	.L77:
+ 863 0008 00000000 		.word	.LANCHOR13
+ 864              		.cfi_endproc
+ 865              	.LFE19:
+ 867              		.section	.text.set_move_length,"ax",%progbits
+ 868              		.align	1
+ 869              		.global	set_move_length
+ 870              		.syntax unified
+ 871              		.thumb
+ 872              		.thumb_func
+ 873              		.fpu fpv4-sp-d16
+ 875              	set_move_length:
+ 876              	.LVL49:
+ 877              	.LFB20:
+ 267:Src/mouse_state.c **** 
+ 268:Src/mouse_state.c **** //機能	: マウスの移動距離[m]を設定する
+ 269:Src/mouse_state.c **** //引数	: なし
+ 270:Src/mouse_state.c **** //返り値	: なし
+ 271:Src/mouse_state.c **** void set_move_length ( float length )
+ 272:Src/mouse_state.c **** {
+ 878              		.loc 1 272 1 is_stmt 1 view -0
  879              		.cfi_startproc
  880              		@ args = 0, pretend = 0, frame = 0
  881              		@ frame_needed = 0, uses_anonymous_args = 0
- 882 0000 70B5     		push	{r4, r5, r6, lr}
- 883              	.LCFI12:
- 884              		.cfi_def_cfa_offset 16
- 885              		.cfi_offset 4, -16
- 886              		.cfi_offset 5, -12
- 887              		.cfi_offset 6, -8
- 888              		.cfi_offset 14, -4
- 258:Src/mouse_state.c ****     rotation_angle += rotation_speed * 0.001; // [rad/s] * [s]
- 889              		.loc 1 258 5 view .LVU180
- 890              		.loc 1 258 38 is_stmt 0 view .LVU181
- 891 0002 0D4B     		ldr	r3, .L82+8
- 892 0004 1868     		ldr	r0, [r3]	@ float
- 893 0006 FFF7FEFF 		bl	__aeabi_f2d
- 894              	.LVL49:
- 895 000a 09A3     		adr	r3, .L82
-ARM GAS  C:\Temp\ccCzKJNb.s 			page 21
+ 882              		@ link register save eliminated.
+ARM GAS  C:\Temp\ccjZgElw.s 			page 21
 
 
- 896 000c D3E90023 		ldrd	r2, [r3]
- 897 0010 FFF7FEFF 		bl	__aeabi_dmul
- 898              	.LVL50:
- 899 0014 0446     		mov	r4, r0
- 900 0016 0D46     		mov	r5, r1
- 901              		.loc 1 258 20 view .LVU182
- 902 0018 084E     		ldr	r6, .L82+12
- 903 001a 3068     		ldr	r0, [r6]	@ float
- 904 001c FFF7FEFF 		bl	__aeabi_f2d
- 905              	.LVL51:
- 906 0020 2246     		mov	r2, r4
- 907 0022 2B46     		mov	r3, r5
- 908 0024 FFF7FEFF 		bl	__aeabi_dadd
- 909              	.LVL52:
- 910 0028 FFF7FEFF 		bl	__aeabi_d2f
- 911              	.LVL53:
- 912 002c 3060     		str	r0, [r6]	@ float
- 259:Src/mouse_state.c **** }
- 913              		.loc 1 259 1 view .LVU183
- 914 002e 70BD     		pop	{r4, r5, r6, pc}
- 915              	.L83:
- 916              		.align	3
- 917              	.L82:
- 918 0030 FCA9F1D2 		.word	-755914244
- 919 0034 4D62503F 		.word	1062232653
- 920 0038 00000000 		.word	.LANCHOR13
- 921 003c 00000000 		.word	.LANCHOR14
- 922              		.cfi_endproc
- 923              	.LFE149:
- 925              		.section	.text.get_rotation_angle,"ax",%progbits
- 926              		.align	1
- 927              		.global	get_rotation_angle
- 928              		.syntax unified
- 929              		.thumb
- 930              		.thumb_func
- 931              		.fpu fpv4-sp-d16
- 933              	get_rotation_angle:
- 934              	.LFB150:
- 260:Src/mouse_state.c **** 
- 261:Src/mouse_state.c **** //機能	: マウスの角度を取得する
- 262:Src/mouse_state.c **** //引数	: なし
- 263:Src/mouse_state.c **** //返り値	: マウスの角度[rad]
- 264:Src/mouse_state.c **** float get_rotation_angle ( void )
- 265:Src/mouse_state.c **** {
- 935              		.loc 1 265 1 is_stmt 1 view -0
- 936              		.cfi_startproc
- 937              		@ args = 0, pretend = 0, frame = 0
- 938              		@ frame_needed = 0, uses_anonymous_args = 0
- 939              		@ link register save eliminated.
- 266:Src/mouse_state.c ****     return rotation_angle;
- 940              		.loc 1 266 5 view .LVU185
- 267:Src/mouse_state.c **** }
- 941              		.loc 1 267 1 is_stmt 0 view .LVU186
- 942 0000 014B     		ldr	r3, .L85
- 943 0002 93ED000A 		vldr.32	s0, [r3]
- 944 0006 7047     		bx	lr
- 945              	.L86:
-ARM GAS  C:\Temp\ccCzKJNb.s 			page 22
+ 273:Src/mouse_state.c ****     move_length = length;
+ 883              		.loc 1 273 5 view .LVU181
+ 884              		.loc 1 273 17 is_stmt 0 view .LVU182
+ 885 0000 014B     		ldr	r3, .L80
+ 886 0002 83ED000A 		vstr.32	s0, [r3]
+ 274:Src/mouse_state.c **** }
+ 887              		.loc 1 274 1 view .LVU183
+ 888 0006 7047     		bx	lr
+ 889              	.L81:
+ 890              		.align	2
+ 891              	.L80:
+ 892 0008 00000000 		.word	.LANCHOR13
+ 893              		.cfi_endproc
+ 894              	.LFE20:
+ 896              		.section	.text.calc_rotation_speed,"ax",%progbits
+ 897              		.align	1
+ 898              		.global	calc_rotation_speed
+ 899              		.syntax unified
+ 900              		.thumb
+ 901              		.thumb_func
+ 902              		.fpu fpv4-sp-d16
+ 904              	calc_rotation_speed:
+ 905              	.LFB21:
+ 275:Src/mouse_state.c **** 
+ 276:Src/mouse_state.c **** //機能	: マウスの角速度[rad/s]を算出する
+ 277:Src/mouse_state.c **** //引数	: なし
+ 278:Src/mouse_state.c **** //返り値	: なし
+ 279:Src/mouse_state.c **** void calc_rotation_speed ( void )
+ 280:Src/mouse_state.c **** {
+ 906              		.loc 1 280 1 is_stmt 1 view -0
+ 907              		.cfi_startproc
+ 908              		@ args = 0, pretend = 0, frame = 0
+ 909              		@ frame_needed = 0, uses_anonymous_args = 0
+ 910 0000 08B5     		push	{r3, lr}
+ 911              	.LCFI11:
+ 912              		.cfi_def_cfa_offset 8
+ 913              		.cfi_offset 3, -8
+ 914              		.cfi_offset 14, -4
+ 281:Src/mouse_state.c ****     rotation_speed = IMU_GetGyro_Z();
+ 915              		.loc 1 281 5 view .LVU185
+ 916              		.loc 1 281 22 is_stmt 0 view .LVU186
+ 917 0002 FFF7FEFF 		bl	IMU_GetGyro_Z
+ 918              	.LVL50:
+ 919              		.loc 1 281 20 view .LVU187
+ 920 0006 024B     		ldr	r3, .L84
+ 921 0008 83ED000A 		vstr.32	s0, [r3]
+ 282:Src/mouse_state.c **** }
+ 922              		.loc 1 282 1 view .LVU188
+ 923 000c 08BD     		pop	{r3, pc}
+ 924              	.L85:
+ 925 000e 00BF     		.align	2
+ 926              	.L84:
+ 927 0010 00000000 		.word	.LANCHOR14
+ 928              		.cfi_endproc
+ 929              	.LFE21:
+ 931              		.section	.text.get_rotation_speed,"ax",%progbits
+ 932              		.align	1
+ARM GAS  C:\Temp\ccjZgElw.s 			page 22
 
 
- 946              		.align	2
- 947              	.L85:
- 948 0008 00000000 		.word	.LANCHOR14
- 949              		.cfi_endproc
- 950              	.LFE150:
- 952              		.section	.bss.ave_counter.10206,"aw",%nobits
- 953              		.align	1
- 954              		.set	.LANCHOR9,. + 0
- 957              	ave_counter.10206:
- 958 0000 0000     		.space	2
- 959              		.section	.bss.ave_store.10205,"aw",%nobits
- 960              		.align	2
- 961              		.set	.LANCHOR10,. + 0
- 964              	ave_store.10205:
- 965 0000 00000000 		.space	80
- 965      00000000 
- 965      00000000 
- 965      00000000 
- 965      00000000 
- 966              		.section	.bss.move_length,"aw",%nobits
- 967              		.align	2
- 968              		.set	.LANCHOR12,. + 0
- 971              	move_length:
- 972 0000 00000000 		.space	4
- 973              		.section	.bss.move_speed,"aw",%nobits
- 974              		.align	2
- 975              		.set	.LANCHOR8,. + 0
- 978              	move_speed:
- 979 0000 00000000 		.space	4
- 980              		.section	.bss.move_speed_ave,"aw",%nobits
- 981              		.align	2
- 982              		.set	.LANCHOR11,. + 0
- 985              	move_speed_ave:
- 986 0000 00000000 		.space	4
- 987              		.section	.bss.rotation_angle,"aw",%nobits
- 988              		.align	2
- 989              		.set	.LANCHOR14,. + 0
- 992              	rotation_angle:
- 993 0000 00000000 		.space	4
- 994              		.section	.bss.rotation_speed,"aw",%nobits
- 995              		.align	2
- 996              		.set	.LANCHOR13,. + 0
- 999              	rotation_speed:
- 1000 0000 00000000 		.space	4
- 1001              		.section	.bss.tire_l_speed,"aw",%nobits
- 1002              		.align	2
- 1003              		.set	.LANCHOR3,. + 0
- 1006              	tire_l_speed:
- 1007 0000 00000000 		.space	4
- 1008              		.section	.bss.tire_l_speed_max,"aw",%nobits
- 1009              		.align	2
- 1010              		.set	.LANCHOR6,. + 0
- 1013              	tire_l_speed_max:
- 1014 0000 00000000 		.space	4
- 1015              		.section	.bss.tire_l_speed_min,"aw",%nobits
- 1016              		.align	2
- 1017              		.set	.LANCHOR7,. + 0
-ARM GAS  C:\Temp\ccCzKJNb.s 			page 23
+ 933              		.global	get_rotation_speed
+ 934              		.syntax unified
+ 935              		.thumb
+ 936              		.thumb_func
+ 937              		.fpu fpv4-sp-d16
+ 939              	get_rotation_speed:
+ 940              	.LFB22:
+ 283:Src/mouse_state.c **** 
+ 284:Src/mouse_state.c **** //機能	: マウスの角速度を取得する
+ 285:Src/mouse_state.c **** //引数	: なし
+ 286:Src/mouse_state.c **** //返り値	: マウスの角速度[rad/s]
+ 287:Src/mouse_state.c **** float get_rotation_speed ( void )
+ 288:Src/mouse_state.c **** {
+ 941              		.loc 1 288 1 is_stmt 1 view -0
+ 942              		.cfi_startproc
+ 943              		@ args = 0, pretend = 0, frame = 0
+ 944              		@ frame_needed = 0, uses_anonymous_args = 0
+ 945              		@ link register save eliminated.
+ 289:Src/mouse_state.c ****     return rotation_speed;
+ 946              		.loc 1 289 5 view .LVU190
+ 290:Src/mouse_state.c **** }
+ 947              		.loc 1 290 1 is_stmt 0 view .LVU191
+ 948 0000 014B     		ldr	r3, .L87
+ 949 0002 93ED000A 		vldr.32	s0, [r3]
+ 950 0006 7047     		bx	lr
+ 951              	.L88:
+ 952              		.align	2
+ 953              	.L87:
+ 954 0008 00000000 		.word	.LANCHOR14
+ 955              		.cfi_endproc
+ 956              	.LFE22:
+ 958              		.section	.text.calc_rotation_angle,"ax",%progbits
+ 959              		.align	1
+ 960              		.global	calc_rotation_angle
+ 961              		.syntax unified
+ 962              		.thumb
+ 963              		.thumb_func
+ 964              		.fpu fpv4-sp-d16
+ 966              	calc_rotation_angle:
+ 967              	.LFB23:
+ 291:Src/mouse_state.c **** 
+ 292:Src/mouse_state.c **** //機能	: マウスの角度[rad/s]を算出する
+ 293:Src/mouse_state.c **** //引数	: なし
+ 294:Src/mouse_state.c **** //返り値	: なし
+ 295:Src/mouse_state.c **** //備考 :1msタスク
+ 296:Src/mouse_state.c **** void calc_rotation_angle ( void )
+ 297:Src/mouse_state.c **** {
+ 968              		.loc 1 297 1 is_stmt 1 view -0
+ 969              		.cfi_startproc
+ 970              		@ args = 0, pretend = 0, frame = 0
+ 971              		@ frame_needed = 0, uses_anonymous_args = 0
+ 972 0000 70B5     		push	{r4, r5, r6, lr}
+ 973              	.LCFI12:
+ 974              		.cfi_def_cfa_offset 16
+ 975              		.cfi_offset 4, -16
+ 976              		.cfi_offset 5, -12
+ 977              		.cfi_offset 6, -8
+ARM GAS  C:\Temp\ccjZgElw.s 			page 23
 
 
- 1020              	tire_l_speed_min:
- 1021 0000 00000000 		.space	4
- 1022              		.section	.bss.tire_r_speed,"aw",%nobits
- 1023              		.align	2
- 1024              		.set	.LANCHOR2,. + 0
- 1027              	tire_r_speed:
- 1028 0000 00000000 		.space	4
- 1029              		.section	.bss.tire_r_speed_max,"aw",%nobits
- 1030              		.align	2
- 1031              		.set	.LANCHOR4,. + 0
- 1034              	tire_r_speed_max:
- 1035 0000 00000000 		.space	4
- 1036              		.section	.bss.tire_r_speed_min,"aw",%nobits
- 1037              		.align	2
- 1038              		.set	.LANCHOR5,. + 0
- 1041              	tire_r_speed_min:
- 1042 0000 00000000 		.space	4
- 1043              		.section	.data.left_count_old.10166,"aw"
- 1044              		.align	1
- 1045              		.set	.LANCHOR1,. + 0
- 1048              	left_count_old.10166:
- 1049 0000 FE7F     		.short	32766
- 1050              		.section	.data.right_count_old.10160,"aw"
- 1051              		.align	1
- 1052              		.set	.LANCHOR0,. + 0
- 1055              	right_count_old.10160:
- 1056 0000 FE7F     		.short	32766
- 1057              		.text
- 1058              	.Letext0:
- 1059              		.file 2 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\machine\\_default_t
- 1060              		.file 3 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\lock.h"
- 1061              		.file 4 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\_types.h"
- 1062              		.file 5 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\lib\\gcc\\arm-none-eabi\\9.2.1\\include\\st
- 1063              		.file 6 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\reent.h"
- 1064              		.file 7 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\_stdint.h"
- 1065              		.file 8 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\math.h"
- 1066              		.file 9 "Drivers/CMSIS/Include/core_cm4.h"
- 1067              		.file 10 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h"
- 1068              		.file 11 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f413xx.h"
- 1069              		.file 12 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h"
- 1070              		.file 13 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
- 1071              		.file 14 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h"
- 1072              		.file 15 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_adc.h"
- 1073              		.file 16 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h"
- 1074              		.file 17 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h"
- 1075              		.file 18 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h"
- 1076              		.file 19 "Inc/adc.h"
- 1077              		.file 20 "Inc/spi.h"
- 1078              		.file 21 "Inc/tim.h"
- 1079              		.file 22 "Inc/usart.h"
- 1080              		.file 23 "Inc/index.h"
- 1081              		.file 24 "Inc/encorder.h"
-ARM GAS  C:\Temp\ccCzKJNb.s 			page 24
+ 978              		.cfi_offset 14, -4
+ 298:Src/mouse_state.c ****     rotation_angle += rotation_speed * 0.001; // [rad/s] * [s]
+ 979              		.loc 1 298 5 view .LVU193
+ 980              		.loc 1 298 38 is_stmt 0 view .LVU194
+ 981 0002 0D4B     		ldr	r3, .L91+8
+ 982 0004 1868     		ldr	r0, [r3]	@ float
+ 983 0006 FFF7FEFF 		bl	__aeabi_f2d
+ 984              	.LVL51:
+ 985 000a 09A3     		adr	r3, .L91
+ 986 000c D3E90023 		ldrd	r2, [r3]
+ 987 0010 FFF7FEFF 		bl	__aeabi_dmul
+ 988              	.LVL52:
+ 989 0014 0446     		mov	r4, r0
+ 990 0016 0D46     		mov	r5, r1
+ 991              		.loc 1 298 20 view .LVU195
+ 992 0018 084E     		ldr	r6, .L91+12
+ 993 001a 3068     		ldr	r0, [r6]	@ float
+ 994 001c FFF7FEFF 		bl	__aeabi_f2d
+ 995              	.LVL53:
+ 996 0020 2246     		mov	r2, r4
+ 997 0022 2B46     		mov	r3, r5
+ 998 0024 FFF7FEFF 		bl	__aeabi_dadd
+ 999              	.LVL54:
+ 1000 0028 FFF7FEFF 		bl	__aeabi_d2f
+ 1001              	.LVL55:
+ 1002 002c 3060     		str	r0, [r6]	@ float
+ 299:Src/mouse_state.c **** }
+ 1003              		.loc 1 299 1 view .LVU196
+ 1004 002e 70BD     		pop	{r4, r5, r6, pc}
+ 1005              	.L92:
+ 1006              		.align	3
+ 1007              	.L91:
+ 1008 0030 FCA9F1D2 		.word	-755914244
+ 1009 0034 4D62503F 		.word	1062232653
+ 1010 0038 00000000 		.word	.LANCHOR14
+ 1011 003c 00000000 		.word	.LANCHOR15
+ 1012              		.cfi_endproc
+ 1013              	.LFE23:
+ 1015              		.section	.text.mouse_state_1ms,"ax",%progbits
+ 1016              		.align	1
+ 1017              		.global	mouse_state_1ms
+ 1018              		.syntax unified
+ 1019              		.thumb
+ 1020              		.thumb_func
+ 1021              		.fpu fpv4-sp-d16
+ 1023              	mouse_state_1ms:
+ 1024              	.LFB3:
+  31:Src/mouse_state.c **** //	calc_move_speed();		//速度計算
+ 1025              		.loc 1 31 1 is_stmt 1 view -0
+ 1026              		.cfi_startproc
+ 1027              		@ args = 0, pretend = 0, frame = 0
+ 1028              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1029 0000 08B5     		push	{r3, lr}
+ 1030              	.LCFI13:
+ 1031              		.cfi_def_cfa_offset 8
+ 1032              		.cfi_offset 3, -8
+ 1033              		.cfi_offset 14, -4
+ARM GAS  C:\Temp\ccjZgElw.s 			page 24
+
+
+  33:Src/mouse_state.c **** //	filter_move_speed();	//速度をフィルタ処理
+ 1034              		.loc 1 33 2 view .LVU198
+ 1035 0002 FFF7FEFF 		bl	calc_rotation_speed
+ 1036              	.LVL56:
+  35:Src/mouse_state.c **** 	calc_rotation_angle();	//回転角度を計算
+ 1037              		.loc 1 35 2 view .LVU199
+ 1038 0006 FFF7FEFF 		bl	calc_move_length
+ 1039              	.LVL57:
+  36:Src/mouse_state.c **** }
+ 1040              		.loc 1 36 2 view .LVU200
+ 1041 000a FFF7FEFF 		bl	calc_rotation_angle
+ 1042              	.LVL58:
+  37:Src/mouse_state.c **** 
+ 1043              		.loc 1 37 1 is_stmt 0 view .LVU201
+ 1044 000e 08BD     		pop	{r3, pc}
+ 1045              		.cfi_endproc
+ 1046              	.LFE3:
+ 1048              		.section	.text.get_rotation_angle,"ax",%progbits
+ 1049              		.align	1
+ 1050              		.global	get_rotation_angle
+ 1051              		.syntax unified
+ 1052              		.thumb
+ 1053              		.thumb_func
+ 1054              		.fpu fpv4-sp-d16
+ 1056              	get_rotation_angle:
+ 1057              	.LFB24:
+ 300:Src/mouse_state.c **** 
+ 301:Src/mouse_state.c **** //機能	: マウスの角度を取得する
+ 302:Src/mouse_state.c **** //引数	: なし
+ 303:Src/mouse_state.c **** //返り値	: マウスの角度[rad]
+ 304:Src/mouse_state.c **** float get_rotation_angle ( void )
+ 305:Src/mouse_state.c **** {
+ 1058              		.loc 1 305 1 is_stmt 1 view -0
+ 1059              		.cfi_startproc
+ 1060              		@ args = 0, pretend = 0, frame = 0
+ 1061              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1062              		@ link register save eliminated.
+ 306:Src/mouse_state.c ****     return rotation_angle;
+ 1063              		.loc 1 306 5 view .LVU203
+ 307:Src/mouse_state.c **** }
+ 1064              		.loc 1 307 1 is_stmt 0 view .LVU204
+ 1065 0000 014B     		ldr	r3, .L96
+ 1066 0002 93ED000A 		vldr.32	s0, [r3]
+ 1067 0006 7047     		bx	lr
+ 1068              	.L97:
+ 1069              		.align	2
+ 1070              	.L96:
+ 1071 0008 00000000 		.word	.LANCHOR15
+ 1072              		.cfi_endproc
+ 1073              	.LFE24:
+ 1075              		.section	.text.set_rotation_angle,"ax",%progbits
+ 1076              		.align	1
+ 1077              		.global	set_rotation_angle
+ 1078              		.syntax unified
+ 1079              		.thumb
+ 1080              		.thumb_func
+ 1081              		.fpu fpv4-sp-d16
+ARM GAS  C:\Temp\ccjZgElw.s 			page 25
+
+
+ 1083              	set_rotation_angle:
+ 1084              	.LVL59:
+ 1085              	.LFB25:
+ 308:Src/mouse_state.c **** 
+ 309:Src/mouse_state.c **** //機能	: マウスの角度を取得する
+ 310:Src/mouse_state.c **** //引数	: なし
+ 311:Src/mouse_state.c **** //返り値	: なし
+ 312:Src/mouse_state.c **** void set_rotation_angle ( float angle )
+ 313:Src/mouse_state.c **** {
+ 1086              		.loc 1 313 1 is_stmt 1 view -0
+ 1087              		.cfi_startproc
+ 1088              		@ args = 0, pretend = 0, frame = 0
+ 1089              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1090              		@ link register save eliminated.
+ 314:Src/mouse_state.c ****     rotation_angle = angle;
+ 1091              		.loc 1 314 5 view .LVU206
+ 1092              		.loc 1 314 20 is_stmt 0 view .LVU207
+ 1093 0000 014B     		ldr	r3, .L99
+ 1094 0002 83ED000A 		vstr.32	s0, [r3]
+ 315:Src/mouse_state.c **** }
+ 1095              		.loc 1 315 1 view .LVU208
+ 1096 0006 7047     		bx	lr
+ 1097              	.L100:
+ 1098              		.align	2
+ 1099              	.L99:
+ 1100 0008 00000000 		.word	.LANCHOR15
+ 1101              		.cfi_endproc
+ 1102              	.LFE25:
+ 1104              		.section	.bss.ave_counter.6695,"aw",%nobits
+ 1105              		.align	1
+ 1106              		.set	.LANCHOR9,. + 0
+ 1109              	ave_counter.6695:
+ 1110 0000 0000     		.space	2
+ 1111              		.section	.bss.ave_store.6694,"aw",%nobits
+ 1112              		.align	2
+ 1113              		.set	.LANCHOR10,. + 0
+ 1116              	ave_store.6694:
+ 1117 0000 00000000 		.space	80
+ 1117      00000000 
+ 1117      00000000 
+ 1117      00000000 
+ 1117      00000000 
+ 1118              		.section	.bss.move_accel_ave,"aw",%nobits
+ 1119              		.align	2
+ 1120              		.set	.LANCHOR12,. + 0
+ 1123              	move_accel_ave:
+ 1124 0000 00000000 		.space	4
+ 1125              		.section	.bss.move_length,"aw",%nobits
+ 1126              		.align	2
+ 1127              		.set	.LANCHOR13,. + 0
+ 1130              	move_length:
+ 1131 0000 00000000 		.space	4
+ 1132              		.section	.bss.move_speed,"aw",%nobits
+ 1133              		.align	2
+ 1134              		.set	.LANCHOR8,. + 0
+ 1137              	move_speed:
+ 1138 0000 00000000 		.space	4
+ARM GAS  C:\Temp\ccjZgElw.s 			page 26
+
+
+ 1139              		.section	.bss.move_speed_ave,"aw",%nobits
+ 1140              		.align	2
+ 1141              		.set	.LANCHOR11,. + 0
+ 1144              	move_speed_ave:
+ 1145 0000 00000000 		.space	4
+ 1146              		.section	.bss.rotation_angle,"aw",%nobits
+ 1147              		.align	2
+ 1148              		.set	.LANCHOR15,. + 0
+ 1151              	rotation_angle:
+ 1152 0000 00000000 		.space	4
+ 1153              		.section	.bss.rotation_speed,"aw",%nobits
+ 1154              		.align	2
+ 1155              		.set	.LANCHOR14,. + 0
+ 1158              	rotation_speed:
+ 1159 0000 00000000 		.space	4
+ 1160              		.section	.bss.tire_l_speed,"aw",%nobits
+ 1161              		.align	2
+ 1162              		.set	.LANCHOR3,. + 0
+ 1165              	tire_l_speed:
+ 1166 0000 00000000 		.space	4
+ 1167              		.section	.bss.tire_l_speed_max,"aw",%nobits
+ 1168              		.align	2
+ 1169              		.set	.LANCHOR6,. + 0
+ 1172              	tire_l_speed_max:
+ 1173 0000 00000000 		.space	4
+ 1174              		.section	.bss.tire_l_speed_min,"aw",%nobits
+ 1175              		.align	2
+ 1176              		.set	.LANCHOR7,. + 0
+ 1179              	tire_l_speed_min:
+ 1180 0000 00000000 		.space	4
+ 1181              		.section	.bss.tire_r_speed,"aw",%nobits
+ 1182              		.align	2
+ 1183              		.set	.LANCHOR2,. + 0
+ 1186              	tire_r_speed:
+ 1187 0000 00000000 		.space	4
+ 1188              		.section	.bss.tire_r_speed_max,"aw",%nobits
+ 1189              		.align	2
+ 1190              		.set	.LANCHOR4,. + 0
+ 1193              	tire_r_speed_max:
+ 1194 0000 00000000 		.space	4
+ 1195              		.section	.bss.tire_r_speed_min,"aw",%nobits
+ 1196              		.align	2
+ 1197              		.set	.LANCHOR5,. + 0
+ 1200              	tire_r_speed_min:
+ 1201 0000 00000000 		.space	4
+ 1202              		.section	.data.left_count_old.6655,"aw"
+ 1203              		.align	1
+ 1204              		.set	.LANCHOR1,. + 0
+ 1207              	left_count_old.6655:
+ 1208 0000 FE7F     		.short	32766
+ 1209              		.section	.data.right_count_old.6649,"aw"
+ 1210              		.align	1
+ 1211              		.set	.LANCHOR0,. + 0
+ 1214              	right_count_old.6649:
+ 1215 0000 FE7F     		.short	32766
+ 1216              		.text
+ 1217              	.Letext0:
+ARM GAS  C:\Temp\ccjZgElw.s 			page 27
+
+
+ 1218              		.file 2 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\machine\\_default_t
+ 1219              		.file 3 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\lock.h"
+ 1220              		.file 4 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\_types.h"
+ 1221              		.file 5 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\lib\\gcc\\arm-none-eabi\\9.2.1\\include\\st
+ 1222              		.file 6 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\reent.h"
+ 1223              		.file 7 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 1224              		.file 8 "Inc/imu.h"
+ 1225              		.file 9 "Inc/encorder.h"
+ARM GAS  C:\Temp\ccjZgElw.s 			page 28
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 mouse_state.c
-  C:\Temp\ccCzKJNb.s:18     .text.Get_diff_right_count:00000000 $t
-  C:\Temp\ccCzKJNb.s:26     .text.Get_diff_right_count:00000000 Get_diff_right_count
-  C:\Temp\ccCzKJNb.s:66     .text.Get_diff_right_count:00000014 $d
-  C:\Temp\ccCzKJNb.s:71     .text.Get_diff_left_count:00000000 $t
-  C:\Temp\ccCzKJNb.s:78     .text.Get_diff_left_count:00000000 Get_diff_left_count
-  C:\Temp\ccCzKJNb.s:117    .text.Get_diff_left_count:00000014 $d
-  C:\Temp\ccCzKJNb.s:122    .text.calc_move_speed:00000000 $t
-  C:\Temp\ccCzKJNb.s:129    .text.calc_move_speed:00000000 calc_move_speed
-  C:\Temp\ccCzKJNb.s:263    .text.calc_move_speed:000000c0 $d
-  C:\Temp\ccCzKJNb.s:278    .text.get_tire_r_speed:00000000 $t
-  C:\Temp\ccCzKJNb.s:285    .text.get_tire_r_speed:00000000 get_tire_r_speed
-  C:\Temp\ccCzKJNb.s:300    .text.get_tire_r_speed:00000008 $d
-  C:\Temp\ccCzKJNb.s:305    .text.get_tire_r_speed_max:00000000 $t
-  C:\Temp\ccCzKJNb.s:312    .text.get_tire_r_speed_max:00000000 get_tire_r_speed_max
-  C:\Temp\ccCzKJNb.s:327    .text.get_tire_r_speed_max:00000008 $d
-  C:\Temp\ccCzKJNb.s:332    .text.get_tire_r_speed_min:00000000 $t
-  C:\Temp\ccCzKJNb.s:339    .text.get_tire_r_speed_min:00000000 get_tire_r_speed_min
-  C:\Temp\ccCzKJNb.s:354    .text.get_tire_r_speed_min:00000008 $d
-  C:\Temp\ccCzKJNb.s:359    .text.get_tire_l_speed:00000000 $t
-  C:\Temp\ccCzKJNb.s:366    .text.get_tire_l_speed:00000000 get_tire_l_speed
-  C:\Temp\ccCzKJNb.s:381    .text.get_tire_l_speed:00000008 $d
-  C:\Temp\ccCzKJNb.s:386    .text.get_tire_l_speed_max:00000000 $t
-  C:\Temp\ccCzKJNb.s:393    .text.get_tire_l_speed_max:00000000 get_tire_l_speed_max
-  C:\Temp\ccCzKJNb.s:408    .text.get_tire_l_speed_max:00000008 $d
-  C:\Temp\ccCzKJNb.s:413    .text.get_tire_l_speed_min:00000000 $t
-  C:\Temp\ccCzKJNb.s:420    .text.get_tire_l_speed_min:00000000 get_tire_l_speed_min
-  C:\Temp\ccCzKJNb.s:435    .text.get_tire_l_speed_min:00000008 $d
-  C:\Temp\ccCzKJNb.s:440    .text.init_tire_speed:00000000 $t
-  C:\Temp\ccCzKJNb.s:447    .text.init_tire_speed:00000000 init_tire_speed
-  C:\Temp\ccCzKJNb.s:476    .text.init_tire_speed:00000014 $d
-  C:\Temp\ccCzKJNb.s:484    .text.get_move_speed:00000000 $t
-  C:\Temp\ccCzKJNb.s:491    .text.get_move_speed:00000000 get_move_speed
-  C:\Temp\ccCzKJNb.s:506    .text.get_move_speed:00000008 $d
-  C:\Temp\ccCzKJNb.s:515    .text.filter_move_speed:00000000 $t
-  C:\Temp\ccCzKJNb.s:522    .text.filter_move_speed:00000000 filter_move_speed
-  C:\Temp\ccCzKJNb.s:710    .text.filter_move_speed:000000e8 $d
-  C:\Temp\ccCzKJNb.s:722    .text.get_move_speed_ave:00000000 $t
-  C:\Temp\ccCzKJNb.s:729    .text.get_move_speed_ave:00000000 get_move_speed_ave
-  C:\Temp\ccCzKJNb.s:744    .text.get_move_speed_ave:00000008 $d
-  C:\Temp\ccCzKJNb.s:749    .text.calc_move_length:00000000 $t
-  C:\Temp\ccCzKJNb.s:756    .text.calc_move_length:00000000 calc_move_length
-  C:\Temp\ccCzKJNb.s:800    .text.calc_move_length:00000038 $d
-  C:\Temp\ccCzKJNb.s:807    .text.calc_rotation_speed:00000000 $t
-  C:\Temp\ccCzKJNb.s:814    .text.calc_rotation_speed:00000000 calc_rotation_speed
-  C:\Temp\ccCzKJNb.s:837    .text.calc_rotation_speed:00000010 $d
-  C:\Temp\ccCzKJNb.s:842    .text.get_rotation_speed:00000000 $t
-  C:\Temp\ccCzKJNb.s:849    .text.get_rotation_speed:00000000 get_rotation_speed
-  C:\Temp\ccCzKJNb.s:864    .text.get_rotation_speed:00000008 $d
-  C:\Temp\ccCzKJNb.s:869    .text.calc_rotation_angle:00000000 $t
-  C:\Temp\ccCzKJNb.s:876    .text.calc_rotation_angle:00000000 calc_rotation_angle
-  C:\Temp\ccCzKJNb.s:918    .text.calc_rotation_angle:00000030 $d
-  C:\Temp\ccCzKJNb.s:926    .text.get_rotation_angle:00000000 $t
-  C:\Temp\ccCzKJNb.s:933    .text.get_rotation_angle:00000000 get_rotation_angle
-  C:\Temp\ccCzKJNb.s:948    .text.get_rotation_angle:00000008 $d
-  C:\Temp\ccCzKJNb.s:953    .bss.ave_counter.10206:00000000 $d
-ARM GAS  C:\Temp\ccCzKJNb.s 			page 25
+  C:\Temp\ccjZgElw.s:18     .text.Get_diff_right_count:00000000 $t
+  C:\Temp\ccjZgElw.s:26     .text.Get_diff_right_count:00000000 Get_diff_right_count
+  C:\Temp\ccjZgElw.s:66     .text.Get_diff_right_count:00000014 $d
+  C:\Temp\ccjZgElw.s:71     .text.Get_diff_left_count:00000000 $t
+  C:\Temp\ccjZgElw.s:78     .text.Get_diff_left_count:00000000 Get_diff_left_count
+  C:\Temp\ccjZgElw.s:117    .text.Get_diff_left_count:00000014 $d
+  C:\Temp\ccjZgElw.s:122    .text.calc_move_speed:00000000 $t
+  C:\Temp\ccjZgElw.s:129    .text.calc_move_speed:00000000 calc_move_speed
+  C:\Temp\ccjZgElw.s:263    .text.calc_move_speed:000000c0 $d
+  C:\Temp\ccjZgElw.s:278    .text.get_tire_r_speed:00000000 $t
+  C:\Temp\ccjZgElw.s:285    .text.get_tire_r_speed:00000000 get_tire_r_speed
+  C:\Temp\ccjZgElw.s:300    .text.get_tire_r_speed:00000008 $d
+  C:\Temp\ccjZgElw.s:305    .text.get_tire_r_speed_max:00000000 $t
+  C:\Temp\ccjZgElw.s:312    .text.get_tire_r_speed_max:00000000 get_tire_r_speed_max
+  C:\Temp\ccjZgElw.s:327    .text.get_tire_r_speed_max:00000008 $d
+  C:\Temp\ccjZgElw.s:332    .text.get_tire_r_speed_min:00000000 $t
+  C:\Temp\ccjZgElw.s:339    .text.get_tire_r_speed_min:00000000 get_tire_r_speed_min
+  C:\Temp\ccjZgElw.s:354    .text.get_tire_r_speed_min:00000008 $d
+  C:\Temp\ccjZgElw.s:359    .text.get_tire_l_speed:00000000 $t
+  C:\Temp\ccjZgElw.s:366    .text.get_tire_l_speed:00000000 get_tire_l_speed
+  C:\Temp\ccjZgElw.s:381    .text.get_tire_l_speed:00000008 $d
+  C:\Temp\ccjZgElw.s:386    .text.get_tire_l_speed_max:00000000 $t
+  C:\Temp\ccjZgElw.s:393    .text.get_tire_l_speed_max:00000000 get_tire_l_speed_max
+  C:\Temp\ccjZgElw.s:408    .text.get_tire_l_speed_max:00000008 $d
+  C:\Temp\ccjZgElw.s:413    .text.get_tire_l_speed_min:00000000 $t
+  C:\Temp\ccjZgElw.s:420    .text.get_tire_l_speed_min:00000000 get_tire_l_speed_min
+  C:\Temp\ccjZgElw.s:435    .text.get_tire_l_speed_min:00000008 $d
+  C:\Temp\ccjZgElw.s:440    .text.init_tire_speed:00000000 $t
+  C:\Temp\ccjZgElw.s:447    .text.init_tire_speed:00000000 init_tire_speed
+  C:\Temp\ccjZgElw.s:476    .text.init_tire_speed:00000014 $d
+  C:\Temp\ccjZgElw.s:484    .text.get_move_speed:00000000 $t
+  C:\Temp\ccjZgElw.s:491    .text.get_move_speed:00000000 get_move_speed
+  C:\Temp\ccjZgElw.s:506    .text.get_move_speed:00000008 $d
+  C:\Temp\ccjZgElw.s:515    .text.filter_move_speed:00000000 $t
+  C:\Temp\ccjZgElw.s:522    .text.filter_move_speed:00000000 filter_move_speed
+  C:\Temp\ccjZgElw.s:716    .text.filter_move_speed:000000e8 $d
+  C:\Temp\ccjZgElw.s:729    .text.get_move_speed_ave:00000000 $t
+  C:\Temp\ccjZgElw.s:736    .text.get_move_speed_ave:00000000 get_move_speed_ave
+  C:\Temp\ccjZgElw.s:751    .text.get_move_speed_ave:00000008 $d
+  C:\Temp\ccjZgElw.s:756    .text.get_move_accel_ave:00000000 $t
+  C:\Temp\ccjZgElw.s:763    .text.get_move_accel_ave:00000000 get_move_accel_ave
+  C:\Temp\ccjZgElw.s:778    .text.get_move_accel_ave:00000008 $d
+  C:\Temp\ccjZgElw.s:783    .text.calc_move_length:00000000 $t
+  C:\Temp\ccjZgElw.s:790    .text.calc_move_length:00000000 calc_move_length
+  C:\Temp\ccjZgElw.s:834    .text.calc_move_length:00000038 $d
+  C:\Temp\ccjZgElw.s:841    .text.get_move_length:00000000 $t
+  C:\Temp\ccjZgElw.s:848    .text.get_move_length:00000000 get_move_length
+  C:\Temp\ccjZgElw.s:863    .text.get_move_length:00000008 $d
+  C:\Temp\ccjZgElw.s:868    .text.set_move_length:00000000 $t
+  C:\Temp\ccjZgElw.s:875    .text.set_move_length:00000000 set_move_length
+  C:\Temp\ccjZgElw.s:892    .text.set_move_length:00000008 $d
+  C:\Temp\ccjZgElw.s:897    .text.calc_rotation_speed:00000000 $t
+  C:\Temp\ccjZgElw.s:904    .text.calc_rotation_speed:00000000 calc_rotation_speed
+  C:\Temp\ccjZgElw.s:927    .text.calc_rotation_speed:00000010 $d
+  C:\Temp\ccjZgElw.s:932    .text.get_rotation_speed:00000000 $t
+ARM GAS  C:\Temp\ccjZgElw.s 			page 29
 
 
-  C:\Temp\ccCzKJNb.s:957    .bss.ave_counter.10206:00000000 ave_counter.10206
-  C:\Temp\ccCzKJNb.s:960    .bss.ave_store.10205:00000000 $d
-  C:\Temp\ccCzKJNb.s:964    .bss.ave_store.10205:00000000 ave_store.10205
-  C:\Temp\ccCzKJNb.s:967    .bss.move_length:00000000 $d
-  C:\Temp\ccCzKJNb.s:971    .bss.move_length:00000000 move_length
-  C:\Temp\ccCzKJNb.s:974    .bss.move_speed:00000000 $d
-  C:\Temp\ccCzKJNb.s:978    .bss.move_speed:00000000 move_speed
-  C:\Temp\ccCzKJNb.s:981    .bss.move_speed_ave:00000000 $d
-  C:\Temp\ccCzKJNb.s:985    .bss.move_speed_ave:00000000 move_speed_ave
-  C:\Temp\ccCzKJNb.s:988    .bss.rotation_angle:00000000 $d
-  C:\Temp\ccCzKJNb.s:992    .bss.rotation_angle:00000000 rotation_angle
-  C:\Temp\ccCzKJNb.s:995    .bss.rotation_speed:00000000 $d
-  C:\Temp\ccCzKJNb.s:999    .bss.rotation_speed:00000000 rotation_speed
-  C:\Temp\ccCzKJNb.s:1002   .bss.tire_l_speed:00000000 $d
-  C:\Temp\ccCzKJNb.s:1006   .bss.tire_l_speed:00000000 tire_l_speed
-  C:\Temp\ccCzKJNb.s:1009   .bss.tire_l_speed_max:00000000 $d
-  C:\Temp\ccCzKJNb.s:1013   .bss.tire_l_speed_max:00000000 tire_l_speed_max
-  C:\Temp\ccCzKJNb.s:1016   .bss.tire_l_speed_min:00000000 $d
-  C:\Temp\ccCzKJNb.s:1020   .bss.tire_l_speed_min:00000000 tire_l_speed_min
-  C:\Temp\ccCzKJNb.s:1023   .bss.tire_r_speed:00000000 $d
-  C:\Temp\ccCzKJNb.s:1027   .bss.tire_r_speed:00000000 tire_r_speed
-  C:\Temp\ccCzKJNb.s:1030   .bss.tire_r_speed_max:00000000 $d
-  C:\Temp\ccCzKJNb.s:1034   .bss.tire_r_speed_max:00000000 tire_r_speed_max
-  C:\Temp\ccCzKJNb.s:1037   .bss.tire_r_speed_min:00000000 $d
-  C:\Temp\ccCzKJNb.s:1041   .bss.tire_r_speed_min:00000000 tire_r_speed_min
-  C:\Temp\ccCzKJNb.s:1044   .data.left_count_old.10166:00000000 $d
-  C:\Temp\ccCzKJNb.s:1048   .data.left_count_old.10166:00000000 left_count_old.10166
-  C:\Temp\ccCzKJNb.s:1051   .data.right_count_old.10160:00000000 $d
-  C:\Temp\ccCzKJNb.s:1055   .data.right_count_old.10160:00000000 right_count_old.10160
+  C:\Temp\ccjZgElw.s:939    .text.get_rotation_speed:00000000 get_rotation_speed
+  C:\Temp\ccjZgElw.s:954    .text.get_rotation_speed:00000008 $d
+  C:\Temp\ccjZgElw.s:959    .text.calc_rotation_angle:00000000 $t
+  C:\Temp\ccjZgElw.s:966    .text.calc_rotation_angle:00000000 calc_rotation_angle
+  C:\Temp\ccjZgElw.s:1008   .text.calc_rotation_angle:00000030 $d
+  C:\Temp\ccjZgElw.s:1016   .text.mouse_state_1ms:00000000 $t
+  C:\Temp\ccjZgElw.s:1023   .text.mouse_state_1ms:00000000 mouse_state_1ms
+  C:\Temp\ccjZgElw.s:1049   .text.get_rotation_angle:00000000 $t
+  C:\Temp\ccjZgElw.s:1056   .text.get_rotation_angle:00000000 get_rotation_angle
+  C:\Temp\ccjZgElw.s:1071   .text.get_rotation_angle:00000008 $d
+  C:\Temp\ccjZgElw.s:1076   .text.set_rotation_angle:00000000 $t
+  C:\Temp\ccjZgElw.s:1083   .text.set_rotation_angle:00000000 set_rotation_angle
+  C:\Temp\ccjZgElw.s:1100   .text.set_rotation_angle:00000008 $d
+  C:\Temp\ccjZgElw.s:1105   .bss.ave_counter.6695:00000000 $d
+  C:\Temp\ccjZgElw.s:1109   .bss.ave_counter.6695:00000000 ave_counter.6695
+  C:\Temp\ccjZgElw.s:1112   .bss.ave_store.6694:00000000 $d
+  C:\Temp\ccjZgElw.s:1116   .bss.ave_store.6694:00000000 ave_store.6694
+  C:\Temp\ccjZgElw.s:1119   .bss.move_accel_ave:00000000 $d
+  C:\Temp\ccjZgElw.s:1123   .bss.move_accel_ave:00000000 move_accel_ave
+  C:\Temp\ccjZgElw.s:1126   .bss.move_length:00000000 $d
+  C:\Temp\ccjZgElw.s:1130   .bss.move_length:00000000 move_length
+  C:\Temp\ccjZgElw.s:1133   .bss.move_speed:00000000 $d
+  C:\Temp\ccjZgElw.s:1137   .bss.move_speed:00000000 move_speed
+  C:\Temp\ccjZgElw.s:1140   .bss.move_speed_ave:00000000 $d
+  C:\Temp\ccjZgElw.s:1144   .bss.move_speed_ave:00000000 move_speed_ave
+  C:\Temp\ccjZgElw.s:1147   .bss.rotation_angle:00000000 $d
+  C:\Temp\ccjZgElw.s:1151   .bss.rotation_angle:00000000 rotation_angle
+  C:\Temp\ccjZgElw.s:1154   .bss.rotation_speed:00000000 $d
+  C:\Temp\ccjZgElw.s:1158   .bss.rotation_speed:00000000 rotation_speed
+  C:\Temp\ccjZgElw.s:1161   .bss.tire_l_speed:00000000 $d
+  C:\Temp\ccjZgElw.s:1165   .bss.tire_l_speed:00000000 tire_l_speed
+  C:\Temp\ccjZgElw.s:1168   .bss.tire_l_speed_max:00000000 $d
+  C:\Temp\ccjZgElw.s:1172   .bss.tire_l_speed_max:00000000 tire_l_speed_max
+  C:\Temp\ccjZgElw.s:1175   .bss.tire_l_speed_min:00000000 $d
+  C:\Temp\ccjZgElw.s:1179   .bss.tire_l_speed_min:00000000 tire_l_speed_min
+  C:\Temp\ccjZgElw.s:1182   .bss.tire_r_speed:00000000 $d
+  C:\Temp\ccjZgElw.s:1186   .bss.tire_r_speed:00000000 tire_r_speed
+  C:\Temp\ccjZgElw.s:1189   .bss.tire_r_speed_max:00000000 $d
+  C:\Temp\ccjZgElw.s:1193   .bss.tire_r_speed_max:00000000 tire_r_speed_max
+  C:\Temp\ccjZgElw.s:1196   .bss.tire_r_speed_min:00000000 $d
+  C:\Temp\ccjZgElw.s:1200   .bss.tire_r_speed_min:00000000 tire_r_speed_min
+  C:\Temp\ccjZgElw.s:1203   .data.left_count_old.6655:00000000 $d
+  C:\Temp\ccjZgElw.s:1207   .data.left_count_old.6655:00000000 left_count_old.6655
+  C:\Temp\ccjZgElw.s:1210   .data.right_count_old.6649:00000000 $d
+  C:\Temp\ccjZgElw.s:1214   .data.right_count_old.6649:00000000 right_count_old.6649
 
 UNDEFINED SYMBOLS
 get_encordercount_r

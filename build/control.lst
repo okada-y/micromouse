@@ -1,0 +1,410 @@
+ARM GAS  C:\Temp\cc8OTvgX.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"control.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.get_target_vol_r_ctrl,"ax",%progbits
+  18              		.align	1
+  19              		.global	get_target_vol_r_ctrl
+  20              		.arch armv7e-m
+  21              		.syntax unified
+  22              		.thumb
+  23              		.thumb_func
+  24              		.fpu fpv4-sp-d16
+  26              	get_target_vol_r_ctrl:
+  27              	.LFB3:
+  28              		.file 1 "Src/control.c"
+   1:Src/control.c **** #include "param.h"
+   2:Src/control.c **** #include "target.h"
+   3:Src/control.c **** #include "control.h"
+   4:Src/control.c **** #include "mouse_state.h"
+   5:Src/control.c **** 
+   6:Src/control.c **** 
+   7:Src/control.c **** static float move_speed_err_I = 0; 			//移動速度偏差積分
+   8:Src/control.c **** static float rotate_speed_err_I = 0;	    //角速度偏差積分
+   9:Src/control.c **** 
+  10:Src/control.c **** static float target_vol_r_ctrl = 0;		//右タイヤの操作量[ duty % ]
+  11:Src/control.c **** static float target_vol_l_ctrl = 0;		//左タイヤの操作量[ duty % ]
+  12:Src/control.c **** 
+  13:Src/control.c **** //機能	: 軌道制御による右モータ印加電圧を取得する
+  14:Src/control.c **** //引数	: なし
+  15:Src/control.c **** //返り値	: 軌道制御による右モータ印加電圧
+  16:Src/control.c **** float get_target_vol_r_ctrl ( void )
+  17:Src/control.c **** {
+  29              		.loc 1 17 1 view -0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33              		@ link register save eliminated.
+  18:Src/control.c ****     return target_vol_r_ctrl;
+  34              		.loc 1 18 5 view .LVU1
+  19:Src/control.c **** }
+  35              		.loc 1 19 1 is_stmt 0 view .LVU2
+  36 0000 014B     		ldr	r3, .L2
+  37 0002 93ED000A 		vldr.32	s0, [r3]
+  38 0006 7047     		bx	lr
+  39              	.L3:
+ARM GAS  C:\Temp\cc8OTvgX.s 			page 2
+
+
+  40              		.align	2
+  41              	.L2:
+  42 0008 00000000 		.word	.LANCHOR0
+  43              		.cfi_endproc
+  44              	.LFE3:
+  46              		.section	.text.get_target_vol_l_ctrl,"ax",%progbits
+  47              		.align	1
+  48              		.global	get_target_vol_l_ctrl
+  49              		.syntax unified
+  50              		.thumb
+  51              		.thumb_func
+  52              		.fpu fpv4-sp-d16
+  54              	get_target_vol_l_ctrl:
+  55              	.LFB4:
+  20:Src/control.c **** 
+  21:Src/control.c **** //機能	: 軌道制御による左モータ印加電圧を取得する
+  22:Src/control.c **** //引数	: なし
+  23:Src/control.c **** //返り値	: 軌道制御による左モータ印加電圧
+  24:Src/control.c **** float get_target_vol_l_ctrl ( void )
+  25:Src/control.c **** {
+  56              		.loc 1 25 1 is_stmt 1 view -0
+  57              		.cfi_startproc
+  58              		@ args = 0, pretend = 0, frame = 0
+  59              		@ frame_needed = 0, uses_anonymous_args = 0
+  60              		@ link register save eliminated.
+  26:Src/control.c ****     return target_vol_l_ctrl;
+  61              		.loc 1 26 5 view .LVU4
+  27:Src/control.c **** }
+  62              		.loc 1 27 1 is_stmt 0 view .LVU5
+  63 0000 014B     		ldr	r3, .L5
+  64 0002 93ED000A 		vldr.32	s0, [r3]
+  65 0006 7047     		bx	lr
+  66              	.L6:
+  67              		.align	2
+  68              	.L5:
+  69 0008 00000000 		.word	.LANCHOR1
+  70              		.cfi_endproc
+  71              	.LFE4:
+  73              		.global	__aeabi_f2d
+  74              		.global	__aeabi_dmul
+  75              		.global	__aeabi_dadd
+  76              		.global	__aeabi_d2f
+  77              		.section	.text.calc_motor_vol_ctrl,"ax",%progbits
+  78              		.align	1
+  79              		.global	calc_motor_vol_ctrl
+  80              		.syntax unified
+  81              		.thumb
+  82              		.thumb_func
+  83              		.fpu fpv4-sp-d16
+  85              	calc_motor_vol_ctrl:
+  86              	.LFB5:
+  28:Src/control.c **** 
+  29:Src/control.c **** //機能	: 軌道制御により、左右のモータ印加電圧を計算する
+  30:Src/control.c **** //引数	: なし
+  31:Src/control.c **** //返り値	: なし
+  32:Src/control.c **** //備考  : 1msタスク
+  33:Src/control.c **** void calc_motor_vol_ctrl(void)
+ARM GAS  C:\Temp\cc8OTvgX.s 			page 3
+
+
+  34:Src/control.c **** {
+  87              		.loc 1 34 1 is_stmt 1 view -0
+  88              		.cfi_startproc
+  89              		@ args = 0, pretend = 0, frame = 0
+  90              		@ frame_needed = 0, uses_anonymous_args = 0
+  91 0000 70B5     		push	{r4, r5, r6, lr}
+  92              	.LCFI0:
+  93              		.cfi_def_cfa_offset 16
+  94              		.cfi_offset 4, -16
+  95              		.cfi_offset 5, -12
+  96              		.cfi_offset 6, -8
+  97              		.cfi_offset 14, -4
+  98 0002 2DED048B 		vpush.64	{d8, d9}
+  99              	.LCFI1:
+ 100              		.cfi_def_cfa_offset 32
+ 101              		.cfi_offset 80, -32
+ 102              		.cfi_offset 81, -28
+ 103              		.cfi_offset 82, -24
+ 104              		.cfi_offset 83, -20
+  35:Src/control.c **** 	float move_speed_err = 0; 			        //移動速度偏差
+ 105              		.loc 1 35 2 view .LVU7
+ 106              	.LVL0:
+  36:Src/control.c **** 	float rotate_speed_err = 0;	        		//角速度偏差
+ 107              		.loc 1 36 2 view .LVU8
+  37:Src/control.c **** 
+  38:Src/control.c **** 	float move_speed_err_PI = 0; 		//移動速度偏差によるPIコントローラ出力
+ 108              		.loc 1 38 2 view .LVU9
+  39:Src/control.c **** 	float rotate_speed_err_PI = 0;		//角速度偏差によるPIコントローラ出力
+ 109              		.loc 1 39 2 view .LVU10
+  40:Src/control.c **** 
+  41:Src/control.c ****     /*偏差取得*/
+  42:Src/control.c ****     move_speed_err = get_target_move_speed() - get_move_speed_ave();
+ 110              		.loc 1 42 5 view .LVU11
+ 111              		.loc 1 42 22 is_stmt 0 view .LVU12
+ 112 0006 FFF7FEFF 		bl	get_target_move_speed
+ 113              	.LVL1:
+ 114 000a B0EE409A 		vmov.f32	s18, s0
+ 115              		.loc 1 42 48 view .LVU13
+ 116 000e FFF7FEFF 		bl	get_move_speed_ave
+ 117              	.LVL2:
+ 118              		.loc 1 42 20 view .LVU14
+ 119 0012 39EE409A 		vsub.f32	s18, s18, s0
+ 120              	.LVL3:
+  43:Src/control.c ****     rotate_speed_err = get_target_rotation_speed() - get_rotation_speed();
+ 121              		.loc 1 43 5 is_stmt 1 view .LVU15
+ 122              		.loc 1 43 24 is_stmt 0 view .LVU16
+ 123 0016 FFF7FEFF 		bl	get_target_rotation_speed
+ 124              	.LVL4:
+ 125 001a F0EE408A 		vmov.f32	s17, s0
+ 126              		.loc 1 43 54 view .LVU17
+ 127 001e FFF7FEFF 		bl	get_rotation_speed
+ 128              	.LVL5:
+ 129              		.loc 1 43 22 view .LVU18
+ 130 0022 78EEC08A 		vsub.f32	s17, s17, s0
+ 131              	.LVL6:
+  44:Src/control.c **** 
+  45:Src/control.c ****     /*偏差積分*/
+ARM GAS  C:\Temp\cc8OTvgX.s 			page 4
+
+
+  46:Src/control.c ****     move_speed_err_I = move_speed_err_I + move_speed_I*0.001*move_speed_err;
+ 132              		.loc 1 46 5 is_stmt 1 view .LVU19
+ 133              		.loc 1 46 61 is_stmt 0 view .LVU20
+ 134 0026 19EE100A 		vmov	r0, s18
+ 135 002a FFF7FEFF 		bl	__aeabi_f2d
+ 136              	.LVL7:
+ 137 002e 2AA3     		adr	r3, .L9+32
+ 138 0030 D3E90023 		ldrd	r2, [r3]
+ 139 0034 FFF7FEFF 		bl	__aeabi_dmul
+ 140              	.LVL8:
+ 141 0038 0446     		mov	r4, r0
+ 142 003a 0D46     		mov	r5, r1
+ 143              		.loc 1 46 41 view .LVU21
+ 144 003c 204E     		ldr	r6, .L9+8
+ 145 003e 3068     		ldr	r0, [r6]	@ float
+ 146 0040 FFF7FEFF 		bl	__aeabi_f2d
+ 147              	.LVL9:
+ 148 0044 2246     		mov	r2, r4
+ 149 0046 2B46     		mov	r3, r5
+ 150 0048 FFF7FEFF 		bl	__aeabi_dadd
+ 151              	.LVL10:
+ 152 004c FFF7FEFF 		bl	__aeabi_d2f
+ 153              	.LVL11:
+ 154 0050 08EE100A 		vmov	s16, r0
+ 155              		.loc 1 46 22 view .LVU22
+ 156 0054 3060     		str	r0, [r6]	@ float
+  47:Src/control.c ****     rotate_speed_err_I = rotate_speed_err_I + rotate_speed_I*0.001*rotate_speed_err;
+ 157              		.loc 1 47 5 is_stmt 1 view .LVU23
+ 158              		.loc 1 47 67 is_stmt 0 view .LVU24
+ 159 0056 18EE900A 		vmov	r0, s17
+ 160 005a FFF7FEFF 		bl	__aeabi_f2d
+ 161              	.LVL12:
+ 162 005e 16A3     		adr	r3, .L9
+ 163 0060 D3E90023 		ldrd	r2, [r3]
+ 164 0064 FFF7FEFF 		bl	__aeabi_dmul
+ 165              	.LVL13:
+ 166 0068 0446     		mov	r4, r0
+ 167 006a 0D46     		mov	r5, r1
+ 168              		.loc 1 47 45 view .LVU25
+ 169 006c 154E     		ldr	r6, .L9+12
+ 170 006e 3068     		ldr	r0, [r6]	@ float
+ 171 0070 FFF7FEFF 		bl	__aeabi_f2d
+ 172              	.LVL14:
+ 173 0074 2246     		mov	r2, r4
+ 174 0076 2B46     		mov	r3, r5
+ 175 0078 FFF7FEFF 		bl	__aeabi_dadd
+ 176              	.LVL15:
+ 177 007c FFF7FEFF 		bl	__aeabi_d2f
+ 178              	.LVL16:
+ 179 0080 07EE900A 		vmov	s15, r0
+ 180              		.loc 1 47 24 view .LVU26
+ 181 0084 3060     		str	r0, [r6]	@ float
+  48:Src/control.c **** 
+  49:Src/control.c ****     /*PIコントローラ出力計算*/
+  50:Src/control.c ****     move_speed_err_PI = move_speed_P * move_speed_err + move_speed_err_I;
+ 182              		.loc 1 50 5 is_stmt 1 view .LVU27
+ 183              		.loc 1 50 38 is_stmt 0 view .LVU28
+ARM GAS  C:\Temp\cc8OTvgX.s 			page 5
+
+
+ 184 0086 9FED100A 		vldr.32	s0, .L9+16
+ 185 008a 29EE009A 		vmul.f32	s18, s18, s0
+ 186              	.LVL17:
+ 187              		.loc 1 50 23 view .LVU29
+ 188 008e 38EE098A 		vadd.f32	s16, s16, s18
+ 189              	.LVL18:
+  51:Src/control.c ****     rotate_speed_err_PI = rotate_speed_P * rotate_speed_err + rotate_speed_err_I;
+ 190              		.loc 1 51 5 is_stmt 1 view .LVU30
+ 191              		.loc 1 51 42 is_stmt 0 view .LVU31
+ 192 0092 9FED0E0A 		vldr.32	s0, .L9+20
+ 193 0096 68EE808A 		vmul.f32	s17, s17, s0
+ 194              	.LVL19:
+ 195              		.loc 1 51 25 view .LVU32
+ 196 009a 77EEA88A 		vadd.f32	s17, s15, s17
+ 197              	.LVL20:
+  52:Src/control.c **** 
+  53:Src/control.c ****     /*モータ印加電圧計算*/
+  54:Src/control.c ****     target_vol_r_ctrl = move_speed_err_PI + rotate_speed_err_PI;
+ 198              		.loc 1 54 5 is_stmt 1 view .LVU33
+ 199              		.loc 1 54 43 is_stmt 0 view .LVU34
+ 200 009e 78EE287A 		vadd.f32	s15, s16, s17
+ 201              		.loc 1 54 23 view .LVU35
+ 202 00a2 0B4B     		ldr	r3, .L9+24
+ 203 00a4 C3ED007A 		vstr.32	s15, [r3]
+  55:Src/control.c ****     target_vol_l_ctrl = move_speed_err_PI - rotate_speed_err_PI;
+ 204              		.loc 1 55 5 is_stmt 1 view .LVU36
+ 205              		.loc 1 55 43 is_stmt 0 view .LVU37
+ 206 00a8 38EE688A 		vsub.f32	s16, s16, s17
+ 207              	.LVL21:
+ 208              		.loc 1 55 23 view .LVU38
+ 209 00ac 094B     		ldr	r3, .L9+28
+ 210 00ae 83ED008A 		vstr.32	s16, [r3]
+  56:Src/control.c **** }
+ 211              		.loc 1 56 1 view .LVU39
+ 212 00b2 BDEC048B 		vldm	sp!, {d8-d9}
+ 213              	.LCFI2:
+ 214              		.cfi_restore 82
+ 215              		.cfi_restore 83
+ 216              		.cfi_restore 80
+ 217              		.cfi_restore 81
+ 218              		.cfi_def_cfa_offset 16
+ 219 00b6 70BD     		pop	{r4, r5, r6, pc}
+ 220              	.L10:
+ 221              		.align	3
+ 222              	.L9:
+ 223 00b8 FCA9F1D2 		.word	-755914244
+ 224 00bc 3DC9823F 		.word	1065535805
+ 225 00c0 00000000 		.word	.LANCHOR2
+ 226 00c4 00000000 		.word	.LANCHOR3
+ 227 00c8 D1222B40 		.word	1076568785
+ 228 00cc AD2FB23E 		.word	1051865005
+ 229 00d0 00000000 		.word	.LANCHOR0
+ 230 00d4 00000000 		.word	.LANCHOR1
+ 231 00d8 8B6CE7FB 		.word	-68719477
+ 232 00dc B935A43F 		.word	1067726265
+ 233              		.cfi_endproc
+ 234              	.LFE5:
+ARM GAS  C:\Temp\cc8OTvgX.s 			page 6
+
+
+ 236              		.section	.text.clr_trace_operate_history,"ax",%progbits
+ 237              		.align	1
+ 238              		.global	clr_trace_operate_history
+ 239              		.syntax unified
+ 240              		.thumb
+ 241              		.thumb_func
+ 242              		.fpu fpv4-sp-d16
+ 244              	clr_trace_operate_history:
+ 245              	.LFB6:
+  57:Src/control.c **** 
+  58:Src/control.c **** //機能	: 軌跡制御の操作履歴クリア
+  59:Src/control.c **** //引数	: なし
+  60:Src/control.c **** //返り値	: なし
+  61:Src/control.c **** void clr_trace_operate_history ( void )
+  62:Src/control.c **** {
+ 246              		.loc 1 62 1 is_stmt 1 view -0
+ 247              		.cfi_startproc
+ 248              		@ args = 0, pretend = 0, frame = 0
+ 249              		@ frame_needed = 0, uses_anonymous_args = 0
+ 250              		@ link register save eliminated.
+  63:Src/control.c ****     move_speed_err_I = 0; 		//移動速度偏差積分
+ 251              		.loc 1 63 5 view .LVU41
+ 252              		.loc 1 63 22 is_stmt 0 view .LVU42
+ 253 0000 0023     		movs	r3, #0
+ 254 0002 024A     		ldr	r2, .L12
+ 255 0004 1360     		str	r3, [r2]	@ float
+  64:Src/control.c ****     rotate_speed_err_I = 0;	    //角速度偏差積分
+ 256              		.loc 1 64 5 is_stmt 1 view .LVU43
+ 257              		.loc 1 64 24 is_stmt 0 view .LVU44
+ 258 0006 024A     		ldr	r2, .L12+4
+ 259 0008 1360     		str	r3, [r2]	@ float
+  65:Src/control.c **** }...
+ 260              		.loc 1 65 1 view .LVU45
+ 261 000a 7047     		bx	lr
+ 262              	.L13:
+ 263              		.align	2
+ 264              	.L12:
+ 265 000c 00000000 		.word	.LANCHOR2
+ 266 0010 00000000 		.word	.LANCHOR3
+ 267              		.cfi_endproc
+ 268              	.LFE6:
+ 270              		.section	.bss.move_speed_err_I,"aw",%nobits
+ 271              		.align	2
+ 272              		.set	.LANCHOR2,. + 0
+ 275              	move_speed_err_I:
+ 276 0000 00000000 		.space	4
+ 277              		.section	.bss.rotate_speed_err_I,"aw",%nobits
+ 278              		.align	2
+ 279              		.set	.LANCHOR3,. + 0
+ 282              	rotate_speed_err_I:
+ 283 0000 00000000 		.space	4
+ 284              		.section	.bss.target_vol_l_ctrl,"aw",%nobits
+ 285              		.align	2
+ 286              		.set	.LANCHOR1,. + 0
+ 289              	target_vol_l_ctrl:
+ 290 0000 00000000 		.space	4
+ 291              		.section	.bss.target_vol_r_ctrl,"aw",%nobits
+ARM GAS  C:\Temp\cc8OTvgX.s 			page 7
+
+
+ 292              		.align	2
+ 293              		.set	.LANCHOR0,. + 0
+ 296              	target_vol_r_ctrl:
+ 297 0000 00000000 		.space	4
+ 298              		.text
+ 299              	.Letext0:
+ 300              		.file 2 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\lock.h"
+ 301              		.file 3 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\_types.h"
+ 302              		.file 4 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\lib\\gcc\\arm-none-eabi\\9.2.1\\include\\st
+ 303              		.file 5 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\reent.h"
+ 304              		.file 6 "Inc/target.h"
+ 305              		.file 7 "Inc/mouse_state.h"
+ARM GAS  C:\Temp\cc8OTvgX.s 			page 8
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 control.c
+  C:\Temp\cc8OTvgX.s:18     .text.get_target_vol_r_ctrl:00000000 $t
+  C:\Temp\cc8OTvgX.s:26     .text.get_target_vol_r_ctrl:00000000 get_target_vol_r_ctrl
+  C:\Temp\cc8OTvgX.s:42     .text.get_target_vol_r_ctrl:00000008 $d
+  C:\Temp\cc8OTvgX.s:47     .text.get_target_vol_l_ctrl:00000000 $t
+  C:\Temp\cc8OTvgX.s:54     .text.get_target_vol_l_ctrl:00000000 get_target_vol_l_ctrl
+  C:\Temp\cc8OTvgX.s:69     .text.get_target_vol_l_ctrl:00000008 $d
+  C:\Temp\cc8OTvgX.s:78     .text.calc_motor_vol_ctrl:00000000 $t
+  C:\Temp\cc8OTvgX.s:85     .text.calc_motor_vol_ctrl:00000000 calc_motor_vol_ctrl
+  C:\Temp\cc8OTvgX.s:223    .text.calc_motor_vol_ctrl:000000b8 $d
+  C:\Temp\cc8OTvgX.s:237    .text.clr_trace_operate_history:00000000 $t
+  C:\Temp\cc8OTvgX.s:244    .text.clr_trace_operate_history:00000000 clr_trace_operate_history
+  C:\Temp\cc8OTvgX.s:265    .text.clr_trace_operate_history:0000000c $d
+  C:\Temp\cc8OTvgX.s:271    .bss.move_speed_err_I:00000000 $d
+  C:\Temp\cc8OTvgX.s:275    .bss.move_speed_err_I:00000000 move_speed_err_I
+  C:\Temp\cc8OTvgX.s:278    .bss.rotate_speed_err_I:00000000 $d
+  C:\Temp\cc8OTvgX.s:282    .bss.rotate_speed_err_I:00000000 rotate_speed_err_I
+  C:\Temp\cc8OTvgX.s:285    .bss.target_vol_l_ctrl:00000000 $d
+  C:\Temp\cc8OTvgX.s:289    .bss.target_vol_l_ctrl:00000000 target_vol_l_ctrl
+  C:\Temp\cc8OTvgX.s:292    .bss.target_vol_r_ctrl:00000000 $d
+  C:\Temp\cc8OTvgX.s:296    .bss.target_vol_r_ctrl:00000000 target_vol_r_ctrl
+
+UNDEFINED SYMBOLS
+__aeabi_f2d
+__aeabi_dmul
+__aeabi_dadd
+__aeabi_d2f
+get_target_move_speed
+get_move_speed_ave
+get_target_rotation_speed
+get_rotation_speed

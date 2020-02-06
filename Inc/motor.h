@@ -1,7 +1,7 @@
 #ifndef MOTOR_H_
 #define MOTOR_H_
 
-
+#include <stdio.h>
 
 void Motor_Initialize( void );
 void Motor_StopPWM( void );

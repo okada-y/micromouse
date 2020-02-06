@@ -9,6 +9,7 @@
 #include "param.h"
 #include "encorder.h"
 #include "imu.h"
+#include "mouse_state.h"
 
 static float tire_r_speed = 0;
 static float tire_l_speed = 0;
@@ -28,9 +29,9 @@ static float rotation_angle = 0;
 //返り値	: なし
 void mouse_state_1ms ( void )
 {
-	calc_move_speed();		//速度計算
+//	calc_move_speed();		//速度計算
 	calc_rotation_speed();	//角速度計算
-	filter_move_speed();	//速度をフィルタ処理
+//	filter_move_speed();	//速度をフィルタ処理
 	calc_move_length();		//移動距離を計算
 	calc_rotation_angle();	//回転角度を計算
 }

@@ -7,19 +7,23 @@
 
 
 //#include "index.h"
+#include "module_test.h"
 #include "stm32f4xx_hal.h"
 #include "mode.h"
 #include "tim.h"
 #include "mouse_state.h"
 #include "target.h"
 #include "adjust.h"
+#include "interrupt.h"
+#include "control.h"
+#include "param.h"
+#include "exvol.h"
 
 #define TIMER_COUNT		(__HAL_TIM_GET_COUNTER(&htim6))
 #define TIMER_LOAD		(__HAL_TIM_GET_AUTORELOAD(&htim6))
 #define TIMER_PSC		((&htim6)->Instance->PSC)
 
- static uint32_t		interrupt_count_now;
-//static uint16_t		interrupt_count_now;
+static uint32_t		interrupt_count_now;
 static uint32_t		interrupt_duty;
 static uint32_t		interrupt_duty_max = 0;
 static float		boot_time = 0.f;
@@ -42,20 +46,32 @@ void Interrupt_Main( void )
 				break;
 
 			case 1 :
-				data_get();
-				mouse_state_1ms();		//マウスの速度、角速度、移動距離、角度を計算
-				target_1ms();			//目標距離、角度から目標速度、角速度、加速度、角加速度を計算
-				calc_motor_vol_ctrl();	//速度、角速度制御による印加電圧を計算
-				adjust_1ms();			//壁制御による印加電圧を計算
-				motor_1ms();			//制御モードに応じた印加電圧を出力
+				 data_get();
+				 mouse_state_1ms();		//マウスの速度、角速度、移動距離、角度を計算
+				 target_1ms();			//目標距離、角度から目標速度、角速度、加速度、角加速度を計算
+				 calc_motor_vol_ctrl();	//速度、角速度制御による印加電圧を計算
+				 adjust_1ms();			//壁制御による印加電圧を計算
+				 motor_1ms();			//制御モードに応じた印加電圧を出力
 				break;
 
 			case 2 :
-				data_get();
+				 data_get();
+				 mouse_state_1ms();		//マウスの速度、角速度、移動距離、角度を計算
+				 target_1ms();			//目標距離、角度から目標速度、角速度、加速度、角加速度を計算
+				 calc_motor_vol_ctrl();	//速度、角速度制御による印加電圧を計算
+				 adjust_1ms();			//壁制御による印加電圧を計算
+				 motor_1ms();			//制御モードに応じた印加電圧を出力
+
 				break;
 
 			case 3 :
-				data_get();
+ 				 data_get();
+				 mouse_state_1ms();		//マウスの速度、角速度、移動距離、角度を計算
+				 target_1ms();			//目標距離、角度から目標速度、角速度、加速度、角加速度を計算
+				 calc_motor_vol_ctrl();	//速度、角速度制御による印加電圧を計算
+				 adjust_1ms();			//壁制御による印加電圧を計算
+				 motor_1ms();			//制御モードに応じた印加電圧を出力
+
 				break;
 
 			case 4 :
@@ -76,13 +92,11 @@ void Interrupt_Main( void )
 
 			case 15 :
 				data_get();
-				calibrate_tim(); 			//m前壁補正用カウンタ
-				real_distance_m_calc();		//m現在速度を積分して距離算出
-				real_distance_w_calc();		//m現在角速度を積分して角度算出
-				target_speed_m_calc();		//m現在距離と目標距離に応じて加速度を切り替え
-				target_speed_w_calc();		//m現在角度と目標角度に応じて角加速度を切り替え
-				target_speed_inc();			//m加速度、角加速度を目標速度に加算
-				Operation_amount_calc();	//m目標速度と現在速度の偏差に応じて各モータの電圧演算
+				mouse_state_1ms();		//マウスの速度、角速度、移動距離、角度を計算
+				target_1ms();			//目標距離、角度から目標速度、角速度、加速度、角加速度を計算
+				calc_motor_vol_ctrl();	//速度、角速度制御による印加電圧を計算
+				adjust_1ms();			//壁制御による印加電圧を計算
+				motor_1ms();			//制御モードに応じた印加電圧を出力
 				break;
 
 		}

@@ -1,6 +1,7 @@
 
 
 #include <stdio.h>
+#include "adjust.h"
 #include "param.h"
 #include "exvol.h"
 #include "mouse_state.h"
@@ -103,7 +104,7 @@ float get_target_vol_r_frontwall ( void )
 //返り値	: 前壁補正による右モータ印加電圧
 float get_target_vol_l_frontwall ( void )
 {
-	return target_vol_r_frontwall;
+	return target_vol_l_frontwall;
 }
 
 //機能	: 前壁制御の操作履歴を消す

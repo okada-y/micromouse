@@ -1,4 +1,4 @@
-ARM GAS  C:\Temp\cc6jxiTD.s 			page 1
+ARM GAS  C:\Temp\ccLuCqVL.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -40,58 +40,59 @@ ARM GAS  C:\Temp\cc6jxiTD.s 			page 1
   10:Src/encoder.c **** #include "index.h"
   11:Src/encoder.c **** #include "encorder.h"
   12:Src/encoder.c **** #include "param.h"
-  13:Src/encoder.c **** 
+  13:Src/encoder.c **** #include "imu.h"
   14:Src/encoder.c **** 
   15:Src/encoder.c **** 
   16:Src/encoder.c **** 
   17:Src/encoder.c **** 
   18:Src/encoder.c **** 
-  19:Src/encoder.c **** static uint16_t enc_cnt_r_new = 0;
-  20:Src/encoder.c **** static uint16_t enc_cnt_l_new = 0;
-  21:Src/encoder.c **** static uint16_t enc_cnt_r_old = 0;
-  22:Src/encoder.c **** static uint16_t enc_cnt_l_old = 0;
-  23:Src/encoder.c **** float speed_r = 0;//m 右タイヤ速度[ m/s]
-  24:Src/encoder.c **** float speed_r_max = 0;// m最大右タイヤ速度（デバッグ用
-  25:Src/encoder.c **** float speed_r_min = 0;// m最小右タイヤ速度（デバッグ用
-  26:Src/encoder.c **** float speed_l = 0;//m 左タイヤ速度[ m/s]
-  27:Src/encoder.c **** float speed_l_max = 0;// m最大左タイヤ速度（デバッグ用
-  28:Src/encoder.c **** float speed_l_min = 0;// m最小左タイヤ速度（デバッグ用
-  29:Src/encoder.c **** float speed_m = 0;//m 並進方向速度[ m/s]
-  30:Src/encoder.c **** float g_ave_speed_m = 0;//m 並進方向速度を移動平均処理[m/s]
-ARM GAS  C:\Temp\cc6jxiTD.s 			page 2
+  19:Src/encoder.c **** 
+  20:Src/encoder.c **** static uint16_t enc_cnt_r_new = 0;
+  21:Src/encoder.c **** static uint16_t enc_cnt_l_new = 0;
+  22:Src/encoder.c **** static uint16_t enc_cnt_r_old = 0;
+  23:Src/encoder.c **** static uint16_t enc_cnt_l_old = 0;
+  24:Src/encoder.c **** float speed_r = 0;//m 右タイヤ速度[ m/s]
+  25:Src/encoder.c **** float speed_r_max = 0;// m最大右タイヤ速度（デバッグ用
+  26:Src/encoder.c **** float speed_r_min = 0;// m最小右タイヤ速度（デバッグ用
+  27:Src/encoder.c **** float speed_l = 0;//m 左タイヤ速度[ m/s]
+  28:Src/encoder.c **** float speed_l_max = 0;// m最大左タイヤ速度（デバッグ用
+  29:Src/encoder.c **** float speed_l_min = 0;// m最小左タイヤ速度（デバッグ用
+  30:Src/encoder.c **** float speed_m = 0;//m 並進方向速度[ m/s]
+ARM GAS  C:\Temp\ccLuCqVL.s 			page 2
 
 
-  31:Src/encoder.c **** float g_ave_accel_m = 0;//m 並進方向加速度を移動平均処理[m/s2]
-  32:Src/encoder.c **** float speed_rad = 0;//m エンコーダから算出される角速度[rad/s]
-  33:Src/encoder.c **** 
-  34:Src/encoder.c **** float delta_angle_motor_r = 0;	//m 右モータの回転数[rad/s]
-  35:Src/encoder.c **** float delta_angle_motor_l = 0;	//m 左モータの回転数[rad/s]
-  36:Src/encoder.c **** 
-  37:Src/encoder.c **** typedef struct {	//a 移動平均用構造体の定義
-  38:Src/encoder.c **** 	float	speed_m;			// m　測定開始からの時間(m/s)
-  39:Src/encoder.c **** 	float   accel_m;			// m 目標速度(m/s)
-  40:Src/encoder.c **** } ave_struct;
-  41:Src/encoder.c **** 
-  42:Src/encoder.c **** static ave_struct ave_store[ave_num];  // データ格納用の構造体
-  43:Src/encoder.c **** 
+  31:Src/encoder.c **** float g_ave_speed_m = 0;//m 並進方向速度を移動平均処理[m/s]
+  32:Src/encoder.c **** float g_ave_accel_m = 0;//m 並進方向加速度を移動平均処理[m/s2]
+  33:Src/encoder.c **** float speed_rad = 0;//m エンコーダから算出される角速度[rad/s]
+  34:Src/encoder.c **** 
+  35:Src/encoder.c **** float delta_angle_motor_r = 0;	//m 右モータの回転数[rad/s]
+  36:Src/encoder.c **** float delta_angle_motor_l = 0;	//m 左モータの回転数[rad/s]
+  37:Src/encoder.c **** 
+  38:Src/encoder.c **** typedef struct {	//a 移動平均用構造体の定義
+  39:Src/encoder.c **** 	float	speed_m;			// m　測定開始からの時間(m/s)
+  40:Src/encoder.c **** 	float   accel_m;			// m 目標速度(m/s)
+  41:Src/encoder.c **** } ave_struct;
+  42:Src/encoder.c **** 
+  43:Src/encoder.c **** static ave_struct ave_store[ave_num];  // データ格納用の構造体
   44:Src/encoder.c **** 
-  45:Src/encoder.c **** //機能	:右タイヤのカウンタ値を取得
-  46:Src/encoder.c **** //引数	:なし
-  47:Src/encoder.c **** //返り値	:右タイヤのカウンタ値
-  48:Src/encoder.c **** uint16_t get_encordercount_r ( void )
-  49:Src/encoder.c **** {
-  29              		.loc 1 49 1 view -0
+  45:Src/encoder.c **** 
+  46:Src/encoder.c **** //機能	:右タイヤのカウンタ値を取得
+  47:Src/encoder.c **** //引数	:なし
+  48:Src/encoder.c **** //返り値	:右タイヤのカウンタ値
+  49:Src/encoder.c **** uint16_t get_encordercount_r ( void )
+  50:Src/encoder.c **** {
+  29              		.loc 1 50 1 view -0
   30              		.cfi_startproc
   31              		@ args = 0, pretend = 0, frame = 0
   32              		@ frame_needed = 0, uses_anonymous_args = 0
   33              		@ link register save eliminated.
-  50:Src/encoder.c **** 	return ENC_CNT_R;
-  34              		.loc 1 50 2 view .LVU1
-  35              		.loc 1 50 9 is_stmt 0 view .LVU2
+  51:Src/encoder.c **** 	return ENC_CNT_R;
+  34              		.loc 1 51 2 view .LVU1
+  35              		.loc 1 51 9 is_stmt 0 view .LVU2
   36 0000 4FF08043 		mov	r3, #1073741824
   37 0004 586A     		ldr	r0, [r3, #36]
-  51:Src/encoder.c **** }
-  38              		.loc 1 51 1 view .LVU3
+  52:Src/encoder.c **** }
+  38              		.loc 1 52 1 view .LVU3
   39 0006 80B2     		uxth	r0, r0
   40 0008 7047     		bx	lr
   41              		.cfi_endproc
@@ -105,27 +106,27 @@ ARM GAS  C:\Temp\cc6jxiTD.s 			page 1
   50              		.fpu fpv4-sp-d16
   52              	get_encordercount_l:
   53              	.LFB134:
-  52:Src/encoder.c **** 
-  53:Src/encoder.c **** //機能	:左タイヤのカウンタ値を取得
-  54:Src/encoder.c **** //引数	:なし
-  55:Src/encoder.c **** //返り値	:左タイヤのカウンタ値
-  56:Src/encoder.c **** uint16_t get_encordercount_l ( void )
-  57:Src/encoder.c **** {
-  54              		.loc 1 57 1 is_stmt 1 view -0
+  53:Src/encoder.c **** 
+  54:Src/encoder.c **** //機能	:左タイヤのカウンタ値を取得
+  55:Src/encoder.c **** //引数	:なし
+  56:Src/encoder.c **** //返り値	:左タイヤのカウンタ値
+  57:Src/encoder.c **** uint16_t get_encordercount_l ( void )
+  58:Src/encoder.c **** {
+  54              		.loc 1 58 1 is_stmt 1 view -0
   55              		.cfi_startproc
   56              		@ args = 0, pretend = 0, frame = 0
   57              		@ frame_needed = 0, uses_anonymous_args = 0
   58              		@ link register save eliminated.
-  58:Src/encoder.c **** 	return ENC_CNT_L;
-  59              		.loc 1 58 2 view .LVU5
-ARM GAS  C:\Temp\cc6jxiTD.s 			page 3
+  59:Src/encoder.c **** 	return ENC_CNT_L;
+ARM GAS  C:\Temp\ccLuCqVL.s 			page 3
 
 
-  60              		.loc 1 58 9 is_stmt 0 view .LVU6
+  59              		.loc 1 59 2 view .LVU5
+  60              		.loc 1 59 9 is_stmt 0 view .LVU6
   61 0000 014B     		ldr	r3, .L3
   62 0002 586A     		ldr	r0, [r3, #36]
-  59:Src/encoder.c **** }
-  63              		.loc 1 59 1 view .LVU7
+  60:Src/encoder.c **** }
+  63              		.loc 1 60 1 view .LVU7
   64 0004 80B2     		uxth	r0, r0
   65 0006 7047     		bx	lr
   66              	.L4:
@@ -143,44 +144,44 @@ ARM GAS  C:\Temp\cc6jxiTD.s 			page 1
   79              		.fpu fpv4-sp-d16
   81              	Encoder_ResetCount_Left:
   82              	.LFB136:
-  60:Src/encoder.c **** 
-  61:Src/encoder.c **** /* ---------------------------------------------------------------
-  62:Src/encoder.c **** 	位相係数モードのタイマーを開始し、位相カウントを初期化する関数
-  63:Src/encoder.c **** --------------------------------------------------------------- */
-  64:Src/encoder.c **** void Encoder_Initialize( void )
-  65:Src/encoder.c **** {
-  66:Src/encoder.c **** 	HAL_TIM_Encoder_Start( &htim2, TIM_CHANNEL_ALL );
-  67:Src/encoder.c **** 	HAL_TIM_Encoder_Start( &htim3, TIM_CHANNEL_ALL );
-  68:Src/encoder.c **** 	Encoder_ResetCount_Left();
-  69:Src/encoder.c **** 	Encoder_ResetCount_Right();
-  70:Src/encoder.c **** }
-  71:Src/encoder.c **** 
-  72:Src/encoder.c **** /* ---------------------------------------------------------------
-  73:Src/encoder.c **** 	左タイヤの位相係数カウントを初期化する関数
-  74:Src/encoder.c **** --------------------------------------------------------------- */
-  75:Src/encoder.c **** void Encoder_ResetCount_Left( void )
-  76:Src/encoder.c **** {
-  83              		.loc 1 76 1 is_stmt 1 view -0
+  61:Src/encoder.c **** 
+  62:Src/encoder.c **** /* ---------------------------------------------------------------
+  63:Src/encoder.c **** 	位相係数モードのタイマーを開始し、位相カウントを初期化する関数
+  64:Src/encoder.c **** --------------------------------------------------------------- */
+  65:Src/encoder.c **** void Encoder_Initialize( void )
+  66:Src/encoder.c **** {
+  67:Src/encoder.c **** 	HAL_TIM_Encoder_Start( &htim2, TIM_CHANNEL_ALL );
+  68:Src/encoder.c **** 	HAL_TIM_Encoder_Start( &htim3, TIM_CHANNEL_ALL );
+  69:Src/encoder.c **** 	Encoder_ResetCount_Left();
+  70:Src/encoder.c **** 	Encoder_ResetCount_Right();
+  71:Src/encoder.c **** }
+  72:Src/encoder.c **** 
+  73:Src/encoder.c **** /* ---------------------------------------------------------------
+  74:Src/encoder.c **** 	左タイヤの位相係数カウントを初期化する関数
+  75:Src/encoder.c **** --------------------------------------------------------------- */
+  76:Src/encoder.c **** void Encoder_ResetCount_Left( void )
+  77:Src/encoder.c **** {
+  83              		.loc 1 77 1 is_stmt 1 view -0
   84              		.cfi_startproc
   85              		@ args = 0, pretend = 0, frame = 0
   86              		@ frame_needed = 0, uses_anonymous_args = 0
   87              		@ link register save eliminated.
-  77:Src/encoder.c **** 	ENC_CNT_L = ENC_ZERO;
-  88              		.loc 1 77 2 view .LVU9
-  89              		.loc 1 77 12 is_stmt 0 view .LVU10
+  78:Src/encoder.c **** 	ENC_CNT_L = ENC_ZERO;
+  88              		.loc 1 78 2 view .LVU9
+  89              		.loc 1 78 12 is_stmt 0 view .LVU10
   90 0000 024B     		ldr	r3, .L6
   91 0002 47F6FE72 		movw	r2, #32766
   92 0006 5A62     		str	r2, [r3, #36]
-  78:Src/encoder.c **** }
-  93              		.loc 1 78 1 view .LVU11
+  79:Src/encoder.c **** }
+  93              		.loc 1 79 1 view .LVU11
   94 0008 7047     		bx	lr
   95              	.L7:
   96 000a 00BF     		.align	2
   97              	.L6:
+ARM GAS  C:\Temp\ccLuCqVL.s 			page 4
+
+
   98 000c 00040040 		.word	1073742848
-ARM GAS  C:\Temp\cc6jxiTD.s 			page 4
-
-
   99              		.cfi_endproc
  100              	.LFE136:
  102              		.section	.text.Encoder_ResetCount_Right,"ax",%progbits
@@ -192,25 +193,25 @@ ARM GAS  C:\Temp\cc6jxiTD.s 			page 1
  108              		.fpu fpv4-sp-d16
  110              	Encoder_ResetCount_Right:
  111              	.LFB137:
-  79:Src/encoder.c **** 
-  80:Src/encoder.c **** /* ---------------------------------------------------------------
-  81:Src/encoder.c **** 	右タイヤの位相係数カウントを初期化する関数
-  82:Src/encoder.c **** --------------------------------------------------------------- */
-  83:Src/encoder.c **** void Encoder_ResetCount_Right( void )
-  84:Src/encoder.c **** {
- 112              		.loc 1 84 1 is_stmt 1 view -0
+  80:Src/encoder.c **** 
+  81:Src/encoder.c **** /* ---------------------------------------------------------------
+  82:Src/encoder.c **** 	右タイヤの位相係数カウントを初期化する関数
+  83:Src/encoder.c **** --------------------------------------------------------------- */
+  84:Src/encoder.c **** void Encoder_ResetCount_Right( void )
+  85:Src/encoder.c **** {
+ 112              		.loc 1 85 1 is_stmt 1 view -0
  113              		.cfi_startproc
  114              		@ args = 0, pretend = 0, frame = 0
  115              		@ frame_needed = 0, uses_anonymous_args = 0
  116              		@ link register save eliminated.
-  85:Src/encoder.c **** 	ENC_CNT_R = ENC_ZERO;
- 117              		.loc 1 85 2 view .LVU13
- 118              		.loc 1 85 12 is_stmt 0 view .LVU14
+  86:Src/encoder.c **** 	ENC_CNT_R = ENC_ZERO;
+ 117              		.loc 1 86 2 view .LVU13
+ 118              		.loc 1 86 12 is_stmt 0 view .LVU14
  119 0000 4FF08043 		mov	r3, #1073741824
  120 0004 47F6FE72 		movw	r2, #32766
  121 0008 5A62     		str	r2, [r3, #36]
-  86:Src/encoder.c **** }
- 122              		.loc 1 86 1 view .LVU15
+  87:Src/encoder.c **** }
+ 122              		.loc 1 87 1 view .LVU15
  123 000a 7047     		bx	lr
  124              		.cfi_endproc
  125              	.LFE137:
@@ -223,8 +224,8 @@ ARM GAS  C:\Temp\cc6jxiTD.s 			page 1
  133              		.fpu fpv4-sp-d16
  135              	Encoder_Initialize:
  136              	.LFB135:
-  65:Src/encoder.c **** 	HAL_TIM_Encoder_Start( &htim2, TIM_CHANNEL_ALL );
- 137              		.loc 1 65 1 is_stmt 1 view -0
+  66:Src/encoder.c **** 	HAL_TIM_Encoder_Start( &htim2, TIM_CHANNEL_ALL );
+ 137              		.loc 1 66 1 is_stmt 1 view -0
  138              		.cfi_startproc
  139              		@ args = 0, pretend = 0, frame = 0
  140              		@ frame_needed = 0, uses_anonymous_args = 0
@@ -233,31 +234,31 @@ ARM GAS  C:\Temp\cc6jxiTD.s 			page 1
  143              		.cfi_def_cfa_offset 8
  144              		.cfi_offset 3, -8
  145              		.cfi_offset 14, -4
-  66:Src/encoder.c **** 	HAL_TIM_Encoder_Start( &htim3, TIM_CHANNEL_ALL );
- 146              		.loc 1 66 2 view .LVU17
+  67:Src/encoder.c **** 	HAL_TIM_Encoder_Start( &htim3, TIM_CHANNEL_ALL );
+ 146              		.loc 1 67 2 view .LVU17
  147 0002 3C21     		movs	r1, #60
  148 0004 0548     		ldr	r0, .L11
+ARM GAS  C:\Temp\ccLuCqVL.s 			page 5
+
+
  149 0006 FFF7FEFF 		bl	HAL_TIM_Encoder_Start
-ARM GAS  C:\Temp\cc6jxiTD.s 			page 5
-
-
  150              	.LVL0:
-  67:Src/encoder.c **** 	Encoder_ResetCount_Left();
- 151              		.loc 1 67 2 view .LVU18
+  68:Src/encoder.c **** 	Encoder_ResetCount_Left();
+ 151              		.loc 1 68 2 view .LVU18
  152 000a 3C21     		movs	r1, #60
  153 000c 0448     		ldr	r0, .L11+4
  154 000e FFF7FEFF 		bl	HAL_TIM_Encoder_Start
  155              	.LVL1:
-  68:Src/encoder.c **** 	Encoder_ResetCount_Right();
- 156              		.loc 1 68 2 view .LVU19
+  69:Src/encoder.c **** 	Encoder_ResetCount_Right();
+ 156              		.loc 1 69 2 view .LVU19
  157 0012 FFF7FEFF 		bl	Encoder_ResetCount_Left
  158              	.LVL2:
-  69:Src/encoder.c **** }
- 159              		.loc 1 69 2 view .LVU20
+  70:Src/encoder.c **** }
+ 159              		.loc 1 70 2 view .LVU20
  160 0016 FFF7FEFF 		bl	Encoder_ResetCount_Right
  161              	.LVL3:
-  70:Src/encoder.c **** 
- 162              		.loc 1 70 1 is_stmt 0 view .LVU21
+  71:Src/encoder.c **** 
+ 162              		.loc 1 71 1 is_stmt 0 view .LVU21
  163 001a 08BD     		pop	{r3, pc}
  164              	.L12:
  165              		.align	2
@@ -275,36 +276,36 @@ ARM GAS  C:\Temp\cc6jxiTD.s 			page 1
  178              		.fpu fpv4-sp-d16
  180              	Encoder_GetAngle_Left:
  181              	.LFB138:
-  87:Src/encoder.c **** 
-  88:Src/encoder.c **** /* ---------------------------------------------------------------
-  89:Src/encoder.c **** 	左タイヤの角度を取得する関数[rad]
-  90:Src/encoder.c **** --------------------------------------------------------------- */
-  91:Src/encoder.c **** float Encoder_GetAngle_Left( void )
-  92:Src/encoder.c **** {
- 182              		.loc 1 92 1 is_stmt 1 view -0
+  88:Src/encoder.c **** 
+  89:Src/encoder.c **** /* ---------------------------------------------------------------
+  90:Src/encoder.c **** 	左タイヤの角度を取得する関数[rad]
+  91:Src/encoder.c **** --------------------------------------------------------------- */
+  92:Src/encoder.c **** float Encoder_GetAngle_Left( void )
+  93:Src/encoder.c **** {
+ 182              		.loc 1 93 1 is_stmt 1 view -0
  183              		.cfi_startproc
  184              		@ args = 0, pretend = 0, frame = 0
  185              		@ frame_needed = 0, uses_anonymous_args = 0
  186              		@ link register save eliminated.
-  93:Src/encoder.c **** 	return(2 * PI * (float)( (int32_t)ENC_CNT_L - (int32_t)ENC_ZERO ) / (float)ENC_RESOLUTION);
- 187              		.loc 1 93 2 view .LVU23
- 188              		.loc 1 93 36 is_stmt 0 view .LVU24
+  94:Src/encoder.c **** 	return(2 * PI * (float)( (int32_t)ENC_CNT_L - (int32_t)ENC_ZERO ) / (float)ENC_RESOLUTION);
+ 187              		.loc 1 94 2 view .LVU23
+ 188              		.loc 1 94 36 is_stmt 0 view .LVU24
  189 0000 084B     		ldr	r3, .L14
  190 0002 5B6A     		ldr	r3, [r3, #36]
- 191              		.loc 1 93 46 view .LVU25
+ 191              		.loc 1 94 46 view .LVU25
  192 0004 A3F5FF43 		sub	r3, r3, #32640
  193 0008 7E3B     		subs	r3, r3, #126
- 194              		.loc 1 93 18 view .LVU26
+ 194              		.loc 1 94 18 view .LVU26
  195 000a 07EE903A 		vmov	s15, r3	@ int
  196 000e F8EEE77A 		vcvt.f32.s32	s15, s15
- 197              		.loc 1 93 16 view .LVU27
-ARM GAS  C:\Temp\cc6jxiTD.s 			page 6
+ARM GAS  C:\Temp\ccLuCqVL.s 			page 6
 
 
+ 197              		.loc 1 94 16 view .LVU27
  198 0012 9FED050A 		vldr.32	s0, .L14+4
  199 0016 67EE807A 		vmul.f32	s15, s15, s0
-  94:Src/encoder.c **** }
- 200              		.loc 1 94 1 view .LVU28
+  95:Src/encoder.c **** }
+ 200              		.loc 1 95 1 view .LVU28
  201 001a 9FED040A 		vldr.32	s0, .L14+8
  202 001e 87EE800A 		vdiv.f32	s0, s15, s0
  203 0022 7047     		bx	lr
@@ -325,42 +326,42 @@ ARM GAS  C:\Temp\cc6jxiTD.s 			page 1
  219              		.fpu fpv4-sp-d16
  221              	Encoder_GetAngle_Right:
  222              	.LFB139:
-  95:Src/encoder.c **** 
-  96:Src/encoder.c **** /* ---------------------------------------------------------------
-  97:Src/encoder.c **** 	右タイヤの角度を取得する関数[rad]
-  98:Src/encoder.c **** --------------------------------------------------------------- */
-  99:Src/encoder.c **** float Encoder_GetAngle_Right( void )
- 100:Src/encoder.c **** {
- 223              		.loc 1 100 1 is_stmt 1 view -0
+  96:Src/encoder.c **** 
+  97:Src/encoder.c **** /* ---------------------------------------------------------------
+  98:Src/encoder.c **** 	右タイヤの角度を取得する関数[rad]
+  99:Src/encoder.c **** --------------------------------------------------------------- */
+ 100:Src/encoder.c **** float Encoder_GetAngle_Right( void )
+ 101:Src/encoder.c **** {
+ 223              		.loc 1 101 1 is_stmt 1 view -0
  224              		.cfi_startproc
  225              		@ args = 0, pretend = 0, frame = 0
  226              		@ frame_needed = 0, uses_anonymous_args = 0
  227              		@ link register save eliminated.
- 101:Src/encoder.c **** 	return(2 * PI * (float)( (int32_t)ENC_ZERO - (int32_t)ENC_CNT_R ) / (float)ENC_RESOLUTION);
- 228              		.loc 1 101 2 view .LVU30
- 229              		.loc 1 101 56 is_stmt 0 view .LVU31
+ 102:Src/encoder.c **** 	return(2 * PI * (float)( (int32_t)ENC_ZERO - (int32_t)ENC_CNT_R ) / (float)ENC_RESOLUTION);
+ 228              		.loc 1 102 2 view .LVU30
+ 229              		.loc 1 102 56 is_stmt 0 view .LVU31
  230 0000 4FF08043 		mov	r3, #1073741824
  231 0004 5B6A     		ldr	r3, [r3, #36]
- 232              		.loc 1 101 45 view .LVU32
+ 232              		.loc 1 102 45 view .LVU32
  233 0006 C3F5FF43 		rsb	r3, r3, #32640
  234 000a 7E33     		adds	r3, r3, #126
- 235              		.loc 1 101 18 view .LVU33
+ 235              		.loc 1 102 18 view .LVU33
  236 000c 07EE903A 		vmov	s15, r3	@ int
  237 0010 F8EEE77A 		vcvt.f32.s32	s15, s15
- 238              		.loc 1 101 16 view .LVU34
+ 238              		.loc 1 102 16 view .LVU34
  239 0014 9FED040A 		vldr.32	s0, .L17
  240 0018 67EE807A 		vmul.f32	s15, s15, s0
- 102:Src/encoder.c **** }
- 241              		.loc 1 102 1 view .LVU35
+ 103:Src/encoder.c **** }
+ 241              		.loc 1 103 1 view .LVU35
  242 001c 9FED030A 		vldr.32	s0, .L17+4
  243 0020 87EE800A 		vdiv.f32	s0, s15, s0
  244 0024 7047     		bx	lr
  245              	.L18:
  246 0026 00BF     		.align	2
+ARM GAS  C:\Temp\ccLuCqVL.s 			page 7
+
+
  247              	.L17:
-ARM GAS  C:\Temp\cc6jxiTD.s 			page 7
-
-
  248 0028 DA0FC940 		.word	1086918618
  249 002c 00C07F44 		.word	1149222912
  250              		.cfi_endproc
@@ -374,435 +375,435 @@ ARM GAS  C:\Temp\cc6jxiTD.s 			page 1
  259              		.fpu fpv4-sp-d16
  261              	Get_speed:
  262              	.LFB140:
- 103:Src/encoder.c **** 
  104:Src/encoder.c **** 
- 105:Src/encoder.c **** /* ---------------------------------------------------------------
- 106:Src/encoder.c ****  	 速度を算出する関数(1msタスク)[m/s]
- 107:Src/encoder.c ****  -------------------------------------------------------------- */
- 108:Src/encoder.c **** void Get_speed(void)
- 109:Src/encoder.c **** {
- 263              		.loc 1 109 1 is_stmt 1 view -0
+ 105:Src/encoder.c **** 
+ 106:Src/encoder.c **** /* ---------------------------------------------------------------
+ 107:Src/encoder.c ****  	 速度を算出する関数(1msタスク)[m/s]
+ 108:Src/encoder.c ****  -------------------------------------------------------------- */
+ 109:Src/encoder.c **** void Get_speed(void)
+ 110:Src/encoder.c **** {
+ 263              		.loc 1 110 1 is_stmt 1 view -0
  264              		.cfi_startproc
  265              		@ args = 0, pretend = 0, frame = 0
  266              		@ frame_needed = 0, uses_anonymous_args = 0
  267              		@ link register save eliminated.
- 110:Src/encoder.c **** 	uint16_t	uss_delta_cnt_r;	//m　右タイヤのカウント[/ms](計算用)
- 268              		.loc 1 110 2 view .LVU37
- 111:Src/encoder.c **** 	uint16_t	uss_delta_cnt_l;	//m　左タイヤのカウント[/ms](計算用)
- 269              		.loc 1 111 2 view .LVU38
- 112:Src/encoder.c **** 	int32_t		sl_delta_cnt_r;	//m　右タイヤのカウント [/ms]
- 270              		.loc 1 112 2 view .LVU39
- 113:Src/encoder.c **** 	int32_t		sl_delta_cnt_l;	//m　左タイヤのカウント [/ms]
- 271              		.loc 1 113 2 view .LVU40
- 114:Src/encoder.c **** 	float 		delta_angle_tire_r;	//m　右タイヤの角速度	[rad/s]
- 272              		.loc 1 114 2 view .LVU41
- 115:Src/encoder.c **** 	float		delta_angle_tire_l;	//m 左タイヤの角速度	[rad/s]
- 273              		.loc 1 115 2 view .LVU42
- 116:Src/encoder.c **** 
- 117:Src/encoder.c **** 	enc_cnt_r_new = ENC_CNT_R;
- 274              		.loc 1 117 2 view .LVU43
- 275              		.loc 1 117 18 is_stmt 0 view .LVU44
+ 111:Src/encoder.c **** 	uint16_t	uss_delta_cnt_r;	//m　右タイヤのカウント[/ms](計算用)
+ 268              		.loc 1 111 2 view .LVU37
+ 112:Src/encoder.c **** 	uint16_t	uss_delta_cnt_l;	//m　左タイヤのカウント[/ms](計算用)
+ 269              		.loc 1 112 2 view .LVU38
+ 113:Src/encoder.c **** 	int32_t		sl_delta_cnt_r;	//m　右タイヤのカウント [/ms]
+ 270              		.loc 1 113 2 view .LVU39
+ 114:Src/encoder.c **** 	int32_t		sl_delta_cnt_l;	//m　左タイヤのカウント [/ms]
+ 271              		.loc 1 114 2 view .LVU40
+ 115:Src/encoder.c **** 	float 		delta_angle_tire_r;	//m　右タイヤの角速度	[rad/s]
+ 272              		.loc 1 115 2 view .LVU41
+ 116:Src/encoder.c **** 	float		delta_angle_tire_l;	//m 左タイヤの角速度	[rad/s]
+ 273              		.loc 1 116 2 view .LVU42
+ 117:Src/encoder.c **** 
+ 118:Src/encoder.c **** 	enc_cnt_r_new = ENC_CNT_R;
+ 274              		.loc 1 118 2 view .LVU43
+ 275              		.loc 1 118 18 is_stmt 0 view .LVU44
  276 0000 4FF08043 		mov	r3, #1073741824
  277 0004 596A     		ldr	r1, [r3, #36]
- 278              		.loc 1 117 16 view .LVU45
+ 278              		.loc 1 118 16 view .LVU45
  279 0006 89B2     		uxth	r1, r1
- 118:Src/encoder.c **** 	enc_cnt_l_new = ENC_CNT_L;
- 280              		.loc 1 118 2 is_stmt 1 view .LVU46
- 281              		.loc 1 118 18 is_stmt 0 view .LVU47
+ 119:Src/encoder.c **** 	enc_cnt_l_new = ENC_CNT_L;
+ 280              		.loc 1 119 2 is_stmt 1 view .LVU46
+ 281              		.loc 1 119 18 is_stmt 0 view .LVU47
  282 0008 544A     		ldr	r2, .L42
  283 000a 526A     		ldr	r2, [r2, #36]
- 284              		.loc 1 118 16 view .LVU48
+ 284              		.loc 1 119 16 view .LVU48
  285 000c 92B2     		uxth	r2, r2
- 119:Src/encoder.c **** 
- 120:Src/encoder.c **** 	if((ENC_CNT_SR_R & 0x0001) == 0x0000)//overflowがないとき(UIF=0)
- 286              		.loc 1 120 2 is_stmt 1 view .LVU49
- 287              		.loc 1 120 6 is_stmt 0 view .LVU50
+ 120:Src/encoder.c **** 
+ 121:Src/encoder.c **** 	if((ENC_CNT_SR_R & 0x0001) == 0x0000)//overflowがないとき(UIF=0)
+ 286              		.loc 1 121 2 is_stmt 1 view .LVU49
+ 287              		.loc 1 121 6 is_stmt 0 view .LVU50
+ARM GAS  C:\Temp\ccLuCqVL.s 			page 8
+
+
  288 000e 1B69     		ldr	r3, [r3, #16]
-ARM GAS  C:\Temp\cc6jxiTD.s 			page 8
-
-
- 289              		.loc 1 120 4 view .LVU51
+ 289              		.loc 1 121 4 view .LVU51
  290 0010 13F0010F 		tst	r3, #1
  291 0014 63D1     		bne	.L20
- 121:Src/encoder.c **** 	{
- 122:Src/encoder.c **** 		sl_delta_cnt_r = (int32_t)enc_cnt_r_new - (int32_t)enc_cnt_r_old;	//m　右タイヤのカウン�
- 292              		.loc 1 122 3 is_stmt 1 view .LVU52
- 293              		.loc 1 122 45 is_stmt 0 view .LVU53
+ 122:Src/encoder.c **** 	{
+ 123:Src/encoder.c **** 		sl_delta_cnt_r = (int32_t)enc_cnt_r_new - (int32_t)enc_cnt_r_old;	//m　右タイヤのカウン�
+ 292              		.loc 1 123 3 is_stmt 1 view .LVU52
+ 293              		.loc 1 123 45 is_stmt 0 view .LVU53
  294 0016 524B     		ldr	r3, .L42+4
  295 0018 1B88     		ldrh	r3, [r3]
- 296              		.loc 1 122 18 view .LVU54
+ 296              		.loc 1 123 18 view .LVU54
  297 001a CB1A     		subs	r3, r1, r3
  298 001c 06EE903A 		vmov	s13, r3	@ int
  299              	.LVL4:
  300              	.L21:
- 123:Src/encoder.c **** 	}
- 124:Src/encoder.c **** 	else//overflow　or underflowがあるとき(UIF=1)
- 125:Src/encoder.c **** 	{
- 126:Src/encoder.c **** 		if(enc_cnt_r_new >= enc_cnt_r_old)//m 逆回転時
- 127:Src/encoder.c **** 		{
- 128:Src/encoder.c **** 			uss_delta_cnt_r = enc_cnt_r_old	- enc_cnt_r_new;
- 129:Src/encoder.c **** 			sl_delta_cnt_r = -1 * (int32_t)uss_delta_cnt_r;
- 130:Src/encoder.c **** 		}
- 131:Src/encoder.c **** 		else	//m 正回転時
- 132:Src/encoder.c **** 		{
- 133:Src/encoder.c **** 			uss_delta_cnt_r = enc_cnt_r_new	- enc_cnt_r_old;
- 134:Src/encoder.c **** 			sl_delta_cnt_r = 1 * (int32_t)uss_delta_cnt_r;
- 135:Src/encoder.c **** 		}
- 136:Src/encoder.c **** 
- 137:Src/encoder.c **** 		ENC_CNT_SR_R = ENC_CNT_SR_R & ~(0x0001); //UIFクリア
- 138:Src/encoder.c **** 
- 139:Src/encoder.c **** 	}
- 140:Src/encoder.c **** 
+ 124:Src/encoder.c **** 	}
+ 125:Src/encoder.c **** 	else//overflow　or underflowがあるとき(UIF=1)
+ 126:Src/encoder.c **** 	{
+ 127:Src/encoder.c **** 		if(enc_cnt_r_new >= enc_cnt_r_old)//m 逆回転時
+ 128:Src/encoder.c **** 		{
+ 129:Src/encoder.c **** 			uss_delta_cnt_r = enc_cnt_r_old	- enc_cnt_r_new;
+ 130:Src/encoder.c **** 			sl_delta_cnt_r = -1 * (int32_t)uss_delta_cnt_r;
+ 131:Src/encoder.c **** 		}
+ 132:Src/encoder.c **** 		else	//m 正回転時
+ 133:Src/encoder.c **** 		{
+ 134:Src/encoder.c **** 			uss_delta_cnt_r = enc_cnt_r_new	- enc_cnt_r_old;
+ 135:Src/encoder.c **** 			sl_delta_cnt_r = 1 * (int32_t)uss_delta_cnt_r;
+ 136:Src/encoder.c **** 		}
+ 137:Src/encoder.c **** 
+ 138:Src/encoder.c **** 		ENC_CNT_SR_R = ENC_CNT_SR_R & ~(0x0001); //UIFクリア
+ 139:Src/encoder.c **** 
+ 140:Src/encoder.c **** 	}
  141:Src/encoder.c **** 
- 142:Src/encoder.c **** 	if((ENC_CNT_SR_L & 0x0001) == 0x0000)//overflowがないとき(UIF=0)
- 301              		.loc 1 142 2 is_stmt 1 view .LVU55
- 302              		.loc 1 142 6 is_stmt 0 view .LVU56
+ 142:Src/encoder.c **** 
+ 143:Src/encoder.c **** 	if((ENC_CNT_SR_L & 0x0001) == 0x0000)//overflowがないとき(UIF=0)
+ 301              		.loc 1 143 2 is_stmt 1 view .LVU55
+ 302              		.loc 1 143 6 is_stmt 0 view .LVU56
  303 0020 4E4B     		ldr	r3, .L42
  304 0022 1B69     		ldr	r3, [r3, #16]
- 305              		.loc 1 142 4 view .LVU57
+ 305              		.loc 1 143 4 view .LVU57
  306 0024 13F0010F 		tst	r3, #1
  307 0028 6ED1     		bne	.L24
- 143:Src/encoder.c **** 	{
- 144:Src/encoder.c **** 		sl_delta_cnt_l = (int32_t)enc_cnt_l_new - (int32_t)enc_cnt_l_old;	//m　左タイヤのカウン�
- 308              		.loc 1 144 3 is_stmt 1 view .LVU58
- 309              		.loc 1 144 45 is_stmt 0 view .LVU59
+ 144:Src/encoder.c **** 	{
+ 145:Src/encoder.c **** 		sl_delta_cnt_l = (int32_t)enc_cnt_l_new - (int32_t)enc_cnt_l_old;	//m　左タイヤのカウン�
+ 308              		.loc 1 145 3 is_stmt 1 view .LVU58
+ 309              		.loc 1 145 45 is_stmt 0 view .LVU59
  310 002a 4E4B     		ldr	r3, .L42+8
  311 002c 1B88     		ldrh	r3, [r3]
- 312              		.loc 1 144 18 view .LVU60
+ 312              		.loc 1 145 18 view .LVU60
  313 002e D31A     		subs	r3, r2, r3
  314 0030 07EE103A 		vmov	s14, r3	@ int
  315              	.LVL5:
  316              	.L25:
- 145:Src/encoder.c **** 	}
- 146:Src/encoder.c **** 	else//overflow　or underflowがあるとき(UIF=1)
- 147:Src/encoder.c **** 	{
- 148:Src/encoder.c **** 		if(enc_cnt_l_new >= enc_cnt_l_old)//m 逆回転時
- 149:Src/encoder.c **** 		{
-ARM GAS  C:\Temp\cc6jxiTD.s 			page 9
+ 146:Src/encoder.c **** 	}
+ 147:Src/encoder.c **** 	else//overflow　or underflowがあるとき(UIF=1)
+ 148:Src/encoder.c **** 	{
+ 149:Src/encoder.c **** 		if(enc_cnt_l_new >= enc_cnt_l_old)//m 逆回転時
+ARM GAS  C:\Temp\ccLuCqVL.s 			page 9
 
 
- 150:Src/encoder.c **** 			uss_delta_cnt_l = enc_cnt_l_old	- enc_cnt_l_new;
- 151:Src/encoder.c **** 			sl_delta_cnt_l = -1 * (int32_t)uss_delta_cnt_l;
- 152:Src/encoder.c **** 		}
- 153:Src/encoder.c **** 		else	//m 正回転時
- 154:Src/encoder.c **** 		{
- 155:Src/encoder.c **** 			uss_delta_cnt_l = enc_cnt_l_new	- enc_cnt_l_old;
- 156:Src/encoder.c **** 			sl_delta_cnt_l = 1 * (int32_t)uss_delta_cnt_l;
- 157:Src/encoder.c **** 		}
- 158:Src/encoder.c **** 
- 159:Src/encoder.c **** 		ENC_CNT_SR_L = ENC_CNT_SR_L & ~(0x0001); //UIFクリア
- 160:Src/encoder.c **** 
- 161:Src/encoder.c **** 	}
- 162:Src/encoder.c **** 
+ 150:Src/encoder.c **** 		{
+ 151:Src/encoder.c **** 			uss_delta_cnt_l = enc_cnt_l_old	- enc_cnt_l_new;
+ 152:Src/encoder.c **** 			sl_delta_cnt_l = -1 * (int32_t)uss_delta_cnt_l;
+ 153:Src/encoder.c **** 		}
+ 154:Src/encoder.c **** 		else	//m 正回転時
+ 155:Src/encoder.c **** 		{
+ 156:Src/encoder.c **** 			uss_delta_cnt_l = enc_cnt_l_new	- enc_cnt_l_old;
+ 157:Src/encoder.c **** 			sl_delta_cnt_l = 1 * (int32_t)uss_delta_cnt_l;
+ 158:Src/encoder.c **** 		}
+ 159:Src/encoder.c **** 
+ 160:Src/encoder.c **** 		ENC_CNT_SR_L = ENC_CNT_SR_L & ~(0x0001); //UIFクリア
+ 161:Src/encoder.c **** 
+ 162:Src/encoder.c **** 	}
  163:Src/encoder.c **** 
  164:Src/encoder.c **** 
- 165:Src/encoder.c **** 	/*m 各タイヤの角速度算出 */
- 166:Src/encoder.c **** 	delta_angle_tire_r = -1 * 1000 * 2 * PI * (float)sl_delta_cnt_r / (float)ENC_RESOLUTION;//m 右タ
- 317              		.loc 1 166 2 is_stmt 1 view .LVU61
- 318              		.loc 1 166 44 is_stmt 0 view .LVU62
+ 165:Src/encoder.c **** 
+ 166:Src/encoder.c **** 	/*m 各タイヤの角速度算出 */
+ 167:Src/encoder.c **** 	delta_angle_tire_r = -1 * 1000 * 2 * PI * (float)sl_delta_cnt_r / (float)ENC_RESOLUTION;//m 右タ
+ 317              		.loc 1 167 2 is_stmt 1 view .LVU61
+ 318              		.loc 1 167 44 is_stmt 0 view .LVU62
  319 0034 F8EEE66A 		vcvt.f32.s32	s13, s13
  320              	.LVL6:
- 321              		.loc 1 166 42 view .LVU63
+ 321              		.loc 1 167 42 view .LVU63
  322 0038 DFED4B7A 		vldr.32	s15, .L42+12
  323 003c 66EEA76A 		vmul.f32	s13, s13, s15
- 324              		.loc 1 166 21 view .LVU64
+ 324              		.loc 1 167 21 view .LVU64
  325 0040 9FED4A6A 		vldr.32	s12, .L42+16
  326 0044 C6EE867A 		vdiv.f32	s15, s13, s12
  327              	.LVL7:
- 167:Src/encoder.c **** 	delta_angle_tire_l =  1 * 1000 * 2 * PI * (float)sl_delta_cnt_l / (float)ENC_RESOLUTION;//m 左タ
- 328              		.loc 1 167 2 is_stmt 1 view .LVU65
- 329              		.loc 1 167 44 is_stmt 0 view .LVU66
+ 168:Src/encoder.c **** 	delta_angle_tire_l =  1 * 1000 * 2 * PI * (float)sl_delta_cnt_l / (float)ENC_RESOLUTION;//m 左タ
+ 328              		.loc 1 168 2 is_stmt 1 view .LVU65
+ 329              		.loc 1 168 44 is_stmt 0 view .LVU66
  330 0048 B8EEC77A 		vcvt.f32.s32	s14, s14
  331              	.LVL8:
- 332              		.loc 1 167 42 view .LVU67
+ 332              		.loc 1 168 42 view .LVU67
  333 004c DFED486A 		vldr.32	s13, .L42+20
  334 0050 27EE267A 		vmul.f32	s14, s14, s13
- 335              		.loc 1 167 21 view .LVU68
+ 335              		.loc 1 168 21 view .LVU68
  336 0054 C7EE066A 		vdiv.f32	s13, s14, s12
  337              	.LVL9:
- 168:Src/encoder.c **** 
- 169:Src/encoder.c **** 	/*m 各モータの角速度算出*/
- 170:Src/encoder.c **** 	delta_angle_motor_r = gear_rate * delta_angle_tire_r;
- 338              		.loc 1 170 2 is_stmt 1 view .LVU69
- 339              		.loc 1 170 34 is_stmt 0 view .LVU70
+ 169:Src/encoder.c **** 
+ 170:Src/encoder.c **** 	/*m 各モータの角速度算出*/
+ 171:Src/encoder.c **** 	delta_angle_motor_r = gear_rate * delta_angle_tire_r;
+ 338              		.loc 1 171 2 is_stmt 1 view .LVU69
+ 339              		.loc 1 171 34 is_stmt 0 view .LVU70
  340 0058 9FED467A 		vldr.32	s14, .L42+24
  341 005c 27EE876A 		vmul.f32	s12, s15, s14
- 342              		.loc 1 170 22 view .LVU71
+ 342              		.loc 1 171 22 view .LVU71
  343 0060 454B     		ldr	r3, .L42+28
  344 0062 83ED006A 		vstr.32	s12, [r3]
- 171:Src/encoder.c **** 	delta_angle_motor_l = gear_rate * delta_angle_tire_l;
- 345              		.loc 1 171 2 is_stmt 1 view .LVU72
- 346              		.loc 1 171 34 is_stmt 0 view .LVU73
+ 172:Src/encoder.c **** 	delta_angle_motor_l = gear_rate * delta_angle_tire_l;
+ 345              		.loc 1 172 2 is_stmt 1 view .LVU72
+ 346              		.loc 1 172 34 is_stmt 0 view .LVU73
  347 0066 26EE877A 		vmul.f32	s14, s13, s14
- 348              		.loc 1 171 22 view .LVU74
+ 348              		.loc 1 172 22 view .LVU74
  349 006a 444B     		ldr	r3, .L42+32
  350 006c 83ED007A 		vstr.32	s14, [r3]
- 172:Src/encoder.c **** 
-ARM GAS  C:\Temp\cc6jxiTD.s 			page 10
+ARM GAS  C:\Temp\ccLuCqVL.s 			page 10
 
 
- 173:Src/encoder.c **** 	/*m 各タイヤの角速度から各タイヤの速度算出　*/
- 174:Src/encoder.c **** 	speed_r = Tire_diameter * 0.5 * delta_angle_tire_r;	//m 右タイヤ速度[ m/s]
- 351              		.loc 1 174 2 is_stmt 1 view .LVU75
- 352              		.loc 1 174 10 is_stmt 0 view .LVU76
+ 173:Src/encoder.c **** 
+ 174:Src/encoder.c **** 	/*m 各タイヤの角速度から各タイヤの速度算出　*/
+ 175:Src/encoder.c **** 	speed_r = Tire_diameter * 0.5 * delta_angle_tire_r;	//m 右タイヤ速度[ m/s]
+ 351              		.loc 1 175 2 is_stmt 1 view .LVU75
+ 352              		.loc 1 175 10 is_stmt 0 view .LVU76
  353 0070 9FED437A 		vldr.32	s14, .L42+36
  354 0074 67EE877A 		vmul.f32	s15, s15, s14
  355              	.LVL10:
- 356              		.loc 1 174 10 view .LVU77
+ 356              		.loc 1 175 10 view .LVU77
  357 0078 424B     		ldr	r3, .L42+40
  358 007a C3ED007A 		vstr.32	s15, [r3]
- 175:Src/encoder.c **** 	speed_l = Tire_diameter * 0.5 * delta_angle_tire_l;	//m 左タイヤ速度[ m/s]
- 359              		.loc 1 175 2 is_stmt 1 view .LVU78
- 360              		.loc 1 175 10 is_stmt 0 view .LVU79
+ 176:Src/encoder.c **** 	speed_l = Tire_diameter * 0.5 * delta_angle_tire_l;	//m 左タイヤ速度[ m/s]
+ 359              		.loc 1 176 2 is_stmt 1 view .LVU78
+ 360              		.loc 1 176 10 is_stmt 0 view .LVU79
  361 007e 26EE877A 		vmul.f32	s14, s13, s14
  362 0082 414B     		ldr	r3, .L42+44
  363 0084 83ED007A 		vstr.32	s14, [r3]
- 176:Src/encoder.c **** 
  177:Src/encoder.c **** 
  178:Src/encoder.c **** 
- 179:Src/encoder.c **** 	if(speed_r > speed_r_max)
- 364              		.loc 1 179 2 is_stmt 1 view .LVU80
- 365              		.loc 1 179 13 is_stmt 0 view .LVU81
+ 179:Src/encoder.c **** 
+ 180:Src/encoder.c **** 	if(speed_r > speed_r_max)
+ 364              		.loc 1 180 2 is_stmt 1 view .LVU80
+ 365              		.loc 1 180 13 is_stmt 0 view .LVU81
  366 0088 404B     		ldr	r3, .L42+48
  367 008a D3ED006A 		vldr.32	s13, [r3]
  368              	.LVL11:
- 369              		.loc 1 179 4 view .LVU82
+ 369              		.loc 1 180 4 view .LVU82
  370 008e F4EEE67A 		vcmpe.f32	s15, s13
  371 0092 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
  372 0096 4BDD     		ble	.L40
- 180:Src/encoder.c **** 	{
- 181:Src/encoder.c **** 		speed_r_max = speed_r;
- 373              		.loc 1 181 3 is_stmt 1 view .LVU83
- 374              		.loc 1 181 15 is_stmt 0 view .LVU84
+ 181:Src/encoder.c **** 	{
+ 182:Src/encoder.c **** 		speed_r_max = speed_r;
+ 373              		.loc 1 182 3 is_stmt 1 view .LVU83
+ 374              		.loc 1 182 15 is_stmt 0 view .LVU84
  375 0098 C3ED007A 		vstr.32	s15, [r3]
  376              	.L30:
- 182:Src/encoder.c **** 	}
- 183:Src/encoder.c **** 	else if(speed_r < speed_r_min)
- 184:Src/encoder.c **** 	{
- 185:Src/encoder.c **** 		speed_r_min = speed_r;
- 186:Src/encoder.c **** 	}
- 187:Src/encoder.c **** 
- 188:Src/encoder.c **** 	if(speed_l > speed_l_max)
- 377              		.loc 1 188 2 is_stmt 1 view .LVU85
- 378              		.loc 1 188 13 is_stmt 0 view .LVU86
+ 183:Src/encoder.c **** 	}
+ 184:Src/encoder.c **** 	else if(speed_r < speed_r_min)
+ 185:Src/encoder.c **** 	{
+ 186:Src/encoder.c **** 		speed_r_min = speed_r;
+ 187:Src/encoder.c **** 	}
+ 188:Src/encoder.c **** 
+ 189:Src/encoder.c **** 	if(speed_l > speed_l_max)
+ 377              		.loc 1 189 2 is_stmt 1 view .LVU85
+ 378              		.loc 1 189 13 is_stmt 0 view .LVU86
  379 009c 3C4B     		ldr	r3, .L42+52
  380 009e D3ED006A 		vldr.32	s13, [r3]
- 381              		.loc 1 188 4 view .LVU87
+ 381              		.loc 1 189 4 view .LVU87
  382 00a2 B4EEE67A 		vcmpe.f32	s14, s13
  383 00a6 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
  384 00aa 4CDD     		ble	.L41
- 189:Src/encoder.c **** 	{
- 190:Src/encoder.c **** 		speed_l_max = speed_l;
- 385              		.loc 1 190 3 is_stmt 1 view .LVU88
- 386              		.loc 1 190 15 is_stmt 0 view .LVU89
+ 190:Src/encoder.c **** 	{
+ 191:Src/encoder.c **** 		speed_l_max = speed_l;
+ 385              		.loc 1 191 3 is_stmt 1 view .LVU88
+ 386              		.loc 1 191 15 is_stmt 0 view .LVU89
  387 00ac 83ED007A 		vstr.32	s14, [r3]
  388              	.L34:
- 191:Src/encoder.c **** 	}
-ARM GAS  C:\Temp\cc6jxiTD.s 			page 11
+ARM GAS  C:\Temp\ccLuCqVL.s 			page 11
 
 
- 192:Src/encoder.c **** 	else if(speed_l < speed_l_min)
- 193:Src/encoder.c **** 	{
- 194:Src/encoder.c **** 		speed_l_min = speed_l;
- 195:Src/encoder.c **** 	}
- 196:Src/encoder.c **** 
- 197:Src/encoder.c **** 	speed_m = (speed_r + speed_l)/2;					//m 本体速度（右と左の平均値）  [m/s]
- 389              		.loc 1 197 2 is_stmt 1 view .LVU90
- 390              		.loc 1 197 21 is_stmt 0 view .LVU91
+ 192:Src/encoder.c **** 	}
+ 193:Src/encoder.c **** 	else if(speed_l < speed_l_min)
+ 194:Src/encoder.c **** 	{
+ 195:Src/encoder.c **** 		speed_l_min = speed_l;
+ 196:Src/encoder.c **** 	}
+ 197:Src/encoder.c **** 
+ 198:Src/encoder.c **** 	speed_m = (speed_r + speed_l)/2;					//m 本体速度（右と左の平均値）  [m/s]
+ 389              		.loc 1 198 2 is_stmt 1 view .LVU90
+ 390              		.loc 1 198 21 is_stmt 0 view .LVU91
  391 00b0 77EE876A 		vadd.f32	s13, s15, s14
- 392              		.loc 1 197 31 view .LVU92
+ 392              		.loc 1 198 31 view .LVU92
  393 00b4 B6EE006A 		vmov.f32	s12, #5.0e-1
  394 00b8 66EE866A 		vmul.f32	s13, s13, s12
- 395              		.loc 1 197 10 view .LVU93
+ 395              		.loc 1 198 10 view .LVU93
  396 00bc 354B     		ldr	r3, .L42+56
  397 00be C3ED006A 		vstr.32	s13, [r3]
- 198:Src/encoder.c **** 	speed_rad = (-speed_l + speed_r) / chassis_width;	//m エンコーダ値から算出される角�
- 398              		.loc 1 198 2 is_stmt 1 view .LVU94
- 399              		.loc 1 198 24 is_stmt 0 view .LVU95
+ 199:Src/encoder.c **** 	speed_rad = (-speed_l + speed_r) / chassis_width;	//m エンコーダ値から算出される角�
+ 398              		.loc 1 199 2 is_stmt 1 view .LVU94
+ 399              		.loc 1 199 24 is_stmt 0 view .LVU95
  400 00c2 77EEC77A 		vsub.f32	s15, s15, s14
- 401              		.loc 1 198 35 view .LVU96
+ 401              		.loc 1 199 35 view .LVU96
  402 00c6 DFED346A 		vldr.32	s13, .L42+60
  403 00ca 87EEA67A 		vdiv.f32	s14, s15, s13
- 404              		.loc 1 198 12 view .LVU97
+ 404              		.loc 1 199 12 view .LVU97
  405 00ce 334B     		ldr	r3, .L42+64
  406 00d0 83ED007A 		vstr.32	s14, [r3]
- 199:Src/encoder.c **** 
  200:Src/encoder.c **** 
- 201:Src/encoder.c **** 	enc_cnt_r_old	=	enc_cnt_r_new;	//m 右タイヤのカウント値を更新
- 407              		.loc 1 201 2 is_stmt 1 view .LVU98
- 408              		.loc 1 201 16 is_stmt 0 view .LVU99
+ 201:Src/encoder.c **** 
+ 202:Src/encoder.c **** 	enc_cnt_r_old	=	enc_cnt_r_new;	//m 右タイヤのカウント値を更新
+ 407              		.loc 1 202 2 is_stmt 1 view .LVU98
+ 408              		.loc 1 202 16 is_stmt 0 view .LVU99
  409 00d4 224B     		ldr	r3, .L42+4
  410 00d6 1980     		strh	r1, [r3]	@ movhi
- 202:Src/encoder.c **** 	enc_cnt_l_old	=	enc_cnt_l_new;	//m 左タイヤのカウント値を更新
- 411              		.loc 1 202 2 is_stmt 1 view .LVU100
- 412              		.loc 1 202 16 is_stmt 0 view .LVU101
+ 203:Src/encoder.c **** 	enc_cnt_l_old	=	enc_cnt_l_new;	//m 左タイヤのカウント値を更新
+ 411              		.loc 1 203 2 is_stmt 1 view .LVU100
+ 412              		.loc 1 203 16 is_stmt 0 view .LVU101
  413 00d8 224B     		ldr	r3, .L42+8
  414 00da 1A80     		strh	r2, [r3]	@ movhi
- 203:Src/encoder.c **** 
- 204:Src/encoder.c **** }
- 415              		.loc 1 204 1 view .LVU102
+ 204:Src/encoder.c **** 
+ 205:Src/encoder.c **** }
+ 415              		.loc 1 205 1 view .LVU102
  416 00dc 7047     		bx	lr
  417              	.L20:
- 126:Src/encoder.c **** 		{
- 418              		.loc 1 126 3 is_stmt 1 view .LVU103
- 126:Src/encoder.c **** 		{
- 419              		.loc 1 126 20 is_stmt 0 view .LVU104
+ 127:Src/encoder.c **** 		{
+ 418              		.loc 1 127 3 is_stmt 1 view .LVU103
+ 127:Src/encoder.c **** 		{
+ 419              		.loc 1 127 20 is_stmt 0 view .LVU104
  420 00de 204B     		ldr	r3, .L42+4
  421 00e0 1B88     		ldrh	r3, [r3]
- 126:Src/encoder.c **** 		{
- 422              		.loc 1 126 5 view .LVU105
+ 127:Src/encoder.c **** 		{
+ 422              		.loc 1 127 5 view .LVU105
  423 00e2 9942     		cmp	r1, r3
  424 00e4 0BD3     		bcc	.L22
- 128:Src/encoder.c **** 			sl_delta_cnt_r = -1 * (int32_t)uss_delta_cnt_r;
- 425              		.loc 1 128 4 is_stmt 1 view .LVU106
- 128:Src/encoder.c **** 			sl_delta_cnt_r = -1 * (int32_t)uss_delta_cnt_r;
- 426              		.loc 1 128 20 is_stmt 0 view .LVU107
+ 129:Src/encoder.c **** 			sl_delta_cnt_r = -1 * (int32_t)uss_delta_cnt_r;
+ 425              		.loc 1 129 4 is_stmt 1 view .LVU106
+ 129:Src/encoder.c **** 			sl_delta_cnt_r = -1 * (int32_t)uss_delta_cnt_r;
+ 426              		.loc 1 129 20 is_stmt 0 view .LVU107
+ARM GAS  C:\Temp\ccLuCqVL.s 			page 12
+
+
  427 00e6 5B1A     		subs	r3, r3, r1
-ARM GAS  C:\Temp\cc6jxiTD.s 			page 12
-
-
  428 00e8 9BB2     		uxth	r3, r3
  429              	.LVL12:
- 129:Src/encoder.c **** 		}
- 430              		.loc 1 129 4 is_stmt 1 view .LVU108
- 129:Src/encoder.c **** 		}
- 431              		.loc 1 129 19 is_stmt 0 view .LVU109
+ 130:Src/encoder.c **** 		}
+ 430              		.loc 1 130 4 is_stmt 1 view .LVU108
+ 130:Src/encoder.c **** 		}
+ 431              		.loc 1 130 19 is_stmt 0 view .LVU109
  432 00ea 5B42     		rsbs	r3, r3, #0
  433              	.LVL13:
- 129:Src/encoder.c **** 		}
- 434              		.loc 1 129 19 view .LVU110
+ 130:Src/encoder.c **** 		}
+ 434              		.loc 1 130 19 view .LVU110
  435 00ec 06EE903A 		vmov	s13, r3	@ int
  436              	.LVL14:
  437              	.L23:
- 137:Src/encoder.c **** 
- 438              		.loc 1 137 3 is_stmt 1 view .LVU111
- 137:Src/encoder.c **** 
- 439              		.loc 1 137 18 is_stmt 0 view .LVU112
+ 138:Src/encoder.c **** 
+ 438              		.loc 1 138 3 is_stmt 1 view .LVU111
+ 138:Src/encoder.c **** 
+ 439              		.loc 1 138 18 is_stmt 0 view .LVU112
  440 00f0 4FF08040 		mov	r0, #1073741824
  441 00f4 0369     		ldr	r3, [r0, #16]
  442              	.LVL15:
- 137:Src/encoder.c **** 
- 443              		.loc 1 137 31 view .LVU113
+ 138:Src/encoder.c **** 
+ 443              		.loc 1 138 31 view .LVU113
  444 00f6 23F00103 		bic	r3, r3, #1
- 137:Src/encoder.c **** 
- 445              		.loc 1 137 16 view .LVU114
+ 138:Src/encoder.c **** 
+ 445              		.loc 1 138 16 view .LVU114
  446 00fa 0361     		str	r3, [r0, #16]
  447 00fc 90E7     		b	.L21
  448              	.LVL16:
  449              	.L22:
- 133:Src/encoder.c **** 			sl_delta_cnt_r = 1 * (int32_t)uss_delta_cnt_r;
- 450              		.loc 1 133 4 is_stmt 1 view .LVU115
- 133:Src/encoder.c **** 			sl_delta_cnt_r = 1 * (int32_t)uss_delta_cnt_r;
- 451              		.loc 1 133 20 is_stmt 0 view .LVU116
+ 134:Src/encoder.c **** 			sl_delta_cnt_r = 1 * (int32_t)uss_delta_cnt_r;
+ 450              		.loc 1 134 4 is_stmt 1 view .LVU115
+ 134:Src/encoder.c **** 			sl_delta_cnt_r = 1 * (int32_t)uss_delta_cnt_r;
+ 451              		.loc 1 134 20 is_stmt 0 view .LVU116
  452 00fe CB1A     		subs	r3, r1, r3
  453 0100 9BB2     		uxth	r3, r3
  454 0102 06EE903A 		vmov	s13, r3	@ int
- 134:Src/encoder.c **** 		}
- 455              		.loc 1 134 4 is_stmt 1 view .LVU117
+ 135:Src/encoder.c **** 		}
+ 455              		.loc 1 135 4 is_stmt 1 view .LVU117
  456              	.LVL17:
- 134:Src/encoder.c **** 		}
- 457              		.loc 1 134 4 is_stmt 0 view .LVU118
+ 135:Src/encoder.c **** 		}
+ 457              		.loc 1 135 4 is_stmt 0 view .LVU118
  458 0106 F3E7     		b	.L23
  459              	.LVL18:
  460              	.L24:
- 148:Src/encoder.c **** 		{
- 461              		.loc 1 148 3 is_stmt 1 view .LVU119
- 148:Src/encoder.c **** 		{
- 462              		.loc 1 148 20 is_stmt 0 view .LVU120
+ 149:Src/encoder.c **** 		{
+ 461              		.loc 1 149 3 is_stmt 1 view .LVU119
+ 149:Src/encoder.c **** 		{
+ 462              		.loc 1 149 20 is_stmt 0 view .LVU120
  463 0108 164B     		ldr	r3, .L42+8
  464 010a 1B88     		ldrh	r3, [r3]
- 148:Src/encoder.c **** 		{
- 465              		.loc 1 148 5 view .LVU121
+ 149:Src/encoder.c **** 		{
+ 465              		.loc 1 149 5 view .LVU121
  466 010c 9A42     		cmp	r2, r3
  467 010e 0AD3     		bcc	.L26
- 150:Src/encoder.c **** 			sl_delta_cnt_l = -1 * (int32_t)uss_delta_cnt_l;
- 468              		.loc 1 150 4 is_stmt 1 view .LVU122
- 150:Src/encoder.c **** 			sl_delta_cnt_l = -1 * (int32_t)uss_delta_cnt_l;
-ARM GAS  C:\Temp\cc6jxiTD.s 			page 13
+ 151:Src/encoder.c **** 			sl_delta_cnt_l = -1 * (int32_t)uss_delta_cnt_l;
+ 468              		.loc 1 151 4 is_stmt 1 view .LVU122
+ARM GAS  C:\Temp\ccLuCqVL.s 			page 13
 
 
- 469              		.loc 1 150 20 is_stmt 0 view .LVU123
+ 151:Src/encoder.c **** 			sl_delta_cnt_l = -1 * (int32_t)uss_delta_cnt_l;
+ 469              		.loc 1 151 20 is_stmt 0 view .LVU123
  470 0110 9B1A     		subs	r3, r3, r2
  471 0112 9BB2     		uxth	r3, r3
  472              	.LVL19:
- 151:Src/encoder.c **** 		}
- 473              		.loc 1 151 4 is_stmt 1 view .LVU124
- 151:Src/encoder.c **** 		}
- 474              		.loc 1 151 19 is_stmt 0 view .LVU125
+ 152:Src/encoder.c **** 		}
+ 473              		.loc 1 152 4 is_stmt 1 view .LVU124
+ 152:Src/encoder.c **** 		}
+ 474              		.loc 1 152 19 is_stmt 0 view .LVU125
  475 0114 5B42     		rsbs	r3, r3, #0
  476              	.LVL20:
- 151:Src/encoder.c **** 		}
- 477              		.loc 1 151 19 view .LVU126
+ 152:Src/encoder.c **** 		}
+ 477              		.loc 1 152 19 view .LVU126
  478 0116 07EE103A 		vmov	s14, r3	@ int
  479              	.LVL21:
  480              	.L27:
- 159:Src/encoder.c **** 
- 481              		.loc 1 159 3 is_stmt 1 view .LVU127
- 159:Src/encoder.c **** 
- 482              		.loc 1 159 18 is_stmt 0 view .LVU128
+ 160:Src/encoder.c **** 
+ 481              		.loc 1 160 3 is_stmt 1 view .LVU127
+ 160:Src/encoder.c **** 
+ 482              		.loc 1 160 18 is_stmt 0 view .LVU128
  483 011a 1048     		ldr	r0, .L42
  484 011c 0369     		ldr	r3, [r0, #16]
  485              	.LVL22:
- 159:Src/encoder.c **** 
- 486              		.loc 1 159 31 view .LVU129
+ 160:Src/encoder.c **** 
+ 486              		.loc 1 160 31 view .LVU129
  487 011e 23F00103 		bic	r3, r3, #1
- 159:Src/encoder.c **** 
- 488              		.loc 1 159 16 view .LVU130
+ 160:Src/encoder.c **** 
+ 488              		.loc 1 160 16 view .LVU130
  489 0122 0361     		str	r3, [r0, #16]
  490 0124 86E7     		b	.L25
  491              	.LVL23:
  492              	.L26:
- 155:Src/encoder.c **** 			sl_delta_cnt_l = 1 * (int32_t)uss_delta_cnt_l;
- 493              		.loc 1 155 4 is_stmt 1 view .LVU131
- 155:Src/encoder.c **** 			sl_delta_cnt_l = 1 * (int32_t)uss_delta_cnt_l;
- 494              		.loc 1 155 20 is_stmt 0 view .LVU132
+ 156:Src/encoder.c **** 			sl_delta_cnt_l = 1 * (int32_t)uss_delta_cnt_l;
+ 493              		.loc 1 156 4 is_stmt 1 view .LVU131
+ 156:Src/encoder.c **** 			sl_delta_cnt_l = 1 * (int32_t)uss_delta_cnt_l;
+ 494              		.loc 1 156 20 is_stmt 0 view .LVU132
  495 0126 D31A     		subs	r3, r2, r3
  496 0128 9BB2     		uxth	r3, r3
  497 012a 07EE103A 		vmov	s14, r3	@ int
- 156:Src/encoder.c **** 		}
- 498              		.loc 1 156 4 is_stmt 1 view .LVU133
+ 157:Src/encoder.c **** 		}
+ 498              		.loc 1 157 4 is_stmt 1 view .LVU133
  499              	.LVL24:
- 156:Src/encoder.c **** 		}
- 500              		.loc 1 156 4 is_stmt 0 view .LVU134
+ 157:Src/encoder.c **** 		}
+ 500              		.loc 1 157 4 is_stmt 0 view .LVU134
  501 012e F4E7     		b	.L27
  502              	.LVL25:
  503              	.L40:
- 183:Src/encoder.c **** 	{
- 504              		.loc 1 183 7 is_stmt 1 view .LVU135
- 183:Src/encoder.c **** 	{
- 505              		.loc 1 183 18 is_stmt 0 view .LVU136
+ 184:Src/encoder.c **** 	{
+ 504              		.loc 1 184 7 is_stmt 1 view .LVU135
+ 184:Src/encoder.c **** 	{
+ 505              		.loc 1 184 18 is_stmt 0 view .LVU136
  506 0130 1B4B     		ldr	r3, .L42+68
  507 0132 D3ED006A 		vldr.32	s13, [r3]
- 183:Src/encoder.c **** 	{
- 508              		.loc 1 183 9 view .LVU137
+ 184:Src/encoder.c **** 	{
+ 508              		.loc 1 184 9 view .LVU137
  509 0136 F4EEE67A 		vcmpe.f32	s15, s13
  510 013a F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ARM GAS  C:\Temp\ccLuCqVL.s 			page 14
+
+
  511 013e ADD5     		bpl	.L30
-ARM GAS  C:\Temp\cc6jxiTD.s 			page 14
-
-
- 185:Src/encoder.c **** 	}
- 512              		.loc 1 185 3 is_stmt 1 view .LVU138
- 185:Src/encoder.c **** 	}
- 513              		.loc 1 185 15 is_stmt 0 view .LVU139
+ 186:Src/encoder.c **** 	}
+ 512              		.loc 1 186 3 is_stmt 1 view .LVU138
+ 186:Src/encoder.c **** 	}
+ 513              		.loc 1 186 15 is_stmt 0 view .LVU139
  514 0140 C3ED007A 		vstr.32	s15, [r3]
  515 0144 AAE7     		b	.L30
  516              	.L41:
- 192:Src/encoder.c **** 	{
- 517              		.loc 1 192 7 is_stmt 1 view .LVU140
- 192:Src/encoder.c **** 	{
- 518              		.loc 1 192 18 is_stmt 0 view .LVU141
+ 193:Src/encoder.c **** 	{
+ 517              		.loc 1 193 7 is_stmt 1 view .LVU140
+ 193:Src/encoder.c **** 	{
+ 518              		.loc 1 193 18 is_stmt 0 view .LVU141
  519 0146 174B     		ldr	r3, .L42+72
  520 0148 D3ED006A 		vldr.32	s13, [r3]
- 192:Src/encoder.c **** 	{
- 521              		.loc 1 192 9 view .LVU142
+ 193:Src/encoder.c **** 	{
+ 521              		.loc 1 193 9 view .LVU142
  522 014c B4EEE67A 		vcmpe.f32	s14, s13
  523 0150 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
  524 0154 ACD5     		bpl	.L34
- 194:Src/encoder.c **** 	}
- 525              		.loc 1 194 3 is_stmt 1 view .LVU143
- 194:Src/encoder.c **** 	}
- 526              		.loc 1 194 15 is_stmt 0 view .LVU144
+ 195:Src/encoder.c **** 	}
+ 525              		.loc 1 195 3 is_stmt 1 view .LVU143
+ 195:Src/encoder.c **** 	}
+ 526              		.loc 1 195 15 is_stmt 0 view .LVU144
  527 0156 83ED007A 		vstr.32	s14, [r3]
  528 015a A9E7     		b	.L34
  529              	.L43:
@@ -837,21 +838,21 @@ ARM GAS  C:\Temp\cc6jxiTD.s 			page 1
  559              		.align	1
  560              		.global	speed_m_average
  561              		.syntax unified
+ARM GAS  C:\Temp\ccLuCqVL.s 			page 15
+
+
  562              		.thumb
-ARM GAS  C:\Temp\cc6jxiTD.s 			page 15
-
-
  563              		.thumb_func
  564              		.fpu fpv4-sp-d16
  566              	speed_m_average:
  567              	.LFB141:
- 205:Src/encoder.c **** 
- 206:Src/encoder.c **** /* ---------------------------------------------------------------
- 207:Src/encoder.c **** 	並進方向の速度に移動平均をかけ、遅れを補完する関数(1msタスク)
- 208:Src/encoder.c **** --------------------------------------------------------------- */
- 209:Src/encoder.c **** void speed_m_average( void )
- 210:Src/encoder.c **** {
- 568              		.loc 1 210 1 is_stmt 1 view -0
+ 206:Src/encoder.c **** 
+ 207:Src/encoder.c **** /* ---------------------------------------------------------------
+ 208:Src/encoder.c **** 	並進方向の速度に移動平均をかけ、遅れを補完する関数(1msタスク)
+ 209:Src/encoder.c **** --------------------------------------------------------------- */
+ 210:Src/encoder.c **** void speed_m_average( void )
+ 211:Src/encoder.c **** {
+ 568              		.loc 1 211 1 is_stmt 1 view -0
  569              		.cfi_startproc
  570              		@ args = 0, pretend = 0, frame = 0
  571              		@ frame_needed = 0, uses_anonymous_args = 0
@@ -867,27 +868,27 @@ ARM GAS  C:\Temp\cc6jxiTD.s 			page 1
  581              		.cfi_def_cfa_offset 24
  582              		.cfi_offset 80, -24
  583              		.cfi_offset 81, -20
- 211:Src/encoder.c **** 	static uint16_t l_ave_counter = 0;
- 584              		.loc 1 211 2 view .LVU146
- 212:Src/encoder.c **** 	uint16_t i = 0;
- 585              		.loc 1 212 2 view .LVU147
+ 212:Src/encoder.c **** 	static uint16_t l_ave_counter = 0;
+ 584              		.loc 1 212 2 view .LVU146
+ 213:Src/encoder.c **** 	uint16_t i = 0;
+ 585              		.loc 1 213 2 view .LVU147
  586              	.LVL26:
- 213:Src/encoder.c **** 	uint16_t j = 0;
- 587              		.loc 1 213 2 view .LVU148
- 214:Src/encoder.c **** 
- 215:Src/encoder.c **** 	float l_ave_speed_m = 0;	//m 並進方向速度平均
- 588              		.loc 1 215 2 view .LVU149
- 216:Src/encoder.c **** 	float l_ave_accel_m = 0;	//m 並進方向加速度
- 589              		.loc 1 216 2 view .LVU150
- 217:Src/encoder.c **** 
- 218:Src/encoder.c **** 	float l_sum_speed_m = 0; 	//m 並進方向速度合計
- 590              		.loc 1 218 2 view .LVU151
- 219:Src/encoder.c **** 	float l_sum_accel_m = 0;	//m 並進方向加速度合計
- 591              		.loc 1 219 2 view .LVU152
- 220:Src/encoder.c **** 
- 221:Src/encoder.c **** 	i = l_ave_counter % ave_num;
- 592              		.loc 1 221 2 view .LVU153
- 593              		.loc 1 221 4 is_stmt 0 view .LVU154
+ 214:Src/encoder.c **** 	uint16_t j = 0;
+ 587              		.loc 1 214 2 view .LVU148
+ 215:Src/encoder.c **** 
+ 216:Src/encoder.c **** 	float l_ave_speed_m = 0;	//m 並進方向速度平均
+ 588              		.loc 1 216 2 view .LVU149
+ 217:Src/encoder.c **** 	float l_ave_accel_m = 0;	//m 並進方向加速度
+ 589              		.loc 1 217 2 view .LVU150
+ 218:Src/encoder.c **** 
+ 219:Src/encoder.c **** 	float l_sum_speed_m = 0; 	//m 並進方向速度合計
+ 590              		.loc 1 219 2 view .LVU151
+ 220:Src/encoder.c **** 	float l_sum_accel_m = 0;	//m 並進方向加速度合計
+ 591              		.loc 1 220 2 view .LVU152
+ 221:Src/encoder.c **** 
+ 222:Src/encoder.c **** 	i = l_ave_counter % ave_num;
+ 592              		.loc 1 222 2 view .LVU153
+ 593              		.loc 1 222 4 is_stmt 0 view .LVU154
  594 0006 3A4B     		ldr	r3, .L57+8
  595 0008 1A88     		ldrh	r2, [r3]
  596 000a 3A4B     		ldr	r3, .L57+12
@@ -897,144 +898,144 @@ ARM GAS  C:\Temp\cc6jxiTD.s 			page 1
  600 0016 A2EB4303 		sub	r3, r2, r3, lsl #1
  601 001a 9BB2     		uxth	r3, r3
  602              	.LVL27:
- 222:Src/encoder.c **** 
-ARM GAS  C:\Temp\cc6jxiTD.s 			page 16
+ARM GAS  C:\Temp\ccLuCqVL.s 			page 16
 
 
- 223:Src/encoder.c **** 	ave_store[i].speed_m = speed_m;
- 603              		.loc 1 223 2 is_stmt 1 view .LVU155
- 604              		.loc 1 223 23 is_stmt 0 view .LVU156
+ 223:Src/encoder.c **** 
+ 224:Src/encoder.c **** 	ave_store[i].speed_m = speed_m;
+ 603              		.loc 1 224 2 is_stmt 1 view .LVU155
+ 604              		.loc 1 224 23 is_stmt 0 view .LVU156
  605 001c 364C     		ldr	r4, .L57+16
  606 001e 04EBC304 		add	r4, r4, r3, lsl #3
  607 0022 364B     		ldr	r3, .L57+20
  608              	.LVL28:
- 609              		.loc 1 223 23 view .LVU157
+ 609              		.loc 1 224 23 view .LVU157
  610 0024 1B68     		ldr	r3, [r3]	@ float
  611 0026 2360     		str	r3, [r4]	@ float
- 224:Src/encoder.c **** 	ave_store[i].accel_m = IMU_GetAccel_X();
- 612              		.loc 1 224 2 is_stmt 1 view .LVU158
- 613              		.loc 1 224 25 is_stmt 0 view .LVU159
+ 225:Src/encoder.c **** 	ave_store[i].accel_m = IMU_GetAccel_X();
+ 612              		.loc 1 225 2 is_stmt 1 view .LVU158
+ 613              		.loc 1 225 25 is_stmt 0 view .LVU159
  614 0028 FFF7FEFF 		bl	IMU_GetAccel_X
  615              	.LVL29:
- 616              		.loc 1 224 23 view .LVU160
+ 616              		.loc 1 225 23 view .LVU160
  617 002c 84ED010A 		vstr.32	s0, [r4, #4]
- 225:Src/encoder.c **** 
- 226:Src/encoder.c **** 	for(j=0; j < ave_num; j++)
- 618              		.loc 1 226 2 is_stmt 1 view .LVU161
- 219:Src/encoder.c **** 
- 619              		.loc 1 219 8 is_stmt 0 view .LVU162
+ 226:Src/encoder.c **** 
+ 227:Src/encoder.c **** 	for(j=0; j < ave_num; j++)
+ 618              		.loc 1 227 2 is_stmt 1 view .LVU161
+ 220:Src/encoder.c **** 
+ 619              		.loc 1 220 8 is_stmt 0 view .LVU162
  620 0030 DFED337A 		vldr.32	s15, .L57+24
- 218:Src/encoder.c **** 	float l_sum_accel_m = 0;	//m 並進方向加速度合計
- 621              		.loc 1 218 8 view .LVU163
+ 219:Src/encoder.c **** 	float l_sum_accel_m = 0;	//m 並進方向加速度合計
+ 621              		.loc 1 219 8 view .LVU163
  622 0034 B0EE677A 		vmov.f32	s14, s15
- 623              		.loc 1 226 7 view .LVU164
+ 623              		.loc 1 227 7 view .LVU164
  624 0038 0023     		movs	r3, #0
  625              	.LVL30:
  626              	.L45:
- 627              		.loc 1 226 11 is_stmt 1 discriminator 1 view .LVU165
- 628              		.loc 1 226 2 is_stmt 0 discriminator 1 view .LVU166
+ 627              		.loc 1 227 11 is_stmt 1 discriminator 1 view .LVU165
+ 628              		.loc 1 227 2 is_stmt 0 discriminator 1 view .LVU166
  629 003a 092B     		cmp	r3, #9
  630 003c 0DD8     		bhi	.L55
- 227:Src/encoder.c **** 	{
- 228:Src/encoder.c **** 		l_sum_speed_m += ave_store[j].speed_m;
- 631              		.loc 1 228 3 is_stmt 1 discriminator 3 view .LVU167
- 632              		.loc 1 228 32 is_stmt 0 discriminator 3 view .LVU168
+ 228:Src/encoder.c **** 	{
+ 229:Src/encoder.c **** 		l_sum_speed_m += ave_store[j].speed_m;
+ 631              		.loc 1 229 3 is_stmt 1 discriminator 3 view .LVU167
+ 632              		.loc 1 229 32 is_stmt 0 discriminator 3 view .LVU168
  633 003e 2E4A     		ldr	r2, .L57+16
  634 0040 02EBC302 		add	r2, r2, r3, lsl #3
  635 0044 D2ED006A 		vldr.32	s13, [r2]
- 636              		.loc 1 228 17 discriminator 3 view .LVU169
+ 636              		.loc 1 229 17 discriminator 3 view .LVU169
  637 0048 37EE267A 		vadd.f32	s14, s14, s13
  638              	.LVL31:
- 229:Src/encoder.c **** 		l_sum_accel_m += ave_store[j].accel_m;
- 639              		.loc 1 229 3 is_stmt 1 discriminator 3 view .LVU170
- 640              		.loc 1 229 32 is_stmt 0 discriminator 3 view .LVU171
+ 230:Src/encoder.c **** 		l_sum_accel_m += ave_store[j].accel_m;
+ 639              		.loc 1 230 3 is_stmt 1 discriminator 3 view .LVU170
+ 640              		.loc 1 230 32 is_stmt 0 discriminator 3 view .LVU171
  641 004c D2ED016A 		vldr.32	s13, [r2, #4]
- 642              		.loc 1 229 17 discriminator 3 view .LVU172
+ 642              		.loc 1 230 17 discriminator 3 view .LVU172
  643 0050 77EEA67A 		vadd.f32	s15, s15, s13
  644              	.LVL32:
- 226:Src/encoder.c **** 	{
- 645              		.loc 1 226 24 is_stmt 1 discriminator 3 view .LVU173
- 226:Src/encoder.c **** 	{
- 646              		.loc 1 226 25 is_stmt 0 discriminator 3 view .LVU174
+ 227:Src/encoder.c **** 	{
+ 645              		.loc 1 227 24 is_stmt 1 discriminator 3 view .LVU173
+ 227:Src/encoder.c **** 	{
+ 646              		.loc 1 227 25 is_stmt 0 discriminator 3 view .LVU174
  647 0054 0133     		adds	r3, r3, #1
+ARM GAS  C:\Temp\ccLuCqVL.s 			page 17
+
+
  648              	.LVL33:
-ARM GAS  C:\Temp\cc6jxiTD.s 			page 17
-
-
- 226:Src/encoder.c **** 	{
- 649              		.loc 1 226 25 discriminator 3 view .LVU175
+ 227:Src/encoder.c **** 	{
+ 649              		.loc 1 227 25 discriminator 3 view .LVU175
  650 0056 9BB2     		uxth	r3, r3
  651              	.LVL34:
- 226:Src/encoder.c **** 	{
- 652              		.loc 1 226 25 discriminator 3 view .LVU176
+ 227:Src/encoder.c **** 	{
+ 652              		.loc 1 227 25 discriminator 3 view .LVU176
  653 0058 EFE7     		b	.L45
  654              	.L55:
- 230:Src/encoder.c **** 	}
- 231:Src/encoder.c **** 
- 232:Src/encoder.c **** 	l_ave_speed_m = l_sum_speed_m / ave_num;
- 655              		.loc 1 232 2 is_stmt 1 view .LVU177
- 656              		.loc 1 232 16 is_stmt 0 view .LVU178
+ 231:Src/encoder.c **** 	}
+ 232:Src/encoder.c **** 
+ 233:Src/encoder.c **** 	l_ave_speed_m = l_sum_speed_m / ave_num;
+ 655              		.loc 1 233 2 is_stmt 1 view .LVU177
+ 656              		.loc 1 233 16 is_stmt 0 view .LVU178
  657 005a F2EE046A 		vmov.f32	s13, #1.0e+1
  658 005e C7EE268A 		vdiv.f32	s17, s14, s13
  659              	.LVL35:
- 233:Src/encoder.c **** 	l_ave_accel_m = l_sum_accel_m / ave_num;
- 660              		.loc 1 233 2 is_stmt 1 view .LVU179
- 661              		.loc 1 233 16 is_stmt 0 view .LVU180
+ 234:Src/encoder.c **** 	l_ave_accel_m = l_sum_accel_m / ave_num;
+ 660              		.loc 1 234 2 is_stmt 1 view .LVU179
+ 661              		.loc 1 234 16 is_stmt 0 view .LVU180
  662 0062 87EEA68A 		vdiv.f32	s16, s15, s13
  663              	.LVL36:
- 234:Src/encoder.c **** 
- 235:Src/encoder.c **** 	/*加速度センサのぶれを補正、閾値範囲内を０とする*/
- 236:Src/encoder.c **** 	if(ABS(l_ave_accel_m) < 0.5)
- 664              		.loc 1 236 2 is_stmt 1 view .LVU181
- 665              		.loc 1 236 24 is_stmt 0 view .LVU182
+ 235:Src/encoder.c **** 
+ 236:Src/encoder.c **** 	/*加速度センサのぶれを補正、閾値範囲内を０とする*/
+ 237:Src/encoder.c **** 	if(ABS(l_ave_accel_m) < 0.5)
+ 664              		.loc 1 237 2 is_stmt 1 view .LVU181
+ 665              		.loc 1 237 24 is_stmt 0 view .LVU182
  666 0066 B5EEC08A 		vcmpe.f32	s16, #0
  667 006a F1EE10FA 		vmrs	APSR_nzcv, FPSCR
  668 006e 30D4     		bmi	.L56
- 669              		.loc 1 236 24 discriminator 2 view .LVU183
+ 669              		.loc 1 237 24 discriminator 2 view .LVU183
  670 0070 F6EE007A 		vmov.f32	s15, #5.0e-1
  671              	.LVL37:
- 672              		.loc 1 236 24 discriminator 2 view .LVU184
+ 672              		.loc 1 237 24 discriminator 2 view .LVU184
  673 0074 B4EEE78A 		vcmpe.f32	s16, s15
  674 0078 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
  675 007c 4CBF     		ite	mi
  676 007e 0123     		movmi	r3, #1
  677              	.LVL38:
- 678              		.loc 1 236 24 discriminator 2 view .LVU185
+ 678              		.loc 1 237 24 discriminator 2 view .LVU185
  679 0080 0023     		movpl	r3, #0
  680              	.L49:
- 681              		.loc 1 236 4 discriminator 4 view .LVU186
+ 681              		.loc 1 237 4 discriminator 4 view .LVU186
  682 0082 0BB1     		cbz	r3, .L50
- 237:Src/encoder.c **** 	{
- 238:Src/encoder.c **** 		l_ave_accel_m = 0;
- 683              		.loc 1 238 17 view .LVU187
+ 238:Src/encoder.c **** 	{
+ 239:Src/encoder.c **** 		l_ave_accel_m = 0;
+ 683              		.loc 1 239 17 view .LVU187
  684 0084 9FED1E8A 		vldr.32	s16, .L57+24
  685              	.LVL39:
  686              	.L50:
- 239:Src/encoder.c **** 	}
- 240:Src/encoder.c **** 
- 241:Src/encoder.c **** 	/*m 遅れ補正*/
- 242:Src/encoder.c **** 	l_ave_speed_m += 0.5 * ( l_ave_accel_m * (ave_num * 0.001)); //m 平均速度＋0.5(　加速度�
- 687              		.loc 1 242 2 is_stmt 1 view .LVU188
- 688              		.loc 1 242 41 is_stmt 0 view .LVU189
+ 240:Src/encoder.c **** 	}
+ 241:Src/encoder.c **** 
+ 242:Src/encoder.c **** 	/*m 遅れ補正*/
+ 243:Src/encoder.c **** 	l_ave_speed_m += 0.5 * ( l_ave_accel_m * (ave_num * 0.001)); //m 平均速度＋0.5(　加速度�
+ 687              		.loc 1 243 2 is_stmt 1 view .LVU188
+ 688              		.loc 1 243 41 is_stmt 0 view .LVU189
  689 0088 18EE100A 		vmov	r0, s16
+ARM GAS  C:\Temp\ccLuCqVL.s 			page 18
+
+
  690 008c FFF7FEFF 		bl	__aeabi_f2d
-ARM GAS  C:\Temp\cc6jxiTD.s 			page 18
-
-
  691              	.LVL40:
- 692              		.loc 1 242 41 view .LVU190
+ 692              		.loc 1 243 41 view .LVU190
  693 0090 15A3     		adr	r3, .L57
  694 0092 D3E90023 		ldrd	r2, [r3]
  695 0096 FFF7FEFF 		bl	__aeabi_dmul
  696              	.LVL41:
- 697              		.loc 1 242 23 view .LVU191
+ 697              		.loc 1 243 23 view .LVU191
  698 009a 0022     		movs	r2, #0
  699 009c 194B     		ldr	r3, .L57+28
  700 009e FFF7FEFF 		bl	__aeabi_dmul
  701              	.LVL42:
  702 00a2 0446     		mov	r4, r0
  703 00a4 0D46     		mov	r5, r1
- 704              		.loc 1 242 16 view .LVU192
+ 704              		.loc 1 243 16 view .LVU192
  705 00a6 18EE900A 		vmov	r0, s17
  706 00aa FFF7FEFF 		bl	__aeabi_f2d
  707              	.LVL43:
@@ -1044,29 +1045,29 @@ ARM GAS  C:\Temp\cc6jxiTD.s 			page 1
  711              	.LVL44:
  712 00b6 FFF7FEFF 		bl	__aeabi_d2f
  713              	.LVL45:
- 243:Src/encoder.c **** 
  244:Src/encoder.c **** 
- 245:Src/encoder.c **** 	g_ave_speed_m = l_ave_speed_m;
- 714              		.loc 1 245 2 is_stmt 1 view .LVU193
- 715              		.loc 1 245 16 is_stmt 0 view .LVU194
+ 245:Src/encoder.c **** 
+ 246:Src/encoder.c **** 	g_ave_speed_m = l_ave_speed_m;
+ 714              		.loc 1 246 2 is_stmt 1 view .LVU193
+ 715              		.loc 1 246 16 is_stmt 0 view .LVU194
  716 00ba 134B     		ldr	r3, .L57+32
  717 00bc 1860     		str	r0, [r3]	@ float
- 246:Src/encoder.c **** 	g_ave_accel_m = l_ave_accel_m;
- 718              		.loc 1 246 2 is_stmt 1 view .LVU195
- 719              		.loc 1 246 16 is_stmt 0 view .LVU196
+ 247:Src/encoder.c **** 	g_ave_accel_m = l_ave_accel_m;
+ 718              		.loc 1 247 2 is_stmt 1 view .LVU195
+ 719              		.loc 1 247 16 is_stmt 0 view .LVU196
  720 00be 134B     		ldr	r3, .L57+36
  721 00c0 83ED008A 		vstr.32	s16, [r3]
- 247:Src/encoder.c **** 
  248:Src/encoder.c **** 
- 249:Src/encoder.c **** 	l_ave_counter += 1 ;
- 722              		.loc 1 249 2 is_stmt 1 view .LVU197
- 723              		.loc 1 249 16 is_stmt 0 view .LVU198
+ 249:Src/encoder.c **** 
+ 250:Src/encoder.c **** 	l_ave_counter += 1 ;
+ 722              		.loc 1 250 2 is_stmt 1 view .LVU197
+ 723              		.loc 1 250 16 is_stmt 0 view .LVU198
  724 00c4 0A4A     		ldr	r2, .L57+8
  725 00c6 1388     		ldrh	r3, [r2]
  726 00c8 0133     		adds	r3, r3, #1
  727 00ca 1380     		strh	r3, [r2]	@ movhi
- 250:Src/encoder.c **** }
- 728              		.loc 1 250 1 view .LVU199
+ 251:Src/encoder.c **** }
+ 728              		.loc 1 251 1 view .LVU199
  729 00cc BDEC028B 		vldm	sp!, {d8}
  730              	.LCFI3:
  731              		.cfi_remember_state
@@ -1074,28 +1075,28 @@ ARM GAS  C:\Temp\cc6jxiTD.s 			page 1
  733              		.cfi_restore 81
  734              		.cfi_def_cfa_offset 16
  735              	.LVL46:
- 736              		.loc 1 250 1 view .LVU200
+ 736              		.loc 1 251 1 view .LVU200
  737 00d0 38BD     		pop	{r3, r4, r5, pc}
  738              	.LVL47:
+ARM GAS  C:\Temp\ccLuCqVL.s 			page 19
+
+
  739              	.L56:
-ARM GAS  C:\Temp\cc6jxiTD.s 			page 19
-
-
  740              	.LCFI4:
  741              		.cfi_restore_state
- 236:Src/encoder.c **** 	{
- 742              		.loc 1 236 24 discriminator 1 view .LVU201
+ 237:Src/encoder.c **** 	{
+ 742              		.loc 1 237 24 discriminator 1 view .LVU201
  743 00d2 FEEE007A 		vmov.f32	s15, #-5.0e-1
  744              	.LVL48:
- 236:Src/encoder.c **** 	{
- 745              		.loc 1 236 24 discriminator 1 view .LVU202
+ 237:Src/encoder.c **** 	{
+ 745              		.loc 1 237 24 discriminator 1 view .LVU202
  746 00d6 B4EEE78A 		vcmpe.f32	s16, s15
  747 00da F1EE10FA 		vmrs	APSR_nzcv, FPSCR
  748 00de CCBF     		ite	gt
  749 00e0 0123     		movgt	r3, #1
  750              	.LVL49:
- 236:Src/encoder.c **** 	{
- 751              		.loc 1 236 24 discriminator 1 view .LVU203
+ 237:Src/encoder.c **** 	{
+ 751              		.loc 1 237 24 discriminator 1 view .LVU203
  752 00e2 0023     		movle	r3, #0
  753 00e4 CDE7     		b	.L49
  754              	.L58:
@@ -1137,10 +1138,10 @@ ARM GAS  C:\Temp\cc6jxiTD.s 			page 1
  789              		.section	.bss.delta_angle_motor_l,"aw",%nobits
  790              		.align	2
  791              		.set	.LANCHOR3,. + 0
+ARM GAS  C:\Temp\ccLuCqVL.s 			page 20
+
+
  794              	delta_angle_motor_l:
-ARM GAS  C:\Temp\cc6jxiTD.s 			page 20
-
-
  795 0000 00000000 		.space	4
  796              		.section	.bss.delta_angle_motor_r,"aw",%nobits
  797              		.align	2
@@ -1167,10 +1168,10 @@ ARM GAS  C:\Temp\cc6jxiTD.s 			page 1
  826              		.set	.LANCHOR14,. + 0
  829              	g_ave_speed_m:
  830 0000 00000000 		.space	4
- 831              		.section	.bss.l_ave_counter.10200,"aw",%nobits
+ 831              		.section	.bss.l_ave_counter.10075,"aw",%nobits
  832              		.align	1
  833              		.set	.LANCHOR12,. + 0
- 836              	l_ave_counter.10200:
+ 836              	l_ave_counter.10075:
  837 0000 0000     		.space	2
  838              		.section	.bss.speed_l,"aw",%nobits
  839              		.align	2
@@ -1197,10 +1198,10 @@ ARM GAS  C:\Temp\cc6jxiTD.s 			page 1
  868              		.set	.LANCHOR4,. + 0
  871              	speed_r:
  872 0000 00000000 		.space	4
+ARM GAS  C:\Temp\ccLuCqVL.s 			page 21
+
+
  873              		.section	.bss.speed_r_max,"aw",%nobits
-ARM GAS  C:\Temp\cc6jxiTD.s 			page 21
-
-
  874              		.align	2
  875              		.set	.LANCHOR6,. + 0
  878              	speed_r_max:
@@ -1238,72 +1239,72 @@ ARM GAS  C:\Temp\cc6jxiTD.s 			page 1
  914              		.file 20 "Inc/spi.h"
  915              		.file 21 "Inc/tim.h"
  916              		.file 22 "Inc/usart.h"
- 917              		.file 23 "Inc/index.h"
-ARM GAS  C:\Temp\cc6jxiTD.s 			page 22
+ 917              		.file 23 "Inc/imu.h"
+ARM GAS  C:\Temp\ccLuCqVL.s 			page 22
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 encoder.c
-  C:\Temp\cc6jxiTD.s:18     .text.get_encordercount_r:00000000 $t
-  C:\Temp\cc6jxiTD.s:26     .text.get_encordercount_r:00000000 get_encordercount_r
-  C:\Temp\cc6jxiTD.s:45     .text.get_encordercount_l:00000000 $t
-  C:\Temp\cc6jxiTD.s:52     .text.get_encordercount_l:00000000 get_encordercount_l
-  C:\Temp\cc6jxiTD.s:69     .text.get_encordercount_l:00000008 $d
-  C:\Temp\cc6jxiTD.s:74     .text.Encoder_ResetCount_Left:00000000 $t
-  C:\Temp\cc6jxiTD.s:81     .text.Encoder_ResetCount_Left:00000000 Encoder_ResetCount_Left
-  C:\Temp\cc6jxiTD.s:98     .text.Encoder_ResetCount_Left:0000000c $d
-  C:\Temp\cc6jxiTD.s:103    .text.Encoder_ResetCount_Right:00000000 $t
-  C:\Temp\cc6jxiTD.s:110    .text.Encoder_ResetCount_Right:00000000 Encoder_ResetCount_Right
-  C:\Temp\cc6jxiTD.s:128    .text.Encoder_Initialize:00000000 $t
-  C:\Temp\cc6jxiTD.s:135    .text.Encoder_Initialize:00000000 Encoder_Initialize
-  C:\Temp\cc6jxiTD.s:167    .text.Encoder_Initialize:0000001c $d
-  C:\Temp\cc6jxiTD.s:173    .text.Encoder_GetAngle_Left:00000000 $t
-  C:\Temp\cc6jxiTD.s:180    .text.Encoder_GetAngle_Left:00000000 Encoder_GetAngle_Left
-  C:\Temp\cc6jxiTD.s:207    .text.Encoder_GetAngle_Left:00000024 $d
-  C:\Temp\cc6jxiTD.s:214    .text.Encoder_GetAngle_Right:00000000 $t
-  C:\Temp\cc6jxiTD.s:221    .text.Encoder_GetAngle_Right:00000000 Encoder_GetAngle_Right
-  C:\Temp\cc6jxiTD.s:248    .text.Encoder_GetAngle_Right:00000028 $d
-  C:\Temp\cc6jxiTD.s:254    .text.Get_speed:00000000 $t
-  C:\Temp\cc6jxiTD.s:261    .text.Get_speed:00000000 Get_speed
-  C:\Temp\cc6jxiTD.s:532    .text.Get_speed:0000015c $d
-  C:\Temp\cc6jxiTD.s:559    .text.speed_m_average:00000000 $t
-  C:\Temp\cc6jxiTD.s:566    .text.speed_m_average:00000000 speed_m_average
-  C:\Temp\cc6jxiTD.s:757    .text.speed_m_average:000000e8 $d
-  C:\Temp\cc6jxiTD.s:794    .bss.delta_angle_motor_l:00000000 delta_angle_motor_l
-  C:\Temp\cc6jxiTD.s:801    .bss.delta_angle_motor_r:00000000 delta_angle_motor_r
-  C:\Temp\cc6jxiTD.s:892    .bss.speed_rad:00000000 speed_rad
-  C:\Temp\cc6jxiTD.s:822    .bss.g_ave_accel_m:00000000 g_ave_accel_m
-  C:\Temp\cc6jxiTD.s:829    .bss.g_ave_speed_m:00000000 g_ave_speed_m
-  C:\Temp\cc6jxiTD.s:864    .bss.speed_m:00000000 speed_m
-  C:\Temp\cc6jxiTD.s:857    .bss.speed_l_min:00000000 speed_l_min
-  C:\Temp\cc6jxiTD.s:850    .bss.speed_l_max:00000000 speed_l_max
-  C:\Temp\cc6jxiTD.s:843    .bss.speed_l:00000000 speed_l
-  C:\Temp\cc6jxiTD.s:885    .bss.speed_r_min:00000000 speed_r_min
-  C:\Temp\cc6jxiTD.s:878    .bss.speed_r_max:00000000 speed_r_max
-  C:\Temp\cc6jxiTD.s:871    .bss.speed_r:00000000 speed_r
-  C:\Temp\cc6jxiTD.s:783    .bss.ave_store:00000000 $d
-  C:\Temp\cc6jxiTD.s:787    .bss.ave_store:00000000 ave_store
-  C:\Temp\cc6jxiTD.s:790    .bss.delta_angle_motor_l:00000000 $d
-  C:\Temp\cc6jxiTD.s:797    .bss.delta_angle_motor_r:00000000 $d
-  C:\Temp\cc6jxiTD.s:804    .bss.enc_cnt_l_old:00000000 $d
-  C:\Temp\cc6jxiTD.s:808    .bss.enc_cnt_l_old:00000000 enc_cnt_l_old
-  C:\Temp\cc6jxiTD.s:811    .bss.enc_cnt_r_old:00000000 $d
-  C:\Temp\cc6jxiTD.s:815    .bss.enc_cnt_r_old:00000000 enc_cnt_r_old
-  C:\Temp\cc6jxiTD.s:818    .bss.g_ave_accel_m:00000000 $d
-  C:\Temp\cc6jxiTD.s:825    .bss.g_ave_speed_m:00000000 $d
-  C:\Temp\cc6jxiTD.s:832    .bss.l_ave_counter.10200:00000000 $d
-  C:\Temp\cc6jxiTD.s:836    .bss.l_ave_counter.10200:00000000 l_ave_counter.10200
-  C:\Temp\cc6jxiTD.s:839    .bss.speed_l:00000000 $d
-  C:\Temp\cc6jxiTD.s:846    .bss.speed_l_max:00000000 $d
-  C:\Temp\cc6jxiTD.s:853    .bss.speed_l_min:00000000 $d
-  C:\Temp\cc6jxiTD.s:860    .bss.speed_m:00000000 $d
-  C:\Temp\cc6jxiTD.s:867    .bss.speed_r:00000000 $d
-  C:\Temp\cc6jxiTD.s:874    .bss.speed_r_max:00000000 $d
-ARM GAS  C:\Temp\cc6jxiTD.s 			page 23
+  C:\Temp\ccLuCqVL.s:18     .text.get_encordercount_r:00000000 $t
+  C:\Temp\ccLuCqVL.s:26     .text.get_encordercount_r:00000000 get_encordercount_r
+  C:\Temp\ccLuCqVL.s:45     .text.get_encordercount_l:00000000 $t
+  C:\Temp\ccLuCqVL.s:52     .text.get_encordercount_l:00000000 get_encordercount_l
+  C:\Temp\ccLuCqVL.s:69     .text.get_encordercount_l:00000008 $d
+  C:\Temp\ccLuCqVL.s:74     .text.Encoder_ResetCount_Left:00000000 $t
+  C:\Temp\ccLuCqVL.s:81     .text.Encoder_ResetCount_Left:00000000 Encoder_ResetCount_Left
+  C:\Temp\ccLuCqVL.s:98     .text.Encoder_ResetCount_Left:0000000c $d
+  C:\Temp\ccLuCqVL.s:103    .text.Encoder_ResetCount_Right:00000000 $t
+  C:\Temp\ccLuCqVL.s:110    .text.Encoder_ResetCount_Right:00000000 Encoder_ResetCount_Right
+  C:\Temp\ccLuCqVL.s:128    .text.Encoder_Initialize:00000000 $t
+  C:\Temp\ccLuCqVL.s:135    .text.Encoder_Initialize:00000000 Encoder_Initialize
+  C:\Temp\ccLuCqVL.s:167    .text.Encoder_Initialize:0000001c $d
+  C:\Temp\ccLuCqVL.s:173    .text.Encoder_GetAngle_Left:00000000 $t
+  C:\Temp\ccLuCqVL.s:180    .text.Encoder_GetAngle_Left:00000000 Encoder_GetAngle_Left
+  C:\Temp\ccLuCqVL.s:207    .text.Encoder_GetAngle_Left:00000024 $d
+  C:\Temp\ccLuCqVL.s:214    .text.Encoder_GetAngle_Right:00000000 $t
+  C:\Temp\ccLuCqVL.s:221    .text.Encoder_GetAngle_Right:00000000 Encoder_GetAngle_Right
+  C:\Temp\ccLuCqVL.s:248    .text.Encoder_GetAngle_Right:00000028 $d
+  C:\Temp\ccLuCqVL.s:254    .text.Get_speed:00000000 $t
+  C:\Temp\ccLuCqVL.s:261    .text.Get_speed:00000000 Get_speed
+  C:\Temp\ccLuCqVL.s:532    .text.Get_speed:0000015c $d
+  C:\Temp\ccLuCqVL.s:559    .text.speed_m_average:00000000 $t
+  C:\Temp\ccLuCqVL.s:566    .text.speed_m_average:00000000 speed_m_average
+  C:\Temp\ccLuCqVL.s:757    .text.speed_m_average:000000e8 $d
+  C:\Temp\ccLuCqVL.s:794    .bss.delta_angle_motor_l:00000000 delta_angle_motor_l
+  C:\Temp\ccLuCqVL.s:801    .bss.delta_angle_motor_r:00000000 delta_angle_motor_r
+  C:\Temp\ccLuCqVL.s:892    .bss.speed_rad:00000000 speed_rad
+  C:\Temp\ccLuCqVL.s:822    .bss.g_ave_accel_m:00000000 g_ave_accel_m
+  C:\Temp\ccLuCqVL.s:829    .bss.g_ave_speed_m:00000000 g_ave_speed_m
+  C:\Temp\ccLuCqVL.s:864    .bss.speed_m:00000000 speed_m
+  C:\Temp\ccLuCqVL.s:857    .bss.speed_l_min:00000000 speed_l_min
+  C:\Temp\ccLuCqVL.s:850    .bss.speed_l_max:00000000 speed_l_max
+  C:\Temp\ccLuCqVL.s:843    .bss.speed_l:00000000 speed_l
+  C:\Temp\ccLuCqVL.s:885    .bss.speed_r_min:00000000 speed_r_min
+  C:\Temp\ccLuCqVL.s:878    .bss.speed_r_max:00000000 speed_r_max
+  C:\Temp\ccLuCqVL.s:871    .bss.speed_r:00000000 speed_r
+  C:\Temp\ccLuCqVL.s:783    .bss.ave_store:00000000 $d
+  C:\Temp\ccLuCqVL.s:787    .bss.ave_store:00000000 ave_store
+  C:\Temp\ccLuCqVL.s:790    .bss.delta_angle_motor_l:00000000 $d
+  C:\Temp\ccLuCqVL.s:797    .bss.delta_angle_motor_r:00000000 $d
+  C:\Temp\ccLuCqVL.s:804    .bss.enc_cnt_l_old:00000000 $d
+  C:\Temp\ccLuCqVL.s:808    .bss.enc_cnt_l_old:00000000 enc_cnt_l_old
+  C:\Temp\ccLuCqVL.s:811    .bss.enc_cnt_r_old:00000000 $d
+  C:\Temp\ccLuCqVL.s:815    .bss.enc_cnt_r_old:00000000 enc_cnt_r_old
+  C:\Temp\ccLuCqVL.s:818    .bss.g_ave_accel_m:00000000 $d
+  C:\Temp\ccLuCqVL.s:825    .bss.g_ave_speed_m:00000000 $d
+  C:\Temp\ccLuCqVL.s:832    .bss.l_ave_counter.10075:00000000 $d
+  C:\Temp\ccLuCqVL.s:836    .bss.l_ave_counter.10075:00000000 l_ave_counter.10075
+  C:\Temp\ccLuCqVL.s:839    .bss.speed_l:00000000 $d
+  C:\Temp\ccLuCqVL.s:846    .bss.speed_l_max:00000000 $d
+  C:\Temp\ccLuCqVL.s:853    .bss.speed_l_min:00000000 $d
+  C:\Temp\ccLuCqVL.s:860    .bss.speed_m:00000000 $d
+  C:\Temp\ccLuCqVL.s:867    .bss.speed_r:00000000 $d
+  C:\Temp\ccLuCqVL.s:874    .bss.speed_r_max:00000000 $d
+ARM GAS  C:\Temp\ccLuCqVL.s 			page 23
 
 
-  C:\Temp\cc6jxiTD.s:881    .bss.speed_r_min:00000000 $d
-  C:\Temp\cc6jxiTD.s:888    .bss.speed_rad:00000000 $d
+  C:\Temp\ccLuCqVL.s:881    .bss.speed_r_min:00000000 $d
+  C:\Temp\ccLuCqVL.s:888    .bss.speed_rad:00000000 $d
 
 UNDEFINED SYMBOLS
 HAL_TIM_Encoder_Start

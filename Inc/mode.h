@@ -15,6 +15,7 @@ typedef enum{
 
 void mode_main(void);
 uint8_t get_mode_state(void);
+void clr_mode_state(void);
 uint8_t get_mode_number(void);
 void set_mode_number(uint8_t);
 void mode_select (void);

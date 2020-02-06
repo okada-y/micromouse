@@ -63,6 +63,13 @@ uint8_t get_mode_state(void)
 	return mode_state;
 }
 
+//機能 	:モード実行状態をクリアする
+//引数 	:なし
+//返り値	:なし
+void clr_mode_state(void)
+{
+	mode_state = preparation;
+}
 
 //機能 	:モード番号を返す
 //引数 	:なし

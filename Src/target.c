@@ -21,7 +21,7 @@ static float ideal_length = 0;				//理想移動距離[m]
 static float ideal_angle = 0;				//理想回転角度[rad]
 
 static direction_mode move_dir_flg = forward_mode;			//移動方向フラグ　0:前進 1:後進
-static rotation_mode rotation_dir_flg = counter_clockwise;	//回転方向フラグ　0:時計周り 1:反時計周り
+static rotation_mode rotation_dir_flg = counter_clockwise;	//回転方向フラグ　0:反時計周り 1:時計周り
 static accel_mode accel_dir_flg = acceleration;		   		//加減速フラグ　　0:加速 1:減速
 
 //機能	: traget.cの1msタスクのまとめ
@@ -203,7 +203,7 @@ void calc_rotate_accel(void)
 	{
 	case counter_clockwise:
 		/*減速に必要な角度算出*/
-		tm_deccel_angle = 0.5 * target_angle * target_angle / rotat_accel;
+		tm_deccel_angle = 0.5 * target_rotation_speed * target_rotation_speed / rotat_accel;
 		
 		//減速開始前
 		if(ideal_angle < (target_angle - tm_deccel_angle))
@@ -218,10 +218,10 @@ void calc_rotate_accel(void)
 
 	case clockwise:
 		/*加速に必要な角度算出*/
-		tm_deccel_angle = 0.5 * target_angle * target_angle / rotat_accel;
+		tm_deccel_angle = 0.5 * target_rotation_speed * target_rotation_speed / rotat_accel;
 		
 		//加速開始前
-		if(ideal_angle > (target_angle + target_angle))
+		if(ideal_angle > (target_angle + tm_deccel_angle))
 		{
 			target_rotation_accel =  -1 * rotat_accel;
 		}
@@ -243,7 +243,7 @@ void calc_target_move_speed(void)
 {
 
 	/*m加速処理*/
-	target_move_speed += target_rotation_accel * 0.001; //1ms分の加速加算
+	target_move_speed += target_move_accel * 0.001; //1ms分の加速加算
 
 	/*limit処理*/
 	switch(move_dir_flg)

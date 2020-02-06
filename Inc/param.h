@@ -75,6 +75,9 @@
 #define ACCEL_X_SIGN		(1.f)		//加速度計の出力の符号（自分の座標系に合った方向に、1.0fか－1.0fを掛けて修正する）
 #define ACCEL_X_SENSITIVITY	(4096.f)
 
-
+//encorder
+#define pinion_gear_num		(9.0f)								//ピニオンギヤ数
+#define wheel_gear_num		(37.0f)								//ホイールギア数
+#define gear_rate			(wheel_gear_num/pinion_gear_num)	//変速比（ギア比）
 
 #endif /* PARAM_H_*/

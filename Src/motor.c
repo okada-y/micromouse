@@ -8,6 +8,7 @@
 #include "motor.h"
 #include "stm32f4xx_hal.h"
 #include "tim.h"
+#include "param.h"
 
 #define PCLK			(HAL_RCC_GetPCLK2Freq())	//マイコンの動作周波数[Hz]
 #define PWMFREQ			(100000)					//モータの動作周波数[Hz]

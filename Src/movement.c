@@ -6,6 +6,7 @@
 #include "param.h"
 #include "target.h"
 #include "movement.h"
+#include "adjust.h"
 
 static run_start run_first_flg = 0;			// 走行開始フラグ 0:走行開始時　1:それ以外
 static wall_flg	front_wall_flg = nowall;	//　前壁の有無フラグ
@@ -253,16 +254,16 @@ void move_right (void)
 		if(front_wall_flg == wall){
 			fornt_wall_calibrate();
 		}
-		turn_clk_90();		//m時計回りに90度回転
-		half_acceleration();//m半区画加速
+		turn_clk_90();		//時計回りに90度回転
+		half_acceleration();//半区画加速
 	}
 	if(run_first_flg == already){
-		half_deceleration();//m半区画減速で中央に停止
+		half_deceleration();//半区画減速で中央に停止
 		if(front_wall_flg == wall){
 			fornt_wall_calibrate();
 		}
-		turn_clk_90();		//m時計回りに90度回転
-		half_acceleration();//m半区画加速
+		turn_clk_90();		//時計回りに90度回転
+		half_acceleration();//半区画加速
 	}
 	run_first_flg = already;
 	clr_wall_flg();

@@ -10,5 +10,13 @@
 
 uint16_t get_encordercount_r ( void );
 uint16_t get_encordercount_l ( void );
+void Encoder_Initialize( void );
+void Encoder_ResetCount_Left( void );
+void Encoder_ResetCount_Right( void );
+float Encoder_GetAngle_Left( void );
+float Encoder_GetAngle_Right( void );
+void Get_speed(void);
+void speed_m_average( void );
+
 
 #endif /* ENCORDER_H_*/

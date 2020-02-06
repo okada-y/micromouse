@@ -22,70 +22,6 @@
 
 /*extern 宣言*/
 
-extern float speed_r;				//	右タイヤ速度[m/s]
-extern float speed_r_max;			// m最大右タイヤ速度（デバッグ用
-extern float speed_r_min;			// m最小右タイヤ速度（デバッグ用
-extern float operation_amount_r; 	//m 右タイヤ操作量
-extern float speed_l;				//	左タイヤ速度[m/s]
-extern float speed_l_max;			// m最大左タイヤ速度（デバッグ用
-extern float speed_l_min;			// m最小左タイヤ速度（デバッグ用
-extern float operation_amount_l; 	//m 左タイヤ操作量
-extern float speed_m;				//m	本体並進方向速度[m/s]
-extern float g_ave_speed_m; 		//m 本体並進方向速度の移動平均[m/s]
-extern float g_ave_accel_m; 		//m 本体並進方向速度の移動平均[m/s]
-extern float speed_rad;				//m エンコーダから算出される角速度[rad/s]
-extern float target_speed_m;  		//m 並進方向の目標速度[m/s]
-extern float target_speed_w;		//m 目標角速度[rad/s]
-extern float target_distance_m; 	//m 目標距離[m]
-extern float target_distance_w; 	//m 目標角度[rad]
-extern float ideal_distance_m; 		//m 理想の現在移動距離[m]
-extern float ideal_distance_w; 		//m 理想の現在角度[rad]
-extern float real_distance_m;		//m 現在移動距離[m]
-extern float real_distance_w;		//m 現在角度[rad]
-
-extern float delta_angle_motor_r;	//m 右モータの回転数[rpm]
-extern float delta_angle_motor_l;	//m 左モータの回転数[rpm]
-
-extern uint8_t move_dir_flg;			//m　移動方向フラグ　0:前進 1:後進
-extern uint8_t rotation_dir_flg;		//m　回転方向フラグ　0:時計周り 1:反時計周り
-extern uint8_t accel_dir_flg;		    //m　加速方向フラグ　0:加速 1:減速
-extern uint8_t run_first_flg;			//m 走行開始フラグ 0:走行開始時　1:それ以外
-extern uint8_t correction_mode;			//m 補正モードフラグ　0：目標速度　1:前壁センサ値目標値
-
-extern short wall_sensor_front;		//m 前壁センサ値
-extern short wall_sensor_front_th;	//m 前壁センサ閾値
-extern short wall_sensor_right;		//m　右壁センサ値
-extern short wall_sensor_right_th;	//m　右壁センサ閾値
-extern short wall_sensor_left;		//m　左壁センサ値
-extern short wall_sensor_left_th;	//m　左壁センサ閾値
-
-extern uint16_t fornt_wall_calibrate_tim; //m 前壁補正用カウンタ
-
-extern uint8_t front_calib_flg; //m 前壁補正用フラグ
-extern uint8_t right_calib_flg; //m 前壁補正用フラグ
-extern uint8_t left_calib_flg; 	//m 前壁補正用フラグ
-
-
-
-/*制御周りの定数*/
-
-#define ff_gain				(1.0f)						//m FF項のゲイン
-#define fb_gain				(1.0f)						//m FB項のゲイン
-
-#define offset_voltage		(0.10f)						//m　摩擦項のかわり
-
-//前壁補正関連
-#define front_sensor_r_ref  (0.0115f)					//m 前壁補正時の目標値(1cm)
-#define front_sensor_l_ref  (0.0095f)					//m 前壁補正時の目標値(1cm)
-#define front_sensor_m_KP	(124.412292054546f)	 			//m 前壁距離のPゲイン
-#define front_sensor_m_KI	(26.2444668681538f)				//m 前壁距離のIゲイン
-#define front_sensor_m_KD	(3.28431998107001f)				//m 前壁距離のDゲイン
-#define front_sensor_m_fil	(23.9567963129851f)				//m 前壁距離フィルタ係数
-#define front_sensor_w_KP	(6.40482660641506f)	 			//m 前壁角度のPゲイン
-#define front_sensor_w_KI	(2.52037335129739f)				//m 前壁角度のIゲイン
-#define front_sensor_w_KD	(0.206728439324594f)				//m 前壁補正のDゲイン
-#define front_sensor_w_fil	(44.5570260812328f)				//m 前壁角度フィルタ係数
-
 
 
 
@@ -106,7 +42,7 @@ extern uint8_t left_calib_flg; 	//m 前壁補正用フラグ
 #define LED_ALL_OFF()		HAL_GPIO_WritePin(GPIOA, LED2_Pin|LED3_Pin|LED4_Pin|LED5_Pin, GPIO_PIN_RESET)	// m全LEDを消灯する
 #define LED_ALL_TOGGLE()	HAL_GPIO_TogglePin(GPIOA, LED2_Pin|LED3_Pin|LED4_Pin|LED5_Pin)					// 全LEDの点灯と消灯を切り替える
 
-/* mスイッチ関数群 */
+/* スイッチ関数群 */
 #define SWITCH_ONOFF()		HAL_GPIO_ReadPin(Switch_GPIO_Port, Switch_Pin)				// mスイッチが押されるとハイが返ってくる
 
 /* UART通信関数群(communication.c) */
@@ -117,70 +53,7 @@ void 		Communication_Initialize( void );			// printfとscanfを使用するた�
 void 		Communication_ClearScreen( void );			// m画面クリア&カーソル初期化
 
 
-
-/* mエンコーダ関数群(encoder.c) */
-void 		Encoder_Initialize( void );					// mエンコーダ用タイマーの開始
-void 		Encoder_ResetCount_Left( void );			// m左エンコーダのカウントを初期値にする
-void 		Encoder_ResetCount_Right( void );			// m右エンコーダのカウントを初期値にする
-float 		Encoder_GetAngle_Left( void );				// m左タイヤの角度を取得する[rad]
-float 		Encoder_GetAngle_Right( void );				// m右タイヤの角度を取得する[rad]
-void		Get_speed(void);							// m角速度、速度算出(1msタスク)
-void 		speed_m_average( void );					// m 並進方向速度移動平均算出(1msタスク)
-
-/* m バッテリー関数群(battery.c) */
-float 		Battery_GetVoltage( void );					// m バッテリの電圧を取得する[V]
-void 		Battery_LimiterVoltage( void );				// m バッテリの電圧が3.2V以下になると起動しないように制限する
-
-/* m 割り込み関数群(interrupt.c) */
-void 		Interrupt_Initialize( void );				// m メインの割り込み処理の初期設定
-void 		Interrupt_Main( void );						// m メインの割り込み処理を書く
-uint16_t 	Interrupt_GetDuty( void );					// m 割り込み処理内の計算割合を取得する
-uint16_t 	Interrupt_GetDuty_Max( void );				// m 割り込み処理内の最大計算割合を取得する
-float		Interrupt_GetBootTime( void );				// m マイコンが起動してから経過した時間を取得する[s]
-
-/* m モジュールテスト関数群(module_test.c) */
-void 		module_test( void );						// m 全モジュールの動作確認用テスト関数
-void		data_read(void);							// m ログ出力関数
-void 		data_get (void);							// m ログ取得関数(1msタスク)
-void 		log_init (void);							// m ログカウンタ初期化
-
-/*m 目標速度関数群(target.c)*/
-void 		Operation_amount_calc(void);				//a 操作量算出
-void 		target_speed_inc(void);						//a 目標速度更新
-void 		target_speed_m_calc(void);					//a 加速度更新(1ms
-void 		target_speed_w_calc(void);					//a 角加速度更新(1ms
-void 		target_distance_m_set(float);				//a 目標距離入力
-void 		target_distance_w_set(float);				//a 目標角度入力
-void		real_distance_m_calc(void);					//a 並進方向移動距離取得
-void		real_distance_w_calc(void);					//a 移動角取得
-void 		real_distance_m_clr (void);					//a 並進方向移動距離クリア
-void 		real_distance_w_clr (void);					//a 移動角クリア
-void 		ideal_distance_m_clr(void);					//a 理想現在移動距離クリア
-void 		ideal_distance_w_clr(void);					//a 理想現在角度クリア
-
-
-void 		start_acceleration (void);					//a スタート時の加速
-void		half_acceleration (void);					//a 半区画加速
-void		half_deceleration (void);					//a 半区画減速
-void		constant_speed (void);						//a 一区画定速
-void 		turn_clk_90 (void);							//a 時計回りに90度回転
-void 		turn_conclk_90 (void);						//a 反時計回りに90度回転
-void		turn_conclk_180 (void);						//a 180度回転
-void 		move_front (void);							//a 一区画前進
-void		move_right(void);							//a 右折
-void        move_left(void);							//a 左折
-void		move_back(void);							//a バック
-//m 前壁補正用
-void 		fornt_wall_calibrate (void);				//a　前壁補正用
-void 		calibrate_tim (void);						//a　前壁補正のカウンタ[1msタスク]
-void 		front_wall_calib_flg_clr(void);			//a 前壁補正フラグをクリア
-
 /*delay 関数(delay.c)*/
 void 		delay_us( uint32_t );						//a ディレイ関数（us)
-
-/*mode関数　(mode.c)*/
-void		mode_select(void);							//mode選択関数。右タイヤ速度でカウントアップ、ダウン
-uint8_t 	modechangejud_stanby(void);					//stanbyモード移行関数
-
 
 #endif /* INDEX_H_ */

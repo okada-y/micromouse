@@ -1,5 +1,6 @@
-build/module_test.o: Src/module_test.c Inc/index.h Inc/main.h \
- Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h \
+build/module_test.o: Src/module_test.c Inc/module_test.h Inc/ir_sensor.h \
+ Inc/battery.h Inc/imu.h Inc/param.h Inc/mouse_state.h Inc/target.h \
+ Inc/exvol.h Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h \
  Inc/stm32f4xx_hal_conf.h \
  Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h \
  Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h \
@@ -27,12 +28,24 @@ build/module_test.o: Src/module_test.c Inc/index.h Inc/main.h \
  Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h \
  Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h \
  Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h \
- Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h Inc/adc.h \
- Inc/dma.h Inc/spi.h Inc/tim.h Inc/usart.h Inc/gpio.h Inc/ir_sensor.h
+ Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h Inc/encorder.h \
+ Inc/interrupt.h
 
-Inc/index.h:
+Inc/module_test.h:
 
-Inc/main.h:
+Inc/ir_sensor.h:
+
+Inc/battery.h:
+
+Inc/imu.h:
+
+Inc/param.h:
+
+Inc/mouse_state.h:
+
+Inc/target.h:
+
+Inc/exvol.h:
 
 Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:
 
@@ -96,16 +109,6 @@ Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h:
 
 Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h:
 
-Inc/adc.h:
+Inc/encorder.h:
 
-Inc/dma.h:
-
-Inc/spi.h:
-
-Inc/tim.h:
-
-Inc/usart.h:
-
-Inc/gpio.h:
-
-Inc/ir_sensor.h:
+Inc/interrupt.h:

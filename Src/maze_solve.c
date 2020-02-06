@@ -19,6 +19,8 @@
 #include "index.h"
 #include "movement.h"
 #include "ir_sensor.h"
+#include "adjust.h"
+#include "target.h"
 
 
 /* Type Definitions */
@@ -2463,7 +2465,7 @@ void maze_solve(unsigned char maze_wall[1024], unsigned char maze_wall_search
 
     HAL_Delay(1000);
 
-    /* mスタートを目的地として足立法で再探索 */
+    /* スタートを目的地として足立法で再探索 */
     new_goal[0] = 1U;
     new_goal[9] = 1U;
     clr_run_first_flg(); //走行開始フラグのクリア
@@ -2474,7 +2476,7 @@ void maze_solve(unsigned char maze_wall[1024], unsigned char maze_wall_search
 
     fornt_wall_calibrate();
     turn_conclk_180();
-    target_distance_m_set(-0.5);
+    set_target_length(-0.5);
     /* for code generation */
   }
 

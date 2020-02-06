@@ -29,10 +29,20 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "index.h"
-
-//目指せindex脱却
+//#include "index.h"
 #include "mode.h"
+#include "ir_sensor.h"
+#include "interrupt.h"
+#include "imu.h"
+#include "motor.h"
+#include "encorder.h"
+#include "target.h"
+#include "movement.h"
+#include "exvol.h"
+#include "control.h"
+#include "module_test.h"
+#include "param.h"
+#include "adjust.h"
 
 /*from matlab*/
 #include "maze_init.h"
@@ -94,7 +104,6 @@ void SystemClock_Config(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-	  int16_t i = 0; //簡易タイマ
 
   /* USER CODE END 1 */
   
@@ -129,7 +138,7 @@ int main(void)
   /* USER CODE BEGIN 2 */
 
   /* m 各関数初期化　*/
-  Motor_Initialize(); 			/*m モータ用タイマ設定*/
+  Motor_Initialize(); 			/*モータ用タイマ設定*/
   Communication_Initialize( );	/*printf,scanf用の設定*/
   IMU_Initialize();				/*IMU初期設定*/
   Encoder_Initialize();			/*Encoderタイマ設定、位相初期化*/
@@ -155,124 +164,60 @@ int main(void)
 	    break;
 
 	  case 1:
-	    accel_dir_flg = 1; //減速モード
-	    fornt_wall_calibrate();
+       log_init();
+	     set_mode_ctrl(trace);
+       set_accel_mode(deceleration);
+       set_target_length(0.09);
+       HAL_Delay(3000);
 		  break;
 
 	  case 2:
-      accel_dir_flg = 1; //減速モード
-		  move_dir_flg = 0; //前進モード
-		  real_distance_m_clr();
-		  real_distance_w_clr();
-		  log_init();
-		  target_distance_m_set(0.45);
-		  HAL_Delay(4000);
+      set_mode_ctrl(trace);
+    	set_rotation_mode(counter_clockwise);
+      set_accel_mode(deceleration);
+      set_target_angle(PI/2);
+      HAL_Delay(3000);
 		  break;
 
 	  case 3:
-    
-		  accel_dir_flg = 1; //減速モード
-		  rotation_dir_flg = 0;///m反時計モード
-
-		  real_distance_m_clr();
-		  real_distance_w_clr();
-		  log_init();
-		  target_distance_w_set(2*PI);
-		  HAL_Delay(20000);
-
-//		  rotation_dir_flg = 1;//m時計モード
-//		  target_distance_w_set(-PI/2);
-//		  HAL_Delay(2000);
-
-//		  target_distance_w_set(PI/2);
-//		  HAL_Delay(500);
-//		  target_distance_m_set(0.18);
-//		  HAL_Delay(1000);
+      fornt_wall_calibrate();
 		  break;
 
 	  case 4:
-//		  Motor_SetDuty_Right(60);
-//		  Motor_SetDuty_Left(-60);
-		  HAL_Delay(500);
-		  log_init();
-//		  for(i=0; i<=100; i += 1){
-////			  Motor_SetDuty_Right(-i);
-//			  Motor_SetDuty_Left(-i);
-//			  HAL_Delay(10);
-//		  }
-//		  HAL_Delay(200);
-//		  for(i=100; i>=60; i -= 1){
-//			  Motor_SetDuty_Right(i);
-//			  Motor_SetDuty_Left(-i);
-//			  HAL_Delay(10);
-//		  }
-
-		  Motor_SetDuty_Right(100);
-		  Motor_SetDuty_Left(-100);
-
-		  HAL_Delay(2000);
-//		  printf("mode4_start\r\n");
+      
 		  break;
 
 	  case 5:
-//		  printf("mode5_start\r\n");
-		  Motor_SetDuty_Right(60);
-		  Motor_SetDuty_Left(60);
-		  HAL_Delay(200);
-		  log_init();
-		  for(i=60; i<=200; i += 10){
-			  Motor_SetDuty_Right(i);
-			  Motor_SetDuty_Left(i);
-			  HAL_Delay(10);
-		  }
-		  HAL_Delay(500);
-		  for(i=200; i>=60; i -= 10){
-			  Motor_SetDuty_Right(i);
-			  Motor_SetDuty_Left(i);
-			  HAL_Delay(10);
-		  }
-		  HAL_Delay(500);
-
 		  break;
 
 	  case 6:
-//		  printf("mode6_start\r\n");
-		  accel_dir_flg = 1; //m減速モード
-		  correction_mode = 0;
-		  HAL_Delay(10000);
-
 		  break;
 
 	  case 7:
-//		  printf("mode7_start\r\n");
-//		  correction_mode = 1;
-		  accel_dir_flg = 1; //m減速モード
-		  module_test( );
+      module_test();
 		  break;
 
-	  /*m最短走行*/
+	  /*最短走行*/
 	  case 14:
 
 		  break;
 
-	  /*m迷路探索*/
+	  /*迷路探索*/
 	  case 15:
 		  /*m迷路データの初期化*/
 		  maze_init(maze_y_size, maze_x_size, m_wall_tmp, m_search_tmp);
 
-		  /*m探索モードで走行*/
+		  /*探索モードで走行*/
 		  run_mode = search_mode;
 		  maze_solve(m_wall_tmp, m_search_tmp, maze_y_size, maze_x_size, maze_goal, goal_size, run_mode);
 
 		  break;
-
-
-
-
 	  }
+    clr_mode_state();
+    Sensor_StopADC();
 
-	  Motor_SetDuty_Right(0);	//motor_r 停止
-	  Motor_SetDuty_Left(0);	//motor_l 停止
+	  set_duty_r(0);	//motor_r 停止
+	  set_duty_l(0);	//motor_l 停止
 
 	  for(int i=0; i<3; i++){ //m モード処理終了時、LEDを3回点灯
 	  HAL_GPIO_WritePin(GPIOA,LED2_Pin|LED3_Pin|LED4_Pin|LED5_Pin, GPIO_PIN_SET);

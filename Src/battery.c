@@ -5,7 +5,7 @@
  *      Author: 岡田 泰裕
  */
 
-#include "index.h"
+#include "battery.h"
 
 #define BATTERY_REFERENCE	(3.0f)
 #define BATTERY_LIMIT		(3.2f)
