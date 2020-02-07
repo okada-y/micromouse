@@ -113,6 +113,15 @@ typedef struct {
 
 #endif                                 /*typedef_coder_internal_ref_4*/
 
+//ハンド追加部
+typedef enum{
+  other,              //ゴール直後以外か
+  immediately_after   //ゴール直後か
+}goal_after;
+
+static goal_after goal_after_flg = other;
+//
+
 /* Function Declarations */
 static void fust_run(const coder_internal_ref_4 *g_direction, coder_internal_ref
                      *current_x, coder_internal_ref *current_y,
@@ -1415,516 +1424,519 @@ static void search_adachi(const coder_internal_ref_2 *wall, const
     exitg1 = 0;
 
     /* 壁情報取得 */
-    /* matlab上では画像から取得した壁情報を参照する。 */
-    /* 入力:画像から得た迷路情報,迷路行方向壁枚数,迷路列方向壁枚数,  */
-    /*      現在地座標x,y,現在進行方向,迷路壁情報,迷路壁探索情報             */
-    /* 出力:迷路壁情報,迷路壁探索情報  */
-    /*   wall_set 壁情報取得 */
-    /* グローバル変数(matlabでは迷路データを、Cでは壁センサ値を参照) */
-    /* for matlab */
-    /* for C gen */
-    /* 壁センサAD値格納変数 */
-    /* 壁センサ閾値 */
-    /* ローカル変数宣言 */
-    /* 壁情報書き込み用バッファ(N,E,S,W) */
-    wall_write[0] = 0U;
-    serch_write[0] = 0U;
-    wall_write[1] = 0U;
-    serch_write[1] = 0U;
-    wall_write[2] = 0U;
-    serch_write[2] = 0U;
-    wall_write[3] = 0U;
-    serch_write[3] = 0U;
+    if (goal_after_flg == other)//ゴール直後は壁情報を更新しない。
+    {
+      /* matlab上では画像から取得した壁情報を参照する。 */
+      /* 入力:画像から得た迷路情報,迷路行方向壁枚数,迷路列方向壁枚数,  */
+      /*      現在地座標x,y,現在進行方向,迷路壁情報,迷路壁探索情報             */
+      /* 出力:迷路壁情報,迷路壁探索情報  */
+      /*   wall_set 壁情報取得 */
+      /* グローバル変数(matlabでは迷路データを、Cでは壁センサ値を参照) */
+      /* for matlab */
+      /* for C gen */
+      /* 壁センサAD値格納変数 */
+      /* 壁センサ閾値 */
+      /* ローカル変数宣言 */
+      /* 壁情報書き込み用バッファ(N,E,S,W) */
+      wall_write[0] = 0U;
+      serch_write[0] = 0U;
+      wall_write[1] = 0U;
+      serch_write[1] = 0U;
+      wall_write[2] = 0U;
+      serch_write[2] = 0U;
+      wall_write[3] = 0U;
+      serch_write[3] = 0U;
 
-    /* 探索情報書き込み用バッファ(N,E,S,W) */
-    /* マウスの方向に基づく壁情報取得 */
-    /* マウスの方向と絶対方向の差=マウスの方向となることを利用し、 */
-    /* 絶対角度と整合をとる。 */
-    /*  実機はここをセンサ値に対応させる  */
-    wall_sensor_front = (Sensor_GetValue(0) + Sensor_GetValue(3))/2;
-    wall_sensor_right =  Sensor_GetValue(2);
-    wall_sensor_left =  Sensor_GetValue(1);
-    /* センサ値取得(要手直し) */
-    /* ここまで */
-    /* 前方の壁判定 */
-    /* for Cgen */
-    /* センサ値をもとに、壁の有無を判定 */
+      /* 探索情報書き込み用バッファ(N,E,S,W) */
+      /* マウスの方向に基づく壁情報取得 */
+      /* マウスの方向と絶対方向の差=マウスの方向となることを利用し、 */
+      /* 絶対角度と整合をとる。 */
+      /*  実機はここをセンサ値に対応させる  */
+      wall_sensor_front = (Sensor_GetValue(0) + Sensor_GetValue(3))/2;
+      wall_sensor_right =  Sensor_GetValue(2);
+      wall_sensor_left =  Sensor_GetValue(1);
+      /* センサ値取得(要手直し) */
+      /* ここまで */
+      /* 前方の壁判定 */
+      /* for Cgen */
+      /* センサ値をもとに、壁の有無を判定 */
 
 
-    if (wall_sensor_front > wall_sensor_front_th) {
-      /* 壁情報取得 */
-      wall_write[*current_dir % 4] = wall->contents.wall;
-      set_front_wall_flg();//前壁補正フラグを立てる
-    }
+      if (wall_sensor_front > wall_sensor_front_th) {
+        /* 壁情報取得 */
+        wall_write[*current_dir % 4] = wall->contents.wall;
+        set_front_wall_flg();//前壁補正フラグを立てる
+      }
 
-    /* 探索情報取更新 */
-    serch_write[*current_dir % 4] = search->contents.known;
+      /* 探索情報取更新 */
+      serch_write[*current_dir % 4] = search->contents.known;
 
-    /* 右壁判定 */
-    /* for Cgen */
-    /* センサ値をもとに、壁の有無を判定 */
-    if (wall_sensor_right > wall_sensor_right_th) {
-      /* 壁情報取得 */
+      /* 右壁判定 */
+      /* for Cgen */
+      /* センサ値をもとに、壁の有無を判定 */
+      if (wall_sensor_right > wall_sensor_right_th) {
+        /* 壁情報取得 */
+        i10 = (int)(*current_dir + 1U);
+        if ((unsigned int)i10 > 255U) {
+          i10 = 255;
+        }
+
+        wall_write[i10 % 4] = wall->contents.wall;
+        set_rigth_wall_flg(); //前壁補正フラグを立てる
+      }
+
+      /* 探索情報取更新 */
       i10 = (int)(*current_dir + 1U);
       if ((unsigned int)i10 > 255U) {
         i10 = 255;
       }
 
-      wall_write[i10 % 4] = wall->contents.wall;
-      set_rigth_wall_flg(); //前壁補正フラグを立てる
-    }
+      serch_write[i10 % 4] = search->contents.known;
 
-    /* 探索情報取更新 */
-    i10 = (int)(*current_dir + 1U);
-    if ((unsigned int)i10 > 255U) {
-      i10 = 255;
-    }
+      /* 後方は情報を得ることができないので処理しない。 */
+      /* 左壁判定 */
+      /* for Cgen */
+      /* センサ値をもとに、壁の有無を判定 */
+      if (wall_sensor_left > wall_sensor_left_th) {
+        /* 壁情報取得 */
+        i10 = (int)(*current_dir + 3U);
+        if ((unsigned int)i10 > 255U) {
+          i10 = 255;
+        }
 
-    serch_write[i10 % 4] = search->contents.known;
+        wall_write[i10 % 4] = wall->contents.wall;
+        set_left_wall_flg(); //前壁補正フラグを立てる
 
-    /* 後方は情報を得ることができないので処理しない。 */
-    /* 左壁判定 */
-    /* for Cgen */
-    /* センサ値をもとに、壁の有無を判定 */
-    if (wall_sensor_left > wall_sensor_left_th) {
-      /* 壁情報取得 */
+      }
+
+      /* 探索情報取更新 */
       i10 = (int)(*current_dir + 3U);
       if ((unsigned int)i10 > 255U) {
         i10 = 255;
       }
 
-      wall_write[i10 % 4] = wall->contents.wall;
-      set_left_wall_flg(); //前壁補正フラグを立てる
+      serch_write[i10 % 4] = search->contents.known;
 
-    }
-
-    /* 探索情報取更新 */
-    i10 = (int)(*current_dir + 3U);
-    if ((unsigned int)i10 > 255U) {
-      i10 = 255;
-    }
-
-    serch_write[i10 % 4] = search->contents.known;
-
-    /* ここまで */
-    /* 壁情報,探索情報を入力 */
-    /* 北側 */
-    k = g_direction->contents.North;
-    i10 = (int)(g_direction->contents.North + 1U);
-    if ((unsigned int)i10 > 255U) {
-      i10 = 255;
-    }
-
-    if (k <= 7) {
-      b_k = (unsigned char)(1 << k);
-    } else {
-      b_k = 0;
-    }
-
-    i10 = (int)((unsigned int)b_k * wall_write[i10 - 1]);
-    if ((unsigned int)i10 > 255U) {
-      i10 = 255;
-    }
-
-    i11 = (*current_x - 1) << 5;
-    i12 = (*current_y + i11) - 1;
-    maze_wall[i12] |= (unsigned char)i10;
-    k = g_direction->contents.North;
-    i10 = (int)(g_direction->contents.North + 1U);
-    if ((unsigned int)i10 > 255U) {
-      i10 = 255;
-    }
-
-    if (k <= 7) {
-      c_k = (unsigned char)(1 << k);
-    } else {
-      c_k = 0;
-    }
-
-    i10 = (int)((unsigned int)c_k * serch_write[i10 - 1]);
-    if ((unsigned int)i10 > 255U) {
-      i10 = 255;
-    }
-
-    maze_wall_search[i12] |= (unsigned char)i10;
-
-    /* 東側 */
-    k = g_direction->contents.East;
-    i10 = (int)(g_direction->contents.East + 1U);
-    if ((unsigned int)i10 > 255U) {
-      i10 = 255;
-    }
-
-    if (k <= 7) {
-      d_k = (unsigned char)(1 << k);
-    } else {
-      d_k = 0;
-    }
-
-    i10 = (int)((unsigned int)d_k * wall_write[i10 - 1]);
-    if ((unsigned int)i10 > 255U) {
-      i10 = 255;
-    }
-
-    maze_wall[i12] |= (unsigned char)i10;
-    k = g_direction->contents.East;
-    i10 = (int)(g_direction->contents.East + 1U);
-    if ((unsigned int)i10 > 255U) {
-      i10 = 255;
-    }
-
-    if (k <= 7) {
-      e_k = (unsigned char)(1 << k);
-    } else {
-      e_k = 0;
-    }
-
-    i10 = (int)((unsigned int)e_k * serch_write[i10 - 1]);
-    if ((unsigned int)i10 > 255U) {
-      i10 = 255;
-    }
-
-    maze_wall_search[i12] |= (unsigned char)i10;
-
-    /* 南側 */
-    k = g_direction->contents.South;
-    i10 = (int)(g_direction->contents.South + 1U);
-    if ((unsigned int)i10 > 255U) {
-      i10 = 255;
-    }
-
-    if (k <= 7) {
-      f_k = (unsigned char)(1 << k);
-    } else {
-      f_k = 0;
-    }
-
-    i10 = (int)((unsigned int)f_k * wall_write[i10 - 1]);
-    if ((unsigned int)i10 > 255U) {
-      i10 = 255;
-    }
-
-    maze_wall[i12] |= (unsigned char)i10;
-    k = g_direction->contents.South;
-    i10 = (int)(g_direction->contents.South + 1U);
-    if ((unsigned int)i10 > 255U) {
-      i10 = 255;
-    }
-
-    if (k <= 7) {
-      g_k = (unsigned char)(1 << k);
-    } else {
-      g_k = 0;
-    }
-
-    i10 = (int)((unsigned int)g_k * serch_write[i10 - 1]);
-    if ((unsigned int)i10 > 255U) {
-      i10 = 255;
-    }
-
-    maze_wall_search[i12] |= (unsigned char)i10;
-
-    /* 西側 */
-    k = g_direction->contents.West;
-    i10 = (int)(g_direction->contents.West + 1U);
-    if ((unsigned int)i10 > 255U) {
-      i10 = 255;
-    }
-
-    if (k <= 7) {
-      h_k = (unsigned char)(1 << k);
-    } else {
-      h_k = 0;
-    }
-
-    i10 = (int)((unsigned int)h_k * wall_write[i10 - 1]);
-    if ((unsigned int)i10 > 255U) {
-      i10 = 255;
-    }
-
-    maze_wall[i12] |= (unsigned char)i10;
-    k = g_direction->contents.West;
-    i10 = (int)(g_direction->contents.West + 1U);
-    if ((unsigned int)i10 > 255U) {
-      i10 = 255;
-    }
-
-    if (k <= 7) {
-      i_k = (unsigned char)(1 << k);
-    } else {
-      i_k = 0;
-    }
-
-    i10 = (int)((unsigned int)i_k * serch_write[i10 - 1]);
-    if ((unsigned int)i10 > 255U) {
-      i10 = 255;
-    }
-
-    maze_wall_search[i12] |= (unsigned char)i10;
-
-    /* 隣り合うマスの情報にも入力 */
-    /* 北側のマスの南側の壁情報 */
-    qY = maze_row_size - 1U;
-    if (qY > maze_row_size) {
-      qY = 0U;
-    }
-
-    if (*current_y < (int)qY) {
-      k = g_direction->contents.South;
+      /* ここまで */
+      /* 壁情報,探索情報を入力 */
+      /* 北側 */
+      k = g_direction->contents.North;
       i10 = (int)(g_direction->contents.North + 1U);
       if ((unsigned int)i10 > 255U) {
         i10 = 255;
       }
 
       if (k <= 7) {
-        j_k = (unsigned char)(1 << k);
+        b_k = (unsigned char)(1 << k);
       } else {
-        j_k = 0;
+        b_k = 0;
       }
 
-      i10 = (int)((unsigned int)j_k * wall_write[i10 - 1]);
+      i10 = (int)((unsigned int)b_k * wall_write[i10 - 1]);
       if ((unsigned int)i10 > 255U) {
         i10 = 255;
       }
 
-      q0 = (int)(*current_y + 1U);
-      i13 = q0;
-      if ((unsigned int)q0 > 255U) {
-        i13 = 255;
-      }
-
-      i14 = q0;
-      if ((unsigned int)q0 > 255U) {
-        i14 = 255;
-      }
-
-      maze_wall[(i13 + i11) - 1] = (unsigned char)(maze_wall[(i14 + i11) - 1] |
-        (unsigned char)i10);
-      k = g_direction->contents.South;
+      i11 = (*current_x - 1) << 5;
+      i12 = (*current_y + i11) - 1;
+      maze_wall[i12] |= (unsigned char)i10;
+      k = g_direction->contents.North;
       i10 = (int)(g_direction->contents.North + 1U);
       if ((unsigned int)i10 > 255U) {
         i10 = 255;
       }
 
       if (k <= 7) {
-        n_k = (unsigned char)(1 << k);
+        c_k = (unsigned char)(1 << k);
       } else {
-        n_k = 0;
+        c_k = 0;
       }
 
-      i10 = (int)((unsigned int)n_k * serch_write[i10 - 1]);
+      i10 = (int)((unsigned int)c_k * serch_write[i10 - 1]);
       if ((unsigned int)i10 > 255U) {
         i10 = 255;
       }
 
-      i13 = q0;
-      if ((unsigned int)q0 > 255U) {
-        i13 = 255;
-        q0 = 255;
-      }
+      maze_wall_search[i12] |= (unsigned char)i10;
 
-      maze_wall_search[(i13 + i11) - 1] = (unsigned char)(maze_wall_search[(q0 +
-        i11) - 1] | (unsigned char)i10);
-    }
-
-    /* 東側のマスの西側の壁情報 */
-    qY = maze_col_size - 1U;
-    if (qY > maze_col_size) {
-      qY = 0U;
-    }
-
-    if (*current_x < (int)qY) {
-      k = g_direction->contents.West;
+      /* 東側 */
+      k = g_direction->contents.East;
       i10 = (int)(g_direction->contents.East + 1U);
       if ((unsigned int)i10 > 255U) {
         i10 = 255;
       }
 
       if (k <= 7) {
-        k_k = (unsigned char)(1 << k);
+        d_k = (unsigned char)(1 << k);
       } else {
-        k_k = 0;
+        d_k = 0;
       }
 
-      i10 = (int)((unsigned int)k_k * wall_write[i10 - 1]);
+      i10 = (int)((unsigned int)d_k * wall_write[i10 - 1]);
       if ((unsigned int)i10 > 255U) {
         i10 = 255;
       }
 
-      q0 = (int)(*current_x + 1U);
-      i13 = q0;
-      if ((unsigned int)q0 > 255U) {
-        i13 = 255;
-      }
-
-      i14 = q0;
-      if ((unsigned int)q0 > 255U) {
-        i14 = 255;
-      }
-
-      maze_wall[(*current_y + ((i13 - 1) << 5)) - 1] = (unsigned char)
-        (maze_wall[(*current_y + ((i14 - 1) << 5)) - 1] | (unsigned char)i10);
-      k = g_direction->contents.West;
+      maze_wall[i12] |= (unsigned char)i10;
+      k = g_direction->contents.East;
       i10 = (int)(g_direction->contents.East + 1U);
       if ((unsigned int)i10 > 255U) {
         i10 = 255;
       }
 
       if (k <= 7) {
-        o_k = (unsigned char)(1 << k);
+        e_k = (unsigned char)(1 << k);
       } else {
-        o_k = 0;
+        e_k = 0;
       }
 
-      i10 = (int)((unsigned int)o_k * serch_write[i10 - 1]);
+      i10 = (int)((unsigned int)e_k * serch_write[i10 - 1]);
       if ((unsigned int)i10 > 255U) {
         i10 = 255;
       }
 
-      i13 = q0;
-      if ((unsigned int)q0 > 255U) {
-        i13 = 255;
-        q0 = 255;
-      }
+      maze_wall_search[i12] |= (unsigned char)i10;
 
-      maze_wall_search[(*current_y + ((i13 - 1) << 5)) - 1] = (unsigned char)
-        (maze_wall_search[(*current_y + ((q0 - 1) << 5)) - 1] | (unsigned char)
-         i10);
-    }
-
-    /* 南側のマスの北側の壁情報 */
-    if (*current_y > 1) {
-      k = g_direction->contents.North;
+      /* 南側 */
+      k = g_direction->contents.South;
       i10 = (int)(g_direction->contents.South + 1U);
       if ((unsigned int)i10 > 255U) {
         i10 = 255;
       }
 
       if (k <= 7) {
-        l_k = (unsigned char)(1 << k);
+        f_k = (unsigned char)(1 << k);
       } else {
-        l_k = 0;
+        f_k = 0;
       }
 
-      i10 = (int)((unsigned int)l_k * wall_write[i10 - 1]);
+      i10 = (int)((unsigned int)f_k * wall_write[i10 - 1]);
       if ((unsigned int)i10 > 255U) {
         i10 = 255;
       }
 
-      q0 = *current_y;
-      qY = q0 - 1U;
-      if (qY > (unsigned int)q0) {
-        qY = 0U;
-      }
-
-      q0 = *current_y;
-      b_qY = q0 - 1U;
-      if (b_qY > (unsigned int)q0) {
-        b_qY = 0U;
-      }
-
-      maze_wall[((int)qY + i11) - 1] = (unsigned char)(maze_wall[((int)b_qY +
-        i11) - 1] | (unsigned char)i10);
-      k = g_direction->contents.North;
+      maze_wall[i12] |= (unsigned char)i10;
+      k = g_direction->contents.South;
       i10 = (int)(g_direction->contents.South + 1U);
       if ((unsigned int)i10 > 255U) {
         i10 = 255;
       }
 
       if (k <= 7) {
-        q_k = (unsigned char)(1 << k);
+        g_k = (unsigned char)(1 << k);
       } else {
-        q_k = 0;
+        g_k = 0;
       }
 
-      i10 = (int)((unsigned int)q_k * serch_write[i10 - 1]);
+      i10 = (int)((unsigned int)g_k * serch_write[i10 - 1]);
       if ((unsigned int)i10 > 255U) {
         i10 = 255;
       }
 
-      q0 = *current_y;
-      qY = q0 - 1U;
-      if (qY > (unsigned int)q0) {
-        qY = 0U;
-      }
+      maze_wall_search[i12] |= (unsigned char)i10;
 
-      q0 = *current_y;
-      b_qY = q0 - 1U;
-      if (b_qY > (unsigned int)q0) {
-        b_qY = 0U;
-      }
-
-      maze_wall_search[((int)qY + i11) - 1] = (unsigned char)(maze_wall_search
-        [((int)b_qY + i11) - 1] | (unsigned char)i10);
-    }
-
-    /* 西側のマスの東側の壁情報 */
-    if (*current_x > 1) {
-      k = g_direction->contents.East;
+      /* 西側 */
+      k = g_direction->contents.West;
       i10 = (int)(g_direction->contents.West + 1U);
       if ((unsigned int)i10 > 255U) {
         i10 = 255;
       }
 
       if (k <= 7) {
-        m_k = (unsigned char)(1 << k);
+        h_k = (unsigned char)(1 << k);
       } else {
-        m_k = 0;
+        h_k = 0;
       }
 
-      i10 = (int)((unsigned int)m_k * wall_write[i10 - 1]);
+      i10 = (int)((unsigned int)h_k * wall_write[i10 - 1]);
       if ((unsigned int)i10 > 255U) {
         i10 = 255;
       }
 
-      q0 = *current_x;
-      qY = q0 - 1U;
-      if (qY > (unsigned int)q0) {
-        qY = 0U;
-      }
-
-      q0 = *current_x;
-      b_qY = q0 - 1U;
-      if (b_qY > (unsigned int)q0) {
-        b_qY = 0U;
-      }
-
-      maze_wall[(*current_y + (((int)qY - 1) << 5)) - 1] = (unsigned char)
-        (maze_wall[(*current_y + (((int)b_qY - 1) << 5)) - 1] | (unsigned char)
-         i10);
-      k = g_direction->contents.East;
+      maze_wall[i12] |= (unsigned char)i10;
+      k = g_direction->contents.West;
       i10 = (int)(g_direction->contents.West + 1U);
       if ((unsigned int)i10 > 255U) {
         i10 = 255;
       }
 
       if (k <= 7) {
-        r_k = (unsigned char)(1 << k);
+        i_k = (unsigned char)(1 << k);
       } else {
-        r_k = 0;
+        i_k = 0;
       }
 
-      i10 = (int)((unsigned int)r_k * serch_write[i10 - 1]);
+      i10 = (int)((unsigned int)i_k * serch_write[i10 - 1]);
       if ((unsigned int)i10 > 255U) {
         i10 = 255;
       }
 
-      q0 = *current_x;
-      qY = q0 - 1U;
-      if (qY > (unsigned int)q0) {
+      maze_wall_search[i12] |= (unsigned char)i10;
+
+      /* 隣り合うマスの情報にも入力 */
+      /* 北側のマスの南側の壁情報 */
+      qY = maze_row_size - 1U;
+      if (qY > maze_row_size) {
         qY = 0U;
       }
 
-      q0 = *current_x;
-      b_qY = q0 - 1U;
-      if (b_qY > (unsigned int)q0) {
-        b_qY = 0U;
+      if (*current_y < (int)qY) {
+        k = g_direction->contents.South;
+        i10 = (int)(g_direction->contents.North + 1U);
+        if ((unsigned int)i10 > 255U) {
+          i10 = 255;
+        }
+
+        if (k <= 7) {
+          j_k = (unsigned char)(1 << k);
+        } else {
+          j_k = 0;
+        }
+
+        i10 = (int)((unsigned int)j_k * wall_write[i10 - 1]);
+        if ((unsigned int)i10 > 255U) {
+          i10 = 255;
+        }
+
+        q0 = (int)(*current_y + 1U);
+        i13 = q0;
+        if ((unsigned int)q0 > 255U) {
+          i13 = 255;
+        }
+
+        i14 = q0;
+        if ((unsigned int)q0 > 255U) {
+          i14 = 255;
+        }
+
+        maze_wall[(i13 + i11) - 1] = (unsigned char)(maze_wall[(i14 + i11) - 1] |
+          (unsigned char)i10);
+        k = g_direction->contents.South;
+        i10 = (int)(g_direction->contents.North + 1U);
+        if ((unsigned int)i10 > 255U) {
+          i10 = 255;
+        }
+
+        if (k <= 7) {
+          n_k = (unsigned char)(1 << k);
+        } else {
+          n_k = 0;
+        }
+
+        i10 = (int)((unsigned int)n_k * serch_write[i10 - 1]);
+        if ((unsigned int)i10 > 255U) {
+          i10 = 255;
+        }
+
+        i13 = q0;
+        if ((unsigned int)q0 > 255U) {
+          i13 = 255;
+          q0 = 255;
+        }
+
+        maze_wall_search[(i13 + i11) - 1] = (unsigned char)(maze_wall_search[(q0 +
+          i11) - 1] | (unsigned char)i10);
       }
 
-      maze_wall_search[(*current_y + (((int)qY - 1) << 5)) - 1] = (unsigned char)
-        (maze_wall_search[(*current_y + (((int)b_qY - 1) << 5)) - 1] | (unsigned
-          char)i10);
-    }
+      /* 東側のマスの西側の壁情報 */
+      qY = maze_col_size - 1U;
+      if (qY > maze_col_size) {
+        qY = 0U;
+      }
+
+      if (*current_x < (int)qY) {
+        k = g_direction->contents.West;
+        i10 = (int)(g_direction->contents.East + 1U);
+        if ((unsigned int)i10 > 255U) {
+          i10 = 255;
+        }
+
+        if (k <= 7) {
+          k_k = (unsigned char)(1 << k);
+        } else {
+          k_k = 0;
+        }
+
+        i10 = (int)((unsigned int)k_k * wall_write[i10 - 1]);
+        if ((unsigned int)i10 > 255U) {
+          i10 = 255;
+        }
+
+        q0 = (int)(*current_x + 1U);
+        i13 = q0;
+        if ((unsigned int)q0 > 255U) {
+          i13 = 255;
+        }
+
+        i14 = q0;
+        if ((unsigned int)q0 > 255U) {
+          i14 = 255;
+        }
+
+        maze_wall[(*current_y + ((i13 - 1) << 5)) - 1] = (unsigned char)
+          (maze_wall[(*current_y + ((i14 - 1) << 5)) - 1] | (unsigned char)i10);
+        k = g_direction->contents.West;
+        i10 = (int)(g_direction->contents.East + 1U);
+        if ((unsigned int)i10 > 255U) {
+          i10 = 255;
+        }
+
+        if (k <= 7) {
+          o_k = (unsigned char)(1 << k);
+        } else {
+          o_k = 0;
+        }
+
+        i10 = (int)((unsigned int)o_k * serch_write[i10 - 1]);
+        if ((unsigned int)i10 > 255U) {
+          i10 = 255;
+        }
+
+        i13 = q0;
+        if ((unsigned int)q0 > 255U) {
+          i13 = 255;
+          q0 = 255;
+        }
+
+        maze_wall_search[(*current_y + ((i13 - 1) << 5)) - 1] = (unsigned char)
+          (maze_wall_search[(*current_y + ((q0 - 1) << 5)) - 1] | (unsigned char)
+          i10);
+      }
+
+      /* 南側のマスの北側の壁情報 */
+      if (*current_y > 1) {
+        k = g_direction->contents.North;
+        i10 = (int)(g_direction->contents.South + 1U);
+        if ((unsigned int)i10 > 255U) {
+          i10 = 255;
+        }
+
+        if (k <= 7) {
+          l_k = (unsigned char)(1 << k);
+        } else {
+          l_k = 0;
+        }
+
+        i10 = (int)((unsigned int)l_k * wall_write[i10 - 1]);
+        if ((unsigned int)i10 > 255U) {
+          i10 = 255;
+        }
+
+        q0 = *current_y;
+        qY = q0 - 1U;
+        if (qY > (unsigned int)q0) {
+          qY = 0U;
+        }
+
+        q0 = *current_y;
+        b_qY = q0 - 1U;
+        if (b_qY > (unsigned int)q0) {
+          b_qY = 0U;
+        }
+
+        maze_wall[((int)qY + i11) - 1] = (unsigned char)(maze_wall[((int)b_qY +
+          i11) - 1] | (unsigned char)i10);
+        k = g_direction->contents.North;
+        i10 = (int)(g_direction->contents.South + 1U);
+        if ((unsigned int)i10 > 255U) {
+          i10 = 255;
+        }
+
+        if (k <= 7) {
+          q_k = (unsigned char)(1 << k);
+        } else {
+          q_k = 0;
+        }
+
+        i10 = (int)((unsigned int)q_k * serch_write[i10 - 1]);
+        if ((unsigned int)i10 > 255U) {
+          i10 = 255;
+        }
+
+        q0 = *current_y;
+        qY = q0 - 1U;
+        if (qY > (unsigned int)q0) {
+          qY = 0U;
+        }
+
+        q0 = *current_y;
+        b_qY = q0 - 1U;
+        if (b_qY > (unsigned int)q0) {
+          b_qY = 0U;
+        }
+
+        maze_wall_search[((int)qY + i11) - 1] = (unsigned char)(maze_wall_search
+          [((int)b_qY + i11) - 1] | (unsigned char)i10);
+      }
+
+      /* 西側のマスの東側の壁情報 */
+      if (*current_x > 1) {
+        k = g_direction->contents.East;
+        i10 = (int)(g_direction->contents.West + 1U);
+        if ((unsigned int)i10 > 255U) {
+          i10 = 255;
+        }
+
+        if (k <= 7) {
+          m_k = (unsigned char)(1 << k);
+        } else {
+          m_k = 0;
+        }
+
+        i10 = (int)((unsigned int)m_k * wall_write[i10 - 1]);
+        if ((unsigned int)i10 > 255U) {
+          i10 = 255;
+        }
+
+        q0 = *current_x;
+        qY = q0 - 1U;
+        if (qY > (unsigned int)q0) {
+          qY = 0U;
+        }
+
+        q0 = *current_x;
+        b_qY = q0 - 1U;
+        if (b_qY > (unsigned int)q0) {
+          b_qY = 0U;
+        }
+
+        maze_wall[(*current_y + (((int)qY - 1) << 5)) - 1] = (unsigned char)
+          (maze_wall[(*current_y + (((int)b_qY - 1) << 5)) - 1] | (unsigned char)
+          i10);
+        k = g_direction->contents.East;
+        i10 = (int)(g_direction->contents.West + 1U);
+        if ((unsigned int)i10 > 255U) {
+          i10 = 255;
+        }
+
+        if (k <= 7) {
+          r_k = (unsigned char)(1 << k);
+        } else {
+          r_k = 0;
+        }
+
+        i10 = (int)((unsigned int)r_k * serch_write[i10 - 1]);
+        if ((unsigned int)i10 > 255U) {
+          i10 = 255;
+        }
+
+        q0 = *current_x;
+        qY = q0 - 1U;
+        if (qY > (unsigned int)q0) {
+          qY = 0U;
+        }
+
+        q0 = *current_x;
+        b_qY = q0 - 1U;
+        if (b_qY > (unsigned int)q0) {
+          b_qY = 0U;
+        }
+
+        maze_wall_search[(*current_y + (((int)qY - 1) << 5)) - 1] = (unsigned char)
+          (maze_wall_search[(*current_y + (((int)b_qY - 1) << 5)) - 1] | (unsigned
+            char)i10);
+      }
+  }
 
     /* m現在位置がゴールか判定 */
     for (q0 = 0; q0 < i9; q0++) {
