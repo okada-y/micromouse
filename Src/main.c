@@ -173,8 +173,8 @@ int main(void)
       set_mode_ctrl(trace);
     	set_rotation_mode(counter_clockwise);
       set_accel_mode(deceleration);
-      set_target_angle(PI/2);
-      HAL_Delay(3000);
+      set_target_angle(5*2*PI);
+      HAL_Delay(10000);
 		  break;
 
 	  case 3:

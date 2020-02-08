@@ -25,8 +25,8 @@
 //           パラメータ             //
 /////////////////////////////////////
 /*module_test*/
-#define log_count_lim		(5000)	//データ取得する期間[ms]
-#define log_count_step		(5)		//データを取得する時間間隔[ms]
+#define log_count_lim		(10000)	//データ取得する期間[ms]
+#define log_count_step		(10)	//データを取得する時間間隔[ms]
 
 //maze
 #define x_size              (5)     //x軸方向の壁(縦壁)の枚数+1

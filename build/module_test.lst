@@ -1,4 +1,4 @@
-ARM GAS  C:\Temp\ccKMG3lH.s 			page 1
+ARM GAS  C:\Temp\ccaPg5xk.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,7 +58,7 @@ ARM GAS  C:\Temp\ccKMG3lH.s 			page 1
   28:Src/module_test.c **** 	float 	ideal_d_m;			//理想の並進方向移動距離[m]
   29:Src/module_test.c **** 	float	real_d_m;			//並進方向移動距離[m]
   30:Src/module_test.c **** 	float   target_speed_m;		//目標速度[m/s]
-ARM GAS  C:\Temp\ccKMG3lH.s 			page 2
+ARM GAS  C:\Temp\ccaPg5xk.s 			page 2
 
 
   31:Src/module_test.c **** 	float	speed_m;			//並進方向の速度[m/s]
@@ -118,7 +118,7 @@ ARM GAS  C:\Temp\ccKMG3lH.s 			page 1
   54              		.thumb_func
   55              		.fpu fpv4-sp-d16
   57              	data_get:
-ARM GAS  C:\Temp\ccKMG3lH.s 			page 3
+ARM GAS  C:\Temp\ccaPg5xk.s 			page 3
 
 
   58              	.LFB134:
@@ -144,29 +144,29 @@ ARM GAS  C:\Temp\ccKMG3lH.s 			page 1
   69:Src/module_test.c **** 	i = log_counter / log_count_step;
   70              		.loc 1 69 2 view .LVU6
   71              		.loc 1 69 4 is_stmt 0 view .LVU7
-  72 0002 4D4B     		ldr	r3, .L9
+  72 0002 4E4B     		ldr	r3, .L9
   73 0004 1A88     		ldrh	r2, [r3]
-  74 0006 4D4C     		ldr	r4, .L9+4
+  74 0006 4E4C     		ldr	r4, .L9+4
   75 0008 A4FB0234 		umull	r3, r4, r4, r2
   76              	.LVL1:
   70:Src/module_test.c **** 
   71:Src/module_test.c **** 	if(log_counter < log_count_lim)
   77              		.loc 1 71 2 is_stmt 1 view .LVU8
   78              		.loc 1 71 4 is_stmt 0 view .LVU9
-  79 000c 41F28733 		movw	r3, #4999
+  79 000c 42F20F73 		movw	r3, #9999
   80 0010 9A42     		cmp	r2, r3
-  81 0012 09D8     		bhi	.L4
-  82 0014 A408     		lsrs	r4, r4, #2
+  81 0012 0AD8     		bhi	.L4
+  82 0014 E408     		lsrs	r4, r4, #3
   83              	.LVL2:
   72:Src/module_test.c **** 	{
   73:Src/module_test.c **** 		if( (log_counter % log_count_step) == 0)
   84              		.loc 1 73 3 is_stmt 1 view .LVU10
   85              		.loc 1 73 38 is_stmt 0 view .LVU11
   86 0016 04EB8403 		add	r3, r4, r4, lsl #2
-  87 001a D31A     		subs	r3, r2, r3
-  88 001c 9BB2     		uxth	r3, r3
+  87 001a A2EB4303 		sub	r3, r2, r3, lsl #1
+  88 001e 9BB2     		uxth	r3, r3
   89              		.loc 1 73 5 view .LVU12
-  90 001e 23B1     		cbz	r3, .L8
+  90 0020 23B1     		cbz	r3, .L8
   91              	.LVL3:
   92              	.L6:
   74:Src/module_test.c **** 		{
@@ -178,7 +178,7 @@ ARM GAS  C:\Temp\ccKMG3lH.s 			page 1
   80:Src/module_test.c **** 			log_store[i].speed_m = (float)get_move_speed();
   81:Src/module_test.c **** 			log_store[i].speed_m_ave = (float)get_move_speed_ave();
   82:Src/module_test.c **** 			log_store[i].accel_m = (float)IMU_GetAccel_X();
-ARM GAS  C:\Temp\ccKMG3lH.s 			page 4
+ARM GAS  C:\Temp\ccaPg5xk.s 			page 4
 
 
   83:Src/module_test.c **** 			log_store[i].accel_m_ave = (float)get_move_accel_ave();
@@ -200,292 +200,292 @@ ARM GAS  C:\Temp\ccKMG3lH.s 			page 1
   99:Src/module_test.c **** 		log_counter += 1; //logカウンタ更新
   93              		.loc 1 99 3 is_stmt 1 view .LVU13
   94              		.loc 1 99 15 is_stmt 0 view .LVU14
-  95 0020 454A     		ldr	r2, .L9
-  96 0022 1388     		ldrh	r3, [r2]
-  97 0024 0133     		adds	r3, r3, #1
-  98 0026 1380     		strh	r3, [r2]	@ movhi
+  95 0022 464A     		ldr	r2, .L9
+  96 0024 1388     		ldrh	r3, [r2]
+  97 0026 0133     		adds	r3, r3, #1
+  98 0028 1380     		strh	r3, [r2]	@ movhi
   99              	.L4:
  100:Src/module_test.c **** 	}
  101:Src/module_test.c **** }
  100              		.loc 1 101 1 view .LVU15
- 101 0028 10BD     		pop	{r4, pc}
+ 101 002a 10BD     		pop	{r4, pc}
  102              	.LVL4:
  103              	.L8:
   75:Src/module_test.c **** 			log_store[i].target_d_m = (float)get_target_length();
  104              		.loc 1 75 4 is_stmt 1 view .LVU16
   75:Src/module_test.c **** 			log_store[i].target_d_m = (float)get_target_length();
  105              		.loc 1 75 24 is_stmt 0 view .LVU17
- 106 002a 07EE902A 		vmov	s15, r2	@ int
- 107 002e F8EE677A 		vcvt.f32.u32	s15, s15
+ 106 002c 07EE902A 		vmov	s15, r2	@ int
+ 107 0030 F8EE677A 		vcvt.f32.u32	s15, s15
   75:Src/module_test.c **** 			log_store[i].target_d_m = (float)get_target_length();
  108              		.loc 1 75 22 view .LVU18
- 109 0032 434B     		ldr	r3, .L9+8
- 110 0034 5C22     		movs	r2, #92
+ 109 0034 434B     		ldr	r3, .L9+8
+ 110 0036 5C22     		movs	r2, #92
  111              	.LVL5:
   75:Src/module_test.c **** 			log_store[i].target_d_m = (float)get_target_length();
  112              		.loc 1 75 22 view .LVU19
- 113 0036 02FB0434 		mla	r4, r2, r4, r3
- 114 003a C4ED007A 		vstr.32	s15, [r4]
+ 113 0038 02FB0434 		mla	r4, r2, r4, r3
+ 114 003c C4ED007A 		vstr.32	s15, [r4]
   76:Src/module_test.c **** 			log_store[i].ideal_d_m = (float)get_ideal_length();
  115              		.loc 1 76 4 is_stmt 1 view .LVU20
   76:Src/module_test.c **** 			log_store[i].ideal_d_m = (float)get_ideal_length();
  116              		.loc 1 76 30 is_stmt 0 view .LVU21
- 117 003e FFF7FEFF 		bl	get_target_length
+ 117 0040 FFF7FEFF 		bl	get_target_length
  118              	.LVL6:
   76:Src/module_test.c **** 			log_store[i].ideal_d_m = (float)get_ideal_length();
  119              		.loc 1 76 28 view .LVU22
- 120 0042 84ED010A 		vstr.32	s0, [r4, #4]
+ 120 0044 84ED010A 		vstr.32	s0, [r4, #4]
   77:Src/module_test.c **** 			log_store[i].real_d_m = (float)get_move_length();
  121              		.loc 1 77 4 is_stmt 1 view .LVU23
   77:Src/module_test.c **** 			log_store[i].real_d_m = (float)get_move_length();
-ARM GAS  C:\Temp\ccKMG3lH.s 			page 5
+ARM GAS  C:\Temp\ccaPg5xk.s 			page 5
 
 
  122              		.loc 1 77 29 is_stmt 0 view .LVU24
- 123 0046 FFF7FEFF 		bl	get_ideal_length
+ 123 0048 FFF7FEFF 		bl	get_ideal_length
  124              	.LVL7:
   77:Src/module_test.c **** 			log_store[i].real_d_m = (float)get_move_length();
  125              		.loc 1 77 27 view .LVU25
- 126 004a 84ED020A 		vstr.32	s0, [r4, #8]
+ 126 004c 84ED020A 		vstr.32	s0, [r4, #8]
   78:Src/module_test.c **** 			log_store[i].target_speed_m =  (float)get_target_move_speed();
  127              		.loc 1 78 4 is_stmt 1 view .LVU26
   78:Src/module_test.c **** 			log_store[i].target_speed_m =  (float)get_target_move_speed();
  128              		.loc 1 78 28 is_stmt 0 view .LVU27
- 129 004e FFF7FEFF 		bl	get_move_length
+ 129 0050 FFF7FEFF 		bl	get_move_length
  130              	.LVL8:
   78:Src/module_test.c **** 			log_store[i].target_speed_m =  (float)get_target_move_speed();
  131              		.loc 1 78 26 view .LVU28
- 132 0052 84ED030A 		vstr.32	s0, [r4, #12]
+ 132 0054 84ED030A 		vstr.32	s0, [r4, #12]
   79:Src/module_test.c **** 			log_store[i].speed_m = (float)get_move_speed();
  133              		.loc 1 79 4 is_stmt 1 view .LVU29
   79:Src/module_test.c **** 			log_store[i].speed_m = (float)get_move_speed();
  134              		.loc 1 79 35 is_stmt 0 view .LVU30
- 135 0056 FFF7FEFF 		bl	get_target_move_speed
+ 135 0058 FFF7FEFF 		bl	get_target_move_speed
  136              	.LVL9:
   79:Src/module_test.c **** 			log_store[i].speed_m = (float)get_move_speed();
  137              		.loc 1 79 32 view .LVU31
- 138 005a 84ED040A 		vstr.32	s0, [r4, #16]
+ 138 005c 84ED040A 		vstr.32	s0, [r4, #16]
   80:Src/module_test.c **** 			log_store[i].speed_m_ave = (float)get_move_speed_ave();
  139              		.loc 1 80 4 is_stmt 1 view .LVU32
   80:Src/module_test.c **** 			log_store[i].speed_m_ave = (float)get_move_speed_ave();
  140              		.loc 1 80 27 is_stmt 0 view .LVU33
- 141 005e FFF7FEFF 		bl	get_move_speed
+ 141 0060 FFF7FEFF 		bl	get_move_speed
  142              	.LVL10:
   80:Src/module_test.c **** 			log_store[i].speed_m_ave = (float)get_move_speed_ave();
  143              		.loc 1 80 25 view .LVU34
- 144 0062 84ED050A 		vstr.32	s0, [r4, #20]
+ 144 0064 84ED050A 		vstr.32	s0, [r4, #20]
   81:Src/module_test.c **** 			log_store[i].accel_m = (float)IMU_GetAccel_X();
  145              		.loc 1 81 4 is_stmt 1 view .LVU35
   81:Src/module_test.c **** 			log_store[i].accel_m = (float)IMU_GetAccel_X();
  146              		.loc 1 81 31 is_stmt 0 view .LVU36
- 147 0066 FFF7FEFF 		bl	get_move_speed_ave
+ 147 0068 FFF7FEFF 		bl	get_move_speed_ave
  148              	.LVL11:
   81:Src/module_test.c **** 			log_store[i].accel_m = (float)IMU_GetAccel_X();
  149              		.loc 1 81 29 view .LVU37
- 150 006a 84ED060A 		vstr.32	s0, [r4, #24]
+ 150 006c 84ED060A 		vstr.32	s0, [r4, #24]
   82:Src/module_test.c **** 			log_store[i].accel_m_ave = (float)get_move_accel_ave();
  151              		.loc 1 82 4 is_stmt 1 view .LVU38
   82:Src/module_test.c **** 			log_store[i].accel_m_ave = (float)get_move_accel_ave();
  152              		.loc 1 82 27 is_stmt 0 view .LVU39
- 153 006e FFF7FEFF 		bl	IMU_GetAccel_X
+ 153 0070 FFF7FEFF 		bl	IMU_GetAccel_X
  154              	.LVL12:
   82:Src/module_test.c **** 			log_store[i].accel_m_ave = (float)get_move_accel_ave();
  155              		.loc 1 82 25 view .LVU40
- 156 0072 84ED070A 		vstr.32	s0, [r4, #28]
+ 156 0074 84ED070A 		vstr.32	s0, [r4, #28]
   83:Src/module_test.c **** 			log_store[i].target_d_w = (float)get_target_angle();
  157              		.loc 1 83 4 is_stmt 1 view .LVU41
   83:Src/module_test.c **** 			log_store[i].target_d_w = (float)get_target_angle();
  158              		.loc 1 83 31 is_stmt 0 view .LVU42
- 159 0076 FFF7FEFF 		bl	get_move_accel_ave
+ 159 0078 FFF7FEFF 		bl	get_move_accel_ave
  160              	.LVL13:
-ARM GAS  C:\Temp\ccKMG3lH.s 			page 6
+ARM GAS  C:\Temp\ccaPg5xk.s 			page 6
 
 
   83:Src/module_test.c **** 			log_store[i].target_d_w = (float)get_target_angle();
  161              		.loc 1 83 29 view .LVU43
- 162 007a 84ED080A 		vstr.32	s0, [r4, #32]
+ 162 007c 84ED080A 		vstr.32	s0, [r4, #32]
   84:Src/module_test.c **** 			log_store[i].ideal_d_w = (float)get_ideal_angle();
  163              		.loc 1 84 4 is_stmt 1 view .LVU44
   84:Src/module_test.c **** 			log_store[i].ideal_d_w = (float)get_ideal_angle();
  164              		.loc 1 84 30 is_stmt 0 view .LVU45
- 165 007e FFF7FEFF 		bl	get_target_angle
+ 165 0080 FFF7FEFF 		bl	get_target_angle
  166              	.LVL14:
   84:Src/module_test.c **** 			log_store[i].ideal_d_w = (float)get_ideal_angle();
  167              		.loc 1 84 28 view .LVU46
- 168 0082 84ED090A 		vstr.32	s0, [r4, #36]
+ 168 0084 84ED090A 		vstr.32	s0, [r4, #36]
   85:Src/module_test.c **** 			log_store[i].real_d_w = (float)get_rotation_angle();
  169              		.loc 1 85 4 is_stmt 1 view .LVU47
   85:Src/module_test.c **** 			log_store[i].real_d_w = (float)get_rotation_angle();
  170              		.loc 1 85 29 is_stmt 0 view .LVU48
- 171 0086 FFF7FEFF 		bl	get_ideal_angle
+ 171 0088 FFF7FEFF 		bl	get_ideal_angle
  172              	.LVL15:
   85:Src/module_test.c **** 			log_store[i].real_d_w = (float)get_rotation_angle();
  173              		.loc 1 85 27 view .LVU49
- 174 008a 84ED0A0A 		vstr.32	s0, [r4, #40]
+ 174 008c 84ED0A0A 		vstr.32	s0, [r4, #40]
   86:Src/module_test.c **** 			log_store[i].target_speed_w = (float)get_target_rotation_speed();
  175              		.loc 1 86 4 is_stmt 1 view .LVU50
   86:Src/module_test.c **** 			log_store[i].target_speed_w = (float)get_target_rotation_speed();
  176              		.loc 1 86 28 is_stmt 0 view .LVU51
- 177 008e FFF7FEFF 		bl	get_rotation_angle
+ 177 0090 FFF7FEFF 		bl	get_rotation_angle
  178              	.LVL16:
   86:Src/module_test.c **** 			log_store[i].target_speed_w = (float)get_target_rotation_speed();
  179              		.loc 1 86 26 view .LVU52
- 180 0092 84ED0B0A 		vstr.32	s0, [r4, #44]
+ 180 0094 84ED0B0A 		vstr.32	s0, [r4, #44]
   87:Src/module_test.c **** 			log_store[i].speed_w = (float)get_rotation_speed();
  181              		.loc 1 87 4 is_stmt 1 view .LVU53
   87:Src/module_test.c **** 			log_store[i].speed_w = (float)get_rotation_speed();
  182              		.loc 1 87 34 is_stmt 0 view .LVU54
- 183 0096 FFF7FEFF 		bl	get_target_rotation_speed
+ 183 0098 FFF7FEFF 		bl	get_target_rotation_speed
  184              	.LVL17:
   87:Src/module_test.c **** 			log_store[i].speed_w = (float)get_rotation_speed();
  185              		.loc 1 87 32 view .LVU55
- 186 009a 84ED0C0A 		vstr.32	s0, [r4, #48]
+ 186 009c 84ED0C0A 		vstr.32	s0, [r4, #48]
   88:Src/module_test.c **** 			log_store[i].duty_r = (float)get_target_duty_r();
  187              		.loc 1 88 4 is_stmt 1 view .LVU56
   88:Src/module_test.c **** 			log_store[i].duty_r = (float)get_target_duty_r();
  188              		.loc 1 88 27 is_stmt 0 view .LVU57
- 189 009e FFF7FEFF 		bl	get_rotation_speed
+ 189 00a0 FFF7FEFF 		bl	get_rotation_speed
  190              	.LVL18:
   88:Src/module_test.c **** 			log_store[i].duty_r = (float)get_target_duty_r();
  191              		.loc 1 88 25 view .LVU58
- 192 00a2 84ED0D0A 		vstr.32	s0, [r4, #52]
+ 192 00a4 84ED0D0A 		vstr.32	s0, [r4, #52]
   89:Src/module_test.c **** 			log_store[i].duty_l = (float)get_target_duty_l();
  193              		.loc 1 89 4 is_stmt 1 view .LVU59
   89:Src/module_test.c **** 			log_store[i].duty_l = (float)get_target_duty_l();
  194              		.loc 1 89 33 is_stmt 0 view .LVU60
- 195 00a6 FFF7FEFF 		bl	get_target_duty_r
+ 195 00a8 FFF7FEFF 		bl	get_target_duty_r
  196              	.LVL19:
- 197 00aa 07EE900A 		vmov	s15, r0	@ int
+ 197 00ac 07EE900A 		vmov	s15, r0	@ int
   89:Src/module_test.c **** 			log_store[i].duty_l = (float)get_target_duty_l();
  198              		.loc 1 89 26 view .LVU61
-ARM GAS  C:\Temp\ccKMG3lH.s 			page 7
+ARM GAS  C:\Temp\ccaPg5xk.s 			page 7
 
 
- 199 00ae F8EEE77A 		vcvt.f32.s32	s15, s15
+ 199 00b0 F8EEE77A 		vcvt.f32.s32	s15, s15
   89:Src/module_test.c **** 			log_store[i].duty_l = (float)get_target_duty_l();
  200              		.loc 1 89 24 view .LVU62
- 201 00b2 C4ED0E7A 		vstr.32	s15, [r4, #56]
+ 201 00b4 C4ED0E7A 		vstr.32	s15, [r4, #56]
   90:Src/module_test.c **** 			log_store[i].front_sensor_r = (float)Sensor_GetValue(3);
  202              		.loc 1 90 4 is_stmt 1 view .LVU63
   90:Src/module_test.c **** 			log_store[i].front_sensor_r = (float)Sensor_GetValue(3);
  203              		.loc 1 90 33 is_stmt 0 view .LVU64
- 204 00b6 FFF7FEFF 		bl	get_target_duty_l
+ 204 00b8 FFF7FEFF 		bl	get_target_duty_l
  205              	.LVL20:
- 206 00ba 07EE900A 		vmov	s15, r0	@ int
+ 206 00bc 07EE900A 		vmov	s15, r0	@ int
   90:Src/module_test.c **** 			log_store[i].front_sensor_r = (float)Sensor_GetValue(3);
  207              		.loc 1 90 26 view .LVU65
- 208 00be F8EEE77A 		vcvt.f32.s32	s15, s15
+ 208 00c0 F8EEE77A 		vcvt.f32.s32	s15, s15
   90:Src/module_test.c **** 			log_store[i].front_sensor_r = (float)Sensor_GetValue(3);
  209              		.loc 1 90 24 view .LVU66
- 210 00c2 C4ED0F7A 		vstr.32	s15, [r4, #60]
+ 210 00c4 C4ED0F7A 		vstr.32	s15, [r4, #60]
   91:Src/module_test.c **** 			log_store[i].front_sensor_l = (float)Sensor_GetValue(0);
  211              		.loc 1 91 4 is_stmt 1 view .LVU67
   91:Src/module_test.c **** 			log_store[i].front_sensor_l = (float)Sensor_GetValue(0);
  212              		.loc 1 91 41 is_stmt 0 view .LVU68
- 213 00c6 0320     		movs	r0, #3
- 214 00c8 FFF7FEFF 		bl	Sensor_GetValue
+ 213 00c8 0320     		movs	r0, #3
+ 214 00ca FFF7FEFF 		bl	Sensor_GetValue
  215              	.LVL21:
- 216 00cc 07EE900A 		vmov	s15, r0	@ int
+ 216 00ce 07EE900A 		vmov	s15, r0	@ int
   91:Src/module_test.c **** 			log_store[i].front_sensor_l = (float)Sensor_GetValue(0);
  217              		.loc 1 91 34 view .LVU69
- 218 00d0 F8EEE77A 		vcvt.f32.s32	s15, s15
+ 218 00d2 F8EEE77A 		vcvt.f32.s32	s15, s15
   91:Src/module_test.c **** 			log_store[i].front_sensor_l = (float)Sensor_GetValue(0);
  219              		.loc 1 91 32 view .LVU70
- 220 00d4 C4ED107A 		vstr.32	s15, [r4, #64]
+ 220 00d6 C4ED107A 		vstr.32	s15, [r4, #64]
   92:Src/module_test.c **** 			log_store[i].side_sensor_r = (float)Sensor_GetValue(2);
  221              		.loc 1 92 4 is_stmt 1 view .LVU71
   92:Src/module_test.c **** 			log_store[i].side_sensor_r = (float)Sensor_GetValue(2);
  222              		.loc 1 92 41 is_stmt 0 view .LVU72
- 223 00d8 0020     		movs	r0, #0
- 224 00da FFF7FEFF 		bl	Sensor_GetValue
+ 223 00da 0020     		movs	r0, #0
+ 224 00dc FFF7FEFF 		bl	Sensor_GetValue
  225              	.LVL22:
- 226 00de 07EE900A 		vmov	s15, r0	@ int
+ 226 00e0 07EE900A 		vmov	s15, r0	@ int
   92:Src/module_test.c **** 			log_store[i].side_sensor_r = (float)Sensor_GetValue(2);
  227              		.loc 1 92 34 view .LVU73
- 228 00e2 F8EEE77A 		vcvt.f32.s32	s15, s15
+ 228 00e4 F8EEE77A 		vcvt.f32.s32	s15, s15
   92:Src/module_test.c **** 			log_store[i].side_sensor_r = (float)Sensor_GetValue(2);
  229              		.loc 1 92 32 view .LVU74
- 230 00e6 C4ED117A 		vstr.32	s15, [r4, #68]
+ 230 00e8 C4ED117A 		vstr.32	s15, [r4, #68]
   93:Src/module_test.c **** 			log_store[i].side_sensor_l = (float)Sensor_GetValue(1);
  231              		.loc 1 93 4 is_stmt 1 view .LVU75
   93:Src/module_test.c **** 			log_store[i].side_sensor_l = (float)Sensor_GetValue(1);
  232              		.loc 1 93 40 is_stmt 0 view .LVU76
- 233 00ea 0220     		movs	r0, #2
- 234 00ec FFF7FEFF 		bl	Sensor_GetValue
+ 233 00ec 0220     		movs	r0, #2
+ 234 00ee FFF7FEFF 		bl	Sensor_GetValue
  235              	.LVL23:
- 236 00f0 07EE900A 		vmov	s15, r0	@ int
+ 236 00f2 07EE900A 		vmov	s15, r0	@ int
   93:Src/module_test.c **** 			log_store[i].side_sensor_l = (float)Sensor_GetValue(1);
  237              		.loc 1 93 33 view .LVU77
- 238 00f4 F8EEE77A 		vcvt.f32.s32	s15, s15
+ 238 00f6 F8EEE77A 		vcvt.f32.s32	s15, s15
   93:Src/module_test.c **** 			log_store[i].side_sensor_l = (float)Sensor_GetValue(1);
-ARM GAS  C:\Temp\ccKMG3lH.s 			page 8
+ARM GAS  C:\Temp\ccaPg5xk.s 			page 8
 
 
  239              		.loc 1 93 31 view .LVU78
- 240 00f8 C4ED127A 		vstr.32	s15, [r4, #72]
+ 240 00fa C4ED127A 		vstr.32	s15, [r4, #72]
   94:Src/module_test.c **** 			log_store[i].front_r = (float)SensorValue2length(3);
  241              		.loc 1 94 4 is_stmt 1 view .LVU79
   94:Src/module_test.c **** 			log_store[i].front_r = (float)SensorValue2length(3);
  242              		.loc 1 94 40 is_stmt 0 view .LVU80
- 243 00fc 0120     		movs	r0, #1
- 244 00fe FFF7FEFF 		bl	Sensor_GetValue
+ 243 00fe 0120     		movs	r0, #1
+ 244 0100 FFF7FEFF 		bl	Sensor_GetValue
  245              	.LVL24:
- 246 0102 07EE900A 		vmov	s15, r0	@ int
+ 246 0104 07EE900A 		vmov	s15, r0	@ int
   94:Src/module_test.c **** 			log_store[i].front_r = (float)SensorValue2length(3);
  247              		.loc 1 94 33 view .LVU81
- 248 0106 F8EEE77A 		vcvt.f32.s32	s15, s15
+ 248 0108 F8EEE77A 		vcvt.f32.s32	s15, s15
   94:Src/module_test.c **** 			log_store[i].front_r = (float)SensorValue2length(3);
  249              		.loc 1 94 31 view .LVU82
- 250 010a C4ED137A 		vstr.32	s15, [r4, #76]
+ 250 010c C4ED137A 		vstr.32	s15, [r4, #76]
   95:Src/module_test.c **** 			log_store[i].front_l = (float)SensorValue2length(0);
  251              		.loc 1 95 4 is_stmt 1 view .LVU83
   95:Src/module_test.c **** 			log_store[i].front_l = (float)SensorValue2length(0);
  252              		.loc 1 95 34 is_stmt 0 view .LVU84
- 253 010e 0320     		movs	r0, #3
- 254 0110 FFF7FEFF 		bl	SensorValue2length
+ 253 0110 0320     		movs	r0, #3
+ 254 0112 FFF7FEFF 		bl	SensorValue2length
  255              	.LVL25:
- 256 0114 51EC100B 		vmov	r0, r1, d0
+ 256 0116 51EC100B 		vmov	r0, r1, d0
   95:Src/module_test.c **** 			log_store[i].front_l = (float)SensorValue2length(0);
  257              		.loc 1 95 27 view .LVU85
- 258 0118 FFF7FEFF 		bl	__aeabi_d2f
+ 258 011a FFF7FEFF 		bl	__aeabi_d2f
  259              	.LVL26:
   95:Src/module_test.c **** 			log_store[i].front_l = (float)SensorValue2length(0);
  260              		.loc 1 95 25 view .LVU86
- 261 011c 2065     		str	r0, [r4, #80]	@ float
+ 261 011e 2065     		str	r0, [r4, #80]	@ float
   96:Src/module_test.c **** 			log_store[i].V_battery =(float) Battery_GetVoltage();
  262              		.loc 1 96 4 is_stmt 1 view .LVU87
   96:Src/module_test.c **** 			log_store[i].V_battery =(float) Battery_GetVoltage();
  263              		.loc 1 96 34 is_stmt 0 view .LVU88
- 264 011e 0020     		movs	r0, #0
- 265 0120 FFF7FEFF 		bl	SensorValue2length
+ 264 0120 0020     		movs	r0, #0
+ 265 0122 FFF7FEFF 		bl	SensorValue2length
  266              	.LVL27:
- 267 0124 51EC100B 		vmov	r0, r1, d0
+ 267 0126 51EC100B 		vmov	r0, r1, d0
   96:Src/module_test.c **** 			log_store[i].V_battery =(float) Battery_GetVoltage();
  268              		.loc 1 96 27 view .LVU89
- 269 0128 FFF7FEFF 		bl	__aeabi_d2f
+ 269 012a FFF7FEFF 		bl	__aeabi_d2f
  270              	.LVL28:
   96:Src/module_test.c **** 			log_store[i].V_battery =(float) Battery_GetVoltage();
  271              		.loc 1 96 25 view .LVU90
- 272 012c 6065     		str	r0, [r4, #84]	@ float
+ 272 012e 6065     		str	r0, [r4, #84]	@ float
   97:Src/module_test.c **** 		}
  273              		.loc 1 97 4 is_stmt 1 view .LVU91
   97:Src/module_test.c **** 		}
  274              		.loc 1 97 28 is_stmt 0 view .LVU92
- 275 012e FFF7FEFF 		bl	Battery_GetVoltage
+ 275 0130 FFF7FEFF 		bl	Battery_GetVoltage
  276              	.LVL29:
   97:Src/module_test.c **** 		}
  277              		.loc 1 97 27 view .LVU93
- 278 0132 84ED160A 		vstr.32	s0, [r4, #88]
- 279 0136 73E7     		b	.L6
+ 278 0134 84ED160A 		vstr.32	s0, [r4, #88]
+ 279 0138 73E7     		b	.L6
  280              	.L10:
-ARM GAS  C:\Temp\ccKMG3lH.s 			page 9
+ARM GAS  C:\Temp\ccaPg5xk.s 			page 9
 
 
- 281              		.align	2
+ 281 013a 00BF     		.align	2
  282              	.L9:
- 283 0138 00000000 		.word	.LANCHOR0
- 284 013c CDCCCCCC 		.word	-858993459
- 285 0140 00000000 		.word	log_store
+ 283 013c 00000000 		.word	.LANCHOR0
+ 284 0140 CDCCCCCC 		.word	-858993459
+ 285 0144 00000000 		.word	log_store
  286              		.cfi_endproc
  287              	.LFE134:
  289              		.section	.rodata.data_read.str1.4,"aMS",%progbits,1
@@ -538,7 +538,7 @@ ARM GAS  C:\Temp\ccKMG3lH.s 			page 1
  308 0150 0D00     		.ascii	"\015\000"
  309              		.section	.text.data_read,"ax",%progbits
  310              		.align	1
-ARM GAS  C:\Temp\ccKMG3lH.s 			page 10
+ARM GAS  C:\Temp\ccaPg5xk.s 			page 10
 
 
  311              		.global	data_read
@@ -598,7 +598,7 @@ ARM GAS  C:\Temp\ccKMG3lH.s 			page 1
  345 000a B6F57A7F 		cmp	r6, #1000
  346 000e 80F0C380 		bcs	.L15
  123:Src/module_test.c **** 	{
-ARM GAS  C:\Temp\ccKMG3lH.s 			page 11
+ARM GAS  C:\Temp\ccaPg5xk.s 			page 11
 
 
  124:Src/module_test.c **** 		printf("%f,",log_store[i].time);
@@ -658,7 +658,7 @@ ARM GAS  C:\Temp\ccKMG3lH.s 			page 1
  396 0068 FFF7FEFF 		bl	printf
  397              	.LVL42:
  129:Src/module_test.c **** 		printf("%f,",log_store[i].speed_m);
-ARM GAS  C:\Temp\ccKMG3lH.s 			page 12
+ARM GAS  C:\Temp\ccaPg5xk.s 			page 12
 
 
  398              		.loc 1 129 3 discriminator 3 view .LVU110
@@ -718,7 +718,7 @@ ARM GAS  C:\Temp\ccKMG3lH.s 			page 1
  447 00c2 0246     		mov	r2, r0
  448 00c4 0B46     		mov	r3, r1
  449 00c6 2846     		mov	r0, r5
-ARM GAS  C:\Temp\ccKMG3lH.s 			page 13
+ARM GAS  C:\Temp\ccaPg5xk.s 			page 13
 
 
  450 00c8 FFF7FEFF 		bl	printf
@@ -778,7 +778,7 @@ ARM GAS  C:\Temp\ccKMG3lH.s 			page 1
  498 011c 206C     		ldr	r0, [r4, #64]	@ float
  499 011e FFF7FEFF 		bl	__aeabi_f2d
  500              	.LVL65:
-ARM GAS  C:\Temp\ccKMG3lH.s 			page 14
+ARM GAS  C:\Temp\ccaPg5xk.s 			page 14
 
 
  501 0122 0246     		mov	r2, r0
@@ -838,7 +838,7 @@ ARM GAS  C:\Temp\ccKMG3lH.s 			page 1
  550              	.LVL76:
  146:Src/module_test.c **** 		printf("%f",log_store[i].V_battery);			//m 最後はカンマなし
  551              		.loc 1 146 3 discriminator 3 view .LVU127
-ARM GAS  C:\Temp\ccKMG3lH.s 			page 15
+ARM GAS  C:\Temp\ccaPg5xk.s 			page 15
 
 
  552 017c A06D     		ldr	r0, [r4, #88]	@ float
@@ -898,7 +898,7 @@ ARM GAS  C:\Temp\ccKMG3lH.s 			page 1
  594              	.LC5:
  595 0018 3C496E74 		.ascii	"<Interrupt> %3.1f[%%] (MAX : %3.1f[%%])\015\012\000"
  595      65727275 
-ARM GAS  C:\Temp\ccKMG3lH.s 			page 16
+ARM GAS  C:\Temp\ccaPg5xk.s 			page 16
 
 
  595      70743E20 
@@ -958,7 +958,7 @@ ARM GAS  C:\Temp\ccKMG3lH.s 			page 1
  618              	.LC12:
  619 016c 3C494D55 		.ascii	"<IMU> Accel_X: %5.3f[m/s^2], Gyro_Z: %6.3f[rad/s]\015"
  619      3E204163 
-ARM GAS  C:\Temp\ccKMG3lH.s 			page 17
+ARM GAS  C:\Temp\ccaPg5xk.s 			page 17
 
 
  619      63656C5F 
@@ -1018,7 +1018,7 @@ ARM GAS  C:\Temp\ccKMG3lH.s 			page 1
  658              		.cfi_offset 14, -4
  659 0004 2DED028B 		vpush.64	{d8}
  660              	.LCFI3:
-ARM GAS  C:\Temp\ccKMG3lH.s 			page 18
+ARM GAS  C:\Temp\ccaPg5xk.s 			page 18
 
 
  661              		.cfi_def_cfa_offset 44
@@ -1078,7 +1078,7 @@ ARM GAS  C:\Temp\ccKMG3lH.s 			page 1
  187:Src/module_test.c **** 		// aバッテリー電圧の表示
  188:Src/module_test.c **** 		printf("<Battery> %3.2f[V]\r\n", Battery_GetVoltage()); line++;
  189:Src/module_test.c **** 
-ARM GAS  C:\Temp\ccKMG3lH.s 			page 19
+ARM GAS  C:\Temp\ccaPg5xk.s 			page 19
 
 
  190:Src/module_test.c **** 		// a壁センサのAD値表示
@@ -1138,7 +1138,7 @@ ARM GAS  C:\Temp\ccKMG3lH.s 			page 1
  726 0062 A4B2     		uxth	r4, r4
  727              	.LVL93:
  205:Src/module_test.c **** 
-ARM GAS  C:\Temp\ccKMG3lH.s 			page 20
+ARM GAS  C:\Temp\ccaPg5xk.s 			page 20
 
 
  206:Src/module_test.c **** 		fflush(stdout);
@@ -1198,7 +1198,7 @@ ARM GAS  C:\Temp\ccKMG3lH.s 			page 1
  769              		.loc 1 173 12 is_stmt 0 view .LVU163
  770 009e FFF7FEFF 		bl	Interrupt_GetDuty
  771              	.LVL101:
-ARM GAS  C:\Temp\ccKMG3lH.s 			page 21
+ARM GAS  C:\Temp\ccaPg5xk.s 			page 21
 
 
  772 00a2 07EE900A 		vmov	s15, r0	@ int
@@ -1258,7 +1258,7 @@ ARM GAS  C:\Temp\ccKMG3lH.s 			page 1
  815              	.LVL107:
  816 00fe DFED69AA 		vldr.32	s21, .L33+44
  817 0102 C0EE2A8A 		vdiv.f32	s17, s0, s21
-ARM GAS  C:\Temp\ccKMG3lH.s 			page 22
+ARM GAS  C:\Temp\ccaPg5xk.s 			page 22
 
 
  818 0106 9FED68AA 		vldr.32	s20, .L33+48
@@ -1318,7 +1318,7 @@ ARM GAS  C:\Temp\ccKMG3lH.s 			page 1
  185:Src/module_test.c **** 
  865              		.loc 1 185 39 is_stmt 1 view .LVU182
  188:Src/module_test.c **** 
-ARM GAS  C:\Temp\ccKMG3lH.s 			page 23
+ARM GAS  C:\Temp\ccaPg5xk.s 			page 23
 
 
  866              		.loc 1 188 3 view .LVU183
@@ -1378,7 +1378,7 @@ ARM GAS  C:\Temp\ccKMG3lH.s 			page 1
  909              		.loc 1 193 3 view .LVU194
  910 01ac FFF7FEFF 		bl	Sensor_DebugPrintf
  911              	.LVL125:
-ARM GAS  C:\Temp\ccKMG3lH.s 			page 24
+ARM GAS  C:\Temp\ccaPg5xk.s 			page 24
 
 
  193:Src/module_test.c **** 
@@ -1438,7 +1438,7 @@ ARM GAS  C:\Temp\ccKMG3lH.s 			page 1
  956 01fe FFF7FEFF 		bl	SensorValue2length
  957              	.LVL134:
  958 0202 53EC102B 		vmov	r2, r3, d0
-ARM GAS  C:\Temp\ccKMG3lH.s 			page 25
+ARM GAS  C:\Temp\ccaPg5xk.s 			page 25
 
 
  959 0206 1CA1     		adr	r1, .L33
@@ -1498,7 +1498,7 @@ ARM GAS  C:\Temp\ccKMG3lH.s 			page 1
  1006 0268 FFF7FEFF 		bl	__aeabi_dsub
  1007              	.LVL143:
  1008 026c 8046     		mov	r8, r0
-ARM GAS  C:\Temp\ccKMG3lH.s 			page 26
+ARM GAS  C:\Temp\ccaPg5xk.s 			page 26
 
 
  1009 026e 8946     		mov	r9, r1
@@ -1558,7 +1558,7 @@ ARM GAS  C:\Temp\ccKMG3lH.s 			page 1
  1063              		.file 14 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h"
  1064              		.file 15 "Inc/interrupt.h"
  1065              		.file 16 "Inc/mouse_state.h"
-ARM GAS  C:\Temp\ccKMG3lH.s 			page 27
+ARM GAS  C:\Temp\ccaPg5xk.s 			page 27
 
 
  1066              		.file 17 "Inc/imu.h"
@@ -1566,29 +1566,29 @@ ARM GAS  C:\Temp\ccKMG3lH.s 			page 1
  1068              		.file 19 "Inc/target.h"
  1069              		.file 20 "Inc/exvol.h"
  1070              		.file 21 "<built-in>"
-ARM GAS  C:\Temp\ccKMG3lH.s 			page 28
+ARM GAS  C:\Temp\ccaPg5xk.s 			page 28
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 module_test.c
-  C:\Temp\ccKMG3lH.s:18     .text.log_init:00000000 $t
-  C:\Temp\ccKMG3lH.s:26     .text.log_init:00000000 log_init
-  C:\Temp\ccKMG3lH.s:44     .text.log_init:00000008 $d
-  C:\Temp\ccKMG3lH.s:50     .text.data_get:00000000 $t
-  C:\Temp\ccKMG3lH.s:57     .text.data_get:00000000 data_get
-  C:\Temp\ccKMG3lH.s:283    .text.data_get:00000138 $d
-  C:\Temp\ccKMG3lH.s:1047   .bss.log_store:00000000 log_store
-  C:\Temp\ccKMG3lH.s:290    .rodata.data_read.str1.4:00000000 $d
-  C:\Temp\ccKMG3lH.s:310    .text.data_read:00000000 $t
-  C:\Temp\ccKMG3lH.s:317    .text.data_read:00000000 data_read
-  C:\Temp\ccKMG3lH.s:581    .text.data_read:0000019c $d
-  C:\Temp\ccKMG3lH.s:590    .rodata.module_test.str1.4:00000000 $d
-  C:\Temp\ccKMG3lH.s:634    .text.module_test:00000000 $t
-  C:\Temp\ccKMG3lH.s:641    .text.module_test:00000000 module_test
-  C:\Temp\ccKMG3lH.s:1014   .text.module_test:00000278 $d
-  C:\Temp\ccKMG3lH.s:1037   .bss.log_counter:00000000 $d
-  C:\Temp\ccKMG3lH.s:1041   .bss.log_counter:00000000 log_counter
-  C:\Temp\ccKMG3lH.s:1044   .bss.log_store:00000000 $d
+  C:\Temp\ccaPg5xk.s:18     .text.log_init:00000000 $t
+  C:\Temp\ccaPg5xk.s:26     .text.log_init:00000000 log_init
+  C:\Temp\ccaPg5xk.s:44     .text.log_init:00000008 $d
+  C:\Temp\ccaPg5xk.s:50     .text.data_get:00000000 $t
+  C:\Temp\ccaPg5xk.s:57     .text.data_get:00000000 data_get
+  C:\Temp\ccaPg5xk.s:283    .text.data_get:0000013c $d
+  C:\Temp\ccaPg5xk.s:1047   .bss.log_store:00000000 log_store
+  C:\Temp\ccaPg5xk.s:290    .rodata.data_read.str1.4:00000000 $d
+  C:\Temp\ccaPg5xk.s:310    .text.data_read:00000000 $t
+  C:\Temp\ccaPg5xk.s:317    .text.data_read:00000000 data_read
+  C:\Temp\ccaPg5xk.s:581    .text.data_read:0000019c $d
+  C:\Temp\ccaPg5xk.s:590    .rodata.module_test.str1.4:00000000 $d
+  C:\Temp\ccaPg5xk.s:634    .text.module_test:00000000 $t
+  C:\Temp\ccaPg5xk.s:641    .text.module_test:00000000 module_test
+  C:\Temp\ccaPg5xk.s:1014   .text.module_test:00000278 $d
+  C:\Temp\ccaPg5xk.s:1037   .bss.log_counter:00000000 $d
+  C:\Temp\ccaPg5xk.s:1041   .bss.log_counter:00000000 log_counter
+  C:\Temp\ccaPg5xk.s:1044   .bss.log_store:00000000 $d
 
 UNDEFINED SYMBOLS
 __aeabi_d2f
@@ -1626,7 +1626,7 @@ Encoder_GetAngle_Left
 Encoder_GetAngle_Right
 IMU_GetGyro_Z
 Sensor_DebugPrintf
-ARM GAS  C:\Temp\ccKMG3lH.s 			page 29
+ARM GAS  C:\Temp\ccaPg5xk.s 			page 29
 
 
 _impure_ptr
