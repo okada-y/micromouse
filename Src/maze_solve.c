@@ -1380,8 +1380,8 @@ static void search_adachi(const coder_internal_ref_2 *wall, const
   int i10;
   unsigned char k;
   int b_k;
-  int i11;
-  int i12;
+static  int i11;
+static  int i12;
   int c_k;
   int d_k;
   int e_k;
@@ -1424,8 +1424,8 @@ static void search_adachi(const coder_internal_ref_2 *wall, const
     exitg1 = 0;
 
     /* 壁情報取得 */
-    if (goal_after_flg == other)//ゴール直後は壁情報を更新しない。
-    {
+      if (goal_after_flg == other)//ゴール直後は壁情報を更新しない。
+      {
       /* matlab上では画像から取得した壁情報を参照する。 */
       /* 入力:画像から得た迷路情報,迷路行方向壁枚数,迷路列方向壁枚数,  */
       /*      現在地座標x,y,現在進行方向,迷路壁情報,迷路壁探索情報             */
@@ -1514,7 +1514,7 @@ static void search_adachi(const coder_internal_ref_2 *wall, const
       if ((unsigned int)i10 > 255U) {
         i10 = 255;
       }
-
+      
       serch_write[i10 % 4] = search->contents.known;
 
       /* ここまで */
@@ -1937,8 +1937,9 @@ static void search_adachi(const coder_internal_ref_2 *wall, const
             char)i10);
       }
   }
+  goal_after_flg = other; //ゴール直後フラグを直後以外に
 
-    /* m現在位置がゴールか判定 */
+    /* 現在位置がゴールか判定 */
     for (q0 = 0; q0 < i9; q0++) {
       if ((*current_x == maze_goal[q0]) && (*current_y == maze_goal[q0 + 9])) {
         goal_flag = 1U;
@@ -1948,6 +1949,14 @@ static void search_adachi(const coder_internal_ref_2 *wall, const
     if (goal_flag == 1) {
       exitg1 = 1;
       half_deceleration();
+
+      //ゴール時LEDを一回点滅
+      Sensor_StopADC();
+      HAL_GPIO_WritePin(GPIOA,LED2_Pin|LED3_Pin|LED4_Pin|LED5_Pin, GPIO_PIN_SET);
+      HAL_Delay(700);
+      HAL_GPIO_WritePin(GPIOA,LED2_Pin|LED3_Pin|LED4_Pin|LED5_Pin, GPIO_PIN_RESET);
+      HAL_Delay(300);
+      Sensor_Initialize();
 
 
     } else {
@@ -2355,6 +2364,8 @@ static void search_adachi(const coder_internal_ref_2 *wall, const
 
         /* disp("left") */
         break;
+        
+
       }
 
       /* for code generation */
@@ -2466,6 +2477,7 @@ void maze_solve(unsigned char maze_wall[1024], unsigned char maze_wall_search
 
       if (search_flag == 1) {
     	clr_run_first_flg(); //走行開始フラグのクリア
+      goal_after_flg = immediately_after;
         search_adachi(&wall, &search, &g_direction, &l_direction,
                       &current_x.contents, &current_y.contents,
                       &current_dir.contents, maze_row_size, maze_col_size,
@@ -2476,11 +2488,12 @@ void maze_solve(unsigned char maze_wall[1024], unsigned char maze_wall_search
     } while (exitg1 == 0);
 
     HAL_Delay(1000);
-
+    
     /* スタートを目的地として足立法で再探索 */
     new_goal[0] = 1U;
     new_goal[9] = 1U;
     clr_run_first_flg(); //走行開始フラグのクリア
+    goal_after_flg = immediately_after;
     search_adachi(&wall, &search, &g_direction, &l_direction,
                   &current_x.contents, &current_y.contents,
                   &current_dir.contents, maze_row_size, maze_col_size, maze_wall,
