@@ -21,6 +21,9 @@ static float target_vol_l_frontwall = 0;		//前壁制御による左モータ印
 
 static uint16_t fornt_wall_calibrate_tim = 0;  	//前壁補正用カウンタ
 
+static double target_sensor_sl = 0;				//左壁距離目標値[m]
+static double target_sensor_sr = 0;				//右壁距離目標値[m]
+
 //機能	: adjust.cの1msタスクまとめ
 //引数	: なし
 //返り値	: なし
@@ -30,6 +33,47 @@ void adjust_1ms (void)
 	calibrate_tim();				//前壁制御用タイマ
 }
 
+
+//機能	: 壁トレースの目標距離をセットする
+//引数	: なし 
+//返り値	: なし
+//備考	:初期位置の壁距離を目標位置とする。
+void set_target_side_sensor(void)
+{
+	if((target_sensor_sl == 0) && (target_sensor_sr == 0))
+	{
+		target_sensor_sl = SensorValue2length(1);
+		target_sensor_sr = SensorValue2length(2);	
+	}
+}
+
+//機能	: 横壁制御におけるモータ印加電圧を決定する
+//引数	: なし
+//返り値	: なし
+//備考 	:1msタスク
+void calc_motor_vol_side_wall ( void )
+{
+	double side_sensor_r = 0; 				//右前センサ値
+    double side_sensor_l = 0; 				//左前センサ値
+    double side_sensor_r_err = 0;   		//右前センサの偏差
+    double side_sensor_l_err = 0;			//左前センサの偏差
+    double side_sensor_y_err = 0;			//壁中央からの差
+    double side_sensor_rotate_err_P = 0;   //偏差差のP項
+    double side_sensor_rotate_err_D = 0;   //偏差差のD項
+    double side_sensor_rotate_PD = 0;   	//PDコントローラの出力
+
+	//センサ値取得
+	side_sensor_l = SensorValue2length(1);
+	side_sensor_r = SensorValue2length(2);
+
+	//取得結果に応じて、壁の有無を判定、処理を変えること。
+	//偏差取得
+	side_sensor_l_err = target_sensor_sl - side_sensor_l;
+	side_sensor_r_err = target_sensor_sr - side_sensor_r;
+
+	//偏差変換
+
+}
 
 //機能	: 前壁制御におけるモータ印加電圧を計算する。
 //引数	: なし

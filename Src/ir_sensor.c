@@ -182,7 +182,7 @@ double SensorValue2length( uint8_t dir )
 	double b = 0;
 
 	//前センサ
-	if (dir == 0 || dir == 3)
+	if ((dir == 0) || (dir == 3))
 	{
 		if(sensor_tmp <= 100){
 			length_tmp = 0.09;
@@ -203,7 +203,7 @@ double SensorValue2length( uint8_t dir )
 		}
 	}
 	//横センサ	
-	else if(dir == 1 || dir == 2){
+	else if((dir == 1) || (dir == 2)){
 		if(sensor_tmp <= 100){
 			length_tmp = 0.045;
 		}
@@ -223,7 +223,7 @@ double SensorValue2length( uint8_t dir )
 	}
 
 	return length_tmp;
-	
+
 }
 
 
