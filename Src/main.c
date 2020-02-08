@@ -72,16 +72,6 @@ typedef enum {
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-/*迷路パラメータ設定*/
-uint8_t maze_x_size = 8;//x方向の壁の枚数(x方向のマスの数+1)
-uint8_t maze_y_size = 17;//y方向の壁の枚数(y方向のマスの数+1)
-uint8_t goal_size = 4; //m ゴールのマスの数
-uint8_t maze_goal[18] = {2, 2, 3, 3, 0, 0, 0, 0, 0,    	 //mゴールのx座標
-		  	  	  	  	 1, 2, 1, 2, 0, 0, 0, 0, 0};	 //mゴールのy座標
-uint8_t m_wall_tmp[1024];//迷路情報格納用配列
-uint8_t m_search_tmp[1024];//探索情報格納用配列
-
-uint8_t run_mode = search_mode;
 
 /* USER CODE END PV */
 
@@ -104,6 +94,14 @@ void SystemClock_Config(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
+  /*迷路変数定義*/
+  static uint8_t maze_x_size = x_size;//x方向の壁の枚数(x方向のマスの数+1)
+  static uint8_t maze_y_size = y_size;//y方向の壁の枚数(y方向のマスの数+1)
+  static uint8_t goal_size = g_size; //ゴールのマスの数
+  static uint8_t maze_goal[18] = goal_cordinate;
+  static uint8_t m_wall_tmp[1024];//迷路情報格納用配列
+  static uint8_t m_search_tmp[1024];//探索情報格納用配列
+  static uint8_t run_mode = search_mode;
 
   /* USER CODE END 1 */
   
@@ -180,14 +178,18 @@ int main(void)
 		  break;
 
 	  case 3:
+
       fornt_wall_calibrate();
 		  break;
 
 	  case 4:
-      
+      HAL_Delay(5000);
 		  break;
 
 	  case 5:
+      set_mode_ctrl(trace);
+      set_accel_mode(deceleration);
+      turn_conclk_180();
 		  break;
 
 	  case 6:

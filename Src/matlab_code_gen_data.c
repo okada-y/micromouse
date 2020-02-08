@@ -12,14 +12,15 @@
 #include "maze_init.h"
 #include "maze_solve.h"
 #include "matlab_code_gen_data.h"
+#include "param.h"
 
 /* Variable Definitions */
 short wall_sensor_front = 0;
-short wall_sensor_front_th = 20;
+short wall_sensor_front_th = front_th;
 short wall_sensor_right = 0;
-short wall_sensor_right_th = 20;
+short wall_sensor_right_th = right_th;
 short wall_sensor_left = 0;
-short wall_sensor_left_th = 20;
+short wall_sensor_left_th = left_th;
 
 /*
  * File trailer for matlab_code_gen_data.c
