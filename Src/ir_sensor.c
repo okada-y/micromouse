@@ -176,44 +176,54 @@ int16_t Sensor_GetValue( uint8_t dir )
 --------------------------------------------------------------- */
 double SensorValue2length( uint8_t dir )
 {
+	double length_tmp = 0;
+	double sensor_tmp = (double)Sensor_GetValue(dir);
+	double a = 0;
+	double b = 0;
 
-double length_tmp = 0;
-double sensor_tmp = (double)Sensor_GetValue(dir);
+	//前センサ
+	if (dir == 0 || dir == 3)
+	{
+		if(sensor_tmp <= 100){
+			length_tmp = 0.09;
+		}
+		else{
+			//左前
+			if(dir == 0){
+				a = 0.7;
+				b = 0.0847;
+			}
+			//右前
+			if(dir == 3){
+				a = 0.7;
+				b = 0.082;
+				}
+			//線形近似　a/ln(AD) -b
+			length_tmp = a / log(sensor_tmp) - b ;
+		}
+	}
+	//横センサ	
+	else if(dir == 1 || dir == 2){
+		if(sensor_tmp <= 100){
+			length_tmp = 0.045;
+		}
+		else{
+			a = 0.027;
+			b = 0.015;
+			//線形近似　0.09-(a*ln(AD)-b)
+			length_tmp = 0.09-(a*log(sensor_tmp)-b);
+		}		
 
-//m線形近似　a*ln(AD) -b
-double a = 0;
-double b = 0;
-
-if(sensor_tmp <= 100){
-	return 0.09;
-}
-
-else{
-
-	//m 左前
-	if(dir == 0){
-		a = 0.7;
-		b = 0.0847;
 	}
 
-	//m 右前
-	if(dir == 3){
-		a = 0.7;
-		b = 0.082;
-		}
-
-	length_tmp = a / log(sensor_tmp) - b ;
-
-	if(length_tmp < 0) //mリミット処理
+	//リミット処理
+	if(length_tmp < 0) 
 	{
 		length_tmp = 0;
 	}
 
 	return length_tmp;
-
-
-}
-
+	
 }
 
 
