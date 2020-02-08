@@ -157,7 +157,7 @@ void turn_conclk_90 (void)
 void turn_conclk_180 (void)
 {
 	/*回転方向設定*/
-	set_target_angle(counter_clockwise);
+	set_rotation_mode(counter_clockwise);
     set_target_angle(PI);
 
     /*180度回転するまで待機*/
@@ -312,11 +312,14 @@ void move_back (void)
 					fornt_wall_calibrate();
 					turn_conclk_90();
 			}
+			else {
+				turn_conclk_180();	//反時計回りに180度回転
+			}
 		}
 		else{
-			turn_conclk_180();	//m反時計回りに180度回転
+			turn_conclk_180();	//反時計回りに180度回転
 		}
-		half_acceleration();//m半区画加速
+		half_acceleration();//半区画加速
 	}
 	if(run_first_flg == already){
 		half_deceleration();//m半区画減速で中央に停止
@@ -328,15 +331,18 @@ void move_back (void)
 				turn_clk_90();
 			}
 			else if(left_wall_flg == wall){
-					turn_conclk_90();
-					fornt_wall_calibrate();
-					turn_conclk_90();
+				turn_conclk_90();
+				fornt_wall_calibrate();
+				turn_conclk_90();
+			}
+			else {
+				turn_conclk_180();	//反時計回りに180度回転
 			}
 		}
 		else{
 			turn_conclk_180();	//m反時計回りに180度回転
 		}
-		half_acceleration();//m半区画加速
+		half_acceleration();//半区画加速
 	}
 	run_first_flg = already;
 	clr_wall_flg();
