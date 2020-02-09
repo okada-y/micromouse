@@ -25,8 +25,8 @@
 //           パラメータ             //
 /////////////////////////////////////
 /*module_test*/
-#define log_count_lim		(10000)	//データ取得する期間[ms]
-#define log_count_step		(10)	//データを取得する時間間隔[ms]
+#define log_count_lim		(5000)	//データ取得する期間[ms]
+#define log_count_step		(5)	//データを取得する時間間隔[ms]
 
 //maze
 #define x_size              (5)     //x軸方向の壁(縦壁)の枚数+1
@@ -80,6 +80,10 @@
 #define front_sensor_rotate_fil	(44.5570260812328f)	//前壁角度フィルタ係数
 #define front_sensor_th     	(0.0003)			//前壁補正時の補正閾値(0.3mm)
 #define calib_tim               (100)				//前壁補正時間(100ms)
+
+#define side_sensor_th          (100)               //横壁センサ値の閾値
+#define side_sensor_th_add      (300)               //横壁センサ値の閾値変化量
+#define side_sensor_diff_th     (2)                 //横壁センサ変化量の閾値
 
 //imu
 #define REFFERENCE_NUM		(1000)		//何回の平均をもってジャイロのリファレンス電圧とするか

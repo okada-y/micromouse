@@ -45,6 +45,8 @@ typedef struct {	//データ格納用構造体の定義（最大２０個とす�
 	float   side_sensor_l;		//左横壁センサ値
 	float   front_r;			//壁との距離（右前センサ）(m)
 	float   front_l;			//壁との距離（左前センサ）(m)）
+	float   side_r;				//壁との距離（右前センサ）(m)
+	float   side_l;				//壁との距離（左前センサ）(m)）
 	float 	V_battery;			//バッテリー電圧
 } log_struct;
 
@@ -94,6 +96,8 @@ void data_get (void)
 			log_store[i].side_sensor_l = (float)Sensor_GetValue(1);
 			log_store[i].front_r = (float)SensorValue2length(3);
 			log_store[i].front_l = (float)SensorValue2length(0);
+			log_store[i].side_r = (float)SensorValue2length(2);
+			log_store[i].side_l = (float)SensorValue2length(1);
 			log_store[i].V_battery =(float) Battery_GetVoltage();
 		}
 		log_counter += 1; //logカウンタ更新
@@ -117,7 +121,7 @@ void data_read(void)
 //	printf ("TIME[ms],target_distance[m],ideal_distance[m],current_distance[m],TARGET_SPEED_m[m/s],SPEED_m[m/s],SPEED_m_ave[m/s],accel_m[m/s2],accel_m_ave[m/s2],current_angle[rad],DUTY_R[%%],Duty_L[%%],V_battery[V]\r\n");	//mパラメータ名を記述
 	printf ("TIME[ms],target_distance[m],ideal_distance[m],current_distance[m],TARGET_SPEED_m[m/s],SPEED_m[m/s],SPEED_m_ave[m/s],"
 			"accel_m[m/s2],accel_m_ave[m/s2],target_angle[rad],ideal_angle[rad],current_angle[rad],target_speed_w[rad/s],"
-			"speed_w[rad/s],DUTY_R[%%],Duty_L[%%],front_r,front_l,side_r,side_l,front_r[m],front_l[m],V_battery[V]\r\n");	//mパラメータ名を記述
+			"speed_w[rad/s],DUTY_R[%%],Duty_L[%%],front_r,front_l,side_r,side_l,front_r[m],front_l[m],side_r[m],side_l[m],V_battery[V]\r\n");	//パラメータ名を記述
 
 	for(i = 0; i <= j ; i++)
 	{
@@ -143,6 +147,8 @@ void data_read(void)
 		printf("%f,",log_store[i].side_sensor_l);
 		printf("%f,",log_store[i].front_r);
 		printf("%f,",log_store[i].front_l);
+		printf("%f,",log_store[i].side_r);
+		printf("%f,",log_store[i].side_l);
 		printf("%f",log_store[i].V_battery);			//m 最後はカンマなし
 		printf("\r\n"); //m 改行
 

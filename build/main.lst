@@ -1,4 +1,4 @@
-ARM GAS  C:\Temp\ccbXfhwN.s 			page 1
+ARM GAS  C:\Temp\ccMLFoeE.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,7 +58,7 @@ ARM GAS  C:\Temp\ccbXfhwN.s 			page 1
   28:Src/main.c    **** #include "gpio.h"
   29:Src/main.c    **** 
   30:Src/main.c    **** /* Private includes ----------------------------------------------------------*/
-ARM GAS  C:\Temp\ccbXfhwN.s 			page 2
+ARM GAS  C:\Temp\ccMLFoeE.s 			page 2
 
 
   31:Src/main.c    **** /* USER CODE BEGIN Includes */
@@ -118,7 +118,7 @@ ARM GAS  C:\Temp\ccbXfhwN.s 			page 1
   85:Src/main.c    **** /* USER CODE BEGIN 0 */
   86:Src/main.c    **** 
   87:Src/main.c    **** 
-ARM GAS  C:\Temp\ccbXfhwN.s 			page 3
+ARM GAS  C:\Temp\ccMLFoeE.s 			page 3
 
 
   88:Src/main.c    **** /* USER CODE END 0 */
@@ -178,7 +178,7 @@ ARM GAS  C:\Temp\ccbXfhwN.s 			page 1
  142:Src/main.c    ****   Encoder_Initialize();			/*Encoderタイマ設定、位相初期化*/
  143:Src/main.c    ****   Interrupt_Initialize( );		/*interrupt処理用タイマ(TIM6)初期化*/
  144:Src/main.c    ****   //Battery_LimiterVoltage();		/*a バッテリー下限処理*/
-ARM GAS  C:\Temp\ccbXfhwN.s 			page 4
+ARM GAS  C:\Temp\ccMLFoeE.s 			page 4
 
 
  145:Src/main.c    **** 
@@ -204,8 +204,8 @@ ARM GAS  C:\Temp\ccbXfhwN.s 			page 1
  165:Src/main.c    ****        log_init();
  166:Src/main.c    **** 	     set_mode_ctrl(trace);
  167:Src/main.c    ****        set_accel_mode(deceleration);
- 168:Src/main.c    ****        set_target_length(0.09);
- 169:Src/main.c    ****        HAL_Delay(3000);
+ 168:Src/main.c    ****        set_target_length(0.63);
+ 169:Src/main.c    ****        HAL_Delay(5000);
  170:Src/main.c    **** 		  break;
  171:Src/main.c    **** 
  172:Src/main.c    **** 	  case 2:
@@ -238,7 +238,7 @@ ARM GAS  C:\Temp\ccbXfhwN.s 			page 1
  199:Src/main.c    ****       module_test();
  200:Src/main.c    **** 		  break;
  201:Src/main.c    **** 
-ARM GAS  C:\Temp\ccbXfhwN.s 			page 5
+ARM GAS  C:\Temp\ccMLFoeE.s 			page 5
 
 
  202:Src/main.c    **** 	  /*最短走行*/
@@ -298,7 +298,7 @@ ARM GAS  C:\Temp\ccbXfhwN.s 			page 1
   43              		.loc 1 241 22 is_stmt 0 view .LVU2
   44 0004 3422     		movs	r2, #52
   45 0006 0021     		movs	r1, #0
-ARM GAS  C:\Temp\ccbXfhwN.s 			page 6
+ARM GAS  C:\Temp\ccMLFoeE.s 			page 6
 
 
   46 0008 07A8     		add	r0, sp, #28
@@ -358,7 +358,7 @@ ARM GAS  C:\Temp\ccbXfhwN.s 			page 1
   91              		.loc 1 250 3 view .LVU17
   92              		.loc 1 250 36 is_stmt 0 view .LVU18
   93 0046 0225     		movs	r5, #2
-ARM GAS  C:\Temp\ccbXfhwN.s 			page 7
+ARM GAS  C:\Temp\ccMLFoeE.s 			page 7
 
 
   94 0048 0795     		str	r5, [sp, #28]
@@ -418,7 +418,7 @@ ARM GAS  C:\Temp\ccbXfhwN.s 			page 1
  132 0068 0F23     		movs	r3, #15
  133 006a 0293     		str	r3, [sp, #8]
  267:Src/main.c    ****                               |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
-ARM GAS  C:\Temp\ccbXfhwN.s 			page 8
+ARM GAS  C:\Temp\ccMLFoeE.s 			page 8
 
 
  268:Src/main.c    ****   RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
@@ -478,7 +478,7 @@ ARM GAS  C:\Temp\ccbXfhwN.s 			page 1
  179              		@ args = 0, pretend = 0, frame = 0
  180              		@ frame_needed = 0, uses_anonymous_args = 0
  181 0000 30B5     		push	{r4, r5, lr}
-ARM GAS  C:\Temp\ccbXfhwN.s 			page 9
+ARM GAS  C:\Temp\ccMLFoeE.s 			page 9
 
 
  182              	.LCFI3:
@@ -538,7 +538,7 @@ ARM GAS  C:\Temp\ccbXfhwN.s 			page 1
  132:Src/main.c    ****   MX_TIM3_Init();
  221              		.loc 1 132 3 view .LVU68
  222 0024 FFF7FEFF 		bl	MX_TIM2_Init
-ARM GAS  C:\Temp\ccbXfhwN.s 			page 10
+ARM GAS  C:\Temp\ccMLFoeE.s 			page 10
 
 
  223              	.LVL11:
@@ -598,7 +598,7 @@ ARM GAS  C:\Temp\ccbXfhwN.s 			page 1
  264              	.LVL23:
  222:Src/main.c    **** 
  265              		.loc 1 222 4 view .LVU82
-ARM GAS  C:\Temp\ccbXfhwN.s 			page 11
+ARM GAS  C:\Temp\ccMLFoeE.s 			page 11
 
 
  266 005c 0020     		movs	r0, #0
@@ -629,19 +629,19 @@ ARM GAS  C:\Temp\ccbXfhwN.s 			page 1
  284 006a 0020     		movs	r0, #0
  285 006c FFF7FEFF 		bl	set_mode_ctrl
  286              	.LVL27:
- 167:Src/main.c    ****        set_target_length(0.09);
+ 167:Src/main.c    ****        set_target_length(0.63);
  287              		.loc 1 167 8 view .LVU90
  288 0070 0120     		movs	r0, #1
  289 0072 FFF7FEFF 		bl	set_accel_mode
  290              	.LVL28:
- 168:Src/main.c    ****        HAL_Delay(3000);
+ 168:Src/main.c    ****        HAL_Delay(5000);
  291              		.loc 1 168 8 view .LVU91
  292 0076 9FED420A 		vldr.32	s0, .L20
  293 007a FFF7FEFF 		bl	set_target_length
  294              	.LVL29:
  169:Src/main.c    **** 		  break;
  295              		.loc 1 169 8 view .LVU92
- 296 007e 40F6B830 		movw	r0, #3000
+ 296 007e 41F28830 		movw	r0, #5000
  297 0082 FFF7FEFF 		bl	HAL_Delay
  298              	.LVL30:
  170:Src/main.c    **** 
@@ -658,7 +658,7 @@ ARM GAS  C:\Temp\ccbXfhwN.s 			page 1
  307 008e 0020     		movs	r0, #0
  308 0090 FFF7FEFF 		bl	set_rotation_mode
  309              	.LVL32:
-ARM GAS  C:\Temp\ccbXfhwN.s 			page 12
+ARM GAS  C:\Temp\ccMLFoeE.s 			page 12
 
 
  175:Src/main.c    ****       set_target_angle(5*2*PI);
@@ -718,7 +718,7 @@ ARM GAS  C:\Temp\ccbXfhwN.s 			page 1
  199:Src/main.c    **** 		  break;
  352              		.loc 1 199 7 view .LVU108
  353 00ce FFF7FEFF 		bl	module_test
-ARM GAS  C:\Temp\ccbXfhwN.s 			page 13
+ARM GAS  C:\Temp\ccMLFoeE.s 			page 13
 
 
  354              	.LVL41:
@@ -778,7 +778,7 @@ ARM GAS  C:\Temp\ccbXfhwN.s 			page 1
  400 011a 2846     		mov	r0, r5
  401 011c FFF7FEFF 		bl	HAL_GPIO_WritePin
  402              	.LVL47:
-ARM GAS  C:\Temp\ccbXfhwN.s 			page 14
+ARM GAS  C:\Temp\ccMLFoeE.s 			page 14
 
 
  228:Src/main.c    **** 	  }
@@ -838,14 +838,14 @@ ARM GAS  C:\Temp\ccbXfhwN.s 			page 1
  447 0174 4F000000 		.word	.L6+1
  448 0178 4F000000 		.word	.L6+1
  449 017c D5000000 		.word	.L7+1
-ARM GAS  C:\Temp\ccbXfhwN.s 			page 15
+ARM GAS  C:\Temp\ccMLFoeE.s 			page 15
 
 
  450              		.p2align 1
  451              	.L21:
  452              		.align	2
  453              	.L20:
- 454 0180 EC51B83D 		.word	1035489772
+ 454 0180 AE47213F 		.word	1059145646
  455 0184 D053FB41 		.word	1106990032
  456 0188 00000000 		.word	.LANCHOR0
  457 018c 00000000 		.word	.LANCHOR1
@@ -887,31 +887,31 @@ ARM GAS  C:\Temp\ccbXfhwN.s 			page 1
  479 0000 7047     		bx	lr
  480              		.cfi_endproc
  481              	.LFE135:
- 483              		.section	.bss.m_search_tmp.10725,"aw",%nobits
+ 483              		.section	.bss.m_search_tmp.10729,"aw",%nobits
  484              		.align	2
  485              		.set	.LANCHOR0,. + 0
- 488              	m_search_tmp.10725:
+ 488              	m_search_tmp.10729:
  489 0000 00000000 		.space	1024
  489      00000000 
  489      00000000 
  489      00000000 
  489      00000000 
- 490              		.section	.bss.m_wall_tmp.10724,"aw",%nobits
+ 490              		.section	.bss.m_wall_tmp.10728,"aw",%nobits
  491              		.align	2
-ARM GAS  C:\Temp\ccbXfhwN.s 			page 16
+ARM GAS  C:\Temp\ccMLFoeE.s 			page 16
 
 
  492              		.set	.LANCHOR1,. + 0
- 495              	m_wall_tmp.10724:
+ 495              	m_wall_tmp.10728:
  496 0000 00000000 		.space	1024
  496      00000000 
  496      00000000 
  496      00000000 
  496      00000000 
- 497              		.section	.data.maze_goal.10723,"aw"
+ 497              		.section	.data.maze_goal.10727,"aw"
  498              		.align	2
  499              		.set	.LANCHOR2,. + 0
- 502              	maze_goal.10723:
+ 502              	maze_goal.10727:
  503 0000 02020203 		.ascii	"\002\002\002\003\003\003\004\004\004\001\002\003\001"
  503      03030404 
  503      04010203 
@@ -958,7 +958,7 @@ ARM GAS  C:\Temp\ccbXfhwN.s 			page 1
  542              		.file 37 "Inc/interrupt.h"
  543              		.file 38 "Inc/module_test.h"
  544              		.file 39 "Inc/mode.h"
-ARM GAS  C:\Temp\ccbXfhwN.s 			page 17
+ARM GAS  C:\Temp\ccMLFoeE.s 			page 17
 
 
  545              		.file 40 "Inc/ir_sensor.h"
@@ -967,26 +967,26 @@ ARM GAS  C:\Temp\ccbXfhwN.s 			page 1
  548              		.file 43 "Inc/maze_init.h"
  549              		.file 44 "Inc/maze_solve.h"
  550              		.file 45 "<built-in>"
-ARM GAS  C:\Temp\ccbXfhwN.s 			page 18
+ARM GAS  C:\Temp\ccMLFoeE.s 			page 18
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 main.c
-  C:\Temp\ccbXfhwN.s:18     .text.SystemClock_Config:00000000 $t
-  C:\Temp\ccbXfhwN.s:26     .text.SystemClock_Config:00000000 SystemClock_Config
-  C:\Temp\ccbXfhwN.s:162    .text.SystemClock_Config:00000084 $d
-  C:\Temp\ccbXfhwN.s:168    .text.main:00000000 $t
-  C:\Temp\ccbXfhwN.s:175    .text.main:00000000 main
-  C:\Temp\ccbXfhwN.s:434    .text.main:00000140 $d
-  C:\Temp\ccbXfhwN.s:454    .text.main:00000180 $d
-  C:\Temp\ccbXfhwN.s:464    .text.Error_Handler:00000000 $t
-  C:\Temp\ccbXfhwN.s:471    .text.Error_Handler:00000000 Error_Handler
-  C:\Temp\ccbXfhwN.s:484    .bss.m_search_tmp.10725:00000000 $d
-  C:\Temp\ccbXfhwN.s:488    .bss.m_search_tmp.10725:00000000 m_search_tmp.10725
-  C:\Temp\ccbXfhwN.s:491    .bss.m_wall_tmp.10724:00000000 $d
-  C:\Temp\ccbXfhwN.s:495    .bss.m_wall_tmp.10724:00000000 m_wall_tmp.10724
-  C:\Temp\ccbXfhwN.s:498    .data.maze_goal.10723:00000000 $d
-  C:\Temp\ccbXfhwN.s:502    .data.maze_goal.10723:00000000 maze_goal.10723
+  C:\Temp\ccMLFoeE.s:18     .text.SystemClock_Config:00000000 $t
+  C:\Temp\ccMLFoeE.s:26     .text.SystemClock_Config:00000000 SystemClock_Config
+  C:\Temp\ccMLFoeE.s:162    .text.SystemClock_Config:00000084 $d
+  C:\Temp\ccMLFoeE.s:168    .text.main:00000000 $t
+  C:\Temp\ccMLFoeE.s:175    .text.main:00000000 main
+  C:\Temp\ccMLFoeE.s:434    .text.main:00000140 $d
+  C:\Temp\ccMLFoeE.s:454    .text.main:00000180 $d
+  C:\Temp\ccMLFoeE.s:464    .text.Error_Handler:00000000 $t
+  C:\Temp\ccMLFoeE.s:471    .text.Error_Handler:00000000 Error_Handler
+  C:\Temp\ccMLFoeE.s:484    .bss.m_search_tmp.10729:00000000 $d
+  C:\Temp\ccMLFoeE.s:488    .bss.m_search_tmp.10729:00000000 m_search_tmp.10729
+  C:\Temp\ccMLFoeE.s:491    .bss.m_wall_tmp.10728:00000000 $d
+  C:\Temp\ccMLFoeE.s:495    .bss.m_wall_tmp.10728:00000000 m_wall_tmp.10728
+  C:\Temp\ccMLFoeE.s:498    .data.maze_goal.10727:00000000 $d
+  C:\Temp\ccMLFoeE.s:502    .data.maze_goal.10727:00000000 maze_goal.10727
 
 UNDEFINED SYMBOLS
 memset
@@ -1027,7 +1027,7 @@ maze_init
 maze_solve
 HAL_GPIO_WritePin
 mode_main
-ARM GAS  C:\Temp\ccbXfhwN.s 			page 19
+ARM GAS  C:\Temp\ccMLFoeE.s 			page 19
 
 
 get_mode_number

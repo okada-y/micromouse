@@ -165,8 +165,8 @@ int main(void)
        log_init();
 	     set_mode_ctrl(trace);
        set_accel_mode(deceleration);
-       set_target_length(0.09);
-       HAL_Delay(3000);
+       set_target_length(0.63);
+       HAL_Delay(5000);
 		  break;
 
 	  case 2:

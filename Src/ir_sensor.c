@@ -171,9 +171,9 @@ int16_t Sensor_GetValue( uint8_t dir )
 
 
 
-/* ---------------------------------------------------------------
-	赤外センサの偏差値から距離に変換する関数
---------------------------------------------------------------- */
+//機能	: IRセンサ値を距離に変換する
+//引数	: 変換するセンサ番号(0:左前,1:左横,2:右横,3:右前)
+//返り値	: 距離[m]
 double SensorValue2length( uint8_t dir )
 {
 	double length_tmp = 0;
@@ -208,8 +208,8 @@ double SensorValue2length( uint8_t dir )
 			length_tmp = 0.045;
 		}
 		else{
-			a = 0.027;
-			b = 0.015;
+			a = 0.015;
+			b = 0.027;
 			//線形近似　0.09-(a*ln(AD)-b)
 			length_tmp = 0.09-(a*log(sensor_tmp)-b);
 		}		
