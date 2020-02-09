@@ -133,8 +133,8 @@ static void fust_run(const coder_internal_ref_4 *g_direction, coder_internal_ref
 static void make_map_find(const coder_internal_ref_4 *g_direction, const
   coder_internal_ref_2 *wall, unsigned char maze_row_size, unsigned char
   maze_col_size, const unsigned char maze_goal[18], unsigned char l_goal_size,
-  const unsigned char maze_wall[1024], unsigned char contour_map[1024], unsigned
-  char *max_length);
+  const unsigned char maze_wall[1024], unsigned int contour_map[1024], unsigned
+  int *max_length);
 static void make_map_fustrun(const coder_internal_ref *goal_size, const
   coder_internal_ref_4 *g_direction, const coder_internal_ref_2 *wall, const
   coder_internal_ref_1 *search, unsigned char maze_row_size, unsigned char
@@ -684,15 +684,15 @@ static void fust_run(const coder_internal_ref_4 *g_direction, coder_internal_ref
 static void make_map_find(const coder_internal_ref_4 *g_direction, const
   coder_internal_ref_2 *wall, unsigned char maze_row_size, unsigned char
   maze_col_size, const unsigned char maze_goal[18], unsigned char l_goal_size,
-  const unsigned char maze_wall[1024], unsigned char contour_map[1024], unsigned
-  char *max_length)
+  const unsigned char maze_wall[1024], unsigned int contour_map[1024], unsigned
+  int *max_length)
 {
   unsigned int qY;
   unsigned int b_qY;
   int q0;
   int i2;
   unsigned char change_flag;
-  unsigned char tempi;
+  unsigned int tempi;
   bool exitg1;
   int idx;
   bool exitg2;
@@ -729,8 +729,8 @@ static void make_map_find(const coder_internal_ref_4 *g_direction, const
   }
 
   q0 = (int)(qY * b_qY);
-  if ((unsigned int)q0 > 255U) {
-    q0 = 255;
+  if ((unsigned int)q0 > 1023U) {
+    q0 = 1023;
   }
 
   qY = q0 - 1U;
@@ -738,12 +738,12 @@ static void make_map_find(const coder_internal_ref_4 *g_direction, const
     qY = 0U;
   }
 
-  *max_length = (unsigned char)qY;
+  *max_length = (unsigned int)qY;
 
   /* MAPの初期化(すべての要素にmax_lengthを入力) */
   /* 32マス分mapを保持 */
   for (i2 = 0; i2 < 1024; i2++) {
-    contour_map[i2] = (unsigned char)qY;
+    contour_map[i2] = (unsigned int)qY;
   }
 
   /* ゴール座標に0を入力 */
@@ -758,7 +758,7 @@ static void make_map_find(const coder_internal_ref_4 *g_direction, const
     /* map更新確認用フラグ */
     tempi = 0U;
     exitg1 = false;
-    while ((!exitg1) && (tempi <= (unsigned char)qY)) {
+    while ((!exitg1) && (tempi <= (unsigned int)qY)) {
       /* 歩数カウントは0~max_length */
       /* 歩数が確定している座標を検索 */
       /* 最初は0,更新され、増加したマスを次々検索していく */
@@ -837,20 +837,21 @@ static void make_map_find(const coder_internal_ref_4 *g_direction, const
       }
 
       /* 見つかったマスの数 */
+      //ここ1024マスにしていいかも
       if (idx < 0) {
         idx = 0;
       } else {
-        if (idx > 255) {
-          idx = 255;
+        if (idx > 1023) {
+          idx = 1023;
         }
       }
 
       /* 更新マスが見つからなければ終了 */
-      if ((unsigned char)idx == 0) {
+      if (idx == 0) {
         exitg1 = true;
       } else {
         /* 検索した座標に対し、歩数mapを更新 */
-        i2 = (unsigned char)idx;
+        i2 = idx;
         for (q0 = 0; q0 < i2; q0++) {
           /* 北側 */
           k = g_direction->contents.North;
@@ -867,17 +868,12 @@ static void make_map_find(const coder_internal_ref_4 *g_direction, const
             /* 北側のMAPが更新されているか判断、されていなければ書き込み */
             i4 = (int)(row_data[q0] + 1U);
             i5 = i4;
-            if ((unsigned int)i4 > 255U) {
-              i5 = 255;
-            }
 
-            if (contour_map[(i5 + idx) - 1] == (unsigned char)qY) {
-              if ((unsigned int)i4 > 255U) {
-                i4 = 255;
-              }
+            if (contour_map[(i5 + idx) - 1] == (unsigned int)qY) {
 
-              contour_map[(i4 + idx) - 1] = (unsigned char)(tempi + 1);
+              contour_map[(i4 + idx) - 1] = (unsigned int)(tempi + 1);
               change_flag = 1U;
+
             }
           }
 
@@ -893,16 +889,9 @@ static void make_map_find(const coder_internal_ref_4 *g_direction, const
             /* 東側のMAPが更新されているか判断、されていなければ書き込み */
             idx = (int)(col_data[q0] + 1U);
             i4 = idx;
-            if ((unsigned int)idx > 255U) {
-              i4 = 255;
-            }
 
-            if (contour_map[(row_data[q0] + ((i4 - 1) << 5)) - 1] == (unsigned
-                 char)qY) {
-              if ((unsigned int)idx > 255U) {
-                idx = 255;
-              }
-
+            if (contour_map[(row_data[q0] + ((i4 - 1) << 5)) - 1] == (unsigned int)qY)
+              {
               contour_map[(row_data[q0] + ((idx - 1) << 5)) - 1] = (unsigned
                 char)(tempi + 1);
               change_flag = 1U;
@@ -920,8 +909,8 @@ static void make_map_find(const coder_internal_ref_4 *g_direction, const
           if ((i3 & d_k) == wall->contents.nowall) {
             /* 南側のMAPが更新されているか判断、されていなければ書き込み */
             idx = loop_ub - 2;
-            if (contour_map[idx] == (unsigned char)qY) {
-              contour_map[idx] = (unsigned char)(tempi + 1);
+            if (contour_map[idx] == (unsigned int)qY) {
+              contour_map[idx] = (unsigned int)(tempi + 1);
               change_flag = 1U;
             }
           }
@@ -937,8 +926,8 @@ static void make_map_find(const coder_internal_ref_4 *g_direction, const
           if ((i3 & e_k) == wall->contents.nowall) {
             /* 西側のMAPが更新されているか判断、されていなければ書き込み */
             idx = (row_data[q0] + ((col_data[q0] - 2) << 5)) - 1;
-            if (contour_map[idx] == (unsigned char)qY) {
-              contour_map[idx] = (unsigned char)(tempi + 1);
+            if (contour_map[idx] == (unsigned int)qY) {
+              contour_map[idx] = (unsigned int)(tempi + 1);
               change_flag = 1U;
             }
           }
@@ -1397,8 +1386,8 @@ static  int i12;
   int l_k;
   int i14;
   int m_k;
-  unsigned char cmap[1024];
-  unsigned char little;
+  unsigned int cmap[1024];
+  unsigned int little;
   int n_k;
   unsigned int b_qY;
   unsigned char next_dir;
