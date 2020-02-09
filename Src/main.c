@@ -178,7 +178,6 @@ int main(void)
 		  break;
 
 	  case 3:
-
       fornt_wall_calibrate();
 		  break;
 
@@ -193,6 +192,10 @@ int main(void)
 		  break;
 
 	  case 6:
+      set_mode_ctrl(side_wall);
+      set_accel_mode(deceleration);
+      set_target_length(0.63);
+      HAL_Delay(5000);
 		  break;
 
 	  case 7:

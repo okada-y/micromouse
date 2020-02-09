@@ -11,6 +11,8 @@
 
 
 static ctrl_mode_num ctrl_mode = trace;
+static float target_vol_sum = 0;
+static float target_vol_diff = 0;
 static float target_vol_r = 0;
 static float target_vol_l = 0;
 static int16_t target_duty_r = 0;
@@ -22,8 +24,9 @@ static int16_t target_duty_l = 0;
 //備考	: 1msタスク
 void motor_1ms ( void )
 {
-	set_motor_vol();		//印加電圧を決定
+	set_motor_vol();		//印加電圧の和、差を制御モードに従い決定
 	clr_operate_history();	//各制御の操作履歴クリア
+	calc_motor_vol();		//印加電圧の和、差から各モータの印加電圧を決定する。
 	calc_vol2duty();		//印加電圧を変調率に変換
 	motor_duty_adjust();	//低変調率を避ける調整
 	set_motor_duty();		//モータに電圧を印加
@@ -69,8 +72,8 @@ void set_motor_vol(void)
 //返り値:なし
 void set_motor_vol_trace(void)
 {
-	target_vol_r = get_target_vol_r_ctrl();
-	target_vol_l = get_target_vol_l_ctrl();
+	target_vol_sum = get_target_vol_sum_ctrl();
+	target_vol_diff = get_target_vol_diff_ctrl();
 }
 
 //機能 	:前壁制御時の印可電圧出力
@@ -78,18 +81,36 @@ void set_motor_vol_trace(void)
 //返り値:なし
 void set_motor_vol_front_wall(void)
 {
-	target_vol_r = get_target_vol_r_frontwall();
-	target_vol_l = get_target_vol_l_frontwall();
+	target_vol_sum = get_target_vol_sum_frontwall();
+	target_vol_diff = get_target_vol_diff_frontwall();
 }
 
-//機能 	:横壁制御時の印可電圧出力
+//機能 	:横壁制御時の印可電圧出力(差のみ)
 //引数 	:なし
 //返り値:なし
 void set_motor_vol_side_wall(void)
 {
-	//横壁制御関数代入予定
-	target_vol_r = 0;
-	target_vol_l = 0;
+	switch(get_side_wall_ctrl_mode()){
+		case right:
+			target_vol_sum = get_target_vol_sum_ctrl();	
+			target_vol_diff = get_target_vol_diff_sidewall();
+			break;
+		
+		case left:
+			target_vol_sum = get_target_vol_sum_ctrl();	
+			target_vol_diff = get_target_vol_diff_sidewall();
+			break;
+
+		case both_side:
+			target_vol_sum = get_target_vol_sum_ctrl();
+			target_vol_diff = get_target_vol_diff_sidewall();
+			break;
+
+		case none: //両壁がないときは軌跡制御に
+			target_vol_sum = get_target_vol_sum_ctrl();
+			target_vol_diff = get_target_vol_diff_ctrl();
+			break;
+	}
 }
 
 //機能 	:モータ印可電圧初期化
@@ -117,8 +138,18 @@ void clr_operate_history(void)
 			break;
 		
 		case side_wall:
+			clr_frontwall_operate_history(); //前壁制御の操作履歴をクリア
 			break;
 	}
+}
+
+//機能	: 印加電圧の和、差から各モータに印加する電圧を決定する。
+//引数	: なし
+//返り値	: なし
+void calc_motor_vol ( void )
+{
+	target_vol_r = (target_vol_sum + target_vol_diff)/2;
+	target_vol_l = (target_vol_sum - target_vol_diff)/2;	
 }
 
 //機能 	:印可電圧を変調率に変換
@@ -126,6 +157,7 @@ void clr_operate_history(void)
 //返り値:なし
 void calc_vol2duty ( void )
 {
+
 	/* バッテリー電圧とモータに印加する電圧から、duty[*0.1%]を算出	*/
 	target_duty_r = target_vol_r / (Battery_GetVoltage()) * 1000;
 	target_duty_l = target_vol_l / (Battery_GetVoltage()) * 1000;

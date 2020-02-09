@@ -7,23 +7,23 @@
 static float move_speed_err_I = 0; 			//移動速度偏差積分
 static float rotate_speed_err_I = 0;	    //角速度偏差積分
 
-static float target_vol_r_ctrl = 0;		//右タイヤの操作量[ duty % ]
-static float target_vol_l_ctrl = 0;		//左タイヤの操作量[ duty % ]
+static float target_vol_sum_ctrl = 0;		//右タイヤの操作量[ duty % ]
+static float target_vol_diff_ctrl = 0;		//左タイヤの操作量[ duty % ]
 
-//機能	: 軌道制御による右モータ印加電圧を取得する
+//機能	: 軌道制御によるモータ印加電圧の和を取得する
 //引数	: なし
 //返り値	: 軌道制御による右モータ印加電圧
-float get_target_vol_r_ctrl ( void )
+float get_target_vol_sum_ctrl ( void )
 {
-    return target_vol_r_ctrl;
+    return target_vol_sum_ctrl;
 }
 
-//機能	: 軌道制御による左モータ印加電圧を取得する
+//機能	: 軌道制御によるモータ印加電圧の差を取得する
 //引数	: なし
 //返り値	: 軌道制御による左モータ印加電圧
-float get_target_vol_l_ctrl ( void )
+float get_target_vol_diff_ctrl ( void )
 {
-    return target_vol_l_ctrl;
+    return target_vol_diff_ctrl;
 }
 
 //機能	: 軌道制御により、左右のモータ印加電圧を計算する
@@ -51,8 +51,8 @@ void calc_motor_vol_ctrl(void)
     rotate_speed_err_PI = rotate_speed_P * rotate_speed_err + rotate_speed_err_I;
 
     /*モータ印加電圧計算*/
-    target_vol_r_ctrl = move_speed_err_PI + rotate_speed_err_PI;
-    target_vol_l_ctrl = move_speed_err_PI - rotate_speed_err_PI;
+    target_vol_sum_ctrl = move_speed_err_PI;
+    target_vol_diff_ctrl = rotate_speed_err_PI;
 }
 
 //機能	: 軌跡制御の操作履歴クリア

@@ -84,6 +84,9 @@
 #define side_sensor_th          (100)               //横壁センサ値の閾値
 #define side_sensor_th_add      (300)               //横壁センサ値の閾値変化量
 #define side_sensor_diff_th     (2)                 //横壁センサ変化量の閾値
+#define side_wall_P             (0.0103364535642797)//横壁制御　Pゲイン
+#define side_wall_D             (0.391522248909601) //横壁制御　Dゲイン
+#define side_wall_fil           (294.083904215522)  //横壁制御　フィルタ係数
 
 //imu
 #define REFFERENCE_NUM		(1000)		//何回の平均をもってジャイロのリファレンス電圧とするか

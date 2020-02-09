@@ -16,13 +16,16 @@ static double front_sensor_rotate_err_prev = 0; //前回偏差差
 static double front_sensor_move_D_prev = 0; 	//前回偏差和微分
 static double front_sensor_rotate_D_prev = 0;   //前回偏差差微分
 
-static float target_vol_r_frontwall = 0;		//前壁制御による右モータ印加電圧[V]
-static float target_vol_l_frontwall = 0;		//前壁制御による左モータ印加電圧[V]
+static float target_vol_sum_frontwall = 0;		//前壁制御によるモータ印加電圧の和[V]
+static float target_vol_diff_frontwall = 0;		//前壁制御によるモータ印加電圧の差[V]
 
 static uint16_t fornt_wall_calibrate_tim = 0;  	//前壁補正用カウンタ
 
 static double target_sensor_sl = 0;				//左壁距離目標値[m]
 static double target_sensor_sr = 0;				//右壁距離目標値[m]
+
+static float target_vol_diff_sidewall = 0;			//横壁制御におけるモータ印加電圧の差[V]
+
 
 static side_wall_ctrl side_wall_ctrl_mode = none;	//横壁補正モード（左、右、両方、なし)
 
@@ -31,6 +34,11 @@ static side_wall_ctrl side_wall_ctrl_mode = none;	//横壁補正モード（左�
 //返り値	: なし
 void adjust_1ms (void)
 {
+	set_target_side_sensor();		//初期位置のセンサ値を横壁制御目標値にセット
+	calc_side_wall_ctrl_mode();		//横壁補正のモードを決定
+	adjust_theta_side_wall();		//横壁補正のモードに応じ、軌跡制御における角度を調整する（未実装）
+	calc_motor_vol_side_wall();		//横壁補正における印加電圧計算
+
 	calc_motor_vol_front_wall();	//前壁制御における印加電圧計算
 	calibrate_tim();				//前壁制御用タイマ
 }
@@ -49,7 +57,15 @@ void set_target_side_sensor(void)
 	}
 }
 
-//機能	: 横壁制御におけるモードを決定する（右、左、量壁）
+//機能	: 横壁制御におけるモードを取得する
+//引数	: なし
+//返り値	: 横壁制御モード
+uint8_t get_side_wall_ctrl_mode ( void )
+{
+	return side_wall_ctrl_mode;
+}
+
+//機能	: 横壁制御におけるモードを決定する（右、左、両壁、なし）
 //引数	: なし
 //返り値	: なし
 //備考 	:1msタスク
@@ -112,7 +128,7 @@ void calc_side_wall_ctrl_mode ( void )
 //引数	: なし
 //返り値	: 中心位置からの偏差
 //備考 	:1msタスク
-double get_side_wall_diff(void)
+double get_side_wall_err(void)
 {
 	double side_wall_err_tmp = 0;
 	
@@ -162,10 +178,42 @@ void adjust_theta_side_wall(void)
 //備考 	:1msタスク
 void calc_motor_vol_side_wall(void)
 {
+	double side_wall_err = 0;
+	double side_wall_err_P = 0;
+	double side_wall_err_D = 0;
+	double side_wall_err_PD = 0;
+	static double side_wall_err_prev = 0;
+	static double side_wall_err_D_prev = 0;
+
+	//偏差取得
+	side_wall_err = get_side_wall_err();
+
+	//P項
+	side_wall_err_P = side_wall_P * side_wall_err;
 	
+	//D項
+	side_wall_err_D = (side_wall_err_D_prev + side_wall_D * side_wall_fil * (side_wall_err - side_wall_err_prev))
+								/(1+side_wall_fil*0.001);
+
+	//合算
+	side_wall_err_PD = side_wall_err_P + side_wall_err_D;
+
+	/*印加電圧算出*/
+	target_vol_diff_sidewall = (float)side_wall_err_PD;
+
+	/*パラメータ更新*/
+	side_wall_err_prev = side_wall_err;
+	side_wall_err_D_prev = side_wall_err_D;
+
 }
 
-
+//機能	: 横壁補正によるモータ印加電圧の差を取得する
+//引数	: なし
+//返り値	: 横壁補正による右モータ印加電圧
+float get_target_vol_diff_sidewall ( void )
+{
+	return target_vol_diff_sidewall;
+}
 
 
 //機能	: 前壁制御におけるモータ印加電圧を計算する。
@@ -217,8 +265,8 @@ void calc_motor_vol_front_wall ( void )
     front_sensor_rotate_PID = front_sensor_rotate_err_P + front_sensor_rotate_err_I + front_sensor_rotate_err_D;
 
     /*印加電圧算出*/
-	target_vol_r_frontwall = (front_sensor_move_PID + front_sensor_rotate_PID)/2;
-	target_vol_l_frontwall = (front_sensor_move_PID - front_sensor_rotate_PID)/2;
+	target_vol_sum_frontwall = front_sensor_move_PID;
+	target_vol_diff_frontwall = front_sensor_rotate_PID;
 
 	/*パラメータ更新*/
     front_sensor_move_err_prev = front_sensor_move_err;   	
@@ -228,20 +276,20 @@ void calc_motor_vol_front_wall ( void )
 
 }
 
-//機能	: 前壁補正による右モータ印加電圧を取得する
+//機能	: 前壁補正によるモータ印加電圧の和を取得する
 //引数	: なし
 //返り値	: 前壁補正による右モータ印加電圧
-float get_target_vol_r_frontwall ( void )
+float get_target_vol_sum_frontwall ( void )
 {
-	return target_vol_r_frontwall;
+	return target_vol_sum_frontwall;
 }
 
-//機能	: 前壁補正による左モータ印加電圧を取得する
+//機能	: 前壁補正によるモータ印加電圧の差を取得する
 //引数	: なし
 //返り値	: 前壁補正による右モータ印加電圧
-float get_target_vol_l_frontwall ( void )
+float get_target_vol_diff_frontwall ( void )
 {
-	return target_vol_l_frontwall;
+	return target_vol_diff_frontwall;
 }
 
 //機能	: 前壁制御の操作履歴を消す
