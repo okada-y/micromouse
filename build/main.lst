@@ -1,4 +1,4 @@
-ARM GAS  C:\Temp\cccuaw4v.s 			page 1
+ARM GAS  C:\Temp\ccRikhYb.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,7 +58,7 @@ ARM GAS  C:\Temp\cccuaw4v.s 			page 1
   28:Src/main.c    **** #include "gpio.h"
   29:Src/main.c    **** 
   30:Src/main.c    **** /* Private includes ----------------------------------------------------------*/
-ARM GAS  C:\Temp\cccuaw4v.s 			page 2
+ARM GAS  C:\Temp\ccRikhYb.s 			page 2
 
 
   31:Src/main.c    **** /* USER CODE BEGIN Includes */
@@ -118,7 +118,7 @@ ARM GAS  C:\Temp\cccuaw4v.s 			page 1
   85:Src/main.c    **** /* USER CODE BEGIN 0 */
   86:Src/main.c    **** 
   87:Src/main.c    **** 
-ARM GAS  C:\Temp\cccuaw4v.s 			page 3
+ARM GAS  C:\Temp\ccRikhYb.s 			page 3
 
 
   88:Src/main.c    **** /* USER CODE END 0 */
@@ -178,7 +178,7 @@ ARM GAS  C:\Temp\cccuaw4v.s 			page 1
  142:Src/main.c    ****   Encoder_Initialize();			/*Encoderタイマ設定、位相初期化*/
  143:Src/main.c    ****   Interrupt_Initialize( );		/*interrupt処理用タイマ(TIM6)初期化*/
  144:Src/main.c    ****   //Battery_LimiterVoltage();		/*a バッテリー下限処理*/
-ARM GAS  C:\Temp\cccuaw4v.s 			page 4
+ARM GAS  C:\Temp\ccRikhYb.s 			page 4
 
 
  145:Src/main.c    **** 
@@ -238,7 +238,7 @@ ARM GAS  C:\Temp\cccuaw4v.s 			page 1
  199:Src/main.c    **** 		  break;
  200:Src/main.c    **** 
  201:Src/main.c    **** 	  case 7:
-ARM GAS  C:\Temp\cccuaw4v.s 			page 5
+ARM GAS  C:\Temp\ccRikhYb.s 			page 5
 
 
  202:Src/main.c    ****       module_test();
@@ -298,7 +298,7 @@ ARM GAS  C:\Temp\cccuaw4v.s 			page 1
   41              		.cfi_def_cfa_offset 96
  244:Src/main.c    ****   RCC_OscInitTypeDef RCC_OscInitStruct = {0};
   42              		.loc 1 244 3 view .LVU1
-ARM GAS  C:\Temp\cccuaw4v.s 			page 6
+ARM GAS  C:\Temp\ccRikhYb.s 			page 6
 
 
   43              		.loc 1 244 22 is_stmt 0 view .LVU2
@@ -358,7 +358,7 @@ ARM GAS  C:\Temp\cccuaw4v.s 			page 1
  251:Src/main.c    ****   /** Initializes the CPU, AHB and APB busses clocks 
  252:Src/main.c    ****   */
  253:Src/main.c    ****   RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI;
-ARM GAS  C:\Temp\cccuaw4v.s 			page 7
+ARM GAS  C:\Temp\ccRikhYb.s 			page 7
 
 
   91              		.loc 1 253 3 view .LVU17
@@ -418,7 +418,7 @@ ARM GAS  C:\Temp\cccuaw4v.s 			page 1
  269:Src/main.c    ****   RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
  130              		.loc 1 269 3 is_stmt 1 view .LVU39
  131              		.loc 1 269 31 is_stmt 0 view .LVU40
-ARM GAS  C:\Temp\cccuaw4v.s 			page 8
+ARM GAS  C:\Temp\ccRikhYb.s 			page 8
 
 
  132 0068 0F23     		movs	r3, #15
@@ -478,7 +478,7 @@ ARM GAS  C:\Temp\cccuaw4v.s 			page 1
   95:Src/main.c    ****   /* USER CODE BEGIN 1 */
  177              		.loc 1 95 1 is_stmt 1 view -0
  178              		.cfi_startproc
-ARM GAS  C:\Temp\cccuaw4v.s 			page 9
+ARM GAS  C:\Temp\ccRikhYb.s 			page 9
 
 
  179              		@ args = 0, pretend = 0, frame = 0
@@ -538,7 +538,7 @@ ARM GAS  C:\Temp\cccuaw4v.s 			page 1
  218              		.loc 1 131 3 view .LVU67
  219 0020 FFF7FEFF 		bl	MX_ADC1_Init
  220              	.LVL10:
-ARM GAS  C:\Temp\cccuaw4v.s 			page 10
+ARM GAS  C:\Temp\ccRikhYb.s 			page 10
 
 
  132:Src/main.c    ****   MX_TIM3_Init();
@@ -598,7 +598,7 @@ ARM GAS  C:\Temp\cccuaw4v.s 			page 1
  261              		.loc 1 224 4 view .LVU81
  262 0056 0020     		movs	r0, #0
  263 0058 FFF7FEFF 		bl	set_duty_r
-ARM GAS  C:\Temp\cccuaw4v.s 			page 11
+ARM GAS  C:\Temp\ccRikhYb.s 			page 11
 
 
  264              	.LVL23:
@@ -658,7 +658,7 @@ ARM GAS  C:\Temp\cccuaw4v.s 			page 1
  305              	.LVL31:
  174:Src/main.c    ****       set_accel_mode(deceleration);
  306              		.loc 1 174 6 view .LVU95
-ARM GAS  C:\Temp\cccuaw4v.s 			page 12
+ARM GAS  C:\Temp\ccRikhYb.s 			page 12
 
 
  307 008e 0020     		movs	r0, #0
@@ -718,7 +718,7 @@ ARM GAS  C:\Temp\cccuaw4v.s 			page 1
  349              		.loc 1 192 5 view .LVU107
  350 00cc BFE7     		b	.L6
  351              	.L10:
-ARM GAS  C:\Temp\cccuaw4v.s 			page 13
+ARM GAS  C:\Temp\ccRikhYb.s 			page 13
 
 
  195:Src/main.c    ****       set_accel_mode(deceleration);
@@ -778,7 +778,7 @@ ARM GAS  C:\Temp\cccuaw4v.s 			page 1
  396 0112 2946     		mov	r1, r5
  397 0114 2046     		mov	r0, r4
  398 0116 FFF7FEFF 		bl	maze_solve
-ARM GAS  C:\Temp\cccuaw4v.s 			page 14
+ARM GAS  C:\Temp\ccRikhYb.s 			page 14
 
 
  399              	.LVL47:
@@ -838,7 +838,7 @@ ARM GAS  C:\Temp\cccuaw4v.s 			page 1
  441 014c FFF7FEFF 		bl	mode_main
  442              	.LVL55:
  158:Src/main.c    **** 
-ARM GAS  C:\Temp\cccuaw4v.s 			page 15
+ARM GAS  C:\Temp\ccRikhYb.s 			page 15
 
 
  443              		.loc 1 158 4 view .LVU130
@@ -898,7 +898,7 @@ ARM GAS  C:\Temp\cccuaw4v.s 			page 1
  287:Src/main.c    ****   * @brief  This function is executed in case of error occurrence.
  288:Src/main.c    ****   * @retval None
  289:Src/main.c    ****   */
-ARM GAS  C:\Temp\cccuaw4v.s 			page 16
+ARM GAS  C:\Temp\ccRikhYb.s 			page 16
 
 
  290:Src/main.c    **** void Error_Handler(void)
@@ -917,28 +917,28 @@ ARM GAS  C:\Temp\cccuaw4v.s 			page 1
  498 0000 7047     		bx	lr
  499              		.cfi_endproc
  500              	.LFE135:
- 502              		.section	.bss.m_search_tmp.10751,"aw",%nobits
+ 502              		.section	.bss.m_search_tmp.10759,"aw",%nobits
  503              		.align	2
  504              		.set	.LANCHOR0,. + 0
- 507              	m_search_tmp.10751:
+ 507              	m_search_tmp.10759:
  508 0000 00000000 		.space	1024
  508      00000000 
  508      00000000 
  508      00000000 
  508      00000000 
- 509              		.section	.bss.m_wall_tmp.10750,"aw",%nobits
+ 509              		.section	.bss.m_wall_tmp.10758,"aw",%nobits
  510              		.align	2
  511              		.set	.LANCHOR1,. + 0
- 514              	m_wall_tmp.10750:
+ 514              	m_wall_tmp.10758:
  515 0000 00000000 		.space	1024
  515      00000000 
  515      00000000 
  515      00000000 
  515      00000000 
- 516              		.section	.data.maze_goal.10749,"aw"
+ 516              		.section	.data.maze_goal.10757,"aw"
  517              		.align	2
  518              		.set	.LANCHOR2,. + 0
- 521              	maze_goal.10749:
+ 521              	maze_goal.10757:
  522 0000 02020203 		.ascii	"\002\002\002\003\003\003\004\004\004\001\002\003\001"
  522      03030404 
  522      04010203 
@@ -958,7 +958,7 @@ ARM GAS  C:\Temp\cccuaw4v.s 			page 1
  534              		.file 10 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h"
  535              		.file 11 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio.h"
  536              		.file 12 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h"
-ARM GAS  C:\Temp\cccuaw4v.s 			page 17
+ARM GAS  C:\Temp\ccRikhYb.s 			page 17
 
 
  537              		.file 13 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_adc.h"
@@ -994,26 +994,26 @@ ARM GAS  C:\Temp\cccuaw4v.s 			page 1
  567              		.file 43 "Inc/maze_init.h"
  568              		.file 44 "Inc/maze_solve.h"
  569              		.file 45 "<built-in>"
-ARM GAS  C:\Temp\cccuaw4v.s 			page 18
+ARM GAS  C:\Temp\ccRikhYb.s 			page 18
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 main.c
-  C:\Temp\cccuaw4v.s:18     .text.SystemClock_Config:00000000 $t
-  C:\Temp\cccuaw4v.s:26     .text.SystemClock_Config:00000000 SystemClock_Config
-  C:\Temp\cccuaw4v.s:162    .text.SystemClock_Config:00000084 $d
-  C:\Temp\cccuaw4v.s:168    .text.main:00000000 $t
-  C:\Temp\cccuaw4v.s:175    .text.main:00000000 main
-  C:\Temp\cccuaw4v.s:453    .text.main:00000160 $d
-  C:\Temp\cccuaw4v.s:473    .text.main:000001a0 $d
-  C:\Temp\cccuaw4v.s:483    .text.Error_Handler:00000000 $t
-  C:\Temp\cccuaw4v.s:490    .text.Error_Handler:00000000 Error_Handler
-  C:\Temp\cccuaw4v.s:503    .bss.m_search_tmp.10751:00000000 $d
-  C:\Temp\cccuaw4v.s:507    .bss.m_search_tmp.10751:00000000 m_search_tmp.10751
-  C:\Temp\cccuaw4v.s:510    .bss.m_wall_tmp.10750:00000000 $d
-  C:\Temp\cccuaw4v.s:514    .bss.m_wall_tmp.10750:00000000 m_wall_tmp.10750
-  C:\Temp\cccuaw4v.s:517    .data.maze_goal.10749:00000000 $d
-  C:\Temp\cccuaw4v.s:521    .data.maze_goal.10749:00000000 maze_goal.10749
+  C:\Temp\ccRikhYb.s:18     .text.SystemClock_Config:00000000 $t
+  C:\Temp\ccRikhYb.s:26     .text.SystemClock_Config:00000000 SystemClock_Config
+  C:\Temp\ccRikhYb.s:162    .text.SystemClock_Config:00000084 $d
+  C:\Temp\ccRikhYb.s:168    .text.main:00000000 $t
+  C:\Temp\ccRikhYb.s:175    .text.main:00000000 main
+  C:\Temp\ccRikhYb.s:453    .text.main:00000160 $d
+  C:\Temp\ccRikhYb.s:473    .text.main:000001a0 $d
+  C:\Temp\ccRikhYb.s:483    .text.Error_Handler:00000000 $t
+  C:\Temp\ccRikhYb.s:490    .text.Error_Handler:00000000 Error_Handler
+  C:\Temp\ccRikhYb.s:503    .bss.m_search_tmp.10759:00000000 $d
+  C:\Temp\ccRikhYb.s:507    .bss.m_search_tmp.10759:00000000 m_search_tmp.10759
+  C:\Temp\ccRikhYb.s:510    .bss.m_wall_tmp.10758:00000000 $d
+  C:\Temp\ccRikhYb.s:514    .bss.m_wall_tmp.10758:00000000 m_wall_tmp.10758
+  C:\Temp\ccRikhYb.s:517    .data.maze_goal.10757:00000000 $d
+  C:\Temp\ccRikhYb.s:521    .data.maze_goal.10757:00000000 maze_goal.10757
 
 UNDEFINED SYMBOLS
 memset
@@ -1054,7 +1054,7 @@ maze_init
 maze_solve
 HAL_GPIO_WritePin
 mode_main
-ARM GAS  C:\Temp\cccuaw4v.s 			page 19
+ARM GAS  C:\Temp\ccRikhYb.s 			page 19
 
 
 get_mode_number

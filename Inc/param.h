@@ -25,8 +25,11 @@
 //           パラメータ             //
 /////////////////////////////////////
 /*module_test*/
-#define log_count_lim		(5000)	//データ取得する期間[ms]
-#define log_count_step		(5)	//データを取得する時間間隔[ms]
+#define log_count_lim		(3000)	//データ取得する期間[ms]
+#define log_count_step		(1)	//データを取得する時間間隔[ms]
+
+//#define DATA_DEFAULT       (1)     //測定モード１
+#define DATA_SIDE            (1)   //測定モード２
 
 //maze
 #define x_size              (5)     //x軸方向の壁(縦壁)の枚数+1
@@ -83,10 +86,12 @@
 
 #define side_sensor_th          (100)               //横壁センサ値の閾値
 #define side_sensor_th_add      (300)               //横壁センサ値の閾値変化量
-#define side_sensor_diff_th     (2)                 //横壁センサ変化量の閾値
-#define side_wall_P             (0.0103364535642797)//横壁制御　Pゲイン
+#define side_sensor_diff_th     (3)                 //横壁センサ変化量の閾値
+#define side_wall_P             (100)                //横壁制御　Pゲイン
 #define side_wall_D             (0.391522248909601) //横壁制御　Dゲイン
 #define side_wall_fil           (294.083904215522)  //横壁制御　フィルタ係数
+
+#define ir_diff_ave_num         (10)                //IRセンサの変動値の移動平均期間
 
 //imu
 #define REFFERENCE_NUM		(1000)		//何回の平均をもってジャイロのリファレンス電圧とするか

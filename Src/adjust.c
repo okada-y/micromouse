@@ -26,8 +26,9 @@ static double target_sensor_sr = 0;				//右壁距離目標値[m]
 
 static float target_vol_diff_sidewall = 0;			//横壁制御におけるモータ印加電圧の差[V]
 
-
 static side_wall_ctrl side_wall_ctrl_mode = none;	//横壁補正モード（左、右、両方、なし)
+static int16_t side_sensor_l_th = 0;				//左壁制御の閾値
+static int16_t side_sensor_r_th = 0;				//右壁制御の閾値
 
 //機能	: adjust.cの1msタスクまとめ
 //引数	: なし
@@ -38,11 +39,9 @@ void adjust_1ms (void)
 	calc_side_wall_ctrl_mode();		//横壁補正のモードを決定
 	adjust_theta_side_wall();		//横壁補正のモードに応じ、軌跡制御における角度を調整する（未実装）
 	calc_motor_vol_side_wall();		//横壁補正における印加電圧計算
-
 	calc_motor_vol_front_wall();	//前壁制御における印加電圧計算
 	calibrate_tim();				//前壁制御用タイマ
 }
-
 
 //機能	: 壁トレースの目標距離をセットする
 //引数	: なし 
@@ -50,11 +49,46 @@ void adjust_1ms (void)
 //備考	:初期位置の壁距離を目標位置とする。
 void set_target_side_sensor(void)
 {
-	if((target_sensor_sl == 0) && (target_sensor_sr == 0))
+	static uint8_t target_set_flg = 0;
+	if(target_set_flg == 0) 
 	{
 		target_sensor_sl = SensorValue2length(1);
 		target_sensor_sr = SensorValue2length(2);	
+		target_set_flg = 1;
 	}
+}
+
+//機能	: 壁トレースの右壁目標距離を取得する
+//引数	: なし
+//返り値	: 右壁距離目標値
+float get_target_sensor_sr ( void )
+{
+	return (float)target_sensor_sr;
+}
+
+//機能	: 壁トレースの左壁目標距離を取得する
+//引数	: なし
+//返り値	: 左壁距離目標値
+float get_target_sensor_sl ( void )
+{
+	return (float)target_sensor_sl;
+}
+
+//機能	: 壁トレースの左壁モード閾値を取得する
+//引数	: なし
+//返り値	: 左壁モード閾値
+uint16_t get_side_sensor_l_th ( void )
+{
+	return side_sensor_l_th;
+}
+
+
+//機能	: 壁トレースの右壁モード閾値を取得する
+//引数	: なし
+//返り値	: 右壁モード閾値
+uint16_t get_side_sensor_r_th ( void )
+{
+	return side_sensor_r_th;
 }
 
 //機能	: 横壁制御におけるモードを取得する
@@ -73,12 +107,25 @@ void calc_side_wall_ctrl_mode ( void )
 {
 	int16_t side_sensor_r = 0; 				//右前センサ値
     int16_t side_sensor_l = 0; 				//左前センサ値
-	static int16_t side_sensor_r_old = 0;	//右前センサ値
-    static int16_t side_sensor_l_old = 0; 	//左前センサ値
-	int16_t side_sensor_r_diff = 0;			//右前センサ値
-    int16_t side_sensor_l_diff = 0; 		//左前センサ値
-	int16_t side_sensor_l_th = 0;			//左壁制御の閾値
-	int16_t side_sensor_r_th = 0;			//右壁制御の閾値
+	static int16_t side_sensor_r_old = 0;	//前回右前センサ値
+    static int16_t side_sensor_l_old = 0; 	//前回左前センサ値
+	int16_t side_sensor_r_diff = 0;			//右前センサ値変化量
+    int16_t side_sensor_l_diff = 0; 		//左前センサ値変化量
+	int16_t side_sensor_r_diff_sum = 0;		//右前センサ値変化量合計
+    int16_t side_sensor_l_diff_sum = 0; 	//左前センサ値変化量合計
+	float side_sensor_r_diff_ave = 0;		//右前センサ値平均
+    float side_sensor_l_diff_ave = 0; 		//左前センサ値平均
+
+
+    typedef struct {
+	int16_t	right;			
+	int16_t left;			
+    } ave_temp;
+
+	static ave_temp ave_store[ir_diff_ave_num];  // データ格納用の構造体
+	static uint16_t ave_counter = 0;
+	uint16_t i = 0;
+	uint16_t j = 0;
 
 	//センサ値取得
 	side_sensor_l = Sensor_GetValue(1);
@@ -88,29 +135,46 @@ void calc_side_wall_ctrl_mode ( void )
 	side_sensor_l_diff = ABS(side_sensor_l - side_sensor_l_old);
 	side_sensor_r_diff = ABS(side_sensor_r - side_sensor_r_old);
 
+	i = ave_counter % ir_diff_ave_num;
+	ave_store[i].right = side_sensor_r_diff;
+	ave_store[i].left = side_sensor_l_diff;
+
+	//移動平均処理
+	for(j=0; j < ir_diff_ave_num; j++)
+	{
+		side_sensor_r_diff_sum += ave_store[j].right;
+		side_sensor_l_diff_sum += ave_store[j].left;
+	}
+
+	side_sensor_r_diff_ave = (float)side_sensor_r_diff_sum / ir_diff_ave_num;
+	side_sensor_l_diff_ave = (float)side_sensor_l_diff_sum / ir_diff_ave_num;
+	
+	ave_counter += 1 ;
+
+
 	//変化量に応じて、壁制御の閾値を変化
-	if(side_sensor_l_diff > side_sensor_diff_th){
+	if(side_sensor_l_diff_ave > side_sensor_diff_th){
 		side_sensor_l_th = side_sensor_th + side_sensor_th_add;
 	}else{
 		side_sensor_l_th = side_sensor_th;
 	}
 
-	if(side_sensor_r_diff > side_sensor_diff_th){
+	if(side_sensor_r_diff_ave > side_sensor_diff_th){
 		side_sensor_r_th = side_sensor_th + side_sensor_th_add;
 	}else{
 		side_sensor_r_th = side_sensor_th;
 	}
 
 	//閾値に応じて、横壁制御モードを設定
-	if( (side_sensor_l_th > side_sensor_l) && (side_sensor_r_th > side_sensor_r))
+	if( (side_sensor_l_th < side_sensor_l) && (side_sensor_r_th < side_sensor_r))
 	{
 		side_wall_ctrl_mode = both_side;
 	}
-	else if((side_sensor_l_th > side_sensor_l))
+	else if((side_sensor_l_th < side_sensor_l))
 	{
 		side_wall_ctrl_mode = left;
 	}
-	else if((side_sensor_r_th > side_sensor_r))
+	else if((side_sensor_r_th < side_sensor_r))
 	{
 		side_wall_ctrl_mode = right;
 	}

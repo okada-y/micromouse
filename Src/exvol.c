@@ -30,7 +30,6 @@ void motor_1ms ( void )
 	calc_vol2duty();		//印加電圧を変調率に変換
 	motor_duty_adjust();	//低変調率を避ける調整
 	set_motor_duty();		//モータに電圧を印加
-	clr_operate_history();	//対象のモード以外の操作履歴をクリア
 }
 
 

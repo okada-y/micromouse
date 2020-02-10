@@ -205,7 +205,7 @@ double SensorValue2length( uint8_t dir )
 	//横センサ	
 	else if((dir == 1) || (dir == 2)){
 		if(sensor_tmp <= 100){
-			length_tmp = 0.045;
+			length_tmp = 0.050;
 		}
 		else{
 			a = 0.015;
