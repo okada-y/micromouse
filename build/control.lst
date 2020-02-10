@@ -1,4 +1,4 @@
-ARM GAS  C:\Temp\cc8obrvJ.s 			page 1
+ARM GAS  C:\Temp\ccLaivOx.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,7 +58,7 @@ ARM GAS  C:\Temp\cc8obrvJ.s 			page 1
   37 0002 93ED000A 		vldr.32	s0, [r3]
   38 0006 7047     		bx	lr
   39              	.L3:
-ARM GAS  C:\Temp\cc8obrvJ.s 			page 2
+ARM GAS  C:\Temp\ccLaivOx.s 			page 2
 
 
   40              		.align	2
@@ -118,7 +118,7 @@ ARM GAS  C:\Temp\cc8obrvJ.s 			page 1
   31:Src/control.c **** //返り値	: なし
   32:Src/control.c **** //備考  : 1msタスク
   33:Src/control.c **** void calc_motor_vol_ctrl(void)
-ARM GAS  C:\Temp\cc8obrvJ.s 			page 3
+ARM GAS  C:\Temp\ccLaivOx.s 			page 3
 
 
   34:Src/control.c **** {
@@ -178,7 +178,7 @@ ARM GAS  C:\Temp\cc8obrvJ.s 			page 1
  131              	.LVL6:
   44:Src/control.c **** 
   45:Src/control.c ****     /*偏差積分*/
-ARM GAS  C:\Temp\cc8obrvJ.s 			page 4
+ARM GAS  C:\Temp\ccLaivOx.s 			page 4
 
 
   46:Src/control.c ****     move_speed_err_I = move_speed_err_I + move_speed_I*0.001*move_speed_err;
@@ -238,7 +238,7 @@ ARM GAS  C:\Temp\cc8obrvJ.s 			page 1
   50:Src/control.c ****     move_speed_err_PI = move_speed_P * move_speed_err + move_speed_err_I;
  182              		.loc 1 50 5 is_stmt 1 view .LVU27
  183              		.loc 1 50 38 is_stmt 0 view .LVU28
-ARM GAS  C:\Temp\cc8obrvJ.s 			page 5
+ARM GAS  C:\Temp\ccLaivOx.s 			page 5
 
 
  184 0086 9FED0E0A 		vldr.32	s0, .L9+16
@@ -298,7 +298,7 @@ ARM GAS  C:\Temp\cc8obrvJ.s 			page 1
  233              		.section	.text.clr_trace_operate_history,"ax",%progbits
  234              		.align	1
  235              		.global	clr_trace_operate_history
-ARM GAS  C:\Temp\cc8obrvJ.s 			page 6
+ARM GAS  C:\Temp\ccLaivOx.s 			page 6
 
 
  236              		.syntax unified
@@ -329,7 +329,7 @@ ARM GAS  C:\Temp\cc8obrvJ.s 			page 1
  254              		.loc 1 64 24 is_stmt 0 view .LVU43
  255 0006 024A     		ldr	r2, .L12+4
  256 0008 1360     		str	r3, [r2]	@ float
-  65:Src/control.c **** }...
+  65:Src/control.c **** }
  257              		.loc 1 65 1 view .LVU44
  258 000a 7047     		bx	lr
  259              	.L13:
@@ -339,62 +339,103 @@ ARM GAS  C:\Temp\cc8obrvJ.s 			page 1
  263 0010 00000000 		.word	.LANCHOR3
  264              		.cfi_endproc
  265              	.LFE6:
- 267              		.section	.bss.move_speed_err_I,"aw",%nobits
- 268              		.align	2
- 269              		.set	.LANCHOR2,. + 0
- 272              	move_speed_err_I:
- 273 0000 00000000 		.space	4
- 274              		.section	.bss.rotate_speed_err_I,"aw",%nobits
- 275              		.align	2
- 276              		.set	.LANCHOR3,. + 0
- 279              	rotate_speed_err_I:
- 280 0000 00000000 		.space	4
- 281              		.section	.bss.target_vol_diff_ctrl,"aw",%nobits
- 282              		.align	2
- 283              		.set	.LANCHOR1,. + 0
- 286              	target_vol_diff_ctrl:
- 287 0000 00000000 		.space	4
- 288              		.section	.bss.target_vol_sum_ctrl,"aw",%nobits
- 289              		.align	2
- 290              		.set	.LANCHOR0,. + 0
- 293              	target_vol_sum_ctrl:
-ARM GAS  C:\Temp\cc8obrvJ.s 			page 7
+ 267              		.section	.text.adjust_trace_theta,"ax",%progbits
+ 268              		.align	1
+ 269              		.global	adjust_trace_theta
+ 270              		.syntax unified
+ 271              		.thumb
+ 272              		.thumb_func
+ 273              		.fpu fpv4-sp-d16
+ 275              	adjust_trace_theta:
+ 276              	.LFB7:
+  66:Src/control.c **** 
+  67:Src/control.c **** //機能	: 軌跡制御の角度履歴フィルタ
+  68:Src/control.c **** //引数	: なし
+  69:Src/control.c **** //返り値	: なし
+  70:Src/control.c **** void adjust_trace_theta ( void )
+  71:Src/control.c **** {
+ 277              		.loc 1 71 1 is_stmt 1 view -0
+ 278              		.cfi_startproc
+ 279              		@ args = 0, pretend = 0, frame = 0
+ 280              		@ frame_needed = 0, uses_anonymous_args = 0
+ARM GAS  C:\Temp\ccLaivOx.s 			page 7
 
 
- 294 0000 00000000 		.space	4
- 295              		.text
- 296              	.Letext0:
- 297              		.file 2 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\lock.h"
- 298              		.file 3 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\_types.h"
- 299              		.file 4 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\lib\\gcc\\arm-none-eabi\\9.2.1\\include\\st
- 300              		.file 5 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\reent.h"
- 301              		.file 6 "Inc/target.h"
- 302              		.file 7 "Inc/mouse_state.h"
-ARM GAS  C:\Temp\cc8obrvJ.s 			page 8
+ 281              		@ link register save eliminated.
+  72:Src/control.c ****     rotate_speed_err_I = 0.0 * rotate_speed_err_I;	    //角速度偏差積分
+ 282              		.loc 1 72 5 view .LVU46
+ 283              		.loc 1 72 24 is_stmt 0 view .LVU47
+ 284 0000 044B     		ldr	r3, .L15
+ 285 0002 D3ED007A 		vldr.32	s15, [r3]
+ 286 0006 9FED047A 		vldr.32	s14, .L15+4
+ 287 000a 67EE877A 		vmul.f32	s15, s15, s14
+ 288 000e C3ED007A 		vstr.32	s15, [r3]
+  73:Src/control.c **** }...
+ 289              		.loc 1 73 1 view .LVU48
+ 290 0012 7047     		bx	lr
+ 291              	.L16:
+ 292              		.align	2
+ 293              	.L15:
+ 294 0014 00000000 		.word	.LANCHOR3
+ 295 0018 00000000 		.word	0
+ 296              		.cfi_endproc
+ 297              	.LFE7:
+ 299              		.section	.bss.move_speed_err_I,"aw",%nobits
+ 300              		.align	2
+ 301              		.set	.LANCHOR2,. + 0
+ 304              	move_speed_err_I:
+ 305 0000 00000000 		.space	4
+ 306              		.section	.bss.rotate_speed_err_I,"aw",%nobits
+ 307              		.align	2
+ 308              		.set	.LANCHOR3,. + 0
+ 311              	rotate_speed_err_I:
+ 312 0000 00000000 		.space	4
+ 313              		.section	.bss.target_vol_diff_ctrl,"aw",%nobits
+ 314              		.align	2
+ 315              		.set	.LANCHOR1,. + 0
+ 318              	target_vol_diff_ctrl:
+ 319 0000 00000000 		.space	4
+ 320              		.section	.bss.target_vol_sum_ctrl,"aw",%nobits
+ 321              		.align	2
+ 322              		.set	.LANCHOR0,. + 0
+ 325              	target_vol_sum_ctrl:
+ 326 0000 00000000 		.space	4
+ 327              		.text
+ 328              	.Letext0:
+ 329              		.file 2 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\lock.h"
+ 330              		.file 3 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\_types.h"
+ 331              		.file 4 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\lib\\gcc\\arm-none-eabi\\9.2.1\\include\\st
+ 332              		.file 5 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\reent.h"
+ 333              		.file 6 "Inc/target.h"
+ 334              		.file 7 "Inc/mouse_state.h"
+ARM GAS  C:\Temp\ccLaivOx.s 			page 8
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 control.c
-  C:\Temp\cc8obrvJ.s:18     .text.get_target_vol_sum_ctrl:00000000 $t
-  C:\Temp\cc8obrvJ.s:26     .text.get_target_vol_sum_ctrl:00000000 get_target_vol_sum_ctrl
-  C:\Temp\cc8obrvJ.s:42     .text.get_target_vol_sum_ctrl:00000008 $d
-  C:\Temp\cc8obrvJ.s:47     .text.get_target_vol_diff_ctrl:00000000 $t
-  C:\Temp\cc8obrvJ.s:54     .text.get_target_vol_diff_ctrl:00000000 get_target_vol_diff_ctrl
-  C:\Temp\cc8obrvJ.s:69     .text.get_target_vol_diff_ctrl:00000008 $d
-  C:\Temp\cc8obrvJ.s:78     .text.calc_motor_vol_ctrl:00000000 $t
-  C:\Temp\cc8obrvJ.s:85     .text.calc_motor_vol_ctrl:00000000 calc_motor_vol_ctrl
-  C:\Temp\cc8obrvJ.s:220    .text.calc_motor_vol_ctrl:000000b0 $d
-  C:\Temp\cc8obrvJ.s:234    .text.clr_trace_operate_history:00000000 $t
-  C:\Temp\cc8obrvJ.s:241    .text.clr_trace_operate_history:00000000 clr_trace_operate_history
-  C:\Temp\cc8obrvJ.s:262    .text.clr_trace_operate_history:0000000c $d
-  C:\Temp\cc8obrvJ.s:268    .bss.move_speed_err_I:00000000 $d
-  C:\Temp\cc8obrvJ.s:272    .bss.move_speed_err_I:00000000 move_speed_err_I
-  C:\Temp\cc8obrvJ.s:275    .bss.rotate_speed_err_I:00000000 $d
-  C:\Temp\cc8obrvJ.s:279    .bss.rotate_speed_err_I:00000000 rotate_speed_err_I
-  C:\Temp\cc8obrvJ.s:282    .bss.target_vol_diff_ctrl:00000000 $d
-  C:\Temp\cc8obrvJ.s:286    .bss.target_vol_diff_ctrl:00000000 target_vol_diff_ctrl
-  C:\Temp\cc8obrvJ.s:289    .bss.target_vol_sum_ctrl:00000000 $d
-  C:\Temp\cc8obrvJ.s:293    .bss.target_vol_sum_ctrl:00000000 target_vol_sum_ctrl
+  C:\Temp\ccLaivOx.s:18     .text.get_target_vol_sum_ctrl:00000000 $t
+  C:\Temp\ccLaivOx.s:26     .text.get_target_vol_sum_ctrl:00000000 get_target_vol_sum_ctrl
+  C:\Temp\ccLaivOx.s:42     .text.get_target_vol_sum_ctrl:00000008 $d
+  C:\Temp\ccLaivOx.s:47     .text.get_target_vol_diff_ctrl:00000000 $t
+  C:\Temp\ccLaivOx.s:54     .text.get_target_vol_diff_ctrl:00000000 get_target_vol_diff_ctrl
+  C:\Temp\ccLaivOx.s:69     .text.get_target_vol_diff_ctrl:00000008 $d
+  C:\Temp\ccLaivOx.s:78     .text.calc_motor_vol_ctrl:00000000 $t
+  C:\Temp\ccLaivOx.s:85     .text.calc_motor_vol_ctrl:00000000 calc_motor_vol_ctrl
+  C:\Temp\ccLaivOx.s:220    .text.calc_motor_vol_ctrl:000000b0 $d
+  C:\Temp\ccLaivOx.s:234    .text.clr_trace_operate_history:00000000 $t
+  C:\Temp\ccLaivOx.s:241    .text.clr_trace_operate_history:00000000 clr_trace_operate_history
+  C:\Temp\ccLaivOx.s:262    .text.clr_trace_operate_history:0000000c $d
+  C:\Temp\ccLaivOx.s:268    .text.adjust_trace_theta:00000000 $t
+  C:\Temp\ccLaivOx.s:275    .text.adjust_trace_theta:00000000 adjust_trace_theta
+  C:\Temp\ccLaivOx.s:294    .text.adjust_trace_theta:00000014 $d
+  C:\Temp\ccLaivOx.s:300    .bss.move_speed_err_I:00000000 $d
+  C:\Temp\ccLaivOx.s:304    .bss.move_speed_err_I:00000000 move_speed_err_I
+  C:\Temp\ccLaivOx.s:307    .bss.rotate_speed_err_I:00000000 $d
+  C:\Temp\ccLaivOx.s:311    .bss.rotate_speed_err_I:00000000 rotate_speed_err_I
+  C:\Temp\ccLaivOx.s:314    .bss.target_vol_diff_ctrl:00000000 $d
+  C:\Temp\ccLaivOx.s:318    .bss.target_vol_diff_ctrl:00000000 target_vol_diff_ctrl
+  C:\Temp\ccLaivOx.s:321    .bss.target_vol_sum_ctrl:00000000 $d
+  C:\Temp\ccLaivOx.s:325    .bss.target_vol_sum_ctrl:00000000 target_vol_sum_ctrl
 
 UNDEFINED SYMBOLS
 __aeabi_f2d

@@ -63,3 +63,11 @@ void clr_trace_operate_history ( void )
     move_speed_err_I = 0; 		//移動速度偏差積分
     rotate_speed_err_I = 0;	    //角速度偏差積分
 }
+
+//機能	: 軌跡制御の角度履歴フィルタ
+//引数	: なし
+//返り値	: なし
+void adjust_trace_theta ( void )
+{
+    rotate_speed_err_I = 0.0 * rotate_speed_err_I;	    //角速度偏差積分
+}

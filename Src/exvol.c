@@ -137,6 +137,12 @@ void clr_operate_history(void)
 			break;
 		
 		case side_wall:
+			switch(get_side_wall_ctrl_mode()){
+				case none:
+					break;
+				default:
+					adjust_trace_theta();
+			}
 			clr_frontwall_operate_history(); //前壁制御の操作履歴をクリア
 			break;
 	}
