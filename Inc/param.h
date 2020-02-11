@@ -87,8 +87,8 @@
 #define side_sensor_th          (100)               //横壁センサ値の閾値
 #define side_sensor_th_add      (300)               //横壁センサ値の閾値変化量
 #define side_sensor_diff_th     (3)                 //横壁センサ変化量の閾値
-#define side_wall_P             (100)                //横壁制御　Pゲイン
-#define side_wall_D             (0.391522248909601) //横壁制御　Dゲイン
+#define side_wall_P             (100)               //横壁制御　Pゲイン
+#define side_wall_D             (0)               //横壁制御　Dゲイン
 #define side_wall_fil           (294.083904215522)  //横壁制御　フィルタ係数
 
 #define ir_diff_ave_num         (10)                //IRセンサの変動値の移動平均期間
@@ -104,5 +104,9 @@
 #define pinion_gear_num		(9.0f)								//ピニオンギヤ数
 #define wheel_gear_num		(37.0f)								//ホイールギア数
 #define gear_rate			(wheel_gear_num/pinion_gear_num)	//変速比（ギア比）
+
+//exvol
+#define rate_side_wall      (0.3)                 //壁制御時の壁制御による印加電圧の割合
+
 
 #endif /* PARAM_H_*/

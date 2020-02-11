@@ -69,5 +69,5 @@ void clr_trace_operate_history ( void )
 //返り値	: なし
 void adjust_trace_theta ( void )
 {
-    rotate_speed_err_I = 0.0 * rotate_speed_err_I;	    //角速度偏差積分
+    rotate_speed_err_I = 0.99 * rotate_speed_err_I;	    //角速度偏差積分
 }

@@ -1,6 +1,7 @@
 
 
 #include <stdio.h>
+#include <math.h>
 #include "adjust.h"
 #include "param.h"
 #include "exvol.h"
@@ -52,8 +53,12 @@ void set_target_side_sensor(void)
 	static uint8_t target_set_flg = 0;
 	if(target_set_flg == 0) 
 	{
-		target_sensor_sl = SensorValue2length(1);
-		target_sensor_sr = SensorValue2length(2);	
+		//target_sensor_sl = SensorValue2length(1);
+		//target_sensor_sr = SensorValue2length(2);
+		//デバッグ中	
+		target_sensor_sl = 0.024331;
+		target_sensor_sr = 0.023078;	
+
 		target_set_flg = 1;
 	}
 }
@@ -115,7 +120,6 @@ void calc_side_wall_ctrl_mode ( void )
     int16_t side_sensor_l_diff_sum = 0; 	//左前センサ値変化量合計
 	float side_sensor_r_diff_ave = 0;		//右前センサ値平均
     float side_sensor_l_diff_ave = 0; 		//左前センサ値平均
-
 
     typedef struct {
 	int16_t	right;			
@@ -256,8 +260,13 @@ void calc_motor_vol_side_wall(void)
 	side_wall_err_P = side_wall_P * side_wall_err;
 	
 	//D項
-	side_wall_err_D = (side_wall_err_D_prev + side_wall_D * side_wall_fil * (side_wall_err - side_wall_err_prev))
-								/(1+side_wall_fil*0.001);
+	//side_wall_err_D = (side_wall_err_D_prev + side_wall_D * side_wall_fil * (side_wall_err - side_wall_err_prev))
+	//							/(1+side_wall_fil*0.001);
+
+	//D項
+	//y方向の速度
+	//速度*目標角度と実角度のエラー
+	side_wall_err_D = -1 * side_wall_D * get_move_speed() * (get_rotation_angle() - get_ideal_angle());
 
 	//合算
 	side_wall_err_PD = side_wall_err_P + side_wall_err_D;

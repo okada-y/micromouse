@@ -8,6 +8,7 @@
 #include "control.h"
 #include "adjust.h"
 #include "battery.h"
+#include "param.h"
 
 
 static ctrl_mode_num ctrl_mode = trace;
@@ -102,7 +103,8 @@ void set_motor_vol_side_wall(void)
 
 		case both_side:
 			target_vol_sum = get_target_vol_sum_ctrl();
-			target_vol_diff = get_target_vol_diff_sidewall();
+			target_vol_diff = rate_side_wall * get_target_vol_diff_sidewall()
+								+(1 - rate_side_wall) * get_target_vol_diff_ctrl();
 			break;
 
 		case none: //両壁がないときは軌跡制御に
