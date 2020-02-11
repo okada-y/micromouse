@@ -1,4 +1,4 @@
-ARM GAS  C:\Temp\cc6AwCg7.s 			page 1
+ARM GAS  C:\Temp\ccL8L4V0.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,7 +58,7 @@ ARM GAS  C:\Temp\cc6AwCg7.s 			page 1
   27:Src/exvol.c   **** {
   28:Src/exvol.c   **** 	set_motor_vol();		//印加電圧の和、差を制御モードに従い決定
   29:Src/exvol.c   **** 	clr_operate_history();	//各制御の操作履歴クリア
-ARM GAS  C:\Temp\cc6AwCg7.s 			page 2
+ARM GAS  C:\Temp\ccL8L4V0.s 			page 2
 
 
   30:Src/exvol.c   **** 	calc_motor_vol();		//印加電圧の和、差から各モータの印加電圧を決定する。
@@ -118,7 +118,7 @@ ARM GAS  C:\Temp\cc6AwCg7.s 			page 1
   58:Src/exvol.c   **** 		break;
   59:Src/exvol.c   **** 	
   60:Src/exvol.c   **** 	case side_wall:
-ARM GAS  C:\Temp\cc6AwCg7.s 			page 3
+ARM GAS  C:\Temp\ccL8L4V0.s 			page 3
 
 
   61:Src/exvol.c   **** 		set_motor_vol_side_wall();
@@ -178,7 +178,7 @@ ARM GAS  C:\Temp\cc6AwCg7.s 			page 1
   96              		.thumb_func
   97              		.fpu fpv4-sp-d16
   99              	set_motor_vol_front_wall:
-ARM GAS  C:\Temp\cc6AwCg7.s 			page 4
+ARM GAS  C:\Temp\ccL8L4V0.s 			page 4
 
 
  100              	.LFB137:
@@ -238,7 +238,7 @@ ARM GAS  C:\Temp\cc6AwCg7.s 			page 1
  147              	.LFB138:
   87:Src/exvol.c   **** 
   88:Src/exvol.c   **** //機能 	:横壁制御時の印可電圧出力(差のみ)
-ARM GAS  C:\Temp\cc6AwCg7.s 			page 5
+ARM GAS  C:\Temp\ccL8L4V0.s 			page 5
 
 
   89:Src/exvol.c   **** //引数 	:なし
@@ -262,13 +262,13 @@ ARM GAS  C:\Temp\cc6AwCg7.s 			page 1
  161 0002 FFF7FEFF 		bl	get_side_wall_ctrl_mode
  162              	.LVL5:
  163 0006 0328     		cmp	r0, #3
- 164 0008 0DD8     		bhi	.L12
+ 164 0008 2AD8     		bhi	.L12
  165 000a DFE800F0 		tbb	[pc, r0]
  166              	.L15:
  167 000e 02       		.byte	(.L18-.L15)/2
- 168 000f 0D       		.byte	(.L17-.L15)/2
- 169 0010 18       		.byte	(.L16-.L15)/2
- 170 0011 40       		.byte	(.L14-.L15)/2
+ 168 000f 2A       		.byte	(.L17-.L15)/2
+ 169 0010 52       		.byte	(.L16-.L15)/2
+ 170 0011 7A       		.byte	(.L14-.L15)/2
  171              		.p2align 1
  172              	.L18:
   94:Src/exvol.c   **** 		case right:
@@ -278,913 +278,983 @@ ARM GAS  C:\Temp\cc6AwCg7.s 			page 1
  175 0012 FFF7FEFF 		bl	get_target_vol_sum_ctrl
  176              	.LVL6:
  177              		.loc 1 95 19 view .LVU25
- 178 0016 284B     		ldr	r3, .L20+16
+ 178 0016 444B     		ldr	r3, .L20+16
  179 0018 83ED000A 		vstr.32	s0, [r3]
-  96:Src/exvol.c   **** 			target_vol_diff = get_target_vol_diff_sidewall();
+  96:Src/exvol.c   **** 			target_vol_diff = rate_side_wall * get_target_vol_diff_sidewall()
  180              		.loc 1 96 4 is_stmt 1 view .LVU26
- 181              		.loc 1 96 22 is_stmt 0 view .LVU27
+ 181              		.loc 1 96 39 is_stmt 0 view .LVU27
  182 001c FFF7FEFF 		bl	get_target_vol_diff_sidewall
  183              	.LVL7:
- 184              		.loc 1 96 20 view .LVU28
- 185 0020 264B     		ldr	r3, .L20+20
- 186 0022 83ED000A 		vstr.32	s0, [r3]
-  97:Src/exvol.c   **** 			break;
- 187              		.loc 1 97 4 is_stmt 1 view .LVU29
- 188              	.L12:
-  98:Src/exvol.c   **** 		
-  99:Src/exvol.c   **** 		case left:
- 100:Src/exvol.c   **** 			target_vol_sum = get_target_vol_sum_ctrl();	
- 101:Src/exvol.c   **** 			target_vol_diff = get_target_vol_diff_sidewall();
- 102:Src/exvol.c   **** 			break;
- 103:Src/exvol.c   **** 
- 104:Src/exvol.c   **** 		case both_side:
-ARM GAS  C:\Temp\cc6AwCg7.s 			page 6
+ 184 0020 10EE100A 		vmov	r0, s0
+ 185 0024 FFF7FEFF 		bl	__aeabi_f2d
+ 186              	.LVL8:
+ 187              		.loc 1 96 37 view .LVU28
+ 188 0028 3BA3     		adr	r3, .L20
+ 189 002a D3E90023 		ldrd	r2, [r3]
+ 190 002e FFF7FEFF 		bl	__aeabi_dmul
+ 191              	.LVL9:
+ 192 0032 0446     		mov	r4, r0
+ 193 0034 0D46     		mov	r5, r1
+  97:Src/exvol.c   **** 								+(1 - rate_side_wall) * get_target_vol_diff_ctrl();
+ 194              		.loc 1 97 33 view .LVU29
+ 195 0036 FFF7FEFF 		bl	get_target_vol_diff_ctrl
+ARM GAS  C:\Temp\ccL8L4V0.s 			page 6
 
 
- 105:Src/exvol.c   **** 			target_vol_sum = get_target_vol_sum_ctrl();
- 106:Src/exvol.c   **** 			target_vol_diff = rate_side_wall * get_target_vol_diff_sidewall()
- 107:Src/exvol.c   **** 								+(1 - rate_side_wall) * get_target_vol_diff_ctrl();
- 108:Src/exvol.c   **** 			break;
- 109:Src/exvol.c   **** 
- 110:Src/exvol.c   **** 		case none: //両壁がないときは軌跡制御に
- 111:Src/exvol.c   **** 			target_vol_sum = get_target_vol_sum_ctrl();
- 112:Src/exvol.c   **** 			target_vol_diff = get_target_vol_diff_ctrl();
- 113:Src/exvol.c   **** 			break;
- 114:Src/exvol.c   **** 	}
- 115:Src/exvol.c   **** }
- 189              		.loc 1 115 1 is_stmt 0 view .LVU30
- 190 0026 38BD     		pop	{r3, r4, r5, pc}
- 191              	.L17:
- 100:Src/exvol.c   **** 			target_vol_diff = get_target_vol_diff_sidewall();
- 192              		.loc 1 100 4 is_stmt 1 view .LVU31
- 100:Src/exvol.c   **** 			target_vol_diff = get_target_vol_diff_sidewall();
- 193              		.loc 1 100 21 is_stmt 0 view .LVU32
- 194 0028 FFF7FEFF 		bl	get_target_vol_sum_ctrl
- 195              	.LVL8:
- 100:Src/exvol.c   **** 			target_vol_diff = get_target_vol_diff_sidewall();
- 196              		.loc 1 100 19 view .LVU33
- 197 002c 224B     		ldr	r3, .L20+16
- 198 002e 83ED000A 		vstr.32	s0, [r3]
- 101:Src/exvol.c   **** 			break;
- 199              		.loc 1 101 4 is_stmt 1 view .LVU34
- 101:Src/exvol.c   **** 			break;
- 200              		.loc 1 101 22 is_stmt 0 view .LVU35
- 201 0032 FFF7FEFF 		bl	get_target_vol_diff_sidewall
- 202              	.LVL9:
- 101:Src/exvol.c   **** 			break;
- 203              		.loc 1 101 20 view .LVU36
- 204 0036 214B     		ldr	r3, .L20+20
- 205 0038 83ED000A 		vstr.32	s0, [r3]
- 102:Src/exvol.c   **** 
- 206              		.loc 1 102 4 is_stmt 1 view .LVU37
- 207 003c F3E7     		b	.L12
- 208              	.L16:
- 105:Src/exvol.c   **** 			target_vol_diff = rate_side_wall * get_target_vol_diff_sidewall()
- 209              		.loc 1 105 4 view .LVU38
- 105:Src/exvol.c   **** 			target_vol_diff = rate_side_wall * get_target_vol_diff_sidewall()
- 210              		.loc 1 105 21 is_stmt 0 view .LVU39
- 211 003e FFF7FEFF 		bl	get_target_vol_sum_ctrl
- 212              	.LVL10:
- 105:Src/exvol.c   **** 			target_vol_diff = rate_side_wall * get_target_vol_diff_sidewall()
- 213              		.loc 1 105 19 view .LVU40
- 214 0042 1D4B     		ldr	r3, .L20+16
- 215 0044 83ED000A 		vstr.32	s0, [r3]
- 106:Src/exvol.c   **** 								+(1 - rate_side_wall) * get_target_vol_diff_ctrl();
- 216              		.loc 1 106 4 is_stmt 1 view .LVU41
- 106:Src/exvol.c   **** 								+(1 - rate_side_wall) * get_target_vol_diff_ctrl();
- 217              		.loc 1 106 39 is_stmt 0 view .LVU42
- 218 0048 FFF7FEFF 		bl	get_target_vol_diff_sidewall
- 219              	.LVL11:
- 220 004c 10EE100A 		vmov	r0, s0
- 221 0050 FFF7FEFF 		bl	__aeabi_f2d
- 222              	.LVL12:
-ARM GAS  C:\Temp\cc6AwCg7.s 			page 7
+ 196              	.LVL10:
+ 197 003a 10EE100A 		vmov	r0, s0
+ 198 003e FFF7FEFF 		bl	__aeabi_f2d
+ 199              	.LVL11:
+ 200              		.loc 1 97 31 view .LVU30
+ 201 0042 37A3     		adr	r3, .L20+8
+ 202 0044 D3E90023 		ldrd	r2, [r3]
+ 203 0048 FFF7FEFF 		bl	__aeabi_dmul
+ 204              	.LVL12:
+ 205 004c 0246     		mov	r2, r0
+ 206 004e 0B46     		mov	r3, r1
+ 207              		.loc 1 97 9 view .LVU31
+ 208 0050 2046     		mov	r0, r4
+ 209 0052 2946     		mov	r1, r5
+ 210 0054 FFF7FEFF 		bl	__aeabi_dadd
+ 211              	.LVL13:
+ 212 0058 FFF7FEFF 		bl	__aeabi_d2f
+ 213              	.LVL14:
+  96:Src/exvol.c   **** 			target_vol_diff = rate_side_wall * get_target_vol_diff_sidewall()
+ 214              		.loc 1 96 20 view .LVU32
+ 215 005c 334B     		ldr	r3, .L20+20
+ 216 005e 1860     		str	r0, [r3]	@ float
+  98:Src/exvol.c   **** 			break;
+ 217              		.loc 1 98 4 is_stmt 1 view .LVU33
+ 218              	.L12:
+  99:Src/exvol.c   **** 		
+ 100:Src/exvol.c   **** 		case left:
+ 101:Src/exvol.c   **** 			target_vol_sum = get_target_vol_sum_ctrl();	
+ 102:Src/exvol.c   **** 			target_vol_diff = rate_side_wall * get_target_vol_diff_sidewall()
+ 103:Src/exvol.c   **** 								+(1 - rate_side_wall) * get_target_vol_diff_ctrl();
+ 104:Src/exvol.c   **** 			break;
+ 105:Src/exvol.c   **** 
+ 106:Src/exvol.c   **** 		case both_side:
+ 107:Src/exvol.c   **** 			target_vol_sum = get_target_vol_sum_ctrl();
+ 108:Src/exvol.c   **** 			target_vol_diff = rate_side_wall * get_target_vol_diff_sidewall()
+ 109:Src/exvol.c   **** 								+(1 - rate_side_wall) * get_target_vol_diff_ctrl();
+ 110:Src/exvol.c   **** 			break;
+ 111:Src/exvol.c   **** 
+ 112:Src/exvol.c   **** 		case none: //両壁がないときは軌跡制御に
+ 113:Src/exvol.c   **** 			target_vol_sum = get_target_vol_sum_ctrl();
+ 114:Src/exvol.c   **** 			target_vol_diff = get_target_vol_diff_ctrl();
+ 115:Src/exvol.c   **** 			break;
+ 116:Src/exvol.c   **** 	}
+ 117:Src/exvol.c   **** }
+ 219              		.loc 1 117 1 is_stmt 0 view .LVU34
+ 220 0060 38BD     		pop	{r3, r4, r5, pc}
+ 221              	.L17:
+ 101:Src/exvol.c   **** 			target_vol_diff = rate_side_wall * get_target_vol_diff_sidewall()
+ 222              		.loc 1 101 4 is_stmt 1 view .LVU35
+ 101:Src/exvol.c   **** 			target_vol_diff = rate_side_wall * get_target_vol_diff_sidewall()
+ 223              		.loc 1 101 21 is_stmt 0 view .LVU36
+ 224 0062 FFF7FEFF 		bl	get_target_vol_sum_ctrl
+ 225              	.LVL15:
+ 101:Src/exvol.c   **** 			target_vol_diff = rate_side_wall * get_target_vol_diff_sidewall()
+ 226              		.loc 1 101 19 view .LVU37
+ 227 0066 304B     		ldr	r3, .L20+16
+ 228 0068 83ED000A 		vstr.32	s0, [r3]
+ARM GAS  C:\Temp\ccL8L4V0.s 			page 7
 
 
- 106:Src/exvol.c   **** 								+(1 - rate_side_wall) * get_target_vol_diff_ctrl();
- 223              		.loc 1 106 37 view .LVU43
- 224 0054 14A3     		adr	r3, .L20
- 225 0056 D3E90023 		ldrd	r2, [r3]
- 226 005a FFF7FEFF 		bl	__aeabi_dmul
- 227              	.LVL13:
- 228 005e 0446     		mov	r4, r0
- 229 0060 0D46     		mov	r5, r1
- 107:Src/exvol.c   **** 			break;
- 230              		.loc 1 107 33 view .LVU44
- 231 0062 FFF7FEFF 		bl	get_target_vol_diff_ctrl
- 232              	.LVL14:
- 233 0066 10EE100A 		vmov	r0, s0
- 234 006a FFF7FEFF 		bl	__aeabi_f2d
- 235              	.LVL15:
- 107:Src/exvol.c   **** 			break;
- 236              		.loc 1 107 31 view .LVU45
- 237 006e 10A3     		adr	r3, .L20+8
- 238 0070 D3E90023 		ldrd	r2, [r3]
- 239 0074 FFF7FEFF 		bl	__aeabi_dmul
- 240              	.LVL16:
- 241 0078 0246     		mov	r2, r0
- 242 007a 0B46     		mov	r3, r1
- 107:Src/exvol.c   **** 			break;
- 243              		.loc 1 107 9 view .LVU46
- 244 007c 2046     		mov	r0, r4
- 245 007e 2946     		mov	r1, r5
- 246 0080 FFF7FEFF 		bl	__aeabi_dadd
- 247              	.LVL17:
- 248 0084 FFF7FEFF 		bl	__aeabi_d2f
- 249              	.LVL18:
- 106:Src/exvol.c   **** 								+(1 - rate_side_wall) * get_target_vol_diff_ctrl();
- 250              		.loc 1 106 20 view .LVU47
- 251 0088 0C4B     		ldr	r3, .L20+20
- 252 008a 1860     		str	r0, [r3]	@ float
- 108:Src/exvol.c   **** 
- 253              		.loc 1 108 4 is_stmt 1 view .LVU48
- 254 008c CBE7     		b	.L12
- 255              	.L14:
- 111:Src/exvol.c   **** 			target_vol_diff = get_target_vol_diff_ctrl();
- 256              		.loc 1 111 4 view .LVU49
- 111:Src/exvol.c   **** 			target_vol_diff = get_target_vol_diff_ctrl();
- 257              		.loc 1 111 21 is_stmt 0 view .LVU50
- 258 008e FFF7FEFF 		bl	get_target_vol_sum_ctrl
- 259              	.LVL19:
- 111:Src/exvol.c   **** 			target_vol_diff = get_target_vol_diff_ctrl();
- 260              		.loc 1 111 19 view .LVU51
- 261 0092 094B     		ldr	r3, .L20+16
- 262 0094 83ED000A 		vstr.32	s0, [r3]
- 112:Src/exvol.c   **** 			break;
- 263              		.loc 1 112 4 is_stmt 1 view .LVU52
- 112:Src/exvol.c   **** 			break;
- 264              		.loc 1 112 22 is_stmt 0 view .LVU53
- 265 0098 FFF7FEFF 		bl	get_target_vol_diff_ctrl
- 266              	.LVL20:
- 112:Src/exvol.c   **** 			break;
- 267              		.loc 1 112 20 view .LVU54
-ARM GAS  C:\Temp\cc6AwCg7.s 			page 8
+ 102:Src/exvol.c   **** 								+(1 - rate_side_wall) * get_target_vol_diff_ctrl();
+ 229              		.loc 1 102 4 is_stmt 1 view .LVU38
+ 102:Src/exvol.c   **** 								+(1 - rate_side_wall) * get_target_vol_diff_ctrl();
+ 230              		.loc 1 102 39 is_stmt 0 view .LVU39
+ 231 006c FFF7FEFF 		bl	get_target_vol_diff_sidewall
+ 232              	.LVL16:
+ 233 0070 10EE100A 		vmov	r0, s0
+ 234 0074 FFF7FEFF 		bl	__aeabi_f2d
+ 235              	.LVL17:
+ 102:Src/exvol.c   **** 								+(1 - rate_side_wall) * get_target_vol_diff_ctrl();
+ 236              		.loc 1 102 37 view .LVU40
+ 237 0078 27A3     		adr	r3, .L20
+ 238 007a D3E90023 		ldrd	r2, [r3]
+ 239 007e FFF7FEFF 		bl	__aeabi_dmul
+ 240              	.LVL18:
+ 241 0082 0446     		mov	r4, r0
+ 242 0084 0D46     		mov	r5, r1
+ 103:Src/exvol.c   **** 			break;
+ 243              		.loc 1 103 33 view .LVU41
+ 244 0086 FFF7FEFF 		bl	get_target_vol_diff_ctrl
+ 245              	.LVL19:
+ 246 008a 10EE100A 		vmov	r0, s0
+ 247 008e FFF7FEFF 		bl	__aeabi_f2d
+ 248              	.LVL20:
+ 103:Src/exvol.c   **** 			break;
+ 249              		.loc 1 103 31 view .LVU42
+ 250 0092 23A3     		adr	r3, .L20+8
+ 251 0094 D3E90023 		ldrd	r2, [r3]
+ 252 0098 FFF7FEFF 		bl	__aeabi_dmul
+ 253              	.LVL21:
+ 254 009c 0246     		mov	r2, r0
+ 255 009e 0B46     		mov	r3, r1
+ 103:Src/exvol.c   **** 			break;
+ 256              		.loc 1 103 9 view .LVU43
+ 257 00a0 2046     		mov	r0, r4
+ 258 00a2 2946     		mov	r1, r5
+ 259 00a4 FFF7FEFF 		bl	__aeabi_dadd
+ 260              	.LVL22:
+ 261 00a8 FFF7FEFF 		bl	__aeabi_d2f
+ 262              	.LVL23:
+ 102:Src/exvol.c   **** 								+(1 - rate_side_wall) * get_target_vol_diff_ctrl();
+ 263              		.loc 1 102 20 view .LVU44
+ 264 00ac 1F4B     		ldr	r3, .L20+20
+ 265 00ae 1860     		str	r0, [r3]	@ float
+ 104:Src/exvol.c   **** 
+ 266              		.loc 1 104 4 is_stmt 1 view .LVU45
+ 267 00b0 D6E7     		b	.L12
+ 268              	.L16:
+ 107:Src/exvol.c   **** 			target_vol_diff = rate_side_wall * get_target_vol_diff_sidewall()
+ 269              		.loc 1 107 4 view .LVU46
+ 107:Src/exvol.c   **** 			target_vol_diff = rate_side_wall * get_target_vol_diff_sidewall()
+ 270              		.loc 1 107 21 is_stmt 0 view .LVU47
+ 271 00b2 FFF7FEFF 		bl	get_target_vol_sum_ctrl
+ 272              	.LVL24:
+ 107:Src/exvol.c   **** 			target_vol_diff = rate_side_wall * get_target_vol_diff_sidewall()
+ 273              		.loc 1 107 19 view .LVU48
+ 274 00b6 1C4B     		ldr	r3, .L20+16
+ARM GAS  C:\Temp\ccL8L4V0.s 			page 8
 
 
- 268 009c 074B     		ldr	r3, .L20+20
- 269 009e 83ED000A 		vstr.32	s0, [r3]
- 113:Src/exvol.c   **** 	}
- 270              		.loc 1 113 4 is_stmt 1 view .LVU55
- 271              		.loc 1 115 1 is_stmt 0 view .LVU56
- 272 00a2 C0E7     		b	.L12
- 273              	.L21:
- 274 00a4 AFF30080 		.align	3
- 275              	.L20:
- 276 00a8 33333333 		.word	858993459
- 277 00ac 3333D33F 		.word	1070805811
- 278 00b0 66666666 		.word	1717986918
- 279 00b4 6666E63F 		.word	1072064102
- 280 00b8 00000000 		.word	.LANCHOR1
- 281 00bc 00000000 		.word	.LANCHOR2
- 282              		.cfi_endproc
- 283              	.LFE138:
- 285              		.section	.text.clr_motor_vol,"ax",%progbits
- 286              		.align	1
- 287              		.global	clr_motor_vol
- 288              		.syntax unified
- 289              		.thumb
- 290              		.thumb_func
- 291              		.fpu fpv4-sp-d16
- 293              	clr_motor_vol:
- 294              	.LFB139:
- 116:Src/exvol.c   **** 
- 117:Src/exvol.c   **** //機能 	:モータ印可電圧初期化
- 118:Src/exvol.c   **** //引数 	:なし
- 119:Src/exvol.c   **** //返り値:なし
- 120:Src/exvol.c   **** void clr_motor_vol(void)
- 121:Src/exvol.c   **** {
- 295              		.loc 1 121 1 is_stmt 1 view -0
- 296              		.cfi_startproc
- 297              		@ args = 0, pretend = 0, frame = 0
- 298              		@ frame_needed = 0, uses_anonymous_args = 0
- 299              		@ link register save eliminated.
- 122:Src/exvol.c   **** 	target_vol_r = 0;
- 300              		.loc 1 122 2 view .LVU58
- 301              		.loc 1 122 15 is_stmt 0 view .LVU59
- 302 0000 0023     		movs	r3, #0
- 303 0002 024A     		ldr	r2, .L23
- 304 0004 1360     		str	r3, [r2]	@ float
- 123:Src/exvol.c   **** 	target_vol_l = 0;
- 305              		.loc 1 123 2 is_stmt 1 view .LVU60
- 306              		.loc 1 123 15 is_stmt 0 view .LVU61
- 307 0006 024A     		ldr	r2, .L23+4
- 308 0008 1360     		str	r3, [r2]	@ float
- 124:Src/exvol.c   **** }
- 309              		.loc 1 124 1 view .LVU62
- 310 000a 7047     		bx	lr
- 311              	.L24:
- 312              		.align	2
- 313              	.L23:
- 314 000c 00000000 		.word	.LANCHOR3
- 315 0010 00000000 		.word	.LANCHOR4
- 316              		.cfi_endproc
-ARM GAS  C:\Temp\cc6AwCg7.s 			page 9
+ 275 00b8 83ED000A 		vstr.32	s0, [r3]
+ 108:Src/exvol.c   **** 								+(1 - rate_side_wall) * get_target_vol_diff_ctrl();
+ 276              		.loc 1 108 4 is_stmt 1 view .LVU49
+ 108:Src/exvol.c   **** 								+(1 - rate_side_wall) * get_target_vol_diff_ctrl();
+ 277              		.loc 1 108 39 is_stmt 0 view .LVU50
+ 278 00bc FFF7FEFF 		bl	get_target_vol_diff_sidewall
+ 279              	.LVL25:
+ 280 00c0 10EE100A 		vmov	r0, s0
+ 281 00c4 FFF7FEFF 		bl	__aeabi_f2d
+ 282              	.LVL26:
+ 108:Src/exvol.c   **** 								+(1 - rate_side_wall) * get_target_vol_diff_ctrl();
+ 283              		.loc 1 108 37 view .LVU51
+ 284 00c8 13A3     		adr	r3, .L20
+ 285 00ca D3E90023 		ldrd	r2, [r3]
+ 286 00ce FFF7FEFF 		bl	__aeabi_dmul
+ 287              	.LVL27:
+ 288 00d2 0446     		mov	r4, r0
+ 289 00d4 0D46     		mov	r5, r1
+ 109:Src/exvol.c   **** 			break;
+ 290              		.loc 1 109 33 view .LVU52
+ 291 00d6 FFF7FEFF 		bl	get_target_vol_diff_ctrl
+ 292              	.LVL28:
+ 293 00da 10EE100A 		vmov	r0, s0
+ 294 00de FFF7FEFF 		bl	__aeabi_f2d
+ 295              	.LVL29:
+ 109:Src/exvol.c   **** 			break;
+ 296              		.loc 1 109 31 view .LVU53
+ 297 00e2 0FA3     		adr	r3, .L20+8
+ 298 00e4 D3E90023 		ldrd	r2, [r3]
+ 299 00e8 FFF7FEFF 		bl	__aeabi_dmul
+ 300              	.LVL30:
+ 301 00ec 0246     		mov	r2, r0
+ 302 00ee 0B46     		mov	r3, r1
+ 109:Src/exvol.c   **** 			break;
+ 303              		.loc 1 109 9 view .LVU54
+ 304 00f0 2046     		mov	r0, r4
+ 305 00f2 2946     		mov	r1, r5
+ 306 00f4 FFF7FEFF 		bl	__aeabi_dadd
+ 307              	.LVL31:
+ 308 00f8 FFF7FEFF 		bl	__aeabi_d2f
+ 309              	.LVL32:
+ 108:Src/exvol.c   **** 								+(1 - rate_side_wall) * get_target_vol_diff_ctrl();
+ 310              		.loc 1 108 20 view .LVU55
+ 311 00fc 0B4B     		ldr	r3, .L20+20
+ 312 00fe 1860     		str	r0, [r3]	@ float
+ 110:Src/exvol.c   **** 
+ 313              		.loc 1 110 4 is_stmt 1 view .LVU56
+ 314 0100 AEE7     		b	.L12
+ 315              	.L14:
+ 113:Src/exvol.c   **** 			target_vol_diff = get_target_vol_diff_ctrl();
+ 316              		.loc 1 113 4 view .LVU57
+ 113:Src/exvol.c   **** 			target_vol_diff = get_target_vol_diff_ctrl();
+ 317              		.loc 1 113 21 is_stmt 0 view .LVU58
+ 318 0102 FFF7FEFF 		bl	get_target_vol_sum_ctrl
+ 319              	.LVL33:
+ 113:Src/exvol.c   **** 			target_vol_diff = get_target_vol_diff_ctrl();
+ 320              		.loc 1 113 19 view .LVU59
+ARM GAS  C:\Temp\ccL8L4V0.s 			page 9
 
 
- 317              	.LFE139:
- 319              		.section	.text.set_motor_vol,"ax",%progbits
- 320              		.align	1
- 321              		.global	set_motor_vol
- 322              		.syntax unified
- 323              		.thumb
- 324              		.thumb_func
- 325              		.fpu fpv4-sp-d16
- 327              	set_motor_vol:
- 328              	.LFB135:
-  49:Src/exvol.c   **** 	switch (ctrl_mode)
- 329              		.loc 1 49 1 is_stmt 1 view -0
- 330              		.cfi_startproc
- 331              		@ args = 0, pretend = 0, frame = 0
- 332              		@ frame_needed = 0, uses_anonymous_args = 0
- 333 0000 08B5     		push	{r3, lr}
- 334              	.LCFI3:
- 335              		.cfi_def_cfa_offset 8
- 336              		.cfi_offset 3, -8
- 337              		.cfi_offset 14, -4
-  50:Src/exvol.c   **** 	{
- 338              		.loc 1 50 2 view .LVU64
- 339 0002 094B     		ldr	r3, .L32
- 340 0004 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
- 341 0006 012B     		cmp	r3, #1
- 342 0008 08D0     		beq	.L26
- 343 000a 022B     		cmp	r3, #2
- 344 000c 09D0     		beq	.L27
- 345 000e 13B1     		cbz	r3, .L31
-  65:Src/exvol.c   **** 
- 346              		.loc 1 65 3 view .LVU65
- 347 0010 FFF7FEFF 		bl	clr_motor_vol
- 348              	.LVL21:
-  68:Src/exvol.c   **** 
- 349              		.loc 1 68 1 is_stmt 0 view .LVU66
- 350 0014 01E0     		b	.L25
- 351              	.L31:
-  53:Src/exvol.c   **** 		break;
- 352              		.loc 1 53 3 is_stmt 1 view .LVU67
- 353 0016 FFF7FEFF 		bl	set_motor_vol_trace
- 354              	.LVL22:
-  54:Src/exvol.c   **** 	
- 355              		.loc 1 54 3 view .LVU68
- 356              	.L25:
-  68:Src/exvol.c   **** 
- 357              		.loc 1 68 1 is_stmt 0 view .LVU69
- 358 001a 08BD     		pop	{r3, pc}
- 359              	.L26:
-  57:Src/exvol.c   **** 		break;
- 360              		.loc 1 57 3 is_stmt 1 view .LVU70
- 361 001c FFF7FEFF 		bl	set_motor_vol_front_wall
- 362              	.LVL23:
-  58:Src/exvol.c   **** 	
- 363              		.loc 1 58 3 view .LVU71
- 364 0020 FBE7     		b	.L25
- 365              	.L27:
-  61:Src/exvol.c   **** 		break;
-ARM GAS  C:\Temp\cc6AwCg7.s 			page 10
+ 321 0106 084B     		ldr	r3, .L20+16
+ 322 0108 83ED000A 		vstr.32	s0, [r3]
+ 114:Src/exvol.c   **** 			break;
+ 323              		.loc 1 114 4 is_stmt 1 view .LVU60
+ 114:Src/exvol.c   **** 			break;
+ 324              		.loc 1 114 22 is_stmt 0 view .LVU61
+ 325 010c FFF7FEFF 		bl	get_target_vol_diff_ctrl
+ 326              	.LVL34:
+ 114:Src/exvol.c   **** 			break;
+ 327              		.loc 1 114 20 view .LVU62
+ 328 0110 064B     		ldr	r3, .L20+20
+ 329 0112 83ED000A 		vstr.32	s0, [r3]
+ 115:Src/exvol.c   **** 	}
+ 330              		.loc 1 115 4 is_stmt 1 view .LVU63
+ 331              		.loc 1 117 1 is_stmt 0 view .LVU64
+ 332 0116 A3E7     		b	.L12
+ 333              	.L21:
+ 334              		.align	3
+ 335              	.L20:
+ 336 0118 33333333 		.word	858993459
+ 337 011c 3333D33F 		.word	1070805811
+ 338 0120 66666666 		.word	1717986918
+ 339 0124 6666E63F 		.word	1072064102
+ 340 0128 00000000 		.word	.LANCHOR1
+ 341 012c 00000000 		.word	.LANCHOR2
+ 342              		.cfi_endproc
+ 343              	.LFE138:
+ 345              		.section	.text.clr_motor_vol,"ax",%progbits
+ 346              		.align	1
+ 347              		.global	clr_motor_vol
+ 348              		.syntax unified
+ 349              		.thumb
+ 350              		.thumb_func
+ 351              		.fpu fpv4-sp-d16
+ 353              	clr_motor_vol:
+ 354              	.LFB139:
+ 118:Src/exvol.c   **** 
+ 119:Src/exvol.c   **** //機能 	:モータ印可電圧初期化
+ 120:Src/exvol.c   **** //引数 	:なし
+ 121:Src/exvol.c   **** //返り値:なし
+ 122:Src/exvol.c   **** void clr_motor_vol(void)
+ 123:Src/exvol.c   **** {
+ 355              		.loc 1 123 1 is_stmt 1 view -0
+ 356              		.cfi_startproc
+ 357              		@ args = 0, pretend = 0, frame = 0
+ 358              		@ frame_needed = 0, uses_anonymous_args = 0
+ 359              		@ link register save eliminated.
+ 124:Src/exvol.c   **** 	target_vol_r = 0;
+ 360              		.loc 1 124 2 view .LVU66
+ 361              		.loc 1 124 15 is_stmt 0 view .LVU67
+ 362 0000 0023     		movs	r3, #0
+ 363 0002 024A     		ldr	r2, .L23
+ 364 0004 1360     		str	r3, [r2]	@ float
+ 125:Src/exvol.c   **** 	target_vol_l = 0;
+ 365              		.loc 1 125 2 is_stmt 1 view .LVU68
+ 366              		.loc 1 125 15 is_stmt 0 view .LVU69
+ 367 0006 024A     		ldr	r2, .L23+4
+ARM GAS  C:\Temp\ccL8L4V0.s 			page 10
 
 
- 366              		.loc 1 61 3 view .LVU72
- 367 0022 FFF7FEFF 		bl	set_motor_vol_side_wall
- 368              	.LVL24:
-  62:Src/exvol.c   **** 	
- 369              		.loc 1 62 3 view .LVU73
- 370 0026 F8E7     		b	.L25
- 371              	.L33:
+ 368 0008 1360     		str	r3, [r2]	@ float
+ 126:Src/exvol.c   **** }
+ 369              		.loc 1 126 1 view .LVU70
+ 370 000a 7047     		bx	lr
+ 371              	.L24:
  372              		.align	2
- 373              	.L32:
- 374 0028 00000000 		.word	.LANCHOR0
- 375              		.cfi_endproc
- 376              	.LFE135:
- 378              		.section	.text.clr_operate_history,"ax",%progbits
- 379              		.align	1
- 380              		.global	clr_operate_history
- 381              		.syntax unified
- 382              		.thumb
- 383              		.thumb_func
- 384              		.fpu fpv4-sp-d16
- 386              	clr_operate_history:
- 387              	.LFB140:
- 125:Src/exvol.c   **** 
- 126:Src/exvol.c   **** //機能 	:各制御モードでの操作量履歴クリア
- 127:Src/exvol.c   **** //引数 	:なし
- 128:Src/exvol.c   **** //返り値:なし
- 129:Src/exvol.c   **** void clr_operate_history(void)
- 130:Src/exvol.c   **** {
- 388              		.loc 1 130 1 view -0
- 389              		.cfi_startproc
- 390              		@ args = 0, pretend = 0, frame = 0
- 391              		@ frame_needed = 0, uses_anonymous_args = 0
- 392 0000 08B5     		push	{r3, lr}
- 393              	.LCFI4:
- 394              		.cfi_def_cfa_offset 8
- 395              		.cfi_offset 3, -8
- 396              		.cfi_offset 14, -4
- 131:Src/exvol.c   **** 	switch(ctrl_mode)
- 397              		.loc 1 131 2 view .LVU75
- 398 0002 0C4B     		ldr	r3, .L42
- 399 0004 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
- 400 0006 012B     		cmp	r3, #1
- 401 0008 06D0     		beq	.L35
- 402 000a 022B     		cmp	r3, #2
- 403 000c 07D0     		beq	.L36
- 404 000e 03B1     		cbz	r3, .L40
- 405              	.L34:
- 132:Src/exvol.c   **** 	{
- 133:Src/exvol.c   **** 		case trace:
- 134:Src/exvol.c   **** 			clr_frontwall_operate_history(); //前壁制御の操作履歴をクリア
- 135:Src/exvol.c   **** 			break;
- 136:Src/exvol.c   **** 
- 137:Src/exvol.c   **** 		case front_wall:
- 138:Src/exvol.c   **** 			clr_trace_operate_history();			//軌跡制御の操作履歴をクリア
- 139:Src/exvol.c   **** 			break;
- 140:Src/exvol.c   **** 		
- 141:Src/exvol.c   **** 		case side_wall:
- 142:Src/exvol.c   **** 			switch(get_side_wall_ctrl_mode()){
-ARM GAS  C:\Temp\cc6AwCg7.s 			page 11
+ 373              	.L23:
+ 374 000c 00000000 		.word	.LANCHOR3
+ 375 0010 00000000 		.word	.LANCHOR4
+ 376              		.cfi_endproc
+ 377              	.LFE139:
+ 379              		.section	.text.set_motor_vol,"ax",%progbits
+ 380              		.align	1
+ 381              		.global	set_motor_vol
+ 382              		.syntax unified
+ 383              		.thumb
+ 384              		.thumb_func
+ 385              		.fpu fpv4-sp-d16
+ 387              	set_motor_vol:
+ 388              	.LFB135:
+  49:Src/exvol.c   **** 	switch (ctrl_mode)
+ 389              		.loc 1 49 1 is_stmt 1 view -0
+ 390              		.cfi_startproc
+ 391              		@ args = 0, pretend = 0, frame = 0
+ 392              		@ frame_needed = 0, uses_anonymous_args = 0
+ 393 0000 08B5     		push	{r3, lr}
+ 394              	.LCFI3:
+ 395              		.cfi_def_cfa_offset 8
+ 396              		.cfi_offset 3, -8
+ 397              		.cfi_offset 14, -4
+  50:Src/exvol.c   **** 	{
+ 398              		.loc 1 50 2 view .LVU72
+ 399 0002 094B     		ldr	r3, .L32
+ 400 0004 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 401 0006 012B     		cmp	r3, #1
+ 402 0008 08D0     		beq	.L26
+ 403 000a 022B     		cmp	r3, #2
+ 404 000c 09D0     		beq	.L27
+ 405 000e 13B1     		cbz	r3, .L31
+  65:Src/exvol.c   **** 
+ 406              		.loc 1 65 3 view .LVU73
+ 407 0010 FFF7FEFF 		bl	clr_motor_vol
+ 408              	.LVL35:
+  68:Src/exvol.c   **** 
+ 409              		.loc 1 68 1 is_stmt 0 view .LVU74
+ 410 0014 01E0     		b	.L25
+ 411              	.L31:
+  53:Src/exvol.c   **** 		break;
+ 412              		.loc 1 53 3 is_stmt 1 view .LVU75
+ 413 0016 FFF7FEFF 		bl	set_motor_vol_trace
+ 414              	.LVL36:
+  54:Src/exvol.c   **** 	
+ 415              		.loc 1 54 3 view .LVU76
+ 416              	.L25:
+  68:Src/exvol.c   **** 
+ 417              		.loc 1 68 1 is_stmt 0 view .LVU77
+ 418 001a 08BD     		pop	{r3, pc}
+ARM GAS  C:\Temp\ccL8L4V0.s 			page 11
 
 
- 143:Src/exvol.c   **** 				case none:
- 144:Src/exvol.c   **** 					break;
- 145:Src/exvol.c   **** 				default:
- 146:Src/exvol.c   **** 					adjust_trace_theta();
- 147:Src/exvol.c   **** 			}
- 148:Src/exvol.c   **** 			clr_frontwall_operate_history(); //前壁制御の操作履歴をクリア
- 149:Src/exvol.c   **** 			break;
- 150:Src/exvol.c   **** 	}
- 151:Src/exvol.c   **** }
- 406              		.loc 1 151 1 is_stmt 0 view .LVU76
- 407 0010 08BD     		pop	{r3, pc}
- 408              	.L40:
- 134:Src/exvol.c   **** 			break;
- 409              		.loc 1 134 4 is_stmt 1 view .LVU77
- 410 0012 FFF7FEFF 		bl	clr_frontwall_operate_history
- 411              	.LVL25:
- 135:Src/exvol.c   **** 
- 412              		.loc 1 135 4 view .LVU78
- 413 0016 FBE7     		b	.L34
- 414              	.L35:
- 138:Src/exvol.c   **** 			break;
- 415              		.loc 1 138 4 view .LVU79
- 416 0018 FFF7FEFF 		bl	clr_trace_operate_history
- 417              	.LVL26:
- 139:Src/exvol.c   **** 		
- 418              		.loc 1 139 4 view .LVU80
- 419 001c F8E7     		b	.L34
- 420              	.L36:
- 142:Src/exvol.c   **** 				case none:
- 421              		.loc 1 142 4 view .LVU81
- 142:Src/exvol.c   **** 				case none:
- 422              		.loc 1 142 11 is_stmt 0 view .LVU82
- 423 001e FFF7FEFF 		bl	get_side_wall_ctrl_mode
- 424              	.LVL27:
- 425 0022 0328     		cmp	r0, #3
- 426 0024 02D1     		bne	.L41
- 427              	.L38:
- 148:Src/exvol.c   **** 			break;
- 428              		.loc 1 148 4 is_stmt 1 view .LVU83
- 429 0026 FFF7FEFF 		bl	clr_frontwall_operate_history
- 430              	.LVL28:
- 149:Src/exvol.c   **** 	}
- 431              		.loc 1 149 4 view .LVU84
- 432              		.loc 1 151 1 is_stmt 0 view .LVU85
- 433 002a F1E7     		b	.L34
- 434              	.L41:
- 146:Src/exvol.c   **** 			}
- 435              		.loc 1 146 6 is_stmt 1 view .LVU86
- 436 002c FFF7FEFF 		bl	adjust_trace_theta
- 437              	.LVL29:
- 438 0030 F9E7     		b	.L38
- 439              	.L43:
- 440 0032 00BF     		.align	2
- 441              	.L42:
- 442 0034 00000000 		.word	.LANCHOR0
- 443              		.cfi_endproc
- 444              	.LFE140:
-ARM GAS  C:\Temp\cc6AwCg7.s 			page 12
+ 419              	.L26:
+  57:Src/exvol.c   **** 		break;
+ 420              		.loc 1 57 3 is_stmt 1 view .LVU78
+ 421 001c FFF7FEFF 		bl	set_motor_vol_front_wall
+ 422              	.LVL37:
+  58:Src/exvol.c   **** 	
+ 423              		.loc 1 58 3 view .LVU79
+ 424 0020 FBE7     		b	.L25
+ 425              	.L27:
+  61:Src/exvol.c   **** 		break;
+ 426              		.loc 1 61 3 view .LVU80
+ 427 0022 FFF7FEFF 		bl	set_motor_vol_side_wall
+ 428              	.LVL38:
+  62:Src/exvol.c   **** 	
+ 429              		.loc 1 62 3 view .LVU81
+ 430 0026 F8E7     		b	.L25
+ 431              	.L33:
+ 432              		.align	2
+ 433              	.L32:
+ 434 0028 00000000 		.word	.LANCHOR0
+ 435              		.cfi_endproc
+ 436              	.LFE135:
+ 438              		.section	.text.clr_operate_history,"ax",%progbits
+ 439              		.align	1
+ 440              		.global	clr_operate_history
+ 441              		.syntax unified
+ 442              		.thumb
+ 443              		.thumb_func
+ 444              		.fpu fpv4-sp-d16
+ 446              	clr_operate_history:
+ 447              	.LFB140:
+ 127:Src/exvol.c   **** 
+ 128:Src/exvol.c   **** //機能 	:各制御モードでの操作量履歴クリア
+ 129:Src/exvol.c   **** //引数 	:なし
+ 130:Src/exvol.c   **** //返り値:なし
+ 131:Src/exvol.c   **** void clr_operate_history(void)
+ 132:Src/exvol.c   **** {
+ 448              		.loc 1 132 1 view -0
+ 449              		.cfi_startproc
+ 450              		@ args = 0, pretend = 0, frame = 0
+ 451              		@ frame_needed = 0, uses_anonymous_args = 0
+ 452 0000 08B5     		push	{r3, lr}
+ 453              	.LCFI4:
+ 454              		.cfi_def_cfa_offset 8
+ 455              		.cfi_offset 3, -8
+ 456              		.cfi_offset 14, -4
+ 133:Src/exvol.c   **** 	switch(ctrl_mode)
+ 457              		.loc 1 133 2 view .LVU83
+ 458 0002 0C4B     		ldr	r3, .L42
+ 459 0004 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 460 0006 012B     		cmp	r3, #1
+ 461 0008 06D0     		beq	.L35
+ 462 000a 022B     		cmp	r3, #2
+ 463 000c 07D0     		beq	.L36
+ 464 000e 03B1     		cbz	r3, .L40
+ 465              	.L34:
+ 134:Src/exvol.c   **** 	{
+ARM GAS  C:\Temp\ccL8L4V0.s 			page 12
 
 
- 446              		.section	.text.calc_motor_vol,"ax",%progbits
- 447              		.align	1
- 448              		.global	calc_motor_vol
- 449              		.syntax unified
- 450              		.thumb
- 451              		.thumb_func
- 452              		.fpu fpv4-sp-d16
- 454              	calc_motor_vol:
- 455              	.LFB141:
- 152:Src/exvol.c   **** 
- 153:Src/exvol.c   **** //機能	: 印加電圧の和、差から各モータに印加する電圧を決定する。
- 154:Src/exvol.c   **** //引数	: なし
- 155:Src/exvol.c   **** //返り値	: なし
- 156:Src/exvol.c   **** void calc_motor_vol ( void )
- 157:Src/exvol.c   **** {
- 456              		.loc 1 157 1 view -0
- 457              		.cfi_startproc
- 458              		@ args = 0, pretend = 0, frame = 0
- 459              		@ frame_needed = 0, uses_anonymous_args = 0
- 460              		@ link register save eliminated.
- 158:Src/exvol.c   **** 	target_vol_r = (target_vol_sum + target_vol_diff)/2;
- 461              		.loc 1 158 2 view .LVU88
- 462              		.loc 1 158 33 is_stmt 0 view .LVU89
- 463 0000 0B4B     		ldr	r3, .L45
- 464 0002 D3ED007A 		vldr.32	s15, [r3]
- 465 0006 0B4B     		ldr	r3, .L45+4
- 466 0008 93ED006A 		vldr.32	s12, [r3]
- 467 000c 37EE867A 		vadd.f32	s14, s15, s12
- 468              		.loc 1 158 51 view .LVU90
- 469 0010 F6EE006A 		vmov.f32	s13, #5.0e-1
- 470 0014 27EE267A 		vmul.f32	s14, s14, s13
- 471              		.loc 1 158 15 view .LVU91
- 472 0018 074B     		ldr	r3, .L45+8
- 473 001a 83ED007A 		vstr.32	s14, [r3]
- 159:Src/exvol.c   **** 	target_vol_l = (target_vol_sum - target_vol_diff)/2;	
- 474              		.loc 1 159 2 is_stmt 1 view .LVU92
- 475              		.loc 1 159 33 is_stmt 0 view .LVU93
- 476 001e 77EEC67A 		vsub.f32	s15, s15, s12
- 477              		.loc 1 159 51 view .LVU94
- 478 0022 67EEA67A 		vmul.f32	s15, s15, s13
- 479              		.loc 1 159 15 view .LVU95
- 480 0026 054B     		ldr	r3, .L45+12
- 481 0028 C3ED007A 		vstr.32	s15, [r3]
- 160:Src/exvol.c   **** }
- 482              		.loc 1 160 1 view .LVU96
- 483 002c 7047     		bx	lr
- 484              	.L46:
- 485 002e 00BF     		.align	2
- 486              	.L45:
- 487 0030 00000000 		.word	.LANCHOR1
- 488 0034 00000000 		.word	.LANCHOR2
- 489 0038 00000000 		.word	.LANCHOR3
- 490 003c 00000000 		.word	.LANCHOR4
- 491              		.cfi_endproc
- 492              	.LFE141:
- 494              		.section	.text.calc_vol2duty,"ax",%progbits
- 495              		.align	1
-ARM GAS  C:\Temp\cc6AwCg7.s 			page 13
+ 135:Src/exvol.c   **** 		case trace:
+ 136:Src/exvol.c   **** 			clr_frontwall_operate_history(); //前壁制御の操作履歴をクリア
+ 137:Src/exvol.c   **** 			break;
+ 138:Src/exvol.c   **** 
+ 139:Src/exvol.c   **** 		case front_wall:
+ 140:Src/exvol.c   **** 			clr_trace_operate_history();			//軌跡制御の操作履歴をクリア
+ 141:Src/exvol.c   **** 			break;
+ 142:Src/exvol.c   **** 		
+ 143:Src/exvol.c   **** 		case side_wall:
+ 144:Src/exvol.c   **** 			switch(get_side_wall_ctrl_mode()){
+ 145:Src/exvol.c   **** 				case none:
+ 146:Src/exvol.c   **** 					break;
+ 147:Src/exvol.c   **** 				default:
+ 148:Src/exvol.c   **** 					adjust_trace_theta();
+ 149:Src/exvol.c   **** 			}
+ 150:Src/exvol.c   **** 			clr_frontwall_operate_history(); //前壁制御の操作履歴をクリア
+ 151:Src/exvol.c   **** 			break;
+ 152:Src/exvol.c   **** 	}
+ 153:Src/exvol.c   **** }
+ 466              		.loc 1 153 1 is_stmt 0 view .LVU84
+ 467 0010 08BD     		pop	{r3, pc}
+ 468              	.L40:
+ 136:Src/exvol.c   **** 			break;
+ 469              		.loc 1 136 4 is_stmt 1 view .LVU85
+ 470 0012 FFF7FEFF 		bl	clr_frontwall_operate_history
+ 471              	.LVL39:
+ 137:Src/exvol.c   **** 
+ 472              		.loc 1 137 4 view .LVU86
+ 473 0016 FBE7     		b	.L34
+ 474              	.L35:
+ 140:Src/exvol.c   **** 			break;
+ 475              		.loc 1 140 4 view .LVU87
+ 476 0018 FFF7FEFF 		bl	clr_trace_operate_history
+ 477              	.LVL40:
+ 141:Src/exvol.c   **** 		
+ 478              		.loc 1 141 4 view .LVU88
+ 479 001c F8E7     		b	.L34
+ 480              	.L36:
+ 144:Src/exvol.c   **** 				case none:
+ 481              		.loc 1 144 4 view .LVU89
+ 144:Src/exvol.c   **** 				case none:
+ 482              		.loc 1 144 11 is_stmt 0 view .LVU90
+ 483 001e FFF7FEFF 		bl	get_side_wall_ctrl_mode
+ 484              	.LVL41:
+ 485 0022 0328     		cmp	r0, #3
+ 486 0024 02D1     		bne	.L41
+ 487              	.L38:
+ 150:Src/exvol.c   **** 			break;
+ 488              		.loc 1 150 4 is_stmt 1 view .LVU91
+ 489 0026 FFF7FEFF 		bl	clr_frontwall_operate_history
+ 490              	.LVL42:
+ 151:Src/exvol.c   **** 	}
+ 491              		.loc 1 151 4 view .LVU92
+ 492              		.loc 1 153 1 is_stmt 0 view .LVU93
+ 493 002a F1E7     		b	.L34
+ 494              	.L41:
+ 148:Src/exvol.c   **** 			}
+ARM GAS  C:\Temp\ccL8L4V0.s 			page 13
 
 
- 496              		.global	calc_vol2duty
- 497              		.syntax unified
- 498              		.thumb
- 499              		.thumb_func
- 500              		.fpu fpv4-sp-d16
- 502              	calc_vol2duty:
- 503              	.LFB142:
- 161:Src/exvol.c   **** 
- 162:Src/exvol.c   **** //機能 	:印可電圧を変調率に変換
- 163:Src/exvol.c   **** //引数 	:なし
- 164:Src/exvol.c   **** //返り値:なし
- 165:Src/exvol.c   **** void calc_vol2duty ( void )
- 166:Src/exvol.c   **** {
- 504              		.loc 1 166 1 is_stmt 1 view -0
- 505              		.cfi_startproc
- 506              		@ args = 0, pretend = 0, frame = 0
- 507              		@ frame_needed = 0, uses_anonymous_args = 0
- 508 0000 08B5     		push	{r3, lr}
- 509              	.LCFI5:
- 510              		.cfi_def_cfa_offset 8
- 511              		.cfi_offset 3, -8
- 512              		.cfi_offset 14, -4
- 513 0002 2DED028B 		vpush.64	{d8}
- 514              	.LCFI6:
- 515              		.cfi_def_cfa_offset 16
- 516              		.cfi_offset 80, -16
- 517              		.cfi_offset 81, -12
- 167:Src/exvol.c   **** 
- 168:Src/exvol.c   **** 	/* バッテリー電圧とモータに印加する電圧から、duty[*0.1%]を算出	*/
- 169:Src/exvol.c   **** 	target_duty_r = target_vol_r / (Battery_GetVoltage()) * 1000;
- 518              		.loc 1 169 2 view .LVU98
- 519              		.loc 1 169 31 is_stmt 0 view .LVU99
- 520 0006 114B     		ldr	r3, .L49
- 521 0008 93ED008A 		vldr.32	s16, [r3]
- 522              		.loc 1 169 34 view .LVU100
- 523 000c FFF7FEFF 		bl	Battery_GetVoltage
- 524              	.LVL30:
- 525              		.loc 1 169 31 view .LVU101
- 526 0010 C8EE007A 		vdiv.f32	s15, s16, s0
- 527              		.loc 1 169 56 view .LVU102
- 528 0014 9FED0E8A 		vldr.32	s16, .L49+4
- 529 0018 67EE887A 		vmul.f32	s15, s15, s16
- 530              		.loc 1 169 16 view .LVU103
- 531 001c FDEEE77A 		vcvt.s32.f32	s15, s15
- 532 0020 0C4B     		ldr	r3, .L49+8
- 533 0022 17EE902A 		vmov	r2, s15	@ int
- 534 0026 1A80     		strh	r2, [r3]	@ movhi
- 170:Src/exvol.c   **** 	target_duty_l = target_vol_l / (Battery_GetVoltage()) * 1000;
- 535              		.loc 1 170 2 is_stmt 1 view .LVU104
- 536              		.loc 1 170 31 is_stmt 0 view .LVU105
- 537 0028 0B4B     		ldr	r3, .L49+12
- 538 002a D3ED008A 		vldr.32	s17, [r3]
- 539              		.loc 1 170 34 view .LVU106
- 540 002e FFF7FEFF 		bl	Battery_GetVoltage
- 541              	.LVL31:
- 542              		.loc 1 170 31 view .LVU107
- 543 0032 C8EE807A 		vdiv.f32	s15, s17, s0
-ARM GAS  C:\Temp\cc6AwCg7.s 			page 14
+ 495              		.loc 1 148 6 is_stmt 1 view .LVU94
+ 496 002c FFF7FEFF 		bl	adjust_trace_theta
+ 497              	.LVL43:
+ 498 0030 F9E7     		b	.L38
+ 499              	.L43:
+ 500 0032 00BF     		.align	2
+ 501              	.L42:
+ 502 0034 00000000 		.word	.LANCHOR0
+ 503              		.cfi_endproc
+ 504              	.LFE140:
+ 506              		.section	.text.calc_motor_vol,"ax",%progbits
+ 507              		.align	1
+ 508              		.global	calc_motor_vol
+ 509              		.syntax unified
+ 510              		.thumb
+ 511              		.thumb_func
+ 512              		.fpu fpv4-sp-d16
+ 514              	calc_motor_vol:
+ 515              	.LFB141:
+ 154:Src/exvol.c   **** 
+ 155:Src/exvol.c   **** //機能	: 印加電圧の和、差から各モータに印加する電圧を決定する。
+ 156:Src/exvol.c   **** //引数	: なし
+ 157:Src/exvol.c   **** //返り値	: なし
+ 158:Src/exvol.c   **** void calc_motor_vol ( void )
+ 159:Src/exvol.c   **** {
+ 516              		.loc 1 159 1 view -0
+ 517              		.cfi_startproc
+ 518              		@ args = 0, pretend = 0, frame = 0
+ 519              		@ frame_needed = 0, uses_anonymous_args = 0
+ 520              		@ link register save eliminated.
+ 160:Src/exvol.c   **** 	target_vol_r = (target_vol_sum + target_vol_diff)/2;
+ 521              		.loc 1 160 2 view .LVU96
+ 522              		.loc 1 160 33 is_stmt 0 view .LVU97
+ 523 0000 0B4B     		ldr	r3, .L45
+ 524 0002 D3ED007A 		vldr.32	s15, [r3]
+ 525 0006 0B4B     		ldr	r3, .L45+4
+ 526 0008 93ED006A 		vldr.32	s12, [r3]
+ 527 000c 37EE867A 		vadd.f32	s14, s15, s12
+ 528              		.loc 1 160 51 view .LVU98
+ 529 0010 F6EE006A 		vmov.f32	s13, #5.0e-1
+ 530 0014 27EE267A 		vmul.f32	s14, s14, s13
+ 531              		.loc 1 160 15 view .LVU99
+ 532 0018 074B     		ldr	r3, .L45+8
+ 533 001a 83ED007A 		vstr.32	s14, [r3]
+ 161:Src/exvol.c   **** 	target_vol_l = (target_vol_sum - target_vol_diff)/2;	
+ 534              		.loc 1 161 2 is_stmt 1 view .LVU100
+ 535              		.loc 1 161 33 is_stmt 0 view .LVU101
+ 536 001e 77EEC67A 		vsub.f32	s15, s15, s12
+ 537              		.loc 1 161 51 view .LVU102
+ 538 0022 67EEA67A 		vmul.f32	s15, s15, s13
+ 539              		.loc 1 161 15 view .LVU103
+ 540 0026 054B     		ldr	r3, .L45+12
+ 541 0028 C3ED007A 		vstr.32	s15, [r3]
+ 162:Src/exvol.c   **** }
+ 542              		.loc 1 162 1 view .LVU104
+ 543 002c 7047     		bx	lr
+ 544              	.L46:
+ARM GAS  C:\Temp\ccL8L4V0.s 			page 14
 
 
- 544              		.loc 1 170 56 view .LVU108
- 545 0036 67EE887A 		vmul.f32	s15, s15, s16
- 546              		.loc 1 170 16 view .LVU109
- 547 003a FDEEE77A 		vcvt.s32.f32	s15, s15
- 548 003e 074B     		ldr	r3, .L49+16
- 549 0040 17EE902A 		vmov	r2, s15	@ int
- 550 0044 1A80     		strh	r2, [r3]	@ movhi
- 171:Src/exvol.c   **** }
- 551              		.loc 1 171 1 view .LVU110
- 552 0046 BDEC028B 		vldm	sp!, {d8}
- 553              	.LCFI7:
- 554              		.cfi_restore 80
- 555              		.cfi_restore 81
- 556              		.cfi_def_cfa_offset 8
- 557 004a 08BD     		pop	{r3, pc}
- 558              	.L50:
- 559              		.align	2
- 560              	.L49:
- 561 004c 00000000 		.word	.LANCHOR3
- 562 0050 00007A44 		.word	1148846080
- 563 0054 00000000 		.word	.LANCHOR5
- 564 0058 00000000 		.word	.LANCHOR4
- 565 005c 00000000 		.word	.LANCHOR6
- 566              		.cfi_endproc
- 567              	.LFE142:
- 569              		.section	.text.motor_duty_adjust,"ax",%progbits
- 570              		.align	1
- 571              		.global	motor_duty_adjust
- 572              		.syntax unified
- 573              		.thumb
- 574              		.thumb_func
- 575              		.fpu fpv4-sp-d16
- 577              	motor_duty_adjust:
- 578              	.LFB143:
- 172:Src/exvol.c   **** 
- 173:Src/exvol.c   **** //機能 	:非線形部は使わないように、変調率を調整
- 174:Src/exvol.c   **** //引数 	:なし
- 175:Src/exvol.c   **** //返り値:なし
- 176:Src/exvol.c   **** //
- 177:Src/exvol.c   **** void motor_duty_adjust (void)
- 178:Src/exvol.c   **** {
- 579              		.loc 1 178 1 is_stmt 1 view -0
- 580              		.cfi_startproc
- 581              		@ args = 0, pretend = 0, frame = 0
- 582              		@ frame_needed = 0, uses_anonymous_args = 0
- 583              		@ link register save eliminated.
- 179:Src/exvol.c   **** 	if( target_duty_r > 0){
- 584              		.loc 1 179 2 view .LVU112
- 585              		.loc 1 179 20 is_stmt 0 view .LVU113
- 586 0000 0C4B     		ldr	r3, .L56
- 587 0002 B3F90030 		ldrsh	r3, [r3]
- 588              		.loc 1 179 4 view .LVU114
- 589 0006 002B     		cmp	r3, #0
- 590 0008 0BDD     		ble	.L52
- 180:Src/exvol.c   **** 		target_duty_r = target_duty_r + 40;  //40->30
- 591              		.loc 1 180 3 is_stmt 1 view .LVU115
- 592              		.loc 1 180 33 is_stmt 0 view .LVU116
-ARM GAS  C:\Temp\cc6AwCg7.s 			page 15
+ 545 002e 00BF     		.align	2
+ 546              	.L45:
+ 547 0030 00000000 		.word	.LANCHOR1
+ 548 0034 00000000 		.word	.LANCHOR2
+ 549 0038 00000000 		.word	.LANCHOR3
+ 550 003c 00000000 		.word	.LANCHOR4
+ 551              		.cfi_endproc
+ 552              	.LFE141:
+ 554              		.section	.text.calc_vol2duty,"ax",%progbits
+ 555              		.align	1
+ 556              		.global	calc_vol2duty
+ 557              		.syntax unified
+ 558              		.thumb
+ 559              		.thumb_func
+ 560              		.fpu fpv4-sp-d16
+ 562              	calc_vol2duty:
+ 563              	.LFB142:
+ 163:Src/exvol.c   **** 
+ 164:Src/exvol.c   **** //機能 	:印可電圧を変調率に変換
+ 165:Src/exvol.c   **** //引数 	:なし
+ 166:Src/exvol.c   **** //返り値:なし
+ 167:Src/exvol.c   **** void calc_vol2duty ( void )
+ 168:Src/exvol.c   **** {
+ 564              		.loc 1 168 1 is_stmt 1 view -0
+ 565              		.cfi_startproc
+ 566              		@ args = 0, pretend = 0, frame = 0
+ 567              		@ frame_needed = 0, uses_anonymous_args = 0
+ 568 0000 08B5     		push	{r3, lr}
+ 569              	.LCFI5:
+ 570              		.cfi_def_cfa_offset 8
+ 571              		.cfi_offset 3, -8
+ 572              		.cfi_offset 14, -4
+ 573 0002 2DED028B 		vpush.64	{d8}
+ 574              	.LCFI6:
+ 575              		.cfi_def_cfa_offset 16
+ 576              		.cfi_offset 80, -16
+ 577              		.cfi_offset 81, -12
+ 169:Src/exvol.c   **** 
+ 170:Src/exvol.c   **** 	/* バッテリー電圧とモータに印加する電圧から、duty[*0.1%]を算出	*/
+ 171:Src/exvol.c   **** 	target_duty_r = target_vol_r / (Battery_GetVoltage()) * 1000;
+ 578              		.loc 1 171 2 view .LVU106
+ 579              		.loc 1 171 31 is_stmt 0 view .LVU107
+ 580 0006 114B     		ldr	r3, .L49
+ 581 0008 93ED008A 		vldr.32	s16, [r3]
+ 582              		.loc 1 171 34 view .LVU108
+ 583 000c FFF7FEFF 		bl	Battery_GetVoltage
+ 584              	.LVL44:
+ 585              		.loc 1 171 31 view .LVU109
+ 586 0010 C8EE007A 		vdiv.f32	s15, s16, s0
+ 587              		.loc 1 171 56 view .LVU110
+ 588 0014 9FED0E8A 		vldr.32	s16, .L49+4
+ 589 0018 67EE887A 		vmul.f32	s15, s15, s16
+ 590              		.loc 1 171 16 view .LVU111
+ 591 001c FDEEE77A 		vcvt.s32.f32	s15, s15
+ 592 0020 0C4B     		ldr	r3, .L49+8
+ 593 0022 17EE902A 		vmov	r2, s15	@ int
+ 594 0026 1A80     		strh	r2, [r3]	@ movhi
+ARM GAS  C:\Temp\ccL8L4V0.s 			page 15
 
 
- 593 000a 2833     		adds	r3, r3, #40
- 594              		.loc 1 180 17 view .LVU117
- 595 000c 094A     		ldr	r2, .L56
- 596 000e 1380     		strh	r3, [r2]	@ movhi
- 597              	.L53:
- 181:Src/exvol.c   **** 	}
- 182:Src/exvol.c   **** 	else{
- 183:Src/exvol.c   **** 		target_duty_r = target_duty_r - 45; //45 ->35
- 184:Src/exvol.c   **** 	}
- 185:Src/exvol.c   **** 
- 186:Src/exvol.c   **** 	if( target_duty_l > 0){
- 598              		.loc 1 186 2 is_stmt 1 view .LVU118
- 599              		.loc 1 186 20 is_stmt 0 view .LVU119
- 600 0010 094B     		ldr	r3, .L56+4
- 601 0012 B3F90030 		ldrsh	r3, [r3]
- 602              		.loc 1 186 4 view .LVU120
- 603 0016 002B     		cmp	r3, #0
- 604 0018 07DD     		ble	.L54
- 187:Src/exvol.c   **** 		target_duty_l = target_duty_l + 40;  //40->30
- 605              		.loc 1 187 3 is_stmt 1 view .LVU121
- 606              		.loc 1 187 33 is_stmt 0 view .LVU122
- 607 001a 2833     		adds	r3, r3, #40
- 608              		.loc 1 187 17 view .LVU123
- 609 001c 064A     		ldr	r2, .L56+4
- 610 001e 1380     		strh	r3, [r2]	@ movhi
- 611 0020 7047     		bx	lr
- 612              	.L52:
+ 172:Src/exvol.c   **** 	target_duty_l = target_vol_l / (Battery_GetVoltage()) * 1000;
+ 595              		.loc 1 172 2 is_stmt 1 view .LVU112
+ 596              		.loc 1 172 31 is_stmt 0 view .LVU113
+ 597 0028 0B4B     		ldr	r3, .L49+12
+ 598 002a D3ED008A 		vldr.32	s17, [r3]
+ 599              		.loc 1 172 34 view .LVU114
+ 600 002e FFF7FEFF 		bl	Battery_GetVoltage
+ 601              	.LVL45:
+ 602              		.loc 1 172 31 view .LVU115
+ 603 0032 C8EE807A 		vdiv.f32	s15, s17, s0
+ 604              		.loc 1 172 56 view .LVU116
+ 605 0036 67EE887A 		vmul.f32	s15, s15, s16
+ 606              		.loc 1 172 16 view .LVU117
+ 607 003a FDEEE77A 		vcvt.s32.f32	s15, s15
+ 608 003e 074B     		ldr	r3, .L49+16
+ 609 0040 17EE902A 		vmov	r2, s15	@ int
+ 610 0044 1A80     		strh	r2, [r3]	@ movhi
+ 173:Src/exvol.c   **** }
+ 611              		.loc 1 173 1 view .LVU118
+ 612 0046 BDEC028B 		vldm	sp!, {d8}
+ 613              	.LCFI7:
+ 614              		.cfi_restore 80
+ 615              		.cfi_restore 81
+ 616              		.cfi_def_cfa_offset 8
+ 617 004a 08BD     		pop	{r3, pc}
+ 618              	.L50:
+ 619              		.align	2
+ 620              	.L49:
+ 621 004c 00000000 		.word	.LANCHOR3
+ 622 0050 00007A44 		.word	1148846080
+ 623 0054 00000000 		.word	.LANCHOR5
+ 624 0058 00000000 		.word	.LANCHOR4
+ 625 005c 00000000 		.word	.LANCHOR6
+ 626              		.cfi_endproc
+ 627              	.LFE142:
+ 629              		.section	.text.motor_duty_adjust,"ax",%progbits
+ 630              		.align	1
+ 631              		.global	motor_duty_adjust
+ 632              		.syntax unified
+ 633              		.thumb
+ 634              		.thumb_func
+ 635              		.fpu fpv4-sp-d16
+ 637              	motor_duty_adjust:
+ 638              	.LFB143:
+ 174:Src/exvol.c   **** 
+ 175:Src/exvol.c   **** //機能 	:非線形部は使わないように、変調率を調整
+ 176:Src/exvol.c   **** //引数 	:なし
+ 177:Src/exvol.c   **** //返り値:なし
+ 178:Src/exvol.c   **** //
+ 179:Src/exvol.c   **** void motor_duty_adjust (void)
+ 180:Src/exvol.c   **** {
+ 639              		.loc 1 180 1 is_stmt 1 view -0
+ 640              		.cfi_startproc
+ 641              		@ args = 0, pretend = 0, frame = 0
+ 642              		@ frame_needed = 0, uses_anonymous_args = 0
+ 643              		@ link register save eliminated.
+ 181:Src/exvol.c   **** 	if( target_duty_r > 0){
+ARM GAS  C:\Temp\ccL8L4V0.s 			page 16
+
+
+ 644              		.loc 1 181 2 view .LVU120
+ 645              		.loc 1 181 20 is_stmt 0 view .LVU121
+ 646 0000 0C4B     		ldr	r3, .L56
+ 647 0002 B3F90030 		ldrsh	r3, [r3]
+ 648              		.loc 1 181 4 view .LVU122
+ 649 0006 002B     		cmp	r3, #0
+ 650 0008 0BDD     		ble	.L52
+ 182:Src/exvol.c   **** 		target_duty_r = target_duty_r + 40;  //40->30
+ 651              		.loc 1 182 3 is_stmt 1 view .LVU123
+ 652              		.loc 1 182 33 is_stmt 0 view .LVU124
+ 653 000a 2833     		adds	r3, r3, #40
+ 654              		.loc 1 182 17 view .LVU125
+ 655 000c 094A     		ldr	r2, .L56
+ 656 000e 1380     		strh	r3, [r2]	@ movhi
+ 657              	.L53:
  183:Src/exvol.c   **** 	}
- 613              		.loc 1 183 3 is_stmt 1 view .LVU124
- 183:Src/exvol.c   **** 	}
- 614              		.loc 1 183 33 is_stmt 0 view .LVU125
- 615 0022 2D3B     		subs	r3, r3, #45
- 183:Src/exvol.c   **** 	}
- 616              		.loc 1 183 17 view .LVU126
- 617 0024 034A     		ldr	r2, .L56
- 618 0026 1380     		strh	r3, [r2]	@ movhi
- 619 0028 F2E7     		b	.L53
- 620              	.L54:
- 188:Src/exvol.c   **** 	}
- 189:Src/exvol.c   **** 	else{
- 190:Src/exvol.c   **** 		target_duty_l = target_duty_l - 45; //45 ->35
- 621              		.loc 1 190 3 is_stmt 1 view .LVU127
- 622              		.loc 1 190 33 is_stmt 0 view .LVU128
- 623 002a 2D3B     		subs	r3, r3, #45
- 624              		.loc 1 190 17 view .LVU129
- 625 002c 024A     		ldr	r2, .L56+4
- 626 002e 1380     		strh	r3, [r2]	@ movhi
- 191:Src/exvol.c   **** 	}
- 192:Src/exvol.c   **** }
- 627              		.loc 1 192 1 view .LVU130
- 628 0030 7047     		bx	lr
- 629              	.L57:
- 630 0032 00BF     		.align	2
- 631              	.L56:
- 632 0034 00000000 		.word	.LANCHOR5
- 633 0038 00000000 		.word	.LANCHOR6
- 634              		.cfi_endproc
-ARM GAS  C:\Temp\cc6AwCg7.s 			page 16
+ 184:Src/exvol.c   **** 	else{
+ 185:Src/exvol.c   **** 		target_duty_r = target_duty_r - 45; //45 ->35
+ 186:Src/exvol.c   **** 	}
+ 187:Src/exvol.c   **** 
+ 188:Src/exvol.c   **** 	if( target_duty_l > 0){
+ 658              		.loc 1 188 2 is_stmt 1 view .LVU126
+ 659              		.loc 1 188 20 is_stmt 0 view .LVU127
+ 660 0010 094B     		ldr	r3, .L56+4
+ 661 0012 B3F90030 		ldrsh	r3, [r3]
+ 662              		.loc 1 188 4 view .LVU128
+ 663 0016 002B     		cmp	r3, #0
+ 664 0018 07DD     		ble	.L54
+ 189:Src/exvol.c   **** 		target_duty_l = target_duty_l + 40;  //40->30
+ 665              		.loc 1 189 3 is_stmt 1 view .LVU129
+ 666              		.loc 1 189 33 is_stmt 0 view .LVU130
+ 667 001a 2833     		adds	r3, r3, #40
+ 668              		.loc 1 189 17 view .LVU131
+ 669 001c 064A     		ldr	r2, .L56+4
+ 670 001e 1380     		strh	r3, [r2]	@ movhi
+ 671 0020 7047     		bx	lr
+ 672              	.L52:
+ 185:Src/exvol.c   **** 	}
+ 673              		.loc 1 185 3 is_stmt 1 view .LVU132
+ 185:Src/exvol.c   **** 	}
+ 674              		.loc 1 185 33 is_stmt 0 view .LVU133
+ 675 0022 2D3B     		subs	r3, r3, #45
+ 185:Src/exvol.c   **** 	}
+ 676              		.loc 1 185 17 view .LVU134
+ 677 0024 034A     		ldr	r2, .L56
+ 678 0026 1380     		strh	r3, [r2]	@ movhi
+ 679 0028 F2E7     		b	.L53
+ 680              	.L54:
+ 190:Src/exvol.c   **** 	}
+ 191:Src/exvol.c   **** 	else{
+ 192:Src/exvol.c   **** 		target_duty_l = target_duty_l - 45; //45 ->35
+ 681              		.loc 1 192 3 is_stmt 1 view .LVU135
+ 682              		.loc 1 192 33 is_stmt 0 view .LVU136
+ 683 002a 2D3B     		subs	r3, r3, #45
+ 684              		.loc 1 192 17 view .LVU137
+ 685 002c 024A     		ldr	r2, .L56+4
+ 686 002e 1380     		strh	r3, [r2]	@ movhi
+ARM GAS  C:\Temp\ccL8L4V0.s 			page 17
 
 
- 635              	.LFE143:
- 637              		.section	.text.set_motor_duty,"ax",%progbits
- 638              		.align	1
- 639              		.global	set_motor_duty
- 640              		.syntax unified
- 641              		.thumb
- 642              		.thumb_func
- 643              		.fpu fpv4-sp-d16
- 645              	set_motor_duty:
- 646              	.LFB144:
- 193:Src/exvol.c   **** 
- 194:Src/exvol.c   **** //機能 	:モータに印可電圧を出力
- 195:Src/exvol.c   **** //引数 	:なし
- 196:Src/exvol.c   **** //返り値:なし
- 197:Src/exvol.c   **** void set_motor_duty (void)
- 198:Src/exvol.c   **** {
- 647              		.loc 1 198 1 is_stmt 1 view -0
- 648              		.cfi_startproc
- 649              		@ args = 0, pretend = 0, frame = 0
- 650              		@ frame_needed = 0, uses_anonymous_args = 0
- 651 0000 08B5     		push	{r3, lr}
- 652              	.LCFI8:
- 653              		.cfi_def_cfa_offset 8
- 654              		.cfi_offset 3, -8
- 655              		.cfi_offset 14, -4
- 199:Src/exvol.c   **** 	set_duty_l(target_duty_l);
- 656              		.loc 1 199 2 view .LVU132
- 657 0002 054B     		ldr	r3, .L60
- 658 0004 B3F90000 		ldrsh	r0, [r3]
- 659 0008 FFF7FEFF 		bl	set_duty_l
- 660              	.LVL32:
- 200:Src/exvol.c   **** 	set_duty_r(target_duty_r);
- 661              		.loc 1 200 2 view .LVU133
- 662 000c 034B     		ldr	r3, .L60+4
- 663 000e B3F90000 		ldrsh	r0, [r3]
- 664 0012 FFF7FEFF 		bl	set_duty_r
- 665              	.LVL33:
- 201:Src/exvol.c   **** }
- 666              		.loc 1 201 1 is_stmt 0 view .LVU134
- 667 0016 08BD     		pop	{r3, pc}
- 668              	.L61:
- 669              		.align	2
- 670              	.L60:
- 671 0018 00000000 		.word	.LANCHOR6
- 672 001c 00000000 		.word	.LANCHOR5
- 673              		.cfi_endproc
- 674              	.LFE144:
- 676              		.section	.text.motor_1ms,"ax",%progbits
- 677              		.align	1
- 678              		.global	motor_1ms
- 679              		.syntax unified
- 680              		.thumb
- 681              		.thumb_func
- 682              		.fpu fpv4-sp-d16
- 684              	motor_1ms:
- 685              	.LFB133:
+ 193:Src/exvol.c   **** 	}
+ 194:Src/exvol.c   **** }
+ 687              		.loc 1 194 1 view .LVU138
+ 688 0030 7047     		bx	lr
+ 689              	.L57:
+ 690 0032 00BF     		.align	2
+ 691              	.L56:
+ 692 0034 00000000 		.word	.LANCHOR5
+ 693 0038 00000000 		.word	.LANCHOR6
+ 694              		.cfi_endproc
+ 695              	.LFE143:
+ 697              		.section	.text.set_motor_duty,"ax",%progbits
+ 698              		.align	1
+ 699              		.global	set_motor_duty
+ 700              		.syntax unified
+ 701              		.thumb
+ 702              		.thumb_func
+ 703              		.fpu fpv4-sp-d16
+ 705              	set_motor_duty:
+ 706              	.LFB144:
+ 195:Src/exvol.c   **** 
+ 196:Src/exvol.c   **** //機能 	:モータに印可電圧を出力
+ 197:Src/exvol.c   **** //引数 	:なし
+ 198:Src/exvol.c   **** //返り値:なし
+ 199:Src/exvol.c   **** void set_motor_duty (void)
+ 200:Src/exvol.c   **** {
+ 707              		.loc 1 200 1 is_stmt 1 view -0
+ 708              		.cfi_startproc
+ 709              		@ args = 0, pretend = 0, frame = 0
+ 710              		@ frame_needed = 0, uses_anonymous_args = 0
+ 711 0000 08B5     		push	{r3, lr}
+ 712              	.LCFI8:
+ 713              		.cfi_def_cfa_offset 8
+ 714              		.cfi_offset 3, -8
+ 715              		.cfi_offset 14, -4
+ 201:Src/exvol.c   **** 	set_duty_l(target_duty_l);
+ 716              		.loc 1 201 2 view .LVU140
+ 717 0002 054B     		ldr	r3, .L60
+ 718 0004 B3F90000 		ldrsh	r0, [r3]
+ 719 0008 FFF7FEFF 		bl	set_duty_l
+ 720              	.LVL46:
+ 202:Src/exvol.c   **** 	set_duty_r(target_duty_r);
+ 721              		.loc 1 202 2 view .LVU141
+ 722 000c 034B     		ldr	r3, .L60+4
+ 723 000e B3F90000 		ldrsh	r0, [r3]
+ 724 0012 FFF7FEFF 		bl	set_duty_r
+ 725              	.LVL47:
+ 203:Src/exvol.c   **** }
+ 726              		.loc 1 203 1 is_stmt 0 view .LVU142
+ 727 0016 08BD     		pop	{r3, pc}
+ 728              	.L61:
+ 729              		.align	2
+ 730              	.L60:
+ 731 0018 00000000 		.word	.LANCHOR6
+ 732 001c 00000000 		.word	.LANCHOR5
+ 733              		.cfi_endproc
+ 734              	.LFE144:
+ARM GAS  C:\Temp\ccL8L4V0.s 			page 18
+
+
+ 736              		.section	.text.motor_1ms,"ax",%progbits
+ 737              		.align	1
+ 738              		.global	motor_1ms
+ 739              		.syntax unified
+ 740              		.thumb
+ 741              		.thumb_func
+ 742              		.fpu fpv4-sp-d16
+ 744              	motor_1ms:
+ 745              	.LFB133:
   27:Src/exvol.c   **** 	set_motor_vol();		//印加電圧の和、差を制御モードに従い決定
-ARM GAS  C:\Temp\cc6AwCg7.s 			page 17
-
-
- 686              		.loc 1 27 1 is_stmt 1 view -0
- 687              		.cfi_startproc
- 688              		@ args = 0, pretend = 0, frame = 0
- 689              		@ frame_needed = 0, uses_anonymous_args = 0
- 690 0000 08B5     		push	{r3, lr}
- 691              	.LCFI9:
- 692              		.cfi_def_cfa_offset 8
- 693              		.cfi_offset 3, -8
- 694              		.cfi_offset 14, -4
+ 746              		.loc 1 27 1 is_stmt 1 view -0
+ 747              		.cfi_startproc
+ 748              		@ args = 0, pretend = 0, frame = 0
+ 749              		@ frame_needed = 0, uses_anonymous_args = 0
+ 750 0000 08B5     		push	{r3, lr}
+ 751              	.LCFI9:
+ 752              		.cfi_def_cfa_offset 8
+ 753              		.cfi_offset 3, -8
+ 754              		.cfi_offset 14, -4
   28:Src/exvol.c   **** 	clr_operate_history();	//各制御の操作履歴クリア
- 695              		.loc 1 28 2 view .LVU136
- 696 0002 FFF7FEFF 		bl	set_motor_vol
- 697              	.LVL34:
+ 755              		.loc 1 28 2 view .LVU144
+ 756 0002 FFF7FEFF 		bl	set_motor_vol
+ 757              	.LVL48:
   29:Src/exvol.c   **** 	calc_motor_vol();		//印加電圧の和、差から各モータの印加電圧を決定する。
- 698              		.loc 1 29 2 view .LVU137
- 699 0006 FFF7FEFF 		bl	clr_operate_history
- 700              	.LVL35:
+ 758              		.loc 1 29 2 view .LVU145
+ 759 0006 FFF7FEFF 		bl	clr_operate_history
+ 760              	.LVL49:
   30:Src/exvol.c   **** 	calc_vol2duty();		//印加電圧を変調率に変換
- 701              		.loc 1 30 2 view .LVU138
- 702 000a FFF7FEFF 		bl	calc_motor_vol
- 703              	.LVL36:
+ 761              		.loc 1 30 2 view .LVU146
+ 762 000a FFF7FEFF 		bl	calc_motor_vol
+ 763              	.LVL50:
   31:Src/exvol.c   **** 	motor_duty_adjust();	//低変調率を避ける調整
- 704              		.loc 1 31 2 view .LVU139
- 705 000e FFF7FEFF 		bl	calc_vol2duty
- 706              	.LVL37:
+ 764              		.loc 1 31 2 view .LVU147
+ 765 000e FFF7FEFF 		bl	calc_vol2duty
+ 766              	.LVL51:
   32:Src/exvol.c   **** 	set_motor_duty();		//モータに電圧を印加
- 707              		.loc 1 32 2 view .LVU140
- 708 0012 FFF7FEFF 		bl	motor_duty_adjust
- 709              	.LVL38:
+ 767              		.loc 1 32 2 view .LVU148
+ 768 0012 FFF7FEFF 		bl	motor_duty_adjust
+ 769              	.LVL52:
   33:Src/exvol.c   **** }
- 710              		.loc 1 33 2 view .LVU141
- 711 0016 FFF7FEFF 		bl	set_motor_duty
- 712              	.LVL39:
+ 770              		.loc 1 33 2 view .LVU149
+ 771 0016 FFF7FEFF 		bl	set_motor_duty
+ 772              	.LVL53:
   34:Src/exvol.c   **** 
- 713              		.loc 1 34 1 is_stmt 0 view .LVU142
- 714 001a 08BD     		pop	{r3, pc}
- 715              		.cfi_endproc
- 716              	.LFE133:
- 718              		.section	.text.get_target_duty_r,"ax",%progbits
- 719              		.align	1
- 720              		.global	get_target_duty_r
- 721              		.syntax unified
- 722              		.thumb
- 723              		.thumb_func
- 724              		.fpu fpv4-sp-d16
- 726              	get_target_duty_r:
- 727              	.LFB145:
- 202:Src/exvol.c   **** 
- 203:Src/exvol.c   **** //機能	: 右モータの変調率を取得する
- 204:Src/exvol.c   **** //引数	: なし
- 205:Src/exvol.c   **** //返り値	: なし
- 206:Src/exvol.c   **** int16_t get_target_duty_r ( void )
- 207:Src/exvol.c   **** {
- 728              		.loc 1 207 1 is_stmt 1 view -0
- 729              		.cfi_startproc
- 730              		@ args = 0, pretend = 0, frame = 0
- 731              		@ frame_needed = 0, uses_anonymous_args = 0
-ARM GAS  C:\Temp\cc6AwCg7.s 			page 18
-
-
- 732              		@ link register save eliminated.
- 208:Src/exvol.c   **** 	return target_duty_r;
- 733              		.loc 1 208 2 view .LVU144
- 209:Src/exvol.c   **** }
- 734              		.loc 1 209 1 is_stmt 0 view .LVU145
- 735 0000 014B     		ldr	r3, .L65
- 736 0002 B3F90000 		ldrsh	r0, [r3]
- 737 0006 7047     		bx	lr
- 738              	.L66:
- 739              		.align	2
- 740              	.L65:
- 741 0008 00000000 		.word	.LANCHOR5
- 742              		.cfi_endproc
- 743              	.LFE145:
- 745              		.section	.text.get_target_duty_l,"ax",%progbits
- 746              		.align	1
- 747              		.global	get_target_duty_l
- 748              		.syntax unified
- 749              		.thumb
- 750              		.thumb_func
- 751              		.fpu fpv4-sp-d16
- 753              	get_target_duty_l:
- 754              	.LFB146:
- 210:Src/exvol.c   **** 
- 211:Src/exvol.c   **** //機能	: 左モータの変調率を取得する
- 212:Src/exvol.c   **** //引数	: なし
- 213:Src/exvol.c   **** //返り値	: なし
- 214:Src/exvol.c   **** int16_t get_target_duty_l ( void )
- 215:Src/exvol.c   **** {
- 755              		.loc 1 215 1 is_stmt 1 view -0
- 756              		.cfi_startproc
- 757              		@ args = 0, pretend = 0, frame = 0
- 758              		@ frame_needed = 0, uses_anonymous_args = 0
- 759              		@ link register save eliminated.
- 216:Src/exvol.c   **** 	return target_duty_l;
- 760              		.loc 1 216 2 view .LVU147
- 217:Src/exvol.c   **** }...
- 761              		.loc 1 217 1 is_stmt 0 view .LVU148
- 762 0000 014B     		ldr	r3, .L68
- 763 0002 B3F90000 		ldrsh	r0, [r3]
- 764 0006 7047     		bx	lr
- 765              	.L69:
- 766              		.align	2
- 767              	.L68:
- 768 0008 00000000 		.word	.LANCHOR6
- 769              		.cfi_endproc
- 770              	.LFE146:
- 772              		.section	.bss.ctrl_mode,"aw",%nobits
- 773              		.set	.LANCHOR0,. + 0
- 776              	ctrl_mode:
- 777 0000 00       		.space	1
- 778              		.section	.bss.target_duty_l,"aw",%nobits
+ 773              		.loc 1 34 1 is_stmt 0 view .LVU150
+ 774 001a 08BD     		pop	{r3, pc}
+ 775              		.cfi_endproc
+ 776              	.LFE133:
+ 778              		.section	.text.get_target_duty_r,"ax",%progbits
  779              		.align	1
- 780              		.set	.LANCHOR6,. + 0
- 783              	target_duty_l:
- 784 0000 0000     		.space	2
- 785              		.section	.bss.target_duty_r,"aw",%nobits
-ARM GAS  C:\Temp\cc6AwCg7.s 			page 19
+ 780              		.global	get_target_duty_r
+ 781              		.syntax unified
+ 782              		.thumb
+ 783              		.thumb_func
+ 784              		.fpu fpv4-sp-d16
+ 786              	get_target_duty_r:
+ 787              	.LFB145:
+ARM GAS  C:\Temp\ccL8L4V0.s 			page 19
 
 
- 786              		.align	1
- 787              		.set	.LANCHOR5,. + 0
- 790              	target_duty_r:
- 791 0000 0000     		.space	2
- 792              		.section	.bss.target_vol_diff,"aw",%nobits
- 793              		.align	2
- 794              		.set	.LANCHOR2,. + 0
- 797              	target_vol_diff:
- 798 0000 00000000 		.space	4
- 799              		.section	.bss.target_vol_l,"aw",%nobits
- 800              		.align	2
- 801              		.set	.LANCHOR4,. + 0
- 804              	target_vol_l:
- 805 0000 00000000 		.space	4
- 806              		.section	.bss.target_vol_r,"aw",%nobits
- 807              		.align	2
- 808              		.set	.LANCHOR3,. + 0
- 811              	target_vol_r:
- 812 0000 00000000 		.space	4
- 813              		.section	.bss.target_vol_sum,"aw",%nobits
- 814              		.align	2
- 815              		.set	.LANCHOR1,. + 0
- 818              	target_vol_sum:
- 819 0000 00000000 		.space	4
- 820              		.text
- 821              	.Letext0:
- 822              		.file 2 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\machine\\_default_t
- 823              		.file 3 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\lock.h"
- 824              		.file 4 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\_types.h"
- 825              		.file 5 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\lib\\gcc\\arm-none-eabi\\9.2.1\\include\\st
- 826              		.file 6 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\reent.h"
- 827              		.file 7 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\_stdint.h"
- 828              		.file 8 "Drivers/CMSIS/Include/core_cm4.h"
- 829              		.file 9 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h"
- 830              		.file 10 "Inc/exvol.h"
- 831              		.file 11 "Inc/adjust.h"
- 832              		.file 12 "Inc/motor.h"
- 833              		.file 13 "Inc/battery.h"
- 834              		.file 14 "Inc/control.h"
-ARM GAS  C:\Temp\cc6AwCg7.s 			page 20
+ 204:Src/exvol.c   **** 
+ 205:Src/exvol.c   **** //機能	: 右モータの変調率を取得する
+ 206:Src/exvol.c   **** //引数	: なし
+ 207:Src/exvol.c   **** //返り値	: なし
+ 208:Src/exvol.c   **** int16_t get_target_duty_r ( void )
+ 209:Src/exvol.c   **** {
+ 788              		.loc 1 209 1 is_stmt 1 view -0
+ 789              		.cfi_startproc
+ 790              		@ args = 0, pretend = 0, frame = 0
+ 791              		@ frame_needed = 0, uses_anonymous_args = 0
+ 792              		@ link register save eliminated.
+ 210:Src/exvol.c   **** 	return target_duty_r;
+ 793              		.loc 1 210 2 view .LVU152
+ 211:Src/exvol.c   **** }
+ 794              		.loc 1 211 1 is_stmt 0 view .LVU153
+ 795 0000 014B     		ldr	r3, .L65
+ 796 0002 B3F90000 		ldrsh	r0, [r3]
+ 797 0006 7047     		bx	lr
+ 798              	.L66:
+ 799              		.align	2
+ 800              	.L65:
+ 801 0008 00000000 		.word	.LANCHOR5
+ 802              		.cfi_endproc
+ 803              	.LFE145:
+ 805              		.section	.text.get_target_duty_l,"ax",%progbits
+ 806              		.align	1
+ 807              		.global	get_target_duty_l
+ 808              		.syntax unified
+ 809              		.thumb
+ 810              		.thumb_func
+ 811              		.fpu fpv4-sp-d16
+ 813              	get_target_duty_l:
+ 814              	.LFB146:
+ 212:Src/exvol.c   **** 
+ 213:Src/exvol.c   **** //機能	: 左モータの変調率を取得する
+ 214:Src/exvol.c   **** //引数	: なし
+ 215:Src/exvol.c   **** //返り値	: なし
+ 216:Src/exvol.c   **** int16_t get_target_duty_l ( void )
+ 217:Src/exvol.c   **** {
+ 815              		.loc 1 217 1 is_stmt 1 view -0
+ 816              		.cfi_startproc
+ 817              		@ args = 0, pretend = 0, frame = 0
+ 818              		@ frame_needed = 0, uses_anonymous_args = 0
+ 819              		@ link register save eliminated.
+ 218:Src/exvol.c   **** 	return target_duty_l;
+ 820              		.loc 1 218 2 view .LVU155
+ 219:Src/exvol.c   **** }...
+ 821              		.loc 1 219 1 is_stmt 0 view .LVU156
+ 822 0000 014B     		ldr	r3, .L68
+ 823 0002 B3F90000 		ldrsh	r0, [r3]
+ 824 0006 7047     		bx	lr
+ 825              	.L69:
+ 826              		.align	2
+ 827              	.L68:
+ 828 0008 00000000 		.word	.LANCHOR6
+ 829              		.cfi_endproc
+ 830              	.LFE146:
+ARM GAS  C:\Temp\ccL8L4V0.s 			page 20
+
+
+ 832              		.section	.bss.ctrl_mode,"aw",%nobits
+ 833              		.set	.LANCHOR0,. + 0
+ 836              	ctrl_mode:
+ 837 0000 00       		.space	1
+ 838              		.section	.bss.target_duty_l,"aw",%nobits
+ 839              		.align	1
+ 840              		.set	.LANCHOR6,. + 0
+ 843              	target_duty_l:
+ 844 0000 0000     		.space	2
+ 845              		.section	.bss.target_duty_r,"aw",%nobits
+ 846              		.align	1
+ 847              		.set	.LANCHOR5,. + 0
+ 850              	target_duty_r:
+ 851 0000 0000     		.space	2
+ 852              		.section	.bss.target_vol_diff,"aw",%nobits
+ 853              		.align	2
+ 854              		.set	.LANCHOR2,. + 0
+ 857              	target_vol_diff:
+ 858 0000 00000000 		.space	4
+ 859              		.section	.bss.target_vol_l,"aw",%nobits
+ 860              		.align	2
+ 861              		.set	.LANCHOR4,. + 0
+ 864              	target_vol_l:
+ 865 0000 00000000 		.space	4
+ 866              		.section	.bss.target_vol_r,"aw",%nobits
+ 867              		.align	2
+ 868              		.set	.LANCHOR3,. + 0
+ 871              	target_vol_r:
+ 872 0000 00000000 		.space	4
+ 873              		.section	.bss.target_vol_sum,"aw",%nobits
+ 874              		.align	2
+ 875              		.set	.LANCHOR1,. + 0
+ 878              	target_vol_sum:
+ 879 0000 00000000 		.space	4
+ 880              		.text
+ 881              	.Letext0:
+ 882              		.file 2 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\machine\\_default_t
+ 883              		.file 3 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\lock.h"
+ 884              		.file 4 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\_types.h"
+ 885              		.file 5 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\lib\\gcc\\arm-none-eabi\\9.2.1\\include\\st
+ 886              		.file 6 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\reent.h"
+ 887              		.file 7 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 888              		.file 8 "Drivers/CMSIS/Include/core_cm4.h"
+ 889              		.file 9 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h"
+ 890              		.file 10 "Inc/exvol.h"
+ 891              		.file 11 "Inc/adjust.h"
+ 892              		.file 12 "Inc/motor.h"
+ 893              		.file 13 "Inc/battery.h"
+ 894              		.file 14 "Inc/control.h"
+ARM GAS  C:\Temp\ccL8L4V0.s 			page 21
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 exvol.c
-  C:\Temp\cc6AwCg7.s:18     .text.set_mode_ctrl:00000000 $t
-  C:\Temp\cc6AwCg7.s:26     .text.set_mode_ctrl:00000000 set_mode_ctrl
-  C:\Temp\cc6AwCg7.s:44     .text.set_mode_ctrl:00000008 $d
-  C:\Temp\cc6AwCg7.s:49     .text.set_motor_vol_trace:00000000 $t
-  C:\Temp\cc6AwCg7.s:56     .text.set_motor_vol_trace:00000000 set_motor_vol_trace
-  C:\Temp\cc6AwCg7.s:86     .text.set_motor_vol_trace:00000018 $d
-  C:\Temp\cc6AwCg7.s:92     .text.set_motor_vol_front_wall:00000000 $t
-  C:\Temp\cc6AwCg7.s:99     .text.set_motor_vol_front_wall:00000000 set_motor_vol_front_wall
-  C:\Temp\cc6AwCg7.s:129    .text.set_motor_vol_front_wall:00000018 $d
-  C:\Temp\cc6AwCg7.s:139    .text.set_motor_vol_side_wall:00000000 $t
-  C:\Temp\cc6AwCg7.s:146    .text.set_motor_vol_side_wall:00000000 set_motor_vol_side_wall
-  C:\Temp\cc6AwCg7.s:167    .text.set_motor_vol_side_wall:0000000e $d
-  C:\Temp\cc6AwCg7.s:171    .text.set_motor_vol_side_wall:00000012 $t
-  C:\Temp\cc6AwCg7.s:276    .text.set_motor_vol_side_wall:000000a8 $d
-  C:\Temp\cc6AwCg7.s:286    .text.clr_motor_vol:00000000 $t
-  C:\Temp\cc6AwCg7.s:293    .text.clr_motor_vol:00000000 clr_motor_vol
-  C:\Temp\cc6AwCg7.s:314    .text.clr_motor_vol:0000000c $d
-  C:\Temp\cc6AwCg7.s:320    .text.set_motor_vol:00000000 $t
-  C:\Temp\cc6AwCg7.s:327    .text.set_motor_vol:00000000 set_motor_vol
-  C:\Temp\cc6AwCg7.s:374    .text.set_motor_vol:00000028 $d
-  C:\Temp\cc6AwCg7.s:379    .text.clr_operate_history:00000000 $t
-  C:\Temp\cc6AwCg7.s:386    .text.clr_operate_history:00000000 clr_operate_history
-  C:\Temp\cc6AwCg7.s:442    .text.clr_operate_history:00000034 $d
-  C:\Temp\cc6AwCg7.s:447    .text.calc_motor_vol:00000000 $t
-  C:\Temp\cc6AwCg7.s:454    .text.calc_motor_vol:00000000 calc_motor_vol
-  C:\Temp\cc6AwCg7.s:487    .text.calc_motor_vol:00000030 $d
-  C:\Temp\cc6AwCg7.s:495    .text.calc_vol2duty:00000000 $t
-  C:\Temp\cc6AwCg7.s:502    .text.calc_vol2duty:00000000 calc_vol2duty
-  C:\Temp\cc6AwCg7.s:561    .text.calc_vol2duty:0000004c $d
-  C:\Temp\cc6AwCg7.s:570    .text.motor_duty_adjust:00000000 $t
-  C:\Temp\cc6AwCg7.s:577    .text.motor_duty_adjust:00000000 motor_duty_adjust
-  C:\Temp\cc6AwCg7.s:632    .text.motor_duty_adjust:00000034 $d
-  C:\Temp\cc6AwCg7.s:638    .text.set_motor_duty:00000000 $t
-  C:\Temp\cc6AwCg7.s:645    .text.set_motor_duty:00000000 set_motor_duty
-  C:\Temp\cc6AwCg7.s:671    .text.set_motor_duty:00000018 $d
-  C:\Temp\cc6AwCg7.s:677    .text.motor_1ms:00000000 $t
-  C:\Temp\cc6AwCg7.s:684    .text.motor_1ms:00000000 motor_1ms
-  C:\Temp\cc6AwCg7.s:719    .text.get_target_duty_r:00000000 $t
-  C:\Temp\cc6AwCg7.s:726    .text.get_target_duty_r:00000000 get_target_duty_r
-  C:\Temp\cc6AwCg7.s:741    .text.get_target_duty_r:00000008 $d
-  C:\Temp\cc6AwCg7.s:746    .text.get_target_duty_l:00000000 $t
-  C:\Temp\cc6AwCg7.s:753    .text.get_target_duty_l:00000000 get_target_duty_l
-  C:\Temp\cc6AwCg7.s:768    .text.get_target_duty_l:00000008 $d
-  C:\Temp\cc6AwCg7.s:776    .bss.ctrl_mode:00000000 ctrl_mode
-  C:\Temp\cc6AwCg7.s:777    .bss.ctrl_mode:00000000 $d
-  C:\Temp\cc6AwCg7.s:779    .bss.target_duty_l:00000000 $d
-  C:\Temp\cc6AwCg7.s:783    .bss.target_duty_l:00000000 target_duty_l
-  C:\Temp\cc6AwCg7.s:786    .bss.target_duty_r:00000000 $d
-  C:\Temp\cc6AwCg7.s:790    .bss.target_duty_r:00000000 target_duty_r
-  C:\Temp\cc6AwCg7.s:793    .bss.target_vol_diff:00000000 $d
-  C:\Temp\cc6AwCg7.s:797    .bss.target_vol_diff:00000000 target_vol_diff
-  C:\Temp\cc6AwCg7.s:800    .bss.target_vol_l:00000000 $d
-  C:\Temp\cc6AwCg7.s:804    .bss.target_vol_l:00000000 target_vol_l
-  C:\Temp\cc6AwCg7.s:807    .bss.target_vol_r:00000000 $d
-  C:\Temp\cc6AwCg7.s:811    .bss.target_vol_r:00000000 target_vol_r
-ARM GAS  C:\Temp\cc6AwCg7.s 			page 21
+  C:\Temp\ccL8L4V0.s:18     .text.set_mode_ctrl:00000000 $t
+  C:\Temp\ccL8L4V0.s:26     .text.set_mode_ctrl:00000000 set_mode_ctrl
+  C:\Temp\ccL8L4V0.s:44     .text.set_mode_ctrl:00000008 $d
+  C:\Temp\ccL8L4V0.s:49     .text.set_motor_vol_trace:00000000 $t
+  C:\Temp\ccL8L4V0.s:56     .text.set_motor_vol_trace:00000000 set_motor_vol_trace
+  C:\Temp\ccL8L4V0.s:86     .text.set_motor_vol_trace:00000018 $d
+  C:\Temp\ccL8L4V0.s:92     .text.set_motor_vol_front_wall:00000000 $t
+  C:\Temp\ccL8L4V0.s:99     .text.set_motor_vol_front_wall:00000000 set_motor_vol_front_wall
+  C:\Temp\ccL8L4V0.s:129    .text.set_motor_vol_front_wall:00000018 $d
+  C:\Temp\ccL8L4V0.s:139    .text.set_motor_vol_side_wall:00000000 $t
+  C:\Temp\ccL8L4V0.s:146    .text.set_motor_vol_side_wall:00000000 set_motor_vol_side_wall
+  C:\Temp\ccL8L4V0.s:167    .text.set_motor_vol_side_wall:0000000e $d
+  C:\Temp\ccL8L4V0.s:171    .text.set_motor_vol_side_wall:00000012 $t
+  C:\Temp\ccL8L4V0.s:336    .text.set_motor_vol_side_wall:00000118 $d
+  C:\Temp\ccL8L4V0.s:346    .text.clr_motor_vol:00000000 $t
+  C:\Temp\ccL8L4V0.s:353    .text.clr_motor_vol:00000000 clr_motor_vol
+  C:\Temp\ccL8L4V0.s:374    .text.clr_motor_vol:0000000c $d
+  C:\Temp\ccL8L4V0.s:380    .text.set_motor_vol:00000000 $t
+  C:\Temp\ccL8L4V0.s:387    .text.set_motor_vol:00000000 set_motor_vol
+  C:\Temp\ccL8L4V0.s:434    .text.set_motor_vol:00000028 $d
+  C:\Temp\ccL8L4V0.s:439    .text.clr_operate_history:00000000 $t
+  C:\Temp\ccL8L4V0.s:446    .text.clr_operate_history:00000000 clr_operate_history
+  C:\Temp\ccL8L4V0.s:502    .text.clr_operate_history:00000034 $d
+  C:\Temp\ccL8L4V0.s:507    .text.calc_motor_vol:00000000 $t
+  C:\Temp\ccL8L4V0.s:514    .text.calc_motor_vol:00000000 calc_motor_vol
+  C:\Temp\ccL8L4V0.s:547    .text.calc_motor_vol:00000030 $d
+  C:\Temp\ccL8L4V0.s:555    .text.calc_vol2duty:00000000 $t
+  C:\Temp\ccL8L4V0.s:562    .text.calc_vol2duty:00000000 calc_vol2duty
+  C:\Temp\ccL8L4V0.s:621    .text.calc_vol2duty:0000004c $d
+  C:\Temp\ccL8L4V0.s:630    .text.motor_duty_adjust:00000000 $t
+  C:\Temp\ccL8L4V0.s:637    .text.motor_duty_adjust:00000000 motor_duty_adjust
+  C:\Temp\ccL8L4V0.s:692    .text.motor_duty_adjust:00000034 $d
+  C:\Temp\ccL8L4V0.s:698    .text.set_motor_duty:00000000 $t
+  C:\Temp\ccL8L4V0.s:705    .text.set_motor_duty:00000000 set_motor_duty
+  C:\Temp\ccL8L4V0.s:731    .text.set_motor_duty:00000018 $d
+  C:\Temp\ccL8L4V0.s:737    .text.motor_1ms:00000000 $t
+  C:\Temp\ccL8L4V0.s:744    .text.motor_1ms:00000000 motor_1ms
+  C:\Temp\ccL8L4V0.s:779    .text.get_target_duty_r:00000000 $t
+  C:\Temp\ccL8L4V0.s:786    .text.get_target_duty_r:00000000 get_target_duty_r
+  C:\Temp\ccL8L4V0.s:801    .text.get_target_duty_r:00000008 $d
+  C:\Temp\ccL8L4V0.s:806    .text.get_target_duty_l:00000000 $t
+  C:\Temp\ccL8L4V0.s:813    .text.get_target_duty_l:00000000 get_target_duty_l
+  C:\Temp\ccL8L4V0.s:828    .text.get_target_duty_l:00000008 $d
+  C:\Temp\ccL8L4V0.s:836    .bss.ctrl_mode:00000000 ctrl_mode
+  C:\Temp\ccL8L4V0.s:837    .bss.ctrl_mode:00000000 $d
+  C:\Temp\ccL8L4V0.s:839    .bss.target_duty_l:00000000 $d
+  C:\Temp\ccL8L4V0.s:843    .bss.target_duty_l:00000000 target_duty_l
+  C:\Temp\ccL8L4V0.s:846    .bss.target_duty_r:00000000 $d
+  C:\Temp\ccL8L4V0.s:850    .bss.target_duty_r:00000000 target_duty_r
+  C:\Temp\ccL8L4V0.s:853    .bss.target_vol_diff:00000000 $d
+  C:\Temp\ccL8L4V0.s:857    .bss.target_vol_diff:00000000 target_vol_diff
+  C:\Temp\ccL8L4V0.s:860    .bss.target_vol_l:00000000 $d
+  C:\Temp\ccL8L4V0.s:864    .bss.target_vol_l:00000000 target_vol_l
+  C:\Temp\ccL8L4V0.s:867    .bss.target_vol_r:00000000 $d
+  C:\Temp\ccL8L4V0.s:871    .bss.target_vol_r:00000000 target_vol_r
+ARM GAS  C:\Temp\ccL8L4V0.s 			page 22
 
 
-  C:\Temp\cc6AwCg7.s:814    .bss.target_vol_sum:00000000 $d
-  C:\Temp\cc6AwCg7.s:818    .bss.target_vol_sum:00000000 target_vol_sum
+  C:\Temp\ccL8L4V0.s:874    .bss.target_vol_sum:00000000 $d
+  C:\Temp\ccL8L4V0.s:878    .bss.target_vol_sum:00000000 target_vol_sum
 
 UNDEFINED SYMBOLS
 get_target_vol_sum_ctrl
