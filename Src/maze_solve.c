@@ -21,6 +21,14 @@
 #include "ir_sensor.h"
 #include "adjust.h"
 #include "target.h"
+#include "param.h"
+
+int wall_sensor_front = 0;
+int wall_sensor_front_th = front_th;
+int wall_sensor_right = 0;
+int wall_sensor_right_th = right_th;
+int wall_sensor_left = 0;
+int wall_sensor_left_th = left_th;
 
 
 /* Type Definitions */

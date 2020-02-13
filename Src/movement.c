@@ -7,6 +7,7 @@
 #include "target.h"
 #include "movement.h"
 #include "adjust.h"
+#include "exvol.h"
 
 static run_start run_first_flg = 0;			// 走行開始フラグ 0:走行開始時　1:それ以外
 static wall_flg	front_wall_flg = nowall;	//　前壁の有無フラグ
@@ -239,7 +240,9 @@ void move_front (void)
 	}
 	if(run_first_flg == already)
 	{
+		set_mode_ctrl(side_wall);
 		constant_speed();//定速で一マス前進
+		set_mode_ctrl(trace);
 	}
 	run_first_flg = already;
 	clr_wall_flg();

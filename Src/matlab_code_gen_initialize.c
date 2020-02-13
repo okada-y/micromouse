@@ -20,15 +20,6 @@
  * Arguments    : void
  * Return Type  : void
  */
-void matlab_code_gen_initialize(void)
-{
-  wall_sensor_left_th = 0;
-  wall_sensor_left = 0;
-  wall_sensor_right_th = 0;
-  wall_sensor_right = 0;
-  wall_sensor_front_th = 0;
-  wall_sensor_front = 0;
-}
 
 /*
  * File trailer for matlab_code_gen_initialize.c

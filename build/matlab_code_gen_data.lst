@@ -1,4 +1,4 @@
-ARM GAS  C:\Temp\ccuhUedi.s 			page 1
+ARM GAS  C:\Temp\cczR5PvX.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -17,81 +17,33 @@ ARM GAS  C:\Temp\ccuhUedi.s 			page 1
   14              		.text
   15              	.Ltext0:
   16              		.cfi_sections	.debug_frame
-  17              		.global	wall_sensor_left_th
-  18              		.global	wall_sensor_left
-  19              		.global	wall_sensor_right_th
-  20              		.global	wall_sensor_right
-  21              		.global	wall_sensor_front_th
-  22              		.global	wall_sensor_front
-  23              		.section	.bss.wall_sensor_front,"aw",%nobits
-  24              		.align	1
-  27              	wall_sensor_front:
-  28 0000 0000     		.space	2
-  29              		.section	.bss.wall_sensor_left,"aw",%nobits
-  30              		.align	1
-  33              	wall_sensor_left:
-  34 0000 0000     		.space	2
-  35              		.section	.bss.wall_sensor_right,"aw",%nobits
-  36              		.align	1
-  39              	wall_sensor_right:
-  40 0000 0000     		.space	2
-  41              		.section	.data.wall_sensor_front_th,"aw"
-  42              		.align	1
-  45              	wall_sensor_front_th:
-  46 0000 1400     		.short	20
-  47              		.section	.data.wall_sensor_left_th,"aw"
-  48              		.align	1
-  51              	wall_sensor_left_th:
-  52 0000 1400     		.short	20
-  53              		.section	.data.wall_sensor_right_th,"aw"
-  54              		.align	1
-  57              	wall_sensor_right_th:
-  58 0000 1400     		.short	20
-  59              		.text
-  60              	.Letext0:
-  61              		.file 1 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\machine\\_default_t
-  62              		.file 2 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\lock.h"
-  63              		.file 3 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\_types.h"
-  64              		.file 4 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\lib\\gcc\\arm-none-eabi\\9.2.1\\include\\st
-  65              		.file 5 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\reent.h"
-  66              		.file 6 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\stdlib.h"
-  67              		.file 7 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\_stdint.h"
-  68              		.file 8 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\math.h"
-  69              		.file 9 "Drivers/CMSIS/Include/core_cm4.h"
-ARM GAS  C:\Temp\ccuhUedi.s 			page 2
-
-
-  70              		.file 10 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h"
-  71              		.file 11 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f413xx.h"
-  72              		.file 12 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h"
-  73              		.file 13 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
-  74              		.file 14 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h"
-  75              		.file 15 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_adc.h"
-  76              		.file 16 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h"
-  77              		.file 17 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h"
-  78              		.file 18 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h"
-  79              		.file 19 "Inc/adc.h"
-  80              		.file 20 "Inc/spi.h"
-  81              		.file 21 "Inc/tim.h"
-  82              		.file 22 "Inc/usart.h"
-  83              		.file 23 "Inc/matlab_code_gen_data.h"
-  84              		.file 24 "Src/matlab_code_gen_data.c"
-ARM GAS  C:\Temp\ccuhUedi.s 			page 3
+  17              	.Letext0:
+  18              		.file 1 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\machine\\_default_t
+  19              		.file 2 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\lock.h"
+  20              		.file 3 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\_types.h"
+  21              		.file 4 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\lib\\gcc\\arm-none-eabi\\9.2.1\\include\\st
+  22              		.file 5 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\reent.h"
+  23              		.file 6 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\stdlib.h"
+  24              		.file 7 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\_stdint.h"
+  25              		.file 8 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\math.h"
+  26              		.file 9 "Drivers/CMSIS/Include/core_cm4.h"
+  27              		.file 10 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h"
+  28              		.file 11 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f413xx.h"
+  29              		.file 12 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h"
+  30              		.file 13 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
+  31              		.file 14 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h"
+  32              		.file 15 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_adc.h"
+  33              		.file 16 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h"
+  34              		.file 17 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h"
+  35              		.file 18 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h"
+  36              		.file 19 "Inc/adc.h"
+  37              		.file 20 "Inc/spi.h"
+  38              		.file 21 "Inc/tim.h"
+  39              		.file 22 "Inc/usart.h"
+ARM GAS  C:\Temp\cczR5PvX.s 			page 2
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 matlab_code_gen_data.c
-  C:\Temp\ccuhUedi.s:51     .data.wall_sensor_left_th:00000000 wall_sensor_left_th
-  C:\Temp\ccuhUedi.s:33     .bss.wall_sensor_left:00000000 wall_sensor_left
-  C:\Temp\ccuhUedi.s:57     .data.wall_sensor_right_th:00000000 wall_sensor_right_th
-  C:\Temp\ccuhUedi.s:39     .bss.wall_sensor_right:00000000 wall_sensor_right
-  C:\Temp\ccuhUedi.s:45     .data.wall_sensor_front_th:00000000 wall_sensor_front_th
-  C:\Temp\ccuhUedi.s:27     .bss.wall_sensor_front:00000000 wall_sensor_front
-  C:\Temp\ccuhUedi.s:24     .bss.wall_sensor_front:00000000 $d
-  C:\Temp\ccuhUedi.s:30     .bss.wall_sensor_left:00000000 $d
-  C:\Temp\ccuhUedi.s:36     .bss.wall_sensor_right:00000000 $d
-  C:\Temp\ccuhUedi.s:42     .data.wall_sensor_front_th:00000000 $d
-  C:\Temp\ccuhUedi.s:48     .data.wall_sensor_left_th:00000000 $d
-  C:\Temp\ccuhUedi.s:54     .data.wall_sensor_right_th:00000000 $d
 
 NO UNDEFINED SYMBOLS

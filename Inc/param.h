@@ -25,8 +25,8 @@
 //           パラメータ             //
 /////////////////////////////////////
 /*module_test*/
-#define log_count_lim		(3000)	//データ取得する期間[ms]
-#define log_count_step		(1)	//データを取得する時間間隔[ms]
+#define log_count_lim		(20000)	//データ取得する期間[ms]
+#define log_count_step		(20)	//データを取得する時間間隔[ms]
 
 //#define DATA_DEFAULT       (1)     //測定モード１
 #define DATA_SIDE            (1)   //測定モード２
@@ -34,15 +34,15 @@
 //maze
 #define x_size              (5)     //x軸方向の壁(縦壁)の枚数+1
 #define y_size              (5)     //y軸方向の壁(横壁)の枚数+1
-#define g_size              (9)     //ゴールのマスの数
-#define goal_cordinate      {2, 2, 2, 3, 3, 3, 4, 4, 4,\
-                             1, 2, 3, 1, 2, 3, 1, 2, 3}
+#define g_size              (1)     //ゴールのマスの数
+#define goal_cordinate      {4, 0, 0, 0, 0, 0, 0, 0, 0,\
+                             1, 0, 0, 0, 0, 0, 0, 0, 0}
                               //一行目、ゴールのx座標
                               //二行目、ゴールのy座標
 //ir
-#define front_th            (20) //前壁有無判定の閾値
-#define right_th            (20) //右壁有無判定の閾値
-#define left_th             (20) //左壁有無判定の閾値                             
+#define front_th            (10) //前壁有無判定の閾値
+#define right_th            (5) //右壁有無判定の閾値
+#define left_th             (5) //左壁有無判定の閾値                             
 
 //mode
 #define mode_count_up_th 	(0.10f)     //モードカウントアップの右タイヤ速度閾値

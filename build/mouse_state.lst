@@ -1,4 +1,4 @@
-ARM GAS  C:\Temp\ccmbDnUb.s 			page 1
+ARM GAS  C:\Temp\ccmSbzgi.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,7 +58,7 @@ ARM GAS  C:\Temp\ccmbDnUb.s 			page 1
   28:Src/mouse_state.c **** //引数	: なし
   29:Src/mouse_state.c **** //返り値	: なし
   30:Src/mouse_state.c **** void mouse_state_1ms ( void )
-ARM GAS  C:\Temp\ccmbDnUb.s 			page 2
+ARM GAS  C:\Temp\ccmSbzgi.s 			page 2
 
 
   31:Src/mouse_state.c **** {
@@ -118,7 +118,7 @@ ARM GAS  C:\Temp\ccmbDnUb.s 			page 1
   60 0010 08BD     		pop	{r3, pc}
   61              	.LVL4:
   62              	.L4:
-ARM GAS  C:\Temp\ccmbDnUb.s 			page 3
+ARM GAS  C:\Temp\ccmSbzgi.s 			page 3
 
 
   63              		.loc 1 53 1 view .LVU13
@@ -178,7 +178,7 @@ ARM GAS  C:\Temp\ccmbDnUb.s 			page 1
  105 000c 1080     		strh	r0, [r2]	@ movhi
   68:Src/mouse_state.c ****     return delta_left_count;
  106              		.loc 1 68 5 is_stmt 1 view .LVU24
-ARM GAS  C:\Temp\ccmbDnUb.s 			page 4
+ARM GAS  C:\Temp\ccmSbzgi.s 			page 4
 
 
   69:Src/mouse_state.c **** }
@@ -238,7 +238,7 @@ ARM GAS  C:\Temp\ccmbDnUb.s 			page 1
  149              		.loc 1 82 51 is_stmt 0 view .LVU32
  150 0006 FFF7FEFF 		bl	Get_diff_right_count
  151              	.LVL11:
-ARM GAS  C:\Temp\ccmbDnUb.s 			page 5
+ARM GAS  C:\Temp\ccmSbzgi.s 			page 5
 
 
  152 000a 07EE900A 		vmov	s15, r0	@ int
@@ -298,7 +298,7 @@ ARM GAS  C:\Temp\ccmbDnUb.s 			page 1
   93:Src/mouse_state.c **** 		tire_r_speed_max = tire_r_speed;
  196              		.loc 1 93 3 is_stmt 1 view .LVU49
  197              		.loc 1 93 20 is_stmt 0 view .LVU50
-ARM GAS  C:\Temp\ccmbDnUb.s 			page 6
+ARM GAS  C:\Temp\ccmSbzgi.s 			page 6
 
 
  198 0062 C3ED007A 		vstr.32	s15, [r3]
@@ -358,7 +358,7 @@ ARM GAS  C:\Temp\ccmbDnUb.s 			page 1
  233              	.LCFI5:
  234              		.cfi_restore_state
   95:Src/mouse_state.c **** 	{
-ARM GAS  C:\Temp\ccmbDnUb.s 			page 7
+ARM GAS  C:\Temp\ccmSbzgi.s 			page 7
 
 
  235              		.loc 1 95 7 is_stmt 1 view .LVU62
@@ -418,7 +418,7 @@ ARM GAS  C:\Temp\ccmbDnUb.s 			page 1
  281              		.thumb
  282              		.thumb_func
  283              		.fpu fpv4-sp-d16
-ARM GAS  C:\Temp\ccmbDnUb.s 			page 8
+ARM GAS  C:\Temp\ccmSbzgi.s 			page 8
 
 
  285              	get_tire_r_speed:
@@ -478,7 +478,7 @@ ARM GAS  C:\Temp\ccmbDnUb.s 			page 1
  325              		.align	2
  326              	.L31:
  327 0008 00000000 		.word	.LANCHOR4
-ARM GAS  C:\Temp\ccmbDnUb.s 			page 9
+ARM GAS  C:\Temp\ccmSbzgi.s 			page 9
 
 
  328              		.cfi_endproc
@@ -538,7 +538,7 @@ ARM GAS  C:\Temp\ccmbDnUb.s 			page 1
  372              		@ link register save eliminated.
  143:Src/mouse_state.c ****     return tire_l_speed;
  373              		.loc 1 143 5 view .LVU82
-ARM GAS  C:\Temp\ccmbDnUb.s 			page 10
+ARM GAS  C:\Temp\ccmSbzgi.s 			page 10
 
 
  144:Src/mouse_state.c **** }
@@ -598,7 +598,7 @@ ARM GAS  C:\Temp\ccmbDnUb.s 			page 1
  154:Src/mouse_state.c **** //機能	: 左タイヤの最低速度[m/s]を取得する
  155:Src/mouse_state.c **** //引数	: なし
  156:Src/mouse_state.c **** //返り値	: 左タイヤの最低速度[m/s]
-ARM GAS  C:\Temp\ccmbDnUb.s 			page 11
+ARM GAS  C:\Temp\ccmSbzgi.s 			page 11
 
 
  157:Src/mouse_state.c **** float get_tire_l_speed_min ( void )
@@ -658,7 +658,7 @@ ARM GAS  C:\Temp\ccmbDnUb.s 			page 1
  465 000a 044A     		ldr	r2, .L46+8
  466 000c 1360     		str	r3, [r2]	@ float
  170:Src/mouse_state.c ****     tire_l_speed_max = 0;
-ARM GAS  C:\Temp\ccmbDnUb.s 			page 12
+ARM GAS  C:\Temp\ccmSbzgi.s 			page 12
 
 
  467              		.loc 1 170 5 is_stmt 1 view .LVU97
@@ -718,7 +718,7 @@ ARM GAS  C:\Temp\ccmbDnUb.s 			page 1
  514              		.section	.text.filter_move_speed,"ax",%progbits
  515              		.align	1
  516              		.global	filter_move_speed
-ARM GAS  C:\Temp\ccmbDnUb.s 			page 13
+ARM GAS  C:\Temp\ccmSbzgi.s 			page 13
 
 
  517              		.syntax unified
@@ -778,7 +778,7 @@ ARM GAS  C:\Temp\ccmbDnUb.s 			page 1
  204:Src/mouse_state.c **** 	float accel_sum = 0;	//並進方向加速度合計
  549              		.loc 1 204 2 view .LVU112
  205:Src/mouse_state.c **** 
-ARM GAS  C:\Temp\ccmbDnUb.s 			page 14
+ARM GAS  C:\Temp\ccmSbzgi.s 			page 14
 
 
  206:Src/mouse_state.c **** 	i = ave_counter % ave_num;
@@ -838,7 +838,7 @@ ARM GAS  C:\Temp\ccmbDnUb.s 			page 1
  594 0046 D2ED006A 		vldr.32	s13, [r2]
  595              		.loc 1 213 13 discriminator 3 view .LVU130
  596 004a 37EE267A 		vadd.f32	s14, s14, s13
-ARM GAS  C:\Temp\ccmbDnUb.s 			page 15
+ARM GAS  C:\Temp\ccmSbzgi.s 			page 15
 
 
  597              	.LVL24:
@@ -898,7 +898,7 @@ ARM GAS  C:\Temp\ccmbDnUb.s 			page 1
  639              	.L56:
  640              		.loc 1 221 4 discriminator 4 view .LVU147
  641 0084 0BB1     		cbz	r3, .L57
-ARM GAS  C:\Temp\ccmbDnUb.s 			page 16
+ARM GAS  C:\Temp\ccmSbzgi.s 			page 16
 
 
  222:Src/mouse_state.c **** 	{
@@ -958,7 +958,7 @@ ARM GAS  C:\Temp\ccmbDnUb.s 			page 1
  684 00c8 1388     		ldrh	r3, [r2]
  685 00ca 0133     		adds	r3, r3, #1
  686 00cc 1380     		strh	r3, [r2]	@ movhi
-ARM GAS  C:\Temp\ccmbDnUb.s 			page 17
+ARM GAS  C:\Temp\ccmSbzgi.s 			page 17
 
 
  234:Src/mouse_state.c **** }
@@ -1018,7 +1018,7 @@ ARM GAS  C:\Temp\ccmbDnUb.s 			page 1
  236:Src/mouse_state.c **** //機能	: 移動平均処理後の移動速度[m/s]を取得する
  237:Src/mouse_state.c **** //引数	: なし
  238:Src/mouse_state.c **** //返り値	: 移動平均処理後の移動速度[m/s]
-ARM GAS  C:\Temp\ccmbDnUb.s 			page 18
+ARM GAS  C:\Temp\ccmSbzgi.s 			page 18
 
 
  239:Src/mouse_state.c **** float get_move_speed_ave ( void )
@@ -1078,7 +1078,7 @@ ARM GAS  C:\Temp\ccmbDnUb.s 			page 1
  783              		.align	1
  784              		.global	calc_move_length
  785              		.syntax unified
-ARM GAS  C:\Temp\ccmbDnUb.s 			page 19
+ARM GAS  C:\Temp\ccmSbzgi.s 			page 19
 
 
  786              		.thumb
@@ -1138,7 +1138,7 @@ ARM GAS  C:\Temp\ccmbDnUb.s 			page 1
  833              	.L74:
  834 0038 00000000 		.word	.LANCHOR13
  835 003c FCA9F1D2 		.word	-755914244
-ARM GAS  C:\Temp\ccmbDnUb.s 			page 20
+ARM GAS  C:\Temp\ccmSbzgi.s 			page 20
 
 
  836 0040 4D62503F 		.word	1062232653
@@ -1198,7 +1198,7 @@ ARM GAS  C:\Temp\ccmbDnUb.s 			page 1
  880              		@ args = 0, pretend = 0, frame = 0
  881              		@ frame_needed = 0, uses_anonymous_args = 0
  882              		@ link register save eliminated.
-ARM GAS  C:\Temp\ccmbDnUb.s 			page 21
+ARM GAS  C:\Temp\ccmSbzgi.s 			page 21
 
 
  273:Src/mouse_state.c ****     move_length = length;
@@ -1258,7 +1258,7 @@ ARM GAS  C:\Temp\ccmbDnUb.s 			page 1
  929              	.LFE21:
  931              		.section	.text.get_rotation_speed,"ax",%progbits
  932              		.align	1
-ARM GAS  C:\Temp\ccmbDnUb.s 			page 22
+ARM GAS  C:\Temp\ccmSbzgi.s 			page 22
 
 
  933              		.global	get_rotation_speed
@@ -1318,7 +1318,7 @@ ARM GAS  C:\Temp\ccmbDnUb.s 			page 1
  975              		.cfi_offset 4, -16
  976              		.cfi_offset 5, -12
  977              		.cfi_offset 6, -8
-ARM GAS  C:\Temp\ccmbDnUb.s 			page 23
+ARM GAS  C:\Temp\ccmSbzgi.s 			page 23
 
 
  978              		.cfi_offset 14, -4
@@ -1378,7 +1378,7 @@ ARM GAS  C:\Temp\ccmbDnUb.s 			page 1
  1031              		.cfi_def_cfa_offset 8
  1032              		.cfi_offset 3, -8
  1033              		.cfi_offset 14, -4
-ARM GAS  C:\Temp\ccmbDnUb.s 			page 24
+ARM GAS  C:\Temp\ccmSbzgi.s 			page 24
 
 
   33:Src/mouse_state.c **** //	filter_move_speed();	//速度をフィルタ処理
@@ -1438,7 +1438,7 @@ ARM GAS  C:\Temp\ccmbDnUb.s 			page 1
  1079              		.thumb
  1080              		.thumb_func
  1081              		.fpu fpv4-sp-d16
-ARM GAS  C:\Temp\ccmbDnUb.s 			page 25
+ARM GAS  C:\Temp\ccmSbzgi.s 			page 25
 
 
  1083              	set_rotation_angle:
@@ -1498,7 +1498,7 @@ ARM GAS  C:\Temp\ccmbDnUb.s 			page 1
  1134              		.set	.LANCHOR8,. + 0
  1137              	move_speed:
  1138 0000 00000000 		.space	4
-ARM GAS  C:\Temp\ccmbDnUb.s 			page 26
+ARM GAS  C:\Temp\ccmSbzgi.s 			page 26
 
 
  1139              		.section	.bss.move_speed_ave,"aw",%nobits
@@ -1558,7 +1558,7 @@ ARM GAS  C:\Temp\ccmbDnUb.s 			page 1
  1215 0000 FE7F     		.short	32766
  1216              		.text
  1217              	.Letext0:
-ARM GAS  C:\Temp\ccmbDnUb.s 			page 27
+ARM GAS  C:\Temp\ccmSbzgi.s 			page 27
 
 
  1218              		.file 2 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\machine\\_default_t
@@ -1569,114 +1569,114 @@ ARM GAS  C:\Temp\ccmbDnUb.s 			page 1
  1223              		.file 7 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\_stdint.h"
  1224              		.file 8 "Inc/imu.h"
  1225              		.file 9 "Inc/encorder.h"
-ARM GAS  C:\Temp\ccmbDnUb.s 			page 28
+ARM GAS  C:\Temp\ccmSbzgi.s 			page 28
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 mouse_state.c
-  C:\Temp\ccmbDnUb.s:18     .text.Get_diff_right_count:00000000 $t
-  C:\Temp\ccmbDnUb.s:26     .text.Get_diff_right_count:00000000 Get_diff_right_count
-  C:\Temp\ccmbDnUb.s:66     .text.Get_diff_right_count:00000014 $d
-  C:\Temp\ccmbDnUb.s:71     .text.Get_diff_left_count:00000000 $t
-  C:\Temp\ccmbDnUb.s:78     .text.Get_diff_left_count:00000000 Get_diff_left_count
-  C:\Temp\ccmbDnUb.s:117    .text.Get_diff_left_count:00000014 $d
-  C:\Temp\ccmbDnUb.s:122    .text.calc_move_speed:00000000 $t
-  C:\Temp\ccmbDnUb.s:129    .text.calc_move_speed:00000000 calc_move_speed
-  C:\Temp\ccmbDnUb.s:263    .text.calc_move_speed:000000c0 $d
-  C:\Temp\ccmbDnUb.s:278    .text.get_tire_r_speed:00000000 $t
-  C:\Temp\ccmbDnUb.s:285    .text.get_tire_r_speed:00000000 get_tire_r_speed
-  C:\Temp\ccmbDnUb.s:300    .text.get_tire_r_speed:00000008 $d
-  C:\Temp\ccmbDnUb.s:305    .text.get_tire_r_speed_max:00000000 $t
-  C:\Temp\ccmbDnUb.s:312    .text.get_tire_r_speed_max:00000000 get_tire_r_speed_max
-  C:\Temp\ccmbDnUb.s:327    .text.get_tire_r_speed_max:00000008 $d
-  C:\Temp\ccmbDnUb.s:332    .text.get_tire_r_speed_min:00000000 $t
-  C:\Temp\ccmbDnUb.s:339    .text.get_tire_r_speed_min:00000000 get_tire_r_speed_min
-  C:\Temp\ccmbDnUb.s:354    .text.get_tire_r_speed_min:00000008 $d
-  C:\Temp\ccmbDnUb.s:359    .text.get_tire_l_speed:00000000 $t
-  C:\Temp\ccmbDnUb.s:366    .text.get_tire_l_speed:00000000 get_tire_l_speed
-  C:\Temp\ccmbDnUb.s:381    .text.get_tire_l_speed:00000008 $d
-  C:\Temp\ccmbDnUb.s:386    .text.get_tire_l_speed_max:00000000 $t
-  C:\Temp\ccmbDnUb.s:393    .text.get_tire_l_speed_max:00000000 get_tire_l_speed_max
-  C:\Temp\ccmbDnUb.s:408    .text.get_tire_l_speed_max:00000008 $d
-  C:\Temp\ccmbDnUb.s:413    .text.get_tire_l_speed_min:00000000 $t
-  C:\Temp\ccmbDnUb.s:420    .text.get_tire_l_speed_min:00000000 get_tire_l_speed_min
-  C:\Temp\ccmbDnUb.s:435    .text.get_tire_l_speed_min:00000008 $d
-  C:\Temp\ccmbDnUb.s:440    .text.init_tire_speed:00000000 $t
-  C:\Temp\ccmbDnUb.s:447    .text.init_tire_speed:00000000 init_tire_speed
-  C:\Temp\ccmbDnUb.s:476    .text.init_tire_speed:00000014 $d
-  C:\Temp\ccmbDnUb.s:484    .text.get_move_speed:00000000 $t
-  C:\Temp\ccmbDnUb.s:491    .text.get_move_speed:00000000 get_move_speed
-  C:\Temp\ccmbDnUb.s:506    .text.get_move_speed:00000008 $d
-  C:\Temp\ccmbDnUb.s:515    .text.filter_move_speed:00000000 $t
-  C:\Temp\ccmbDnUb.s:522    .text.filter_move_speed:00000000 filter_move_speed
-  C:\Temp\ccmbDnUb.s:716    .text.filter_move_speed:000000e8 $d
-  C:\Temp\ccmbDnUb.s:729    .text.get_move_speed_ave:00000000 $t
-  C:\Temp\ccmbDnUb.s:736    .text.get_move_speed_ave:00000000 get_move_speed_ave
-  C:\Temp\ccmbDnUb.s:751    .text.get_move_speed_ave:00000008 $d
-  C:\Temp\ccmbDnUb.s:756    .text.get_move_accel_ave:00000000 $t
-  C:\Temp\ccmbDnUb.s:763    .text.get_move_accel_ave:00000000 get_move_accel_ave
-  C:\Temp\ccmbDnUb.s:778    .text.get_move_accel_ave:00000008 $d
-  C:\Temp\ccmbDnUb.s:783    .text.calc_move_length:00000000 $t
-  C:\Temp\ccmbDnUb.s:790    .text.calc_move_length:00000000 calc_move_length
-  C:\Temp\ccmbDnUb.s:834    .text.calc_move_length:00000038 $d
-  C:\Temp\ccmbDnUb.s:841    .text.get_move_length:00000000 $t
-  C:\Temp\ccmbDnUb.s:848    .text.get_move_length:00000000 get_move_length
-  C:\Temp\ccmbDnUb.s:863    .text.get_move_length:00000008 $d
-  C:\Temp\ccmbDnUb.s:868    .text.set_move_length:00000000 $t
-  C:\Temp\ccmbDnUb.s:875    .text.set_move_length:00000000 set_move_length
-  C:\Temp\ccmbDnUb.s:892    .text.set_move_length:00000008 $d
-  C:\Temp\ccmbDnUb.s:897    .text.calc_rotation_speed:00000000 $t
-  C:\Temp\ccmbDnUb.s:904    .text.calc_rotation_speed:00000000 calc_rotation_speed
-  C:\Temp\ccmbDnUb.s:927    .text.calc_rotation_speed:00000010 $d
-  C:\Temp\ccmbDnUb.s:932    .text.get_rotation_speed:00000000 $t
-ARM GAS  C:\Temp\ccmbDnUb.s 			page 29
+  C:\Temp\ccmSbzgi.s:18     .text.Get_diff_right_count:00000000 $t
+  C:\Temp\ccmSbzgi.s:26     .text.Get_diff_right_count:00000000 Get_diff_right_count
+  C:\Temp\ccmSbzgi.s:66     .text.Get_diff_right_count:00000014 $d
+  C:\Temp\ccmSbzgi.s:71     .text.Get_diff_left_count:00000000 $t
+  C:\Temp\ccmSbzgi.s:78     .text.Get_diff_left_count:00000000 Get_diff_left_count
+  C:\Temp\ccmSbzgi.s:117    .text.Get_diff_left_count:00000014 $d
+  C:\Temp\ccmSbzgi.s:122    .text.calc_move_speed:00000000 $t
+  C:\Temp\ccmSbzgi.s:129    .text.calc_move_speed:00000000 calc_move_speed
+  C:\Temp\ccmSbzgi.s:263    .text.calc_move_speed:000000c0 $d
+  C:\Temp\ccmSbzgi.s:278    .text.get_tire_r_speed:00000000 $t
+  C:\Temp\ccmSbzgi.s:285    .text.get_tire_r_speed:00000000 get_tire_r_speed
+  C:\Temp\ccmSbzgi.s:300    .text.get_tire_r_speed:00000008 $d
+  C:\Temp\ccmSbzgi.s:305    .text.get_tire_r_speed_max:00000000 $t
+  C:\Temp\ccmSbzgi.s:312    .text.get_tire_r_speed_max:00000000 get_tire_r_speed_max
+  C:\Temp\ccmSbzgi.s:327    .text.get_tire_r_speed_max:00000008 $d
+  C:\Temp\ccmSbzgi.s:332    .text.get_tire_r_speed_min:00000000 $t
+  C:\Temp\ccmSbzgi.s:339    .text.get_tire_r_speed_min:00000000 get_tire_r_speed_min
+  C:\Temp\ccmSbzgi.s:354    .text.get_tire_r_speed_min:00000008 $d
+  C:\Temp\ccmSbzgi.s:359    .text.get_tire_l_speed:00000000 $t
+  C:\Temp\ccmSbzgi.s:366    .text.get_tire_l_speed:00000000 get_tire_l_speed
+  C:\Temp\ccmSbzgi.s:381    .text.get_tire_l_speed:00000008 $d
+  C:\Temp\ccmSbzgi.s:386    .text.get_tire_l_speed_max:00000000 $t
+  C:\Temp\ccmSbzgi.s:393    .text.get_tire_l_speed_max:00000000 get_tire_l_speed_max
+  C:\Temp\ccmSbzgi.s:408    .text.get_tire_l_speed_max:00000008 $d
+  C:\Temp\ccmSbzgi.s:413    .text.get_tire_l_speed_min:00000000 $t
+  C:\Temp\ccmSbzgi.s:420    .text.get_tire_l_speed_min:00000000 get_tire_l_speed_min
+  C:\Temp\ccmSbzgi.s:435    .text.get_tire_l_speed_min:00000008 $d
+  C:\Temp\ccmSbzgi.s:440    .text.init_tire_speed:00000000 $t
+  C:\Temp\ccmSbzgi.s:447    .text.init_tire_speed:00000000 init_tire_speed
+  C:\Temp\ccmSbzgi.s:476    .text.init_tire_speed:00000014 $d
+  C:\Temp\ccmSbzgi.s:484    .text.get_move_speed:00000000 $t
+  C:\Temp\ccmSbzgi.s:491    .text.get_move_speed:00000000 get_move_speed
+  C:\Temp\ccmSbzgi.s:506    .text.get_move_speed:00000008 $d
+  C:\Temp\ccmSbzgi.s:515    .text.filter_move_speed:00000000 $t
+  C:\Temp\ccmSbzgi.s:522    .text.filter_move_speed:00000000 filter_move_speed
+  C:\Temp\ccmSbzgi.s:716    .text.filter_move_speed:000000e8 $d
+  C:\Temp\ccmSbzgi.s:729    .text.get_move_speed_ave:00000000 $t
+  C:\Temp\ccmSbzgi.s:736    .text.get_move_speed_ave:00000000 get_move_speed_ave
+  C:\Temp\ccmSbzgi.s:751    .text.get_move_speed_ave:00000008 $d
+  C:\Temp\ccmSbzgi.s:756    .text.get_move_accel_ave:00000000 $t
+  C:\Temp\ccmSbzgi.s:763    .text.get_move_accel_ave:00000000 get_move_accel_ave
+  C:\Temp\ccmSbzgi.s:778    .text.get_move_accel_ave:00000008 $d
+  C:\Temp\ccmSbzgi.s:783    .text.calc_move_length:00000000 $t
+  C:\Temp\ccmSbzgi.s:790    .text.calc_move_length:00000000 calc_move_length
+  C:\Temp\ccmSbzgi.s:834    .text.calc_move_length:00000038 $d
+  C:\Temp\ccmSbzgi.s:841    .text.get_move_length:00000000 $t
+  C:\Temp\ccmSbzgi.s:848    .text.get_move_length:00000000 get_move_length
+  C:\Temp\ccmSbzgi.s:863    .text.get_move_length:00000008 $d
+  C:\Temp\ccmSbzgi.s:868    .text.set_move_length:00000000 $t
+  C:\Temp\ccmSbzgi.s:875    .text.set_move_length:00000000 set_move_length
+  C:\Temp\ccmSbzgi.s:892    .text.set_move_length:00000008 $d
+  C:\Temp\ccmSbzgi.s:897    .text.calc_rotation_speed:00000000 $t
+  C:\Temp\ccmSbzgi.s:904    .text.calc_rotation_speed:00000000 calc_rotation_speed
+  C:\Temp\ccmSbzgi.s:927    .text.calc_rotation_speed:00000010 $d
+  C:\Temp\ccmSbzgi.s:932    .text.get_rotation_speed:00000000 $t
+ARM GAS  C:\Temp\ccmSbzgi.s 			page 29
 
 
-  C:\Temp\ccmbDnUb.s:939    .text.get_rotation_speed:00000000 get_rotation_speed
-  C:\Temp\ccmbDnUb.s:954    .text.get_rotation_speed:00000008 $d
-  C:\Temp\ccmbDnUb.s:959    .text.calc_rotation_angle:00000000 $t
-  C:\Temp\ccmbDnUb.s:966    .text.calc_rotation_angle:00000000 calc_rotation_angle
-  C:\Temp\ccmbDnUb.s:1008   .text.calc_rotation_angle:00000030 $d
-  C:\Temp\ccmbDnUb.s:1016   .text.mouse_state_1ms:00000000 $t
-  C:\Temp\ccmbDnUb.s:1023   .text.mouse_state_1ms:00000000 mouse_state_1ms
-  C:\Temp\ccmbDnUb.s:1049   .text.get_rotation_angle:00000000 $t
-  C:\Temp\ccmbDnUb.s:1056   .text.get_rotation_angle:00000000 get_rotation_angle
-  C:\Temp\ccmbDnUb.s:1071   .text.get_rotation_angle:00000008 $d
-  C:\Temp\ccmbDnUb.s:1076   .text.set_rotation_angle:00000000 $t
-  C:\Temp\ccmbDnUb.s:1083   .text.set_rotation_angle:00000000 set_rotation_angle
-  C:\Temp\ccmbDnUb.s:1100   .text.set_rotation_angle:00000008 $d
-  C:\Temp\ccmbDnUb.s:1105   .bss.ave_counter.6695:00000000 $d
-  C:\Temp\ccmbDnUb.s:1109   .bss.ave_counter.6695:00000000 ave_counter.6695
-  C:\Temp\ccmbDnUb.s:1112   .bss.ave_store.6694:00000000 $d
-  C:\Temp\ccmbDnUb.s:1116   .bss.ave_store.6694:00000000 ave_store.6694
-  C:\Temp\ccmbDnUb.s:1119   .bss.move_accel_ave:00000000 $d
-  C:\Temp\ccmbDnUb.s:1123   .bss.move_accel_ave:00000000 move_accel_ave
-  C:\Temp\ccmbDnUb.s:1126   .bss.move_length:00000000 $d
-  C:\Temp\ccmbDnUb.s:1130   .bss.move_length:00000000 move_length
-  C:\Temp\ccmbDnUb.s:1133   .bss.move_speed:00000000 $d
-  C:\Temp\ccmbDnUb.s:1137   .bss.move_speed:00000000 move_speed
-  C:\Temp\ccmbDnUb.s:1140   .bss.move_speed_ave:00000000 $d
-  C:\Temp\ccmbDnUb.s:1144   .bss.move_speed_ave:00000000 move_speed_ave
-  C:\Temp\ccmbDnUb.s:1147   .bss.rotation_angle:00000000 $d
-  C:\Temp\ccmbDnUb.s:1151   .bss.rotation_angle:00000000 rotation_angle
-  C:\Temp\ccmbDnUb.s:1154   .bss.rotation_speed:00000000 $d
-  C:\Temp\ccmbDnUb.s:1158   .bss.rotation_speed:00000000 rotation_speed
-  C:\Temp\ccmbDnUb.s:1161   .bss.tire_l_speed:00000000 $d
-  C:\Temp\ccmbDnUb.s:1165   .bss.tire_l_speed:00000000 tire_l_speed
-  C:\Temp\ccmbDnUb.s:1168   .bss.tire_l_speed_max:00000000 $d
-  C:\Temp\ccmbDnUb.s:1172   .bss.tire_l_speed_max:00000000 tire_l_speed_max
-  C:\Temp\ccmbDnUb.s:1175   .bss.tire_l_speed_min:00000000 $d
-  C:\Temp\ccmbDnUb.s:1179   .bss.tire_l_speed_min:00000000 tire_l_speed_min
-  C:\Temp\ccmbDnUb.s:1182   .bss.tire_r_speed:00000000 $d
-  C:\Temp\ccmbDnUb.s:1186   .bss.tire_r_speed:00000000 tire_r_speed
-  C:\Temp\ccmbDnUb.s:1189   .bss.tire_r_speed_max:00000000 $d
-  C:\Temp\ccmbDnUb.s:1193   .bss.tire_r_speed_max:00000000 tire_r_speed_max
-  C:\Temp\ccmbDnUb.s:1196   .bss.tire_r_speed_min:00000000 $d
-  C:\Temp\ccmbDnUb.s:1200   .bss.tire_r_speed_min:00000000 tire_r_speed_min
-  C:\Temp\ccmbDnUb.s:1203   .data.left_count_old.6655:00000000 $d
-  C:\Temp\ccmbDnUb.s:1207   .data.left_count_old.6655:00000000 left_count_old.6655
-  C:\Temp\ccmbDnUb.s:1210   .data.right_count_old.6649:00000000 $d
-  C:\Temp\ccmbDnUb.s:1214   .data.right_count_old.6649:00000000 right_count_old.6649
+  C:\Temp\ccmSbzgi.s:939    .text.get_rotation_speed:00000000 get_rotation_speed
+  C:\Temp\ccmSbzgi.s:954    .text.get_rotation_speed:00000008 $d
+  C:\Temp\ccmSbzgi.s:959    .text.calc_rotation_angle:00000000 $t
+  C:\Temp\ccmSbzgi.s:966    .text.calc_rotation_angle:00000000 calc_rotation_angle
+  C:\Temp\ccmSbzgi.s:1008   .text.calc_rotation_angle:00000030 $d
+  C:\Temp\ccmSbzgi.s:1016   .text.mouse_state_1ms:00000000 $t
+  C:\Temp\ccmSbzgi.s:1023   .text.mouse_state_1ms:00000000 mouse_state_1ms
+  C:\Temp\ccmSbzgi.s:1049   .text.get_rotation_angle:00000000 $t
+  C:\Temp\ccmSbzgi.s:1056   .text.get_rotation_angle:00000000 get_rotation_angle
+  C:\Temp\ccmSbzgi.s:1071   .text.get_rotation_angle:00000008 $d
+  C:\Temp\ccmSbzgi.s:1076   .text.set_rotation_angle:00000000 $t
+  C:\Temp\ccmSbzgi.s:1083   .text.set_rotation_angle:00000000 set_rotation_angle
+  C:\Temp\ccmSbzgi.s:1100   .text.set_rotation_angle:00000008 $d
+  C:\Temp\ccmSbzgi.s:1105   .bss.ave_counter.6695:00000000 $d
+  C:\Temp\ccmSbzgi.s:1109   .bss.ave_counter.6695:00000000 ave_counter.6695
+  C:\Temp\ccmSbzgi.s:1112   .bss.ave_store.6694:00000000 $d
+  C:\Temp\ccmSbzgi.s:1116   .bss.ave_store.6694:00000000 ave_store.6694
+  C:\Temp\ccmSbzgi.s:1119   .bss.move_accel_ave:00000000 $d
+  C:\Temp\ccmSbzgi.s:1123   .bss.move_accel_ave:00000000 move_accel_ave
+  C:\Temp\ccmSbzgi.s:1126   .bss.move_length:00000000 $d
+  C:\Temp\ccmSbzgi.s:1130   .bss.move_length:00000000 move_length
+  C:\Temp\ccmSbzgi.s:1133   .bss.move_speed:00000000 $d
+  C:\Temp\ccmSbzgi.s:1137   .bss.move_speed:00000000 move_speed
+  C:\Temp\ccmSbzgi.s:1140   .bss.move_speed_ave:00000000 $d
+  C:\Temp\ccmSbzgi.s:1144   .bss.move_speed_ave:00000000 move_speed_ave
+  C:\Temp\ccmSbzgi.s:1147   .bss.rotation_angle:00000000 $d
+  C:\Temp\ccmSbzgi.s:1151   .bss.rotation_angle:00000000 rotation_angle
+  C:\Temp\ccmSbzgi.s:1154   .bss.rotation_speed:00000000 $d
+  C:\Temp\ccmSbzgi.s:1158   .bss.rotation_speed:00000000 rotation_speed
+  C:\Temp\ccmSbzgi.s:1161   .bss.tire_l_speed:00000000 $d
+  C:\Temp\ccmSbzgi.s:1165   .bss.tire_l_speed:00000000 tire_l_speed
+  C:\Temp\ccmSbzgi.s:1168   .bss.tire_l_speed_max:00000000 $d
+  C:\Temp\ccmSbzgi.s:1172   .bss.tire_l_speed_max:00000000 tire_l_speed_max
+  C:\Temp\ccmSbzgi.s:1175   .bss.tire_l_speed_min:00000000 $d
+  C:\Temp\ccmSbzgi.s:1179   .bss.tire_l_speed_min:00000000 tire_l_speed_min
+  C:\Temp\ccmSbzgi.s:1182   .bss.tire_r_speed:00000000 $d
+  C:\Temp\ccmSbzgi.s:1186   .bss.tire_r_speed:00000000 tire_r_speed
+  C:\Temp\ccmSbzgi.s:1189   .bss.tire_r_speed_max:00000000 $d
+  C:\Temp\ccmSbzgi.s:1193   .bss.tire_r_speed_max:00000000 tire_r_speed_max
+  C:\Temp\ccmSbzgi.s:1196   .bss.tire_r_speed_min:00000000 $d
+  C:\Temp\ccmSbzgi.s:1200   .bss.tire_r_speed_min:00000000 tire_r_speed_min
+  C:\Temp\ccmSbzgi.s:1203   .data.left_count_old.6655:00000000 $d
+  C:\Temp\ccmSbzgi.s:1207   .data.left_count_old.6655:00000000 left_count_old.6655
+  C:\Temp\ccmSbzgi.s:1210   .data.right_count_old.6649:00000000 $d
+  C:\Temp\ccmSbzgi.s:1214   .data.right_count_old.6649:00000000 right_count_old.6649
 
 UNDEFINED SYMBOLS
 get_encordercount_r
