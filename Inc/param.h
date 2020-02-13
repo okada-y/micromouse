@@ -31,8 +31,8 @@
 //maze
 #define x_size              (5)     //x軸方向の壁(縦壁)の枚数+1
 #define y_size              (5)     //y軸方向の壁(横壁)の枚数+1
-#define g_size              (9)     //ゴールのマスの数
-#define goal_cordinate      {2, 2, 2, 3, 3, 3, 4, 4, 4,\
+#define g_size              (1)     //ゴールのマスの数
+#define goal_cordinate      {4, 2, 2, 3, 3, 3, 4, 4, 4,\
                              1, 2, 3, 1, 2, 3, 1, 2, 3}
                               //一行目、ゴールのx座標
                               //二行目、ゴールのy座標
