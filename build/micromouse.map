@@ -3837,97 +3837,97 @@ LOAD c:/tools/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2
                 0x0000178d       0x1e c:/tools/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/thumb/v7e-m+fp/hard/crtn.o
 OUTPUT(build/micromouse.elf elf32-littlearm)
 
-.debug_info     0x00000000    0x34742
+.debug_info     0x00000000    0x3472a
  .debug_info    0x00000000     0x26c1 build/main.o
  .debug_info    0x000026c1      0xfa9 build/mouse_state.o
  .debug_info    0x0000366a      0xb71 build/control.o
- .debug_info    0x000041db     0x12d4 build/adjust.o
- .debug_info    0x000054af     0x1128 build/movement.o
- .debug_info    0x000065d7      0xf01 build/exvol.o
- .debug_info    0x000074d8      0x5f6 build/gpio.o
- .debug_info    0x00007ace      0xda6 build/adc.o
- .debug_info    0x00008874      0x75f build/dma.o
- .debug_info    0x00008fd3      0xc7f build/spi.o
- .debug_info    0x00009c52     0x197a build/tim.o
- .debug_info    0x0000b5cc      0xc8d build/usart.o
- .debug_info    0x0000c259     0x1c8d build/stm32f4xx_it.o
- .debug_info    0x0000dee6      0x3cc build/stm32f4xx_hal_msp.o
- .debug_info    0x0000e2b2      0x623 build/system_stm32f4xx.o
- .debug_info    0x0000e8d5      0x16a build/battery.o
- .debug_info    0x0000ea3f     0x1b76 build/communication.o
- .debug_info    0x000105b5     0x1ddb build/encoder.o
- .debug_info    0x00012390      0xbbf build/idivide.o
- .debug_info    0x00012f4f     0x16e2 build/imu.o
- .debug_info    0x00014631     0x143a build/interrupt.o
- .debug_info    0x00015a6b     0x19c0 build/ir_sensor.o
- .debug_info    0x0001742b     0x1ad1 build/matlab_code_gen_data.o
- .debug_info    0x00018efc     0x1b69 build/maze_init.o
- .debug_info    0x0001aa65     0x3262 build/maze_solve.o
- .debug_info    0x0001dcc7     0x12fd build/mode.o
- .debug_info    0x0001efc4     0x2412 build/module_test.o
- .debug_info    0x000213d6     0x1272 build/motor.o
- .debug_info    0x00022648      0xac3 build/rem.o
- .debug_info    0x0002310b     0x1225 build/syscalls.o
- .debug_info    0x00024330      0xac6 build/sysmem.o
- .debug_info    0x00024df6      0xdbe build/target.o
- .debug_info    0x00025bb4     0x1057 build/stm32f4xx_hal_adc.o
- .debug_info    0x00026c0b     0x202a build/stm32f4xx_hal_spi.o
- .debug_info    0x00028c35     0x3955 build/stm32f4xx_hal_tim.o
- .debug_info    0x0002c58a     0x1b33 build/stm32f4xx_hal_tim_ex.o
- .debug_info    0x0002e0bd     0x1b32 build/stm32f4xx_hal_uart.o
- .debug_info    0x0002fbef      0xc2c build/stm32f4xx_hal_rcc.o
- .debug_info    0x0003081b      0xbac build/stm32f4xx_hal_rcc_ex.o
- .debug_info    0x000313c7      0x93c build/stm32f4xx_hal_gpio.o
- .debug_info    0x00031d03      0xc2e build/stm32f4xx_hal_dma.o
- .debug_info    0x00032931     0x122f build/stm32f4xx_hal_cortex.o
- .debug_info    0x00033b60      0xbc0 build/stm32f4xx_hal.o
- .debug_info    0x00034720       0x22 build/startup_stm32f413xx.o
+ .debug_info    0x000041db     0x12bc build/adjust.o
+ .debug_info    0x00005497     0x1128 build/movement.o
+ .debug_info    0x000065bf      0xf01 build/exvol.o
+ .debug_info    0x000074c0      0x5f6 build/gpio.o
+ .debug_info    0x00007ab6      0xda6 build/adc.o
+ .debug_info    0x0000885c      0x75f build/dma.o
+ .debug_info    0x00008fbb      0xc7f build/spi.o
+ .debug_info    0x00009c3a     0x197a build/tim.o
+ .debug_info    0x0000b5b4      0xc8d build/usart.o
+ .debug_info    0x0000c241     0x1c8d build/stm32f4xx_it.o
+ .debug_info    0x0000dece      0x3cc build/stm32f4xx_hal_msp.o
+ .debug_info    0x0000e29a      0x623 build/system_stm32f4xx.o
+ .debug_info    0x0000e8bd      0x16a build/battery.o
+ .debug_info    0x0000ea27     0x1b76 build/communication.o
+ .debug_info    0x0001059d     0x1ddb build/encoder.o
+ .debug_info    0x00012378      0xbbf build/idivide.o
+ .debug_info    0x00012f37     0x16e2 build/imu.o
+ .debug_info    0x00014619     0x143a build/interrupt.o
+ .debug_info    0x00015a53     0x19c0 build/ir_sensor.o
+ .debug_info    0x00017413     0x1ad1 build/matlab_code_gen_data.o
+ .debug_info    0x00018ee4     0x1b69 build/maze_init.o
+ .debug_info    0x0001aa4d     0x3262 build/maze_solve.o
+ .debug_info    0x0001dcaf     0x12fd build/mode.o
+ .debug_info    0x0001efac     0x2412 build/module_test.o
+ .debug_info    0x000213be     0x1272 build/motor.o
+ .debug_info    0x00022630      0xac3 build/rem.o
+ .debug_info    0x000230f3     0x1225 build/syscalls.o
+ .debug_info    0x00024318      0xac6 build/sysmem.o
+ .debug_info    0x00024dde      0xdbe build/target.o
+ .debug_info    0x00025b9c     0x1057 build/stm32f4xx_hal_adc.o
+ .debug_info    0x00026bf3     0x202a build/stm32f4xx_hal_spi.o
+ .debug_info    0x00028c1d     0x3955 build/stm32f4xx_hal_tim.o
+ .debug_info    0x0002c572     0x1b33 build/stm32f4xx_hal_tim_ex.o
+ .debug_info    0x0002e0a5     0x1b32 build/stm32f4xx_hal_uart.o
+ .debug_info    0x0002fbd7      0xc2c build/stm32f4xx_hal_rcc.o
+ .debug_info    0x00030803      0xbac build/stm32f4xx_hal_rcc_ex.o
+ .debug_info    0x000313af      0x93c build/stm32f4xx_hal_gpio.o
+ .debug_info    0x00031ceb      0xc2e build/stm32f4xx_hal_dma.o
+ .debug_info    0x00032919     0x122f build/stm32f4xx_hal_cortex.o
+ .debug_info    0x00033b48      0xbc0 build/stm32f4xx_hal.o
+ .debug_info    0x00034708       0x22 build/startup_stm32f413xx.o
 
-.debug_abbrev   0x00000000     0x6ae1
+.debug_abbrev   0x00000000     0x6ad2
  .debug_abbrev  0x00000000      0x319 build/main.o
  .debug_abbrev  0x00000319      0x2e5 build/mouse_state.o
  .debug_abbrev  0x000005fe      0x232 build/control.o
- .debug_abbrev  0x00000830      0x371 build/adjust.o
- .debug_abbrev  0x00000ba1      0x257 build/movement.o
- .debug_abbrev  0x00000df8      0x283 build/exvol.o
- .debug_abbrev  0x0000107b      0x17e build/gpio.o
- .debug_abbrev  0x000011f9      0x1f9 build/adc.o
- .debug_abbrev  0x000013f2      0x156 build/dma.o
- .debug_abbrev  0x00001548      0x1f9 build/spi.o
- .debug_abbrev  0x00001741      0x25f build/tim.o
- .debug_abbrev  0x000019a0      0x1f1 build/usart.o
- .debug_abbrev  0x00001b91      0x27f build/stm32f4xx_it.o
- .debug_abbrev  0x00001e10      0x100 build/stm32f4xx_hal_msp.o
- .debug_abbrev  0x00001f10      0x12e build/system_stm32f4xx.o
- .debug_abbrev  0x0000203e      0x100 build/battery.o
- .debug_abbrev  0x0000213e      0x2b9 build/communication.o
- .debug_abbrev  0x000023f7      0x32b build/encoder.o
- .debug_abbrev  0x00002722      0x27d build/idivide.o
- .debug_abbrev  0x0000299f      0x2c3 build/imu.o
- .debug_abbrev  0x00002c62      0x28e build/interrupt.o
- .debug_abbrev  0x00002ef0      0x366 build/ir_sensor.o
- .debug_abbrev  0x00003256      0x203 build/matlab_code_gen_data.o
- .debug_abbrev  0x00003459      0x288 build/maze_init.o
- .debug_abbrev  0x000036e1      0x372 build/maze_solve.o
- .debug_abbrev  0x00003a53      0x30b build/mode.o
- .debug_abbrev  0x00003d5e      0x2f4 build/module_test.o
- .debug_abbrev  0x00004052      0x2aa build/motor.o
- .debug_abbrev  0x000042fc      0x1ea build/rem.o
- .debug_abbrev  0x000044e6      0x2f7 build/syscalls.o
- .debug_abbrev  0x000047dd      0x237 build/sysmem.o
- .debug_abbrev  0x00004a14      0x2ae build/target.o
- .debug_abbrev  0x00004cc2      0x2be build/stm32f4xx_hal_adc.o
- .debug_abbrev  0x00004f80      0x2d2 build/stm32f4xx_hal_spi.o
- .debug_abbrev  0x00005252      0x2af build/stm32f4xx_hal_tim.o
- .debug_abbrev  0x00005501      0x2c5 build/stm32f4xx_hal_tim_ex.o
- .debug_abbrev  0x000057c6      0x2fe build/stm32f4xx_hal_uart.o
- .debug_abbrev  0x00005ac4      0x2cd build/stm32f4xx_hal_rcc.o
- .debug_abbrev  0x00005d91      0x20c build/stm32f4xx_hal_rcc_ex.o
- .debug_abbrev  0x00005f9d      0x258 build/stm32f4xx_hal_gpio.o
- .debug_abbrev  0x000061f5      0x312 build/stm32f4xx_hal_dma.o
- .debug_abbrev  0x00006507      0x3a8 build/stm32f4xx_hal_cortex.o
- .debug_abbrev  0x000068af      0x220 build/stm32f4xx_hal.o
- .debug_abbrev  0x00006acf       0x12 build/startup_stm32f413xx.o
+ .debug_abbrev  0x00000830      0x362 build/adjust.o
+ .debug_abbrev  0x00000b92      0x257 build/movement.o
+ .debug_abbrev  0x00000de9      0x283 build/exvol.o
+ .debug_abbrev  0x0000106c      0x17e build/gpio.o
+ .debug_abbrev  0x000011ea      0x1f9 build/adc.o
+ .debug_abbrev  0x000013e3      0x156 build/dma.o
+ .debug_abbrev  0x00001539      0x1f9 build/spi.o
+ .debug_abbrev  0x00001732      0x25f build/tim.o
+ .debug_abbrev  0x00001991      0x1f1 build/usart.o
+ .debug_abbrev  0x00001b82      0x27f build/stm32f4xx_it.o
+ .debug_abbrev  0x00001e01      0x100 build/stm32f4xx_hal_msp.o
+ .debug_abbrev  0x00001f01      0x12e build/system_stm32f4xx.o
+ .debug_abbrev  0x0000202f      0x100 build/battery.o
+ .debug_abbrev  0x0000212f      0x2b9 build/communication.o
+ .debug_abbrev  0x000023e8      0x32b build/encoder.o
+ .debug_abbrev  0x00002713      0x27d build/idivide.o
+ .debug_abbrev  0x00002990      0x2c3 build/imu.o
+ .debug_abbrev  0x00002c53      0x28e build/interrupt.o
+ .debug_abbrev  0x00002ee1      0x366 build/ir_sensor.o
+ .debug_abbrev  0x00003247      0x203 build/matlab_code_gen_data.o
+ .debug_abbrev  0x0000344a      0x288 build/maze_init.o
+ .debug_abbrev  0x000036d2      0x372 build/maze_solve.o
+ .debug_abbrev  0x00003a44      0x30b build/mode.o
+ .debug_abbrev  0x00003d4f      0x2f4 build/module_test.o
+ .debug_abbrev  0x00004043      0x2aa build/motor.o
+ .debug_abbrev  0x000042ed      0x1ea build/rem.o
+ .debug_abbrev  0x000044d7      0x2f7 build/syscalls.o
+ .debug_abbrev  0x000047ce      0x237 build/sysmem.o
+ .debug_abbrev  0x00004a05      0x2ae build/target.o
+ .debug_abbrev  0x00004cb3      0x2be build/stm32f4xx_hal_adc.o
+ .debug_abbrev  0x00004f71      0x2d2 build/stm32f4xx_hal_spi.o
+ .debug_abbrev  0x00005243      0x2af build/stm32f4xx_hal_tim.o
+ .debug_abbrev  0x000054f2      0x2c5 build/stm32f4xx_hal_tim_ex.o
+ .debug_abbrev  0x000057b7      0x2fe build/stm32f4xx_hal_uart.o
+ .debug_abbrev  0x00005ab5      0x2cd build/stm32f4xx_hal_rcc.o
+ .debug_abbrev  0x00005d82      0x20c build/stm32f4xx_hal_rcc_ex.o
+ .debug_abbrev  0x00005f8e      0x258 build/stm32f4xx_hal_gpio.o
+ .debug_abbrev  0x000061e6      0x312 build/stm32f4xx_hal_dma.o
+ .debug_abbrev  0x000064f8      0x3a8 build/stm32f4xx_hal_cortex.o
+ .debug_abbrev  0x000068a0      0x220 build/stm32f4xx_hal.o
+ .debug_abbrev  0x00006ac0       0x12 build/startup_stm32f413xx.o
 
 .debug_loc      0x00000000    0x14378
  .debug_loc     0x00000000       0x88 build/main.o
@@ -4108,140 +4108,140 @@ OUTPUT(build/micromouse.elf elf32-littlearm)
  .debug_ranges  0x000013e8       0xe0 build/stm32f4xx_hal.o
  .debug_ranges  0x000014c8       0x20 build/startup_stm32f413xx.o
 
-.debug_line     0x00000000    0x17c61
+.debug_line     0x00000000    0x17c57
  .debug_line    0x00000000      0x5fa build/main.o
  .debug_line    0x000005fa      0x5ac build/mouse_state.o
  .debug_line    0x00000ba6      0x1fa build/control.o
- .debug_line    0x00000da0      0x7ae build/adjust.o
- .debug_line    0x0000154e      0x56d build/movement.o
- .debug_line    0x00001abb      0x4cd build/exvol.o
- .debug_line    0x00001f88      0x231 build/gpio.o
- .debug_line    0x000021b9      0x42a build/adc.o
- .debug_line    0x000025e3      0x1b6 build/dma.o
- .debug_line    0x00002799      0x3cb build/spi.o
- .debug_line    0x00002b64      0x9a4 build/tim.o
- .debug_line    0x00003508      0x2ff build/usart.o
- .debug_line    0x00003807      0x4a8 build/stm32f4xx_it.o
- .debug_line    0x00003caf      0x180 build/stm32f4xx_hal_msp.o
- .debug_line    0x00003e2f      0x275 build/system_stm32f4xx.o
- .debug_line    0x000040a4       0xdf build/battery.o
- .debug_line    0x00004183      0x387 build/communication.o
- .debug_line    0x0000450a      0x676 build/encoder.o
- .debug_line    0x00004b80      0x2aa build/idivide.o
- .debug_line    0x00004e2a      0x472 build/imu.o
- .debug_line    0x0000529c      0x3ec build/interrupt.o
- .debug_line    0x00005688      0x565 build/ir_sensor.o
- .debug_line    0x00005bed      0x331 build/matlab_code_gen_data.o
- .debug_line    0x00005f1e      0x460 build/maze_init.o
- .debug_line    0x0000637e     0x2754 build/maze_solve.o
- .debug_line    0x00008ad2      0x4cc build/mode.o
- .debug_line    0x00008f9e      0x765 build/module_test.o
- .debug_line    0x00009703      0x435 build/motor.o
- .debug_line    0x00009b38      0x1af build/rem.o
- .debug_line    0x00009ce7      0x495 build/syscalls.o
- .debug_line    0x0000a17c      0x162 build/sysmem.o
- .debug_line    0x0000a2de      0x468 build/target.o
- .debug_line    0x0000a746      0xfcf build/stm32f4xx_hal_adc.o
- .debug_line    0x0000b715     0x2447 build/stm32f4xx_hal_spi.o
- .debug_line    0x0000db5c     0x36a8 build/stm32f4xx_hal_tim.o
- .debug_line    0x00011204     0x11f4 build/stm32f4xx_hal_tim_ex.o
- .debug_line    0x000123f8     0x1c17 build/stm32f4xx_hal_uart.o
- .debug_line    0x0001400f      0xace build/stm32f4xx_hal_rcc.o
- .debug_line    0x00014add      0xf35 build/stm32f4xx_hal_rcc_ex.o
- .debug_line    0x00015a12      0x6f6 build/stm32f4xx_hal_gpio.o
- .debug_line    0x00016108      0xe22 build/stm32f4xx_hal_dma.o
- .debug_line    0x00016f2a      0x77f build/stm32f4xx_hal_cortex.o
- .debug_line    0x000176a9      0x544 build/stm32f4xx_hal.o
- .debug_line    0x00017bed       0x74 build/startup_stm32f413xx.o
+ .debug_line    0x00000da0      0x7a4 build/adjust.o
+ .debug_line    0x00001544      0x56d build/movement.o
+ .debug_line    0x00001ab1      0x4cd build/exvol.o
+ .debug_line    0x00001f7e      0x231 build/gpio.o
+ .debug_line    0x000021af      0x42a build/adc.o
+ .debug_line    0x000025d9      0x1b6 build/dma.o
+ .debug_line    0x0000278f      0x3cb build/spi.o
+ .debug_line    0x00002b5a      0x9a4 build/tim.o
+ .debug_line    0x000034fe      0x2ff build/usart.o
+ .debug_line    0x000037fd      0x4a8 build/stm32f4xx_it.o
+ .debug_line    0x00003ca5      0x180 build/stm32f4xx_hal_msp.o
+ .debug_line    0x00003e25      0x275 build/system_stm32f4xx.o
+ .debug_line    0x0000409a       0xdf build/battery.o
+ .debug_line    0x00004179      0x387 build/communication.o
+ .debug_line    0x00004500      0x676 build/encoder.o
+ .debug_line    0x00004b76      0x2aa build/idivide.o
+ .debug_line    0x00004e20      0x472 build/imu.o
+ .debug_line    0x00005292      0x3ec build/interrupt.o
+ .debug_line    0x0000567e      0x565 build/ir_sensor.o
+ .debug_line    0x00005be3      0x331 build/matlab_code_gen_data.o
+ .debug_line    0x00005f14      0x460 build/maze_init.o
+ .debug_line    0x00006374     0x2754 build/maze_solve.o
+ .debug_line    0x00008ac8      0x4cc build/mode.o
+ .debug_line    0x00008f94      0x765 build/module_test.o
+ .debug_line    0x000096f9      0x435 build/motor.o
+ .debug_line    0x00009b2e      0x1af build/rem.o
+ .debug_line    0x00009cdd      0x495 build/syscalls.o
+ .debug_line    0x0000a172      0x162 build/sysmem.o
+ .debug_line    0x0000a2d4      0x468 build/target.o
+ .debug_line    0x0000a73c      0xfcf build/stm32f4xx_hal_adc.o
+ .debug_line    0x0000b70b     0x2447 build/stm32f4xx_hal_spi.o
+ .debug_line    0x0000db52     0x36a8 build/stm32f4xx_hal_tim.o
+ .debug_line    0x000111fa     0x11f4 build/stm32f4xx_hal_tim_ex.o
+ .debug_line    0x000123ee     0x1c17 build/stm32f4xx_hal_uart.o
+ .debug_line    0x00014005      0xace build/stm32f4xx_hal_rcc.o
+ .debug_line    0x00014ad3      0xf35 build/stm32f4xx_hal_rcc_ex.o
+ .debug_line    0x00015a08      0x6f6 build/stm32f4xx_hal_gpio.o
+ .debug_line    0x000160fe      0xe22 build/stm32f4xx_hal_dma.o
+ .debug_line    0x00016f20      0x77f build/stm32f4xx_hal_cortex.o
+ .debug_line    0x0001769f      0x544 build/stm32f4xx_hal.o
+ .debug_line    0x00017be3       0x74 build/startup_stm32f413xx.o
 
-.debug_str      0x00000000     0x6745
+.debug_str      0x00000000     0x671d
  .debug_str     0x00000000     0x1518 build/main.o
                                0x16b8 (size before relaxing)
  .debug_str     0x00001518      0x276 build/mouse_state.o
                                 0x90c (size before relaxing)
  .debug_str     0x0000178e      0x11a build/control.o
                                 0x6c0 (size before relaxing)
- .debug_str     0x000018a8      0x4dd build/adjust.o
-                                0xc2e (size before relaxing)
- .debug_str     0x00001d85      0x19a build/movement.o
+ .debug_str     0x000018a8      0x4b5 build/adjust.o
+                                0xc06 (size before relaxing)
+ .debug_str     0x00001d5d      0x19a build/movement.o
                                 0x802 (size before relaxing)
- .debug_str     0x00001f1f      0x147 build/exvol.o
+ .debug_str     0x00001ef7      0x147 build/exvol.o
                                 0x895 (size before relaxing)
- .debug_str     0x00002066       0x4f build/gpio.o
+ .debug_str     0x0000203e       0x4f build/gpio.o
                                 0x3dd (size before relaxing)
- .debug_str     0x000020b5       0xbb build/adc.o
+ .debug_str     0x0000208d       0xbb build/adc.o
                                 0x872 (size before relaxing)
- .debug_str     0x00002170      0x5b8 build/dma.o
+ .debug_str     0x00002148      0x5b8 build/dma.o
                                 0x8e6 (size before relaxing)
- .debug_str     0x00002728       0x5d build/spi.o
+ .debug_str     0x00002700       0x5d build/spi.o
                                 0x88a (size before relaxing)
- .debug_str     0x00002785      0x2c8 build/tim.o
+ .debug_str     0x0000275d      0x2c8 build/tim.o
                                0x1237 (size before relaxing)
- .debug_str     0x00002a4d       0x49 build/usart.o
+ .debug_str     0x00002a25       0x49 build/usart.o
                                 0x944 (size before relaxing)
- .debug_str     0x00002a96      0x19b build/stm32f4xx_it.o
+ .debug_str     0x00002a6e      0x19b build/stm32f4xx_it.o
                                0x1228 (size before relaxing)
- .debug_str     0x00002c31       0x24 build/stm32f4xx_hal_msp.o
+ .debug_str     0x00002c09       0x24 build/stm32f4xx_hal_msp.o
                                 0x32c (size before relaxing)
- .debug_str     0x00002c55       0xa7 build/system_stm32f4xx.o
+ .debug_str     0x00002c2d       0xa7 build/system_stm32f4xx.o
                                 0x3a8 (size before relaxing)
- .debug_str     0x00002cfc       0x63 build/battery.o
+ .debug_str     0x00002cd4       0x63 build/battery.o
                                 0x166 (size before relaxing)
- .debug_str     0x00002d5f       0x6a build/communication.o
+ .debug_str     0x00002d37       0x6a build/communication.o
                                0x1102 (size before relaxing)
- .debug_str     0x00002dc9      0x1f1 build/encoder.o
+ .debug_str     0x00002da1      0x1f1 build/encoder.o
                                0x12c8 (size before relaxing)
- .debug_str     0x00002fba       0x58 build/idivide.o
+ .debug_str     0x00002f92       0x58 build/idivide.o
                                 0x621 (size before relaxing)
- .debug_str     0x00003012      0x10e build/imu.o
+ .debug_str     0x00002fea      0x10e build/imu.o
                                 0xbd3 (size before relaxing)
- .debug_str     0x00003120       0xf6 build/interrupt.o
+ .debug_str     0x000030f8       0xf6 build/interrupt.o
                                 0xbd2 (size before relaxing)
- .debug_str     0x00003216      0x2a2 build/ir_sensor.o
+ .debug_str     0x000031ee      0x2a2 build/ir_sensor.o
                                 0xf68 (size before relaxing)
- .debug_str     0x000034b8       0x1b build/matlab_code_gen_data.o
+ .debug_str     0x00003490       0x1b build/matlab_code_gen_data.o
                                0x10eb (size before relaxing)
- .debug_str     0x000034d3       0x66 build/maze_init.o
+ .debug_str     0x000034ab       0x66 build/maze_init.o
                                0x10ec (size before relaxing)
- .debug_str     0x00003539      0x284 build/maze_solve.o
+ .debug_str     0x00003511      0x284 build/maze_solve.o
                                0x157a (size before relaxing)
- .debug_str     0x000037bd       0x86 build/mode.o
+ .debug_str     0x00003795       0x86 build/mode.o
                                 0x82d (size before relaxing)
- .debug_str     0x00003843       0xce build/module_test.o
+ .debug_str     0x0000381b       0xce build/module_test.o
                                0x1399 (size before relaxing)
- .debug_str     0x00003911       0x55 build/motor.o
+ .debug_str     0x000038e9       0x55 build/motor.o
                                 0xac3 (size before relaxing)
- .debug_str     0x00003966       0x18 build/rem.o
+ .debug_str     0x0000393e       0x18 build/rem.o
                                 0x59a (size before relaxing)
- .debug_str     0x0000397e      0x21e build/syscalls.o
+ .debug_str     0x00003956      0x21e build/syscalls.o
                                 0x7fa (size before relaxing)
- .debug_str     0x00003b9c       0x2e build/sysmem.o
+ .debug_str     0x00003b74       0x2e build/sysmem.o
                                 0x5b1 (size before relaxing)
- .debug_str     0x00003bca      0x108 build/target.o
+ .debug_str     0x00003ba2      0x108 build/target.o
                                 0x87e (size before relaxing)
- .debug_str     0x00003cd2      0x28b build/stm32f4xx_hal_adc.o
+ .debug_str     0x00003caa      0x28b build/stm32f4xx_hal_adc.o
                                 0x983 (size before relaxing)
- .debug_str     0x00003f5d      0x4c0 build/stm32f4xx_hal_spi.o
+ .debug_str     0x00003f35      0x4c0 build/stm32f4xx_hal_spi.o
                                 0xc09 (size before relaxing)
- .debug_str     0x0000441d      0xb89 build/stm32f4xx_hal_tim.o
+ .debug_str     0x000043f5      0xb89 build/stm32f4xx_hal_tim.o
                                0x14fd (size before relaxing)
- .debug_str     0x00004fa6      0x431 build/stm32f4xx_hal_tim_ex.o
+ .debug_str     0x00004f7e      0x431 build/stm32f4xx_hal_tim_ex.o
                                 0xe4a (size before relaxing)
- .debug_str     0x000053d7      0x4fa build/stm32f4xx_hal_uart.o
+ .debug_str     0x000053af      0x4fa build/stm32f4xx_hal_uart.o
                                 0xc48 (size before relaxing)
- .debug_str     0x000058d1      0x175 build/stm32f4xx_hal_rcc.o
+ .debug_str     0x000058a9      0x175 build/stm32f4xx_hal_rcc.o
                                 0x71c (size before relaxing)
- .debug_str     0x00005a46      0x2e7 build/stm32f4xx_hal_rcc_ex.o
+ .debug_str     0x00005a1e      0x2e7 build/stm32f4xx_hal_rcc_ex.o
                                 0x771 (size before relaxing)
- .debug_str     0x00005d2d      0x129 build/stm32f4xx_hal_gpio.o
+ .debug_str     0x00005d05      0x129 build/stm32f4xx_hal_gpio.o
                                 0x553 (size before relaxing)
- .debug_str     0x00005e56      0x1cd build/stm32f4xx_hal_dma.o
+ .debug_str     0x00005e2e      0x1cd build/stm32f4xx_hal_dma.o
                                 0x7a6 (size before relaxing)
- .debug_str     0x00006023      0x470 build/stm32f4xx_hal_cortex.o
+ .debug_str     0x00005ffb      0x470 build/stm32f4xx_hal_cortex.o
                                 0xd0c (size before relaxing)
- .debug_str     0x00006493      0x28e build/stm32f4xx_hal.o
+ .debug_str     0x0000646b      0x28e build/stm32f4xx_hal.o
                                 0xc65 (size before relaxing)
- .debug_str     0x00006721       0x24 build/startup_stm32f413xx.o
+ .debug_str     0x000066f9       0x24 build/startup_stm32f413xx.o
                                  0x3d (size before relaxing)
 
 .comment        0x00000000       0x79

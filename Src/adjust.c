@@ -250,8 +250,6 @@ void calc_motor_vol_side_wall(void)
 	double side_wall_err_P = 0;
 	double side_wall_err_D = 0;
 	double side_wall_err_PD = 0;
-	static double side_wall_err_prev = 0;
-	static double side_wall_err_D_prev = 0;
 
 	//偏差取得
 	side_wall_err = get_side_wall_err();
@@ -259,10 +257,6 @@ void calc_motor_vol_side_wall(void)
 	//P項
 	side_wall_err_P = side_wall_P * side_wall_err;
 	
-	//D項
-	//side_wall_err_D = (side_wall_err_D_prev + side_wall_D * side_wall_fil * (side_wall_err - side_wall_err_prev))
-	//							/(1+side_wall_fil*0.001);
-
 	//D項
 	//y方向の速度
 	//速度*目標角度と実角度のエラー
@@ -273,10 +267,6 @@ void calc_motor_vol_side_wall(void)
 
 	/*印加電圧算出*/
 	target_vol_diff_sidewall = (float)side_wall_err_PD;
-
-	/*パラメータ更新*/
-	side_wall_err_prev = side_wall_err;
-	side_wall_err_D_prev = side_wall_err_D;
 
 }
 
