@@ -1,4 +1,4 @@
-ARM GAS  C:\Temp\ccfBETwd.s 			page 1
+ARM GAS  C:\Temp\ccFcJnVM.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,11 +58,11 @@ ARM GAS  C:\Temp\ccfBETwd.s 			page 1
   28:Src/adjust.c  **** static float target_vol_diff_sidewall = 0;			//横壁制御におけるモータ印加電圧の差[
   29:Src/adjust.c  **** 
   30:Src/adjust.c  **** static side_wall_ctrl side_wall_ctrl_mode = none;	//横壁補正モード（左、右、両方、�
-ARM GAS  C:\Temp\ccfBETwd.s 			page 2
+ARM GAS  C:\Temp\ccFcJnVM.s 			page 2
 
 
-  31:Src/adjust.c  **** static int16_t side_sensor_l_th = 0;				//左壁制御の閾値
-  32:Src/adjust.c  **** static int16_t side_sensor_r_th = 0;				//右壁制御の閾値
+  31:Src/adjust.c  **** static double side_sensor_l_th = 0;				//左壁制御の閾値
+  32:Src/adjust.c  **** static double side_sensor_r_th = 0;				//右壁制御の閾値
   33:Src/adjust.c  **** 
   34:Src/adjust.c  **** //機能	: adjust.cの1msタスクまとめ
   35:Src/adjust.c  **** //引数	: なし
@@ -118,7 +118,7 @@ ARM GAS  C:\Temp\ccfBETwd.s 			page 1
   61:Src/adjust.c  **** 
   62:Src/adjust.c  **** 		target_set_flg = 1;
   53              		.loc 1 62 3 is_stmt 1 view .LVU9
-ARM GAS  C:\Temp\ccfBETwd.s 			page 3
+ARM GAS  C:\Temp\ccFcJnVM.s 			page 3
 
 
   54              		.loc 1 62 18 is_stmt 0 view .LVU10
@@ -178,7 +178,7 @@ ARM GAS  C:\Temp\ccfBETwd.s 			page 1
  100              		.loc 1 72 1 view .LVU15
  101 000c 00EE100A 		vmov	s0, r0
  102 0010 08BD     		pop	{r3, pc}
-ARM GAS  C:\Temp\ccfBETwd.s 			page 4
+ARM GAS  C:\Temp\ccFcJnVM.s 			page 4
 
 
  103              	.L8:
@@ -238,13 +238,13 @@ ARM GAS  C:\Temp\ccfBETwd.s 			page 1
  153              	get_side_sensor_l_th:
  154              	.LFB7:
   81:Src/adjust.c  **** 
-ARM GAS  C:\Temp\ccfBETwd.s 			page 5
+ARM GAS  C:\Temp\ccFcJnVM.s 			page 5
 
 
   82:Src/adjust.c  **** //機能	: 壁トレースの左壁モード閾値を取得する
   83:Src/adjust.c  **** //引数	: なし
   84:Src/adjust.c  **** //返り値	: 左壁モード閾値
-  85:Src/adjust.c  **** uint16_t get_side_sensor_l_th ( void )
+  85:Src/adjust.c  **** double get_side_sensor_l_th ( void )
   86:Src/adjust.c  **** {
  155              		.loc 1 86 1 is_stmt 1 view -0
  156              		.cfi_startproc
@@ -256,10 +256,10 @@ ARM GAS  C:\Temp\ccfBETwd.s 			page 1
   88:Src/adjust.c  **** }
  161              		.loc 1 88 1 is_stmt 0 view .LVU22
  162 0000 014B     		ldr	r3, .L14
- 163 0002 1888     		ldrh	r0, [r3]
- 164 0004 7047     		bx	lr
+ 163 0002 93ED000B 		vldr.64	d0, [r3]
+ 164 0006 7047     		bx	lr
  165              	.L15:
- 166 0006 00BF     		.align	2
+ 166              		.align	2
  167              	.L14:
  168 0008 00000000 		.word	.LANCHOR3
  169              		.cfi_endproc
@@ -278,7 +278,7 @@ ARM GAS  C:\Temp\ccfBETwd.s 			page 1
   91:Src/adjust.c  **** //機能	: 壁トレースの右壁モード閾値を取得する
   92:Src/adjust.c  **** //引数	: なし
   93:Src/adjust.c  **** //返り値	: 右壁モード閾値
-  94:Src/adjust.c  **** uint16_t get_side_sensor_r_th ( void )
+  94:Src/adjust.c  **** double get_side_sensor_r_th ( void )
   95:Src/adjust.c  **** {
  182              		.loc 1 95 1 is_stmt 1 view -0
  183              		.cfi_startproc
@@ -290,15 +290,15 @@ ARM GAS  C:\Temp\ccfBETwd.s 			page 1
   97:Src/adjust.c  **** }
  188              		.loc 1 97 1 is_stmt 0 view .LVU25
  189 0000 014B     		ldr	r3, .L17
- 190 0002 1888     		ldrh	r0, [r3]
- 191 0004 7047     		bx	lr
+ 190 0002 93ED000B 		vldr.64	d0, [r3]
+ 191 0006 7047     		bx	lr
  192              	.L18:
- 193 0006 00BF     		.align	2
+ 193              		.align	2
  194              	.L17:
  195 0008 00000000 		.word	.LANCHOR4
  196              		.cfi_endproc
  197              	.LFE8:
-ARM GAS  C:\Temp\ccfBETwd.s 			page 6
+ARM GAS  C:\Temp\ccFcJnVM.s 			page 6
 
 
  199              		.section	.text.get_side_wall_ctrl_mode,"ax",%progbits
@@ -334,15 +334,20 @@ ARM GAS  C:\Temp\ccfBETwd.s 			page 1
  222 0008 00000000 		.word	.LANCHOR5
  223              		.cfi_endproc
  224              	.LFE9:
- 226              		.section	.text.calc_side_wall_ctrl_mode,"ax",%progbits
- 227              		.align	1
- 228              		.global	calc_side_wall_ctrl_mode
- 229              		.syntax unified
- 230              		.thumb
- 231              		.thumb_func
- 232              		.fpu fpv4-sp-d16
- 234              	calc_side_wall_ctrl_mode:
- 235              	.LFB10:
+ 226              		.global	__aeabi_dsub
+ 227              		.global	__aeabi_dcmplt
+ 228              		.global	__aeabi_dadd
+ 229              		.global	__aeabi_ddiv
+ 230              		.global	__aeabi_dcmpgt
+ 231              		.section	.text.calc_side_wall_ctrl_mode,"ax",%progbits
+ 232              		.align	1
+ 233              		.global	calc_side_wall_ctrl_mode
+ 234              		.syntax unified
+ 235              		.thumb
+ 236              		.thumb_func
+ 237              		.fpu fpv4-sp-d16
+ 239              	calc_side_wall_ctrl_mode:
+ 240              	.LFB10:
  106:Src/adjust.c  **** 
  107:Src/adjust.c  **** //機能	: 横壁制御におけるモードを決定する（右、左、両壁、なし）
  108:Src/adjust.c  **** //引数	: なし
@@ -350,323 +355,408 @@ ARM GAS  C:\Temp\ccfBETwd.s 			page 1
  110:Src/adjust.c  **** //備考 	:1msタスク
  111:Src/adjust.c  **** void calc_side_wall_ctrl_mode ( void )
  112:Src/adjust.c  **** {
- 236              		.loc 1 112 1 is_stmt 1 view -0
- 237              		.cfi_startproc
- 238              		@ args = 0, pretend = 0, frame = 0
- 239              		@ frame_needed = 0, uses_anonymous_args = 0
- 240 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
- 241              	.LCFI2:
- 242              		.cfi_def_cfa_offset 24
- 243              		.cfi_offset 3, -24
-ARM GAS  C:\Temp\ccfBETwd.s 			page 7
+ 241              		.loc 1 112 1 is_stmt 1 view -0
+ 242              		.cfi_startproc
+ 243              		@ args = 0, pretend = 0, frame = 8
+ARM GAS  C:\Temp\ccFcJnVM.s 			page 7
 
 
- 244              		.cfi_offset 4, -20
- 245              		.cfi_offset 5, -16
- 246              		.cfi_offset 6, -12
- 247              		.cfi_offset 7, -8
- 248              		.cfi_offset 14, -4
- 113:Src/adjust.c  **** 	int16_t side_sensor_r = 0; 				//右前センサ値
- 249              		.loc 1 113 2 view .LVU30
- 250              	.LVL2:
- 114:Src/adjust.c  ****     int16_t side_sensor_l = 0; 				//左前センサ値
- 251              		.loc 1 114 5 view .LVU31
- 115:Src/adjust.c  **** 	static int16_t side_sensor_r_old = 0;	//前回右前センサ値
- 252              		.loc 1 115 2 view .LVU32
- 116:Src/adjust.c  ****     static int16_t side_sensor_l_old = 0; 	//前回左前センサ値
- 253              		.loc 1 116 5 view .LVU33
- 117:Src/adjust.c  **** 	int16_t side_sensor_r_diff = 0;			//右前センサ値変化量
- 254              		.loc 1 117 2 view .LVU34
- 118:Src/adjust.c  ****     int16_t side_sensor_l_diff = 0; 		//左前センサ値変化量
- 255              		.loc 1 118 5 view .LVU35
- 119:Src/adjust.c  **** 	int16_t side_sensor_r_diff_sum = 0;		//右前センサ値変化量合計
- 256              		.loc 1 119 2 view .LVU36
- 120:Src/adjust.c  ****     int16_t side_sensor_l_diff_sum = 0; 	//左前センサ値変化量合計
- 257              		.loc 1 120 5 view .LVU37
- 121:Src/adjust.c  **** 	float side_sensor_r_diff_ave = 0;		//右前センサ値平均
- 258              		.loc 1 121 2 view .LVU38
- 122:Src/adjust.c  ****     float side_sensor_l_diff_ave = 0; 		//左前センサ値平均
- 259              		.loc 1 122 5 view .LVU39
+ 244              		@ frame_needed = 0, uses_anonymous_args = 0
+ 245 0000 2DE9F047 		push	{r4, r5, r6, r7, r8, r9, r10, lr}
+ 246              	.LCFI2:
+ 247              		.cfi_def_cfa_offset 32
+ 248              		.cfi_offset 4, -32
+ 249              		.cfi_offset 5, -28
+ 250              		.cfi_offset 6, -24
+ 251              		.cfi_offset 7, -20
+ 252              		.cfi_offset 8, -16
+ 253              		.cfi_offset 9, -12
+ 254              		.cfi_offset 10, -8
+ 255              		.cfi_offset 14, -4
+ 256 0004 2DED028B 		vpush.64	{d8}
+ 257              	.LCFI3:
+ 258              		.cfi_def_cfa_offset 40
+ 259              		.cfi_offset 80, -40
+ 260              		.cfi_offset 81, -36
+ 261 0008 82B0     		sub	sp, sp, #8
+ 262              	.LCFI4:
+ 263              		.cfi_def_cfa_offset 48
+ 113:Src/adjust.c  **** 	double side_sensor_r = 0; 				//右前センサ値[m]
+ 264              		.loc 1 113 2 view .LVU30
+ 265              	.LVL2:
+ 114:Src/adjust.c  ****     double side_sensor_l = 0; 				//左前センサ値[m]
+ 266              		.loc 1 114 5 view .LVU31
+ 115:Src/adjust.c  **** 	static double side_sensor_r_old = 0;	//前回右前センサ値[m]
+ 267              		.loc 1 115 2 view .LVU32
+ 116:Src/adjust.c  ****     static double side_sensor_l_old = 0; 	//前回左前センサ値[m]
+ 268              		.loc 1 116 5 view .LVU33
+ 117:Src/adjust.c  **** 	double side_sensor_r_diff = 0;			//右前センサ値変化量
+ 269              		.loc 1 117 2 view .LVU34
+ 118:Src/adjust.c  ****     double side_sensor_l_diff = 0; 			//左前センサ値変化量
+ 270              		.loc 1 118 5 view .LVU35
+ 119:Src/adjust.c  **** 	double side_sensor_r_diff_sum = 0;		//右前センサ値変化量合計
+ 271              		.loc 1 119 2 view .LVU36
+ 120:Src/adjust.c  ****     double side_sensor_l_diff_sum = 0; 		//左前センサ値変化量合計
+ 272              		.loc 1 120 5 view .LVU37
+ 121:Src/adjust.c  **** 	double side_sensor_r_diff_ave = 0;		//右前センサ値平均
+ 273              		.loc 1 121 2 view .LVU38
+ 122:Src/adjust.c  ****     double side_sensor_l_diff_ave = 0; 		//左前センサ値平均
+ 274              		.loc 1 122 5 view .LVU39
  123:Src/adjust.c  **** 
  124:Src/adjust.c  ****     typedef struct {
- 260              		.loc 1 124 5 view .LVU40
- 125:Src/adjust.c  **** 	int16_t	right;			
- 126:Src/adjust.c  **** 	int16_t left;			
+ 275              		.loc 1 124 5 view .LVU40
+ 125:Src/adjust.c  **** 	double	right;			
+ 126:Src/adjust.c  **** 	double  left;			
  127:Src/adjust.c  ****     } ave_temp;
  128:Src/adjust.c  **** 
  129:Src/adjust.c  **** 	static ave_temp ave_store[ir_diff_ave_num];  // データ格納用の構造体
- 261              		.loc 1 129 2 view .LVU41
+ 276              		.loc 1 129 2 view .LVU41
  130:Src/adjust.c  **** 	static uint16_t ave_counter = 0;
- 262              		.loc 1 130 2 view .LVU42
+ 277              		.loc 1 130 2 view .LVU42
  131:Src/adjust.c  **** 	uint16_t i = 0;
- 263              		.loc 1 131 2 view .LVU43
+ 278              		.loc 1 131 2 view .LVU43
  132:Src/adjust.c  **** 	uint16_t j = 0;
- 264              		.loc 1 132 2 view .LVU44
+ 279              		.loc 1 132 2 view .LVU44
  133:Src/adjust.c  **** 
+ARM GAS  C:\Temp\ccFcJnVM.s 			page 8
+
+
  134:Src/adjust.c  **** 	//センサ値取得
- 135:Src/adjust.c  **** 	side_sensor_l = Sensor_GetValue(1);
- 265              		.loc 1 135 2 view .LVU45
- 266              		.loc 1 135 18 is_stmt 0 view .LVU46
- 267 0002 0120     		movs	r0, #1
- 268 0004 FFF7FEFF 		bl	Sensor_GetValue
- 269              	.LVL3:
- 270 0008 0546     		mov	r5, r0
- 271              	.LVL4:
- 136:Src/adjust.c  **** 	side_sensor_r = Sensor_GetValue(2);
- 272              		.loc 1 136 2 is_stmt 1 view .LVU47
- 273              		.loc 1 136 18 is_stmt 0 view .LVU48
- 274 000a 0220     		movs	r0, #2
- 275 000c FFF7FEFF 		bl	Sensor_GetValue
- 276              	.LVL5:
-ARM GAS  C:\Temp\ccfBETwd.s 			page 8
-
-
+ 135:Src/adjust.c  **** 	side_sensor_l = SensorValue2length(1);
+ 280              		.loc 1 135 2 view .LVU45
+ 281              		.loc 1 135 18 is_stmt 0 view .LVU46
+ 282 000a 0120     		movs	r0, #1
+ 283 000c FFF7FEFF 		bl	SensorValue2length
+ 284              	.LVL3:
+ 285 0010 55EC104B 		vmov	r4, r5, d0
+ 286 0014 8DED000B 		vstr.64	d0, [sp]
+ 287              	.LVL4:
+ 136:Src/adjust.c  **** 	side_sensor_r = SensorValue2length(2);
+ 288              		.loc 1 136 2 is_stmt 1 view .LVU47
+ 289              		.loc 1 136 18 is_stmt 0 view .LVU48
+ 290 0018 0220     		movs	r0, #2
+ 291 001a FFF7FEFF 		bl	SensorValue2length
+ 292              	.LVL5:
+ 293 001e B0EE408A 		vmov.f32	s16, s0
+ 294 0022 F0EE608A 		vmov.f32	s17, s1
+ 295              	.LVL6:
  137:Src/adjust.c  **** 
  138:Src/adjust.c  **** 	//センサ変化量取得
  139:Src/adjust.c  **** 	side_sensor_l_diff = ABS(side_sensor_l - side_sensor_l_old);
- 277              		.loc 1 139 2 is_stmt 1 view .LVU49
- 278              		.loc 1 139 23 is_stmt 0 view .LVU50
- 279 0010 424B     		ldr	r3, .L41
- 280 0012 B3F90020 		ldrsh	r2, [r3]
- 281 0016 AA1A     		subs	r2, r5, r2
- 282 0018 002A     		cmp	r2, #0
- 283 001a B8BF     		it	lt
- 284 001c 5242     		rsblt	r2, r2, #0
- 285              	.LVL6:
+ 296              		.loc 1 139 2 is_stmt 1 view .LVU49
+ 297              		.loc 1 139 23 is_stmt 0 view .LVU50
+ 298 0026 6E4B     		ldr	r3, .L59+24
+ 299 0028 D3E90023 		ldrd	r2, [r3]
+ 300 002c 2046     		mov	r0, r4
+ 301 002e 2946     		mov	r1, r5
+ 302 0030 FFF7FEFF 		bl	__aeabi_dsub
+ 303              	.LVL7:
+ 304              		.loc 1 139 23 view .LVU51
+ 305 0034 0446     		mov	r4, r0
+ 306              	.LVL8:
+ 307              		.loc 1 139 23 view .LVU52
+ 308 0036 0D46     		mov	r5, r1
+ 309 0038 0022     		movs	r2, #0
+ 310 003a 0023     		movs	r3, #0
+ 311 003c FFF7FEFF 		bl	__aeabi_dcmplt
+ 312              	.LVL9:
+ 313 0040 0028     		cmp	r0, #0
+ 314 0042 3ED1     		bne	.L56
+ 315              	.L23:
+ 316              	.LVL10:
  140:Src/adjust.c  **** 	side_sensor_r_diff = ABS(side_sensor_r - side_sensor_r_old);
- 286              		.loc 1 140 2 is_stmt 1 view .LVU51
- 287              		.loc 1 140 23 is_stmt 0 view .LVU52
- 288 001e 404B     		ldr	r3, .L41+4
- 289 0020 B3F90010 		ldrsh	r1, [r3]
- 290 0024 411A     		subs	r1, r0, r1
- 291 0026 0029     		cmp	r1, #0
- 292 0028 B8BF     		it	lt
- 293 002a 4942     		rsblt	r1, r1, #0
- 294              	.LVL7:
+ 317              		.loc 1 140 2 is_stmt 1 discriminator 4 view .LVU53
+ 318              		.loc 1 140 23 is_stmt 0 discriminator 4 view .LVU54
+ 319 0044 674B     		ldr	r3, .L59+28
+ 320 0046 D3E90023 		ldrd	r2, [r3]
+ 321 004a 51EC180B 		vmov	r0, r1, d8
+ 322 004e FFF7FEFF 		bl	__aeabi_dsub
+ 323              	.LVL11:
+ 324 0052 0646     		mov	r6, r0
+ 325 0054 0F46     		mov	r7, r1
+ 326 0056 0022     		movs	r2, #0
+ 327 0058 0023     		movs	r3, #0
+ 328 005a FFF7FEFF 		bl	__aeabi_dcmplt
+ 329              	.LVL12:
+ARM GAS  C:\Temp\ccFcJnVM.s 			page 9
+
+
+ 330 005e 0028     		cmp	r0, #0
+ 331 0060 33D1     		bne	.L57
+ 332              	.L25:
+ 333              	.LVL13:
  141:Src/adjust.c  **** 
  142:Src/adjust.c  **** 	i = ave_counter % ir_diff_ave_num;
- 295              		.loc 1 142 2 is_stmt 1 view .LVU53
- 296              		.loc 1 142 4 is_stmt 0 view .LVU54
- 297 002c 3D4B     		ldr	r3, .L41+8
- 298 002e 1F88     		ldrh	r7, [r3]
- 299 0030 3D4B     		ldr	r3, .L41+12
- 300 0032 A3FB0743 		umull	r4, r3, r3, r7
- 301 0036 DB08     		lsrs	r3, r3, #3
- 302 0038 03EB8303 		add	r3, r3, r3, lsl #2
- 303 003c A7EB4303 		sub	r3, r7, r3, lsl #1
- 304 0040 9BB2     		uxth	r3, r3
- 305              	.LVL8:
+ 334              		.loc 1 142 2 is_stmt 1 discriminator 4 view .LVU55
+ 335              		.loc 1 142 4 is_stmt 0 discriminator 4 view .LVU56
+ 336 0062 614B     		ldr	r3, .L59+32
+ 337 0064 B3F800A0 		ldrh	r10, [r3]
+ 338 0068 604B     		ldr	r3, .L59+36
+ 339 006a A3FB0A23 		umull	r2, r3, r3, r10
+ 340 006e DB08     		lsrs	r3, r3, #3
+ 341 0070 03EB8303 		add	r3, r3, r3, lsl #2
+ 342 0074 AAEB4303 		sub	r3, r10, r3, lsl #1
+ 343 0078 9BB2     		uxth	r3, r3
+ 344              	.LVL14:
  143:Src/adjust.c  **** 	ave_store[i].right = side_sensor_r_diff;
- 306              		.loc 1 143 2 is_stmt 1 view .LVU55
- 307              		.loc 1 143 21 is_stmt 0 view .LVU56
- 308 0042 3A4C     		ldr	r4, .L41+16
- 309 0044 24F82310 		strh	r1, [r4, r3, lsl #2]	@ movhi
+ 345              		.loc 1 143 2 is_stmt 1 discriminator 4 view .LVU57
+ 346              		.loc 1 143 21 is_stmt 0 discriminator 4 view .LVU58
+ 347 007a 5D4A     		ldr	r2, .L59+40
+ 348 007c 02EB0313 		add	r3, r2, r3, lsl #4
+ 349              	.LVL15:
+ 350              		.loc 1 143 21 discriminator 4 view .LVU59
+ 351 0080 C3E90067 		strd	r6, [r3]
  144:Src/adjust.c  **** 	ave_store[i].left = side_sensor_l_diff;
- 310              		.loc 1 144 2 is_stmt 1 view .LVU57
- 311              		.loc 1 144 20 is_stmt 0 view .LVU58
- 312 0048 04EB8303 		add	r3, r4, r3, lsl #2
- 313              	.LVL9:
- 314              		.loc 1 144 20 view .LVU59
- 315 004c 5A80     		strh	r2, [r3, #2]	@ movhi
+ 352              		.loc 1 144 2 is_stmt 1 discriminator 4 view .LVU60
+ 353              		.loc 1 144 20 is_stmt 0 discriminator 4 view .LVU61
+ 354 0084 C3E90245 		strd	r4, [r3, #8]
  145:Src/adjust.c  **** 
  146:Src/adjust.c  **** 	//移動平均処理
  147:Src/adjust.c  **** 	for(j=0; j < ir_diff_ave_num; j++)
- 316              		.loc 1 147 2 is_stmt 1 view .LVU60
- 317              		.loc 1 147 7 is_stmt 0 view .LVU61
- 318 004e 0023     		movs	r3, #0
- 120:Src/adjust.c  **** 	float side_sensor_r_diff_ave = 0;		//右前センサ値平均
- 319              		.loc 1 120 13 view .LVU62
- 320 0050 1946     		mov	r1, r3
- 321              	.LVL10:
-ARM GAS  C:\Temp\ccfBETwd.s 			page 9
-
-
- 119:Src/adjust.c  ****     int16_t side_sensor_l_diff_sum = 0; 	//左前センサ値変化量合計
- 322              		.loc 1 119 10 view .LVU63
- 323 0052 1C46     		mov	r4, r3
- 324              	.LVL11:
- 325              	.L23:
- 326              		.loc 1 147 11 is_stmt 1 discriminator 1 view .LVU64
- 327              		.loc 1 147 2 is_stmt 0 discriminator 1 view .LVU65
- 328 0054 092B     		cmp	r3, #9
- 329 0056 0CD8     		bhi	.L40
+ 355              		.loc 1 147 2 is_stmt 1 discriminator 4 view .LVU62
+ 356              		.loc 1 147 7 is_stmt 0 discriminator 4 view .LVU63
+ 357 0088 0024     		movs	r4, #0
+ 358              	.LVL16:
+ 120:Src/adjust.c  **** 	double side_sensor_r_diff_ave = 0;		//右前センサ値平均
+ 359              		.loc 1 120 12 discriminator 4 view .LVU64
+ 360 008a 0026     		movs	r6, #0
+ 361              	.LVL17:
+ 120:Src/adjust.c  **** 	double side_sensor_r_diff_ave = 0;		//右前センサ値平均
+ 362              		.loc 1 120 12 discriminator 4 view .LVU65
+ 363 008c 0027     		movs	r7, #0
+ 119:Src/adjust.c  ****     double side_sensor_l_diff_sum = 0; 		//左前センサ値変化量合計
+ 364              		.loc 1 119 9 discriminator 4 view .LVU66
+ 365 008e B046     		mov	r8, r6
+ 366 0090 B946     		mov	r9, r7
+ 367              	.LVL18:
+ 368              	.L27:
+ 369              		.loc 1 147 11 is_stmt 1 discriminator 1 view .LVU67
+ 370              		.loc 1 147 2 is_stmt 0 discriminator 1 view .LVU68
+ 371 0092 092C     		cmp	r4, #9
+ 372 0094 1DD8     		bhi	.L58
  148:Src/adjust.c  **** 	{
  149:Src/adjust.c  **** 		side_sensor_r_diff_sum += ave_store[j].right;
- 330              		.loc 1 149 3 is_stmt 1 discriminator 3 view .LVU66
- 331              		.loc 1 149 41 is_stmt 0 discriminator 3 view .LVU67
- 332 0058 344A     		ldr	r2, .L41+16
- 333              	.LVL12:
- 334              		.loc 1 149 41 discriminator 3 view .LVU68
- 335 005a 32F82360 		ldrh	r6, [r2, r3, lsl #2]
- 336              		.loc 1 149 26 discriminator 3 view .LVU69
- 337 005e 3444     		add	r4, r4, r6
- 338              	.LVL13:
- 339              		.loc 1 149 26 discriminator 3 view .LVU70
- 340 0060 24B2     		sxth	r4, r4
- 341              	.LVL14:
+ 373              		.loc 1 149 3 is_stmt 1 discriminator 3 view .LVU69
+ 374              		.loc 1 149 41 is_stmt 0 discriminator 3 view .LVU70
+ARM GAS  C:\Temp\ccFcJnVM.s 			page 10
+
+
+ 375 0096 564D     		ldr	r5, .L59+40
+ 376 0098 05EB0415 		add	r5, r5, r4, lsl #4
+ 377              		.loc 1 149 26 discriminator 3 view .LVU71
+ 378 009c D5E90023 		ldrd	r2, [r5]
+ 379 00a0 4046     		mov	r0, r8
+ 380 00a2 4946     		mov	r1, r9
+ 381 00a4 FFF7FEFF 		bl	__aeabi_dadd
+ 382              	.LVL19:
+ 383 00a8 8046     		mov	r8, r0
+ 384              	.LVL20:
+ 385              		.loc 1 149 26 discriminator 3 view .LVU72
+ 386 00aa 8946     		mov	r9, r1
+ 387              	.LVL21:
  150:Src/adjust.c  **** 		side_sensor_l_diff_sum += ave_store[j].left;
- 342              		.loc 1 150 3 is_stmt 1 discriminator 3 view .LVU71
- 343              		.loc 1 150 41 is_stmt 0 discriminator 3 view .LVU72
- 344 0062 02EB8302 		add	r2, r2, r3, lsl #2
- 345              	.LVL15:
- 346              		.loc 1 150 41 discriminator 3 view .LVU73
- 347 0066 5288     		ldrh	r2, [r2, #2]
- 348              		.loc 1 150 26 discriminator 3 view .LVU74
- 349 0068 1144     		add	r1, r1, r2
- 350              	.LVL16:
- 351              		.loc 1 150 26 discriminator 3 view .LVU75
- 352 006a 09B2     		sxth	r1, r1
- 353              	.LVL17:
+ 388              		.loc 1 150 3 is_stmt 1 discriminator 3 view .LVU73
+ 389              		.loc 1 150 26 is_stmt 0 discriminator 3 view .LVU74
+ 390 00ac D5E90223 		ldrd	r2, [r5, #8]
+ 391 00b0 3046     		mov	r0, r6
+ 392 00b2 3946     		mov	r1, r7
+ 393 00b4 FFF7FEFF 		bl	__aeabi_dadd
+ 394              	.LVL22:
+ 395 00b8 0646     		mov	r6, r0
+ 396              	.LVL23:
+ 397              		.loc 1 150 26 discriminator 3 view .LVU75
+ 398 00ba 0F46     		mov	r7, r1
+ 399              	.LVL24:
  147:Src/adjust.c  **** 	{
- 354              		.loc 1 147 32 is_stmt 1 discriminator 3 view .LVU76
+ 400              		.loc 1 147 32 is_stmt 1 discriminator 3 view .LVU76
  147:Src/adjust.c  **** 	{
- 355              		.loc 1 147 33 is_stmt 0 discriminator 3 view .LVU77
- 356 006c 0133     		adds	r3, r3, #1
- 357              	.LVL18:
+ 401              		.loc 1 147 33 is_stmt 0 discriminator 3 view .LVU77
+ 402 00bc 0134     		adds	r4, r4, #1
+ 403              	.LVL25:
  147:Src/adjust.c  **** 	{
- 358              		.loc 1 147 33 discriminator 3 view .LVU78
- 359 006e 9BB2     		uxth	r3, r3
- 360              	.LVL19:
+ 404              		.loc 1 147 33 discriminator 3 view .LVU78
+ 405 00be A4B2     		uxth	r4, r4
+ 406              	.LVL26:
  147:Src/adjust.c  **** 	{
- 361              		.loc 1 147 33 discriminator 3 view .LVU79
- 362 0070 F0E7     		b	.L23
- 363              	.L40:
+ 407              		.loc 1 147 33 discriminator 3 view .LVU79
+ 408 00c0 E7E7     		b	.L27
+ 409              	.LVL27:
+ 410              	.L56:
+ 139:Src/adjust.c  **** 	side_sensor_r_diff = ABS(side_sensor_r - side_sensor_r_old);
+ 411              		.loc 1 139 23 discriminator 1 view .LVU80
+ 412 00c2 05F10043 		add	r3, r5, #-2147483648
+ 413 00c6 1D46     		mov	r5, r3
+ 414 00c8 BCE7     		b	.L23
+ 415              	.LVL28:
+ 416              	.L57:
+ 140:Src/adjust.c  **** 
+ 417              		.loc 1 140 23 discriminator 1 view .LVU81
+ 418 00ca 07F10043 		add	r3, r7, #-2147483648
+ 419 00ce 1F46     		mov	r7, r3
+ 420 00d0 C7E7     		b	.L25
+ 421              	.LVL29:
+ 422              	.L58:
  151:Src/adjust.c  **** 	}
  152:Src/adjust.c  **** 
- 153:Src/adjust.c  **** 	side_sensor_r_diff_ave = (float)side_sensor_r_diff_sum / ir_diff_ave_num;
- 364              		.loc 1 153 2 is_stmt 1 view .LVU80
- 365              		.loc 1 153 27 is_stmt 0 view .LVU81
- 366 0072 07EE904A 		vmov	s15, r4	@ int
- 367 0076 F8EEE77A 		vcvt.f32.s32	s15, s15
-ARM GAS  C:\Temp\ccfBETwd.s 			page 10
+ARM GAS  C:\Temp\ccFcJnVM.s 			page 11
 
 
- 368              		.loc 1 153 25 view .LVU82
- 369 007a B2EE047A 		vmov.f32	s14, #1.0e+1
- 370 007e C7EE876A 		vdiv.f32	s13, s15, s14
- 371              	.LVL20:
- 154:Src/adjust.c  **** 	side_sensor_l_diff_ave = (float)side_sensor_l_diff_sum / ir_diff_ave_num;
- 372              		.loc 1 154 2 is_stmt 1 view .LVU83
- 373              		.loc 1 154 27 is_stmt 0 view .LVU84
- 374 0082 07EE901A 		vmov	s15, r1	@ int
- 375 0086 F8EEE77A 		vcvt.f32.s32	s15, s15
- 376              		.loc 1 154 25 view .LVU85
- 377 008a 87EE876A 		vdiv.f32	s12, s15, s14
- 378              	.LVL21:
+ 153:Src/adjust.c  **** 	side_sensor_r_diff_ave = side_sensor_r_diff_sum / ir_diff_ave_num;
+ 423              		.loc 1 153 2 is_stmt 1 view .LVU82
+ 424              		.loc 1 153 25 is_stmt 0 view .LVU83
+ 425 00d2 0022     		movs	r2, #0
+ 426 00d4 474B     		ldr	r3, .L59+44
+ 427 00d6 4046     		mov	r0, r8
+ 428 00d8 4946     		mov	r1, r9
+ 429 00da FFF7FEFF 		bl	__aeabi_ddiv
+ 430              	.LVL30:
+ 431 00de 0446     		mov	r4, r0
+ 432              	.LVL31:
+ 433              		.loc 1 153 25 view .LVU84
+ 434 00e0 0D46     		mov	r5, r1
+ 435              	.LVL32:
+ 154:Src/adjust.c  **** 	side_sensor_l_diff_ave = side_sensor_l_diff_sum / ir_diff_ave_num;
+ 436              		.loc 1 154 2 is_stmt 1 view .LVU85
+ 437              		.loc 1 154 25 is_stmt 0 view .LVU86
+ 438 00e2 0022     		movs	r2, #0
+ 439 00e4 434B     		ldr	r3, .L59+44
+ 440 00e6 3046     		mov	r0, r6
+ 441 00e8 3946     		mov	r1, r7
+ 442 00ea FFF7FEFF 		bl	__aeabi_ddiv
+ 443              	.LVL33:
  155:Src/adjust.c  **** 	
  156:Src/adjust.c  **** 	ave_counter += 1 ;
- 379              		.loc 1 156 2 is_stmt 1 view .LVU86
- 380              		.loc 1 156 14 is_stmt 0 view .LVU87
- 381 008e 0137     		adds	r7, r7, #1
- 382              	.LVL22:
- 383              		.loc 1 156 14 view .LVU88
- 384 0090 244B     		ldr	r3, .L41+8
- 385              	.LVL23:
- 386              		.loc 1 156 14 view .LVU89
- 387 0092 1F80     		strh	r7, [r3]	@ movhi
+ 444              		.loc 1 156 2 is_stmt 1 view .LVU87
+ 445              		.loc 1 156 14 is_stmt 0 view .LVU88
+ 446 00ee 0AF1010A 		add	r10, r10, #1
+ 447              	.LVL34:
+ 448              		.loc 1 156 14 view .LVU89
+ 449 00f2 3D4B     		ldr	r3, .L59+32
+ 450 00f4 A3F800A0 		strh	r10, [r3]	@ movhi
  157:Src/adjust.c  **** 
  158:Src/adjust.c  **** 
  159:Src/adjust.c  **** 	//変化量に応じて、壁制御の閾値を変化
  160:Src/adjust.c  **** 	if(side_sensor_l_diff_ave > side_sensor_diff_th){
- 388              		.loc 1 160 2 is_stmt 1 view .LVU90
- 389              		.loc 1 160 4 is_stmt 0 view .LVU91
- 390 0094 F0EE007A 		vmov.f32	s15, #2.0e+0
- 391 0098 B4EEE76A 		vcmpe.f32	s12, s15
- 392 009c F1EE10FA 		vmrs	APSR_nzcv, FPSCR
- 393 00a0 1CDD     		ble	.L37
- 161:Src/adjust.c  **** 		side_sensor_l_th = side_sensor_th + side_sensor_th_add;
- 394              		.loc 1 161 3 is_stmt 1 view .LVU92
- 395              		.loc 1 161 20 is_stmt 0 view .LVU93
- 396 00a2 234B     		ldr	r3, .L41+20
- 397 00a4 4FF4C872 		mov	r2, #400
- 398 00a8 1A80     		strh	r2, [r3]	@ movhi
- 399              	.L27:
+ 451              		.loc 1 160 2 is_stmt 1 view .LVU90
+ 452              		.loc 1 160 4 is_stmt 0 view .LVU91
+ 453 00f8 33A3     		adr	r3, .L59
+ 454 00fa D3E90023 		ldrd	r2, [r3]
+ 455 00fe FFF7FEFF 		bl	__aeabi_dcmpgt
+ 456              	.LVL35:
+ 457              		.loc 1 160 4 view .LVU92
+ 458 0102 48B3     		cbz	r0, .L51
+ 161:Src/adjust.c  **** 		side_sensor_l_th = side_sensor_th - side_sensor_th_add;
+ 459              		.loc 1 161 3 is_stmt 1 view .LVU93
+ 460              		.loc 1 161 20 is_stmt 0 view .LVU94
+ 461 0104 3C4B     		ldr	r3, .L59+48
+ 462 0106 32A1     		adr	r1, .L59+8
+ 463 0108 D1E90001 		ldrd	r0, [r1]
+ 464 010c C3E90001 		strd	r0, [r3]
+ 465              	.L31:
  162:Src/adjust.c  **** 	}else{
  163:Src/adjust.c  **** 		side_sensor_l_th = side_sensor_th;
  164:Src/adjust.c  **** 	}
  165:Src/adjust.c  **** 
  166:Src/adjust.c  **** 	if(side_sensor_r_diff_ave > side_sensor_diff_th){
- 400              		.loc 1 166 2 is_stmt 1 view .LVU94
- 401              		.loc 1 166 4 is_stmt 0 view .LVU95
- 402 00aa F0EE007A 		vmov.f32	s15, #2.0e+0
- 403 00ae F4EEE76A 		vcmpe.f32	s13, s15
- 404 00b2 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
- 405 00b6 15DD     		ble	.L38
- 167:Src/adjust.c  **** 		side_sensor_r_th = side_sensor_th + side_sensor_th_add;
- 406              		.loc 1 167 3 is_stmt 1 view .LVU96
- 407              		.loc 1 167 20 is_stmt 0 view .LVU97
- 408 00b8 1E4B     		ldr	r3, .L41+24
- 409 00ba 4FF4C872 		mov	r2, #400
- 410 00be 1A80     		strh	r2, [r3]	@ movhi
-ARM GAS  C:\Temp\ccfBETwd.s 			page 11
+ARM GAS  C:\Temp\ccFcJnVM.s 			page 12
 
 
- 411              	.L30:
+ 466              		.loc 1 166 2 is_stmt 1 view .LVU95
+ 467              		.loc 1 166 4 is_stmt 0 view .LVU96
+ 468 0110 2DA3     		adr	r3, .L59
+ 469 0112 D3E90023 		ldrd	r2, [r3]
+ 470 0116 2046     		mov	r0, r4
+ 471 0118 2946     		mov	r1, r5
+ 472 011a FFF7FEFF 		bl	__aeabi_dcmpgt
+ 473              	.LVL36:
+ 474 011e 10B3     		cbz	r0, .L52
+ 167:Src/adjust.c  **** 		side_sensor_r_th = side_sensor_th - side_sensor_th_add;
+ 475              		.loc 1 167 3 is_stmt 1 view .LVU97
+ 476              		.loc 1 167 20 is_stmt 0 view .LVU98
+ 477 0120 364B     		ldr	r3, .L59+52
+ 478 0122 2BA1     		adr	r1, .L59+8
+ 479 0124 D1E90001 		ldrd	r0, [r1]
+ 480 0128 C3E90001 		strd	r0, [r3]
+ 481              	.L34:
  168:Src/adjust.c  **** 	}else{
  169:Src/adjust.c  **** 		side_sensor_r_th = side_sensor_th;
  170:Src/adjust.c  **** 	}
  171:Src/adjust.c  **** 
  172:Src/adjust.c  **** 	//閾値に応じて、横壁制御モードを設定
- 173:Src/adjust.c  **** 	if( (side_sensor_l_th < side_sensor_l) && (side_sensor_r_th < side_sensor_r))
- 412              		.loc 1 173 2 is_stmt 1 view .LVU98
- 413              		.loc 1 173 24 is_stmt 0 view .LVU99
- 414 00c0 1B4B     		ldr	r3, .L41+20
- 415 00c2 B3F90030 		ldrsh	r3, [r3]
- 416              		.loc 1 173 4 view .LVU100
- 417 00c6 AB42     		cmp	r3, r5
- 418 00c8 10DA     		bge	.L31
- 419              		.loc 1 173 62 discriminator 1 view .LVU101
- 420 00ca 1A4A     		ldr	r2, .L41+24
- 421 00cc B2F90020 		ldrsh	r2, [r2]
- 422              		.loc 1 173 41 discriminator 1 view .LVU102
- 423 00d0 8242     		cmp	r2, r0
- 424 00d2 0BDA     		bge	.L31
+ 173:Src/adjust.c  **** 	if( (side_sensor_l_th > side_sensor_l) && (side_sensor_r_th > side_sensor_r))
+ 482              		.loc 1 173 2 is_stmt 1 view .LVU99
+ 483              		.loc 1 173 24 is_stmt 0 view .LVU100
+ 484 012c 324B     		ldr	r3, .L59+48
+ 485 012e D3E90045 		ldrd	r4, [r3]
+ 486              	.LVL37:
+ 487              		.loc 1 173 4 view .LVU101
+ 488 0132 DDE90023 		ldrd	r2, [sp]
+ 489 0136 2046     		mov	r0, r4
+ 490 0138 2946     		mov	r1, r5
+ 491 013a FFF7FEFF 		bl	__aeabi_dcmpgt
+ 492              	.LVL38:
+ 493 013e C8B1     		cbz	r0, .L35
+ 494              		.loc 1 173 41 discriminator 1 view .LVU102
+ 495 0140 53EC182B 		vmov	r2, r3, d8
+ 496 0144 2D49     		ldr	r1, .L59+52
+ 497 0146 D1E90001 		ldrd	r0, [r1]
+ 498 014a FFF7FEFF 		bl	__aeabi_dcmpgt
+ 499              	.LVL39:
+ 500 014e 88B1     		cbz	r0, .L35
  174:Src/adjust.c  **** 	{
  175:Src/adjust.c  **** 		side_wall_ctrl_mode = both_side;
- 425              		.loc 1 175 3 is_stmt 1 view .LVU103
- 426              		.loc 1 175 23 is_stmt 0 view .LVU104
- 427 00d4 184B     		ldr	r3, .L41+28
- 428 00d6 0222     		movs	r2, #2
- 429 00d8 1A70     		strb	r2, [r3]
- 430 00da 0CE0     		b	.L32
- 431              	.L37:
+ 501              		.loc 1 175 3 is_stmt 1 view .LVU103
+ 502              		.loc 1 175 23 is_stmt 0 view .LVU104
+ 503 0150 2B4B     		ldr	r3, .L59+56
+ 504 0152 0222     		movs	r2, #2
+ 505 0154 1A70     		strb	r2, [r3]
+ 506 0156 17E0     		b	.L38
+ 507              	.LVL40:
+ 508              	.L51:
  163:Src/adjust.c  **** 	}
- 432              		.loc 1 163 3 is_stmt 1 view .LVU105
+ 509              		.loc 1 163 3 is_stmt 1 view .LVU105
  163:Src/adjust.c  **** 	}
- 433              		.loc 1 163 20 is_stmt 0 view .LVU106
- 434 00dc 144B     		ldr	r3, .L41+20
- 435 00de 6422     		movs	r2, #100
- 436 00e0 1A80     		strh	r2, [r3]	@ movhi
- 437 00e2 E2E7     		b	.L27
- 438              	.L38:
+ 510              		.loc 1 163 20 is_stmt 0 view .LVU106
+ 511 0158 274B     		ldr	r3, .L59+48
+ARM GAS  C:\Temp\ccFcJnVM.s 			page 13
+
+
+ 512 015a 1FA1     		adr	r1, .L59+16
+ 513 015c D1E90001 		ldrd	r0, [r1]
+ 514 0160 C3E90001 		strd	r0, [r3]
+ 515 0164 D4E7     		b	.L31
+ 516              	.L52:
  169:Src/adjust.c  **** 	}
- 439              		.loc 1 169 3 is_stmt 1 view .LVU107
+ 517              		.loc 1 169 3 is_stmt 1 view .LVU107
  169:Src/adjust.c  **** 	}
- 440              		.loc 1 169 20 is_stmt 0 view .LVU108
- 441 00e4 134B     		ldr	r3, .L41+24
- 442 00e6 6422     		movs	r2, #100
- 443 00e8 1A80     		strh	r2, [r3]	@ movhi
- 444 00ea E9E7     		b	.L30
- 445              	.L31:
+ 518              		.loc 1 169 20 is_stmt 0 view .LVU108
+ 519 0166 254B     		ldr	r3, .L59+52
+ 520 0168 1BA1     		adr	r1, .L59+16
+ 521 016a D1E90001 		ldrd	r0, [r1]
+ 522 016e C3E90001 		strd	r0, [r3]
+ 523 0172 DBE7     		b	.L34
+ 524              	.LVL41:
+ 525              	.L35:
  176:Src/adjust.c  **** 	}
- 177:Src/adjust.c  **** 	else if((side_sensor_l_th < side_sensor_l))
- 446              		.loc 1 177 7 is_stmt 1 view .LVU109
- 447              		.loc 1 177 9 is_stmt 0 view .LVU110
- 448 00ec AB42     		cmp	r3, r5
- 449 00ee 07DA     		bge	.L33
+ 177:Src/adjust.c  **** 	else if((side_sensor_l_th > side_sensor_l))
+ 526              		.loc 1 177 7 is_stmt 1 view .LVU109
+ 527              		.loc 1 177 9 is_stmt 0 view .LVU110
+ 528 0174 DDE90023 		ldrd	r2, [sp]
+ 529 0178 2046     		mov	r0, r4
+ 530 017a 2946     		mov	r1, r5
+ 531 017c FFF7FEFF 		bl	__aeabi_dcmpgt
+ 532              	.LVL42:
+ 533 0180 78B1     		cbz	r0, .L53
  178:Src/adjust.c  **** 	{
  179:Src/adjust.c  **** 		side_wall_ctrl_mode = left;
- 450              		.loc 1 179 3 is_stmt 1 view .LVU111
- 451              		.loc 1 179 23 is_stmt 0 view .LVU112
-ARM GAS  C:\Temp\ccfBETwd.s 			page 12
-
-
- 452 00f0 114B     		ldr	r3, .L41+28
- 453 00f2 0122     		movs	r2, #1
- 454 00f4 1A70     		strb	r2, [r3]
- 455              	.L32:
+ 534              		.loc 1 179 3 is_stmt 1 view .LVU111
+ 535              		.loc 1 179 23 is_stmt 0 view .LVU112
+ 536 0182 1F4B     		ldr	r3, .L59+56
+ 537 0184 0122     		movs	r2, #1
+ 538 0186 1A70     		strb	r2, [r3]
+ 539              	.L38:
  180:Src/adjust.c  **** 	}
- 181:Src/adjust.c  **** 	else if((side_sensor_r_th < side_sensor_r))
+ 181:Src/adjust.c  **** 	else if((side_sensor_r_th > side_sensor_r))
  182:Src/adjust.c  **** 	{
  183:Src/adjust.c  **** 		side_wall_ctrl_mode = right;
  184:Src/adjust.c  **** 	}
@@ -676,76 +766,102 @@ ARM GAS  C:\Temp\ccfBETwd.s 			page 1
  188:Src/adjust.c  **** 
  189:Src/adjust.c  **** 	//センサ値更新
  190:Src/adjust.c  **** 	side_sensor_l_old = side_sensor_l;
- 456              		.loc 1 190 2 is_stmt 1 view .LVU113
- 457              		.loc 1 190 20 is_stmt 0 view .LVU114
- 458 00f6 094B     		ldr	r3, .L41
- 459 00f8 1D80     		strh	r5, [r3]	@ movhi
+ 540              		.loc 1 190 2 is_stmt 1 view .LVU113
+ 541              		.loc 1 190 20 is_stmt 0 view .LVU114
+ 542 0188 154B     		ldr	r3, .L59+24
+ 543 018a 9DED007B 		vldr.64	d7, [sp]
+ 544 018e 83ED007B 		vstr.64	d7, [r3]
  191:Src/adjust.c  **** 	side_sensor_r_old = side_sensor_r;
- 460              		.loc 1 191 2 is_stmt 1 view .LVU115
- 461              		.loc 1 191 20 is_stmt 0 view .LVU116
- 462 00fa 094B     		ldr	r3, .L41+4
- 463 00fc 1880     		strh	r0, [r3]	@ movhi
+ 545              		.loc 1 191 2 is_stmt 1 view .LVU115
+ 546              		.loc 1 191 20 is_stmt 0 view .LVU116
+ 547 0192 144B     		ldr	r3, .L59+28
+ 548 0194 83ED008B 		vstr.64	d8, [r3]
  192:Src/adjust.c  **** 
  193:Src/adjust.c  **** }
- 464              		.loc 1 193 1 view .LVU117
- 465 00fe F8BD     		pop	{r3, r4, r5, r6, r7, pc}
- 466              	.LVL24:
- 467              	.L33:
- 181:Src/adjust.c  **** 	{
- 468              		.loc 1 181 7 is_stmt 1 view .LVU118
- 181:Src/adjust.c  **** 	{
- 469              		.loc 1 181 28 is_stmt 0 view .LVU119
- 470 0100 0C4B     		ldr	r3, .L41+24
- 471 0102 B3F90030 		ldrsh	r3, [r3]
- 181:Src/adjust.c  **** 	{
- 472              		.loc 1 181 9 view .LVU120
- 473 0106 8342     		cmp	r3, r0
- 474 0108 03DA     		bge	.L34
- 183:Src/adjust.c  **** 	}
- 475              		.loc 1 183 3 is_stmt 1 view .LVU121
- 183:Src/adjust.c  **** 	}
- 476              		.loc 1 183 23 is_stmt 0 view .LVU122
- 477 010a 0B4B     		ldr	r3, .L41+28
- 478 010c 0022     		movs	r2, #0
- 479 010e 1A70     		strb	r2, [r3]
- 480 0110 F1E7     		b	.L32
- 481              	.L34:
- 186:Src/adjust.c  **** 	}
- 482              		.loc 1 186 3 is_stmt 1 view .LVU123
- 186:Src/adjust.c  **** 	}
- 483              		.loc 1 186 23 is_stmt 0 view .LVU124
- 484 0112 094B     		ldr	r3, .L41+28
- 485 0114 0322     		movs	r2, #3
- 486 0116 1A70     		strb	r2, [r3]
- 487 0118 EDE7     		b	.L32
-ARM GAS  C:\Temp\ccfBETwd.s 			page 13
+ARM GAS  C:\Temp\ccFcJnVM.s 			page 14
 
 
- 488              	.L42:
- 489 011a 00BF     		.align	2
- 490              	.L41:
- 491 011c 00000000 		.word	.LANCHOR6
- 492 0120 00000000 		.word	.LANCHOR7
- 493 0124 00000000 		.word	.LANCHOR8
- 494 0128 CDCCCCCC 		.word	-858993459
- 495 012c 00000000 		.word	.LANCHOR9
- 496 0130 00000000 		.word	.LANCHOR3
- 497 0134 00000000 		.word	.LANCHOR4
- 498 0138 00000000 		.word	.LANCHOR5
- 499              		.cfi_endproc
- 500              	.LFE10:
- 502              		.global	__aeabi_dsub
- 503              		.global	__aeabi_dmul
- 504              		.global	__aeabi_dadd
- 505              		.section	.text.get_side_wall_err,"ax",%progbits
- 506              		.align	1
- 507              		.global	get_side_wall_err
- 508              		.syntax unified
- 509              		.thumb
- 510              		.thumb_func
- 511              		.fpu fpv4-sp-d16
- 513              	get_side_wall_err:
- 514              	.LFB11:
+ 549              		.loc 1 193 1 view .LVU117
+ 550 0198 02B0     		add	sp, sp, #8
+ 551              	.LCFI5:
+ 552              		.cfi_remember_state
+ 553              		.cfi_def_cfa_offset 40
+ 554              	.LVL43:
+ 555              		.loc 1 193 1 view .LVU118
+ 556              		@ sp needed
+ 557 019a BDEC028B 		vldm	sp!, {d8}
+ 558              	.LCFI6:
+ 559              		.cfi_restore 80
+ 560              		.cfi_restore 81
+ 561              		.cfi_def_cfa_offset 32
+ 562              	.LVL44:
+ 563              		.loc 1 193 1 view .LVU119
+ 564 019e BDE8F087 		pop	{r4, r5, r6, r7, r8, r9, r10, pc}
+ 565              	.LVL45:
+ 566              	.L53:
+ 567              	.LCFI7:
+ 568              		.cfi_restore_state
+ 181:Src/adjust.c  **** 	{
+ 569              		.loc 1 181 7 is_stmt 1 view .LVU120
+ 181:Src/adjust.c  **** 	{
+ 570              		.loc 1 181 9 is_stmt 0 view .LVU121
+ 571 01a2 53EC182B 		vmov	r2, r3, d8
+ 572 01a6 1549     		ldr	r1, .L59+52
+ 573 01a8 D1E90001 		ldrd	r0, [r1]
+ 574 01ac FFF7FEFF 		bl	__aeabi_dcmpgt
+ 575              	.LVL46:
+ 576 01b0 18B1     		cbz	r0, .L54
+ 183:Src/adjust.c  **** 	}
+ 577              		.loc 1 183 3 is_stmt 1 view .LVU122
+ 183:Src/adjust.c  **** 	}
+ 578              		.loc 1 183 23 is_stmt 0 view .LVU123
+ 579 01b2 134B     		ldr	r3, .L59+56
+ 580 01b4 0022     		movs	r2, #0
+ 581 01b6 1A70     		strb	r2, [r3]
+ 582 01b8 E6E7     		b	.L38
+ 583              	.L54:
+ 186:Src/adjust.c  **** 	}
+ 584              		.loc 1 186 3 is_stmt 1 view .LVU124
+ 186:Src/adjust.c  **** 	}
+ 585              		.loc 1 186 23 is_stmt 0 view .LVU125
+ 586 01ba 114B     		ldr	r3, .L59+56
+ 587 01bc 0322     		movs	r2, #3
+ 588 01be 1A70     		strb	r2, [r3]
+ 589 01c0 E2E7     		b	.L38
+ 590              	.L60:
+ 591 01c2 00BFAFF3 		.align	3
+ 591      0080
+ 592              	.L59:
+ 593 01c8 D2FBC6D7 		.word	-674825262
+ 594 01cc 9E59123F 		.word	1058167198
+ 595 01d0 BA1E85EB 		.word	-343597382
+ 596 01d4 51B88E3F 		.word	1066317905
+ 597 01d8 EC51B81E 		.word	515396076
+ 598 01dc 85EBA13F 		.word	1067576197
+ARM GAS  C:\Temp\ccFcJnVM.s 			page 15
+
+
+ 599 01e0 00000000 		.word	.LANCHOR6
+ 600 01e4 00000000 		.word	.LANCHOR7
+ 601 01e8 00000000 		.word	.LANCHOR8
+ 602 01ec CDCCCCCC 		.word	-858993459
+ 603 01f0 00000000 		.word	.LANCHOR9
+ 604 01f4 00002440 		.word	1076101120
+ 605 01f8 00000000 		.word	.LANCHOR3
+ 606 01fc 00000000 		.word	.LANCHOR4
+ 607 0200 00000000 		.word	.LANCHOR5
+ 608              		.cfi_endproc
+ 609              	.LFE10:
+ 611              		.global	__aeabi_dmul
+ 612              		.section	.text.get_side_wall_err,"ax",%progbits
+ 613              		.align	1
+ 614              		.global	get_side_wall_err
+ 615              		.syntax unified
+ 616              		.thumb
+ 617              		.thumb_func
+ 618              		.fpu fpv4-sp-d16
+ 620              	get_side_wall_err:
+ 621              	.LFB11:
  194:Src/adjust.c  **** 
  195:Src/adjust.c  **** //機能	: 各横壁制御モードにおける偏差を算出、取得する
  196:Src/adjust.c  **** //引数	: なし
@@ -753,38 +869,38 @@ ARM GAS  C:\Temp\ccfBETwd.s 			page 1
  198:Src/adjust.c  **** //備考 	:1msタスク
  199:Src/adjust.c  **** double get_side_wall_err(void)
  200:Src/adjust.c  **** {
- 515              		.loc 1 200 1 is_stmt 1 view -0
- 516              		.cfi_startproc
- 517              		@ args = 0, pretend = 0, frame = 0
- 518              		@ frame_needed = 0, uses_anonymous_args = 0
- 519 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
- 520              	.LCFI3:
- 521              		.cfi_def_cfa_offset 24
- 522              		.cfi_offset 3, -24
- 523              		.cfi_offset 4, -20
- 524              		.cfi_offset 5, -16
- 525              		.cfi_offset 6, -12
- 526              		.cfi_offset 7, -8
- 527              		.cfi_offset 14, -4
+ 622              		.loc 1 200 1 is_stmt 1 view -0
+ 623              		.cfi_startproc
+ 624              		@ args = 0, pretend = 0, frame = 0
+ 625              		@ frame_needed = 0, uses_anonymous_args = 0
+ 626 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 627              	.LCFI8:
+ 628              		.cfi_def_cfa_offset 24
+ 629              		.cfi_offset 3, -24
+ 630              		.cfi_offset 4, -20
+ 631              		.cfi_offset 5, -16
+ 632              		.cfi_offset 6, -12
+ 633              		.cfi_offset 7, -8
+ 634              		.cfi_offset 14, -4
  201:Src/adjust.c  **** 	double side_wall_err_tmp = 0;
- 528              		.loc 1 201 2 view .LVU126
- 529              	.LVL25:
+ 635              		.loc 1 201 2 view .LVU127
+ 636              	.LVL47:
  202:Src/adjust.c  **** 	
  203:Src/adjust.c  **** 	switch(side_wall_ctrl_mode){
- 530              		.loc 1 203 2 view .LVU127
- 531 0002 2D4B     		ldr	r3, .L49+8
- 532 0004 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
- 533 0006 012B     		cmp	r3, #1
- 534 0008 05D0     		beq	.L44
- 535 000a 022B     		cmp	r3, #2
- 536 000c 2AD0     		beq	.L45
-ARM GAS  C:\Temp\ccfBETwd.s 			page 14
+ 637              		.loc 1 203 2 view .LVU128
+ 638 0002 2D4B     		ldr	r3, .L67+8
+ 639 0004 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 640 0006 012B     		cmp	r3, #1
+ 641 0008 05D0     		beq	.L62
+ 642 000a 022B     		cmp	r3, #2
+ 643 000c 2AD0     		beq	.L63
+ 644 000e B3B1     		cbz	r3, .L64
+ 645 0010 9FED270B 		vldr.64	d0, .L67
+ 646              	.LVL48:
+ 647              	.L61:
+ARM GAS  C:\Temp\ccFcJnVM.s 			page 16
 
 
- 537 000e B3B1     		cbz	r3, .L46
- 538 0010 9FED270B 		vldr.64	d0, .L49
- 539              	.LVL26:
- 540              	.L43:
  204:Src/adjust.c  **** 		case left:
  205:Src/adjust.c  **** 			side_wall_err_tmp = -2 * (target_sensor_sl - SensorValue2length(1));
  206:Src/adjust.c  **** 			break;
@@ -804,151 +920,151 @@ ARM GAS  C:\Temp\ccfBETwd.s 			page 1
  220:Src/adjust.c  **** 
  221:Src/adjust.c  **** 	return side_wall_err_tmp;
  222:Src/adjust.c  **** }
- 541              		.loc 1 222 1 is_stmt 0 view .LVU128
- 542 0014 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
- 543              	.LVL27:
- 544              	.L44:
+ 648              		.loc 1 222 1 is_stmt 0 view .LVU129
+ 649 0014 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 650              	.LVL49:
+ 651              	.L62:
  205:Src/adjust.c  **** 			break;
- 545              		.loc 1 205 4 is_stmt 1 view .LVU129
+ 652              		.loc 1 205 4 is_stmt 1 view .LVU130
  205:Src/adjust.c  **** 			break;
- 546              		.loc 1 205 47 is_stmt 0 view .LVU130
- 547 0016 294B     		ldr	r3, .L49+12
- 548 0018 D3E90045 		ldrd	r4, [r3]
+ 653              		.loc 1 205 47 is_stmt 0 view .LVU131
+ 654 0016 294B     		ldr	r3, .L67+12
+ 655 0018 D3E90045 		ldrd	r4, [r3]
  205:Src/adjust.c  **** 			break;
- 549              		.loc 1 205 49 view .LVU131
- 550 001c 0120     		movs	r0, #1
- 551 001e FFF7FEFF 		bl	SensorValue2length
- 552              	.LVL28:
- 553 0022 53EC102B 		vmov	r2, r3, d0
+ 656              		.loc 1 205 49 view .LVU132
+ 657 001c 0120     		movs	r0, #1
+ 658 001e FFF7FEFF 		bl	SensorValue2length
+ 659              	.LVL50:
+ 660 0022 53EC102B 		vmov	r2, r3, d0
  205:Src/adjust.c  **** 			break;
- 554              		.loc 1 205 47 view .LVU132
- 555 0026 2046     		mov	r0, r4
- 556 0028 2946     		mov	r1, r5
- 557 002a FFF7FEFF 		bl	__aeabi_dsub
- 558              	.LVL29:
+ 661              		.loc 1 205 47 view .LVU133
+ 662 0026 2046     		mov	r0, r4
+ 663 0028 2946     		mov	r1, r5
+ 664 002a FFF7FEFF 		bl	__aeabi_dsub
+ 665              	.LVL51:
  205:Src/adjust.c  **** 			break;
- 559              		.loc 1 205 22 view .LVU133
- 560 002e 0022     		movs	r2, #0
- 561 0030 4FF04043 		mov	r3, #-1073741824
- 562 0034 FFF7FEFF 		bl	__aeabi_dmul
- 563              	.LVL30:
- 564 0038 41EC100B 		vmov	d0, r0, r1
- 565              	.LVL31:
+ 666              		.loc 1 205 22 view .LVU134
+ 667 002e 0022     		movs	r2, #0
+ 668 0030 4FF04043 		mov	r3, #-1073741824
+ 669 0034 FFF7FEFF 		bl	__aeabi_dmul
+ 670              	.LVL52:
+ 671 0038 41EC100B 		vmov	d0, r0, r1
+ 672              	.LVL53:
  206:Src/adjust.c  **** 		
- 566              		.loc 1 206 4 is_stmt 1 view .LVU134
- 567 003c EAE7     		b	.L43
- 568              	.LVL32:
-ARM GAS  C:\Temp\ccfBETwd.s 			page 15
+ 673              		.loc 1 206 4 is_stmt 1 view .LVU135
+ 674 003c EAE7     		b	.L61
+ 675              	.LVL54:
+ 676              	.L64:
+ 209:Src/adjust.c  **** 			break;
+ 677              		.loc 1 209 4 view .LVU136
+ 209:Src/adjust.c  **** 			break;
+ARM GAS  C:\Temp\ccFcJnVM.s 			page 17
 
 
- 569              	.L46:
+ 678              		.loc 1 209 46 is_stmt 0 view .LVU137
+ 679 003e 204B     		ldr	r3, .L67+16
+ 680 0040 D3E90045 		ldrd	r4, [r3]
  209:Src/adjust.c  **** 			break;
- 570              		.loc 1 209 4 view .LVU135
+ 681              		.loc 1 209 48 view .LVU138
+ 682 0044 0220     		movs	r0, #2
+ 683 0046 FFF7FEFF 		bl	SensorValue2length
+ 684              	.LVL55:
+ 685 004a 53EC102B 		vmov	r2, r3, d0
  209:Src/adjust.c  **** 			break;
- 571              		.loc 1 209 46 is_stmt 0 view .LVU136
- 572 003e 204B     		ldr	r3, .L49+16
- 573 0040 D3E90045 		ldrd	r4, [r3]
+ 686              		.loc 1 209 46 view .LVU139
+ 687 004e 2046     		mov	r0, r4
+ 688 0050 2946     		mov	r1, r5
+ 689 0052 FFF7FEFF 		bl	__aeabi_dsub
+ 690              	.LVL56:
+ 691 0056 0246     		mov	r2, r0
+ 692 0058 0B46     		mov	r3, r1
  209:Src/adjust.c  **** 			break;
- 574              		.loc 1 209 48 view .LVU137
- 575 0044 0220     		movs	r0, #2
- 576 0046 FFF7FEFF 		bl	SensorValue2length
- 577              	.LVL33:
- 578 004a 53EC102B 		vmov	r2, r3, d0
- 209:Src/adjust.c  **** 			break;
- 579              		.loc 1 209 46 view .LVU138
- 580 004e 2046     		mov	r0, r4
- 581 0050 2946     		mov	r1, r5
- 582 0052 FFF7FEFF 		bl	__aeabi_dsub
- 583              	.LVL34:
- 584 0056 0246     		mov	r2, r0
- 585 0058 0B46     		mov	r3, r1
- 209:Src/adjust.c  **** 			break;
- 586              		.loc 1 209 22 view .LVU139
- 587 005a FFF7FEFF 		bl	__aeabi_dadd
- 588              	.LVL35:
- 589 005e 41EC100B 		vmov	d0, r0, r1
- 590              	.LVL36:
+ 693              		.loc 1 209 22 view .LVU140
+ 694 005a FFF7FEFF 		bl	__aeabi_dadd
+ 695              	.LVL57:
+ 696 005e 41EC100B 		vmov	d0, r0, r1
+ 697              	.LVL58:
  210:Src/adjust.c  **** 		
- 591              		.loc 1 210 4 is_stmt 1 view .LVU140
- 592 0062 D7E7     		b	.L43
- 593              	.LVL37:
- 594              	.L45:
+ 698              		.loc 1 210 4 is_stmt 1 view .LVU141
+ 699 0062 D7E7     		b	.L61
+ 700              	.LVL59:
+ 701              	.L63:
  213:Src/adjust.c  **** 			break;
- 595              		.loc 1 213 4 view .LVU141
+ 702              		.loc 1 213 4 view .LVU142
  213:Src/adjust.c  **** 			break;
- 596              		.loc 1 213 42 is_stmt 0 view .LVU142
- 597 0064 164B     		ldr	r3, .L49+16
- 598 0066 D3E90045 		ldrd	r4, [r3]
+ 703              		.loc 1 213 42 is_stmt 0 view .LVU143
+ 704 0064 164B     		ldr	r3, .L67+16
+ 705 0066 D3E90045 		ldrd	r4, [r3]
  213:Src/adjust.c  **** 			break;
- 599              		.loc 1 213 44 view .LVU143
- 600 006a 0220     		movs	r0, #2
- 601 006c FFF7FEFF 		bl	SensorValue2length
- 602              	.LVL38:
- 603 0070 53EC102B 		vmov	r2, r3, d0
+ 706              		.loc 1 213 44 view .LVU144
+ 707 006a 0220     		movs	r0, #2
+ 708 006c FFF7FEFF 		bl	SensorValue2length
+ 709              	.LVL60:
+ 710 0070 53EC102B 		vmov	r2, r3, d0
  213:Src/adjust.c  **** 			break;
- 604              		.loc 1 213 42 view .LVU144
- 605 0074 2046     		mov	r0, r4
- 606 0076 2946     		mov	r1, r5
- 607 0078 FFF7FEFF 		bl	__aeabi_dsub
- 608              	.LVL39:
- 609 007c 0446     		mov	r4, r0
- 610 007e 0D46     		mov	r5, r1
+ 711              		.loc 1 213 42 view .LVU145
+ 712 0074 2046     		mov	r0, r4
+ 713 0076 2946     		mov	r1, r5
+ 714 0078 FFF7FEFF 		bl	__aeabi_dsub
+ 715              	.LVL61:
+ 716 007c 0446     		mov	r4, r0
+ 717 007e 0D46     		mov	r5, r1
  213:Src/adjust.c  **** 			break;
- 611              		.loc 1 213 87 view .LVU145
- 612 0080 0E4B     		ldr	r3, .L49+12
- 613 0082 D3E90067 		ldrd	r6, [r3]
+ 718              		.loc 1 213 87 view .LVU146
+ 719 0080 0E4B     		ldr	r3, .L67+12
+ 720 0082 D3E90067 		ldrd	r6, [r3]
  213:Src/adjust.c  **** 			break;
-ARM GAS  C:\Temp\ccfBETwd.s 			page 16
+ 721              		.loc 1 213 89 view .LVU147
+ 722 0086 0120     		movs	r0, #1
+ 723 0088 FFF7FEFF 		bl	SensorValue2length
+ 724              	.LVL62:
+ARM GAS  C:\Temp\ccFcJnVM.s 			page 18
 
 
- 614              		.loc 1 213 89 view .LVU146
- 615 0086 0120     		movs	r0, #1
- 616 0088 FFF7FEFF 		bl	SensorValue2length
- 617              	.LVL40:
- 618 008c 53EC102B 		vmov	r2, r3, d0
+ 725 008c 53EC102B 		vmov	r2, r3, d0
  213:Src/adjust.c  **** 			break;
- 619              		.loc 1 213 87 view .LVU147
- 620 0090 3046     		mov	r0, r6
- 621 0092 3946     		mov	r1, r7
- 622 0094 FFF7FEFF 		bl	__aeabi_dsub
- 623              	.LVL41:
- 624 0098 0246     		mov	r2, r0
- 625 009a 0B46     		mov	r3, r1
+ 726              		.loc 1 213 87 view .LVU148
+ 727 0090 3046     		mov	r0, r6
+ 728 0092 3946     		mov	r1, r7
+ 729 0094 FFF7FEFF 		bl	__aeabi_dsub
+ 730              	.LVL63:
+ 731 0098 0246     		mov	r2, r0
+ 732 009a 0B46     		mov	r3, r1
  213:Src/adjust.c  **** 			break;
- 626              		.loc 1 213 22 view .LVU148
- 627 009c 2046     		mov	r0, r4
- 628 009e 2946     		mov	r1, r5
- 629 00a0 FFF7FEFF 		bl	__aeabi_dsub
- 630              	.LVL42:
- 631 00a4 41EC100B 		vmov	d0, r0, r1
- 632              	.LVL43:
+ 733              		.loc 1 213 22 view .LVU149
+ 734 009c 2046     		mov	r0, r4
+ 735 009e 2946     		mov	r1, r5
+ 736 00a0 FFF7FEFF 		bl	__aeabi_dsub
+ 737              	.LVL64:
+ 738 00a4 41EC100B 		vmov	d0, r0, r1
+ 739              	.LVL65:
  214:Src/adjust.c  **** 		
- 633              		.loc 1 214 4 is_stmt 1 view .LVU149
+ 740              		.loc 1 214 4 is_stmt 1 view .LVU150
  221:Src/adjust.c  **** }
- 634              		.loc 1 221 2 view .LVU150
+ 741              		.loc 1 221 2 view .LVU151
  221:Src/adjust.c  **** }
- 635              		.loc 1 221 9 is_stmt 0 view .LVU151
- 636 00a8 B4E7     		b	.L43
- 637              	.L50:
- 638 00aa 00BFAFF3 		.align	3
- 638      0080
- 639              	.L49:
- 640 00b0 00000000 		.word	0
- 641 00b4 00000000 		.word	0
- 642 00b8 00000000 		.word	.LANCHOR5
- 643 00bc 00000000 		.word	.LANCHOR1
- 644 00c0 00000000 		.word	.LANCHOR2
- 645              		.cfi_endproc
- 646              	.LFE11:
- 648              		.section	.text.adjust_theta_side_wall,"ax",%progbits
- 649              		.align	1
- 650              		.global	adjust_theta_side_wall
- 651              		.syntax unified
- 652              		.thumb
- 653              		.thumb_func
- 654              		.fpu fpv4-sp-d16
- 656              	adjust_theta_side_wall:
- 657              	.LFB12:
+ 742              		.loc 1 221 9 is_stmt 0 view .LVU152
+ 743 00a8 B4E7     		b	.L61
+ 744              	.L68:
+ 745 00aa 00BFAFF3 		.align	3
+ 745      0080
+ 746              	.L67:
+ 747 00b0 00000000 		.word	0
+ 748 00b4 00000000 		.word	0
+ 749 00b8 00000000 		.word	.LANCHOR5
+ 750 00bc 00000000 		.word	.LANCHOR1
+ 751 00c0 00000000 		.word	.LANCHOR2
+ 752              		.cfi_endproc
+ 753              	.LFE11:
+ 755              		.section	.text.adjust_theta_side_wall,"ax",%progbits
+ 756              		.align	1
+ 757              		.global	adjust_theta_side_wall
+ 758              		.syntax unified
+ 759              		.thumb
+ 760              		.thumb_func
+ 761              		.fpu fpv4-sp-d16
+ 763              	adjust_theta_side_wall:
+ 764              	.LFB12:
  223:Src/adjust.c  **** 
  224:Src/adjust.c  **** //機能	: 各横壁制御モードにおける角度補正処理を入れる
  225:Src/adjust.c  **** //引数	: なし
@@ -956,16 +1072,16 @@ ARM GAS  C:\Temp\ccfBETwd.s 			page 1
  227:Src/adjust.c  **** //備考 	:1msタスク
  228:Src/adjust.c  **** void adjust_theta_side_wall(void)
  229:Src/adjust.c  **** {
- 658              		.loc 1 229 1 is_stmt 1 view -0
- 659              		.cfi_startproc
-ARM GAS  C:\Temp\ccfBETwd.s 			page 17
-
-
- 660              		@ args = 0, pretend = 0, frame = 0
- 661              		@ frame_needed = 0, uses_anonymous_args = 0
- 662              		@ link register save eliminated.
+ 765              		.loc 1 229 1 is_stmt 1 view -0
+ 766              		.cfi_startproc
+ 767              		@ args = 0, pretend = 0, frame = 0
+ 768              		@ frame_needed = 0, uses_anonymous_args = 0
+ 769              		@ link register save eliminated.
  230:Src/adjust.c  **** 	switch(side_wall_ctrl_mode){
- 663              		.loc 1 230 2 view .LVU153
+ARM GAS  C:\Temp\ccFcJnVM.s 			page 19
+
+
+ 770              		.loc 1 230 2 view .LVU154
  231:Src/adjust.c  **** 		case left:
  232:Src/adjust.c  **** 			break;
  233:Src/adjust.c  **** 		case right:
@@ -977,20 +1093,20 @@ ARM GAS  C:\Temp\ccfBETwd.s 			page 1
  239:Src/adjust.c  **** 	}
  240:Src/adjust.c  **** 	//軌跡制御のI項にフィルタをかける。各モードに応じた感じで。
  241:Src/adjust.c  **** }
- 664              		.loc 1 241 1 is_stmt 0 view .LVU154
- 665 0000 7047     		bx	lr
- 666              		.cfi_endproc
- 667              	.LFE12:
- 669              		.global	__aeabi_f2d
- 670              		.section	.text.calc_motor_vol_side_wall,"ax",%progbits
- 671              		.align	1
- 672              		.global	calc_motor_vol_side_wall
- 673              		.syntax unified
- 674              		.thumb
- 675              		.thumb_func
- 676              		.fpu fpv4-sp-d16
- 678              	calc_motor_vol_side_wall:
- 679              	.LFB13:
+ 771              		.loc 1 241 1 is_stmt 0 view .LVU155
+ 772 0000 7047     		bx	lr
+ 773              		.cfi_endproc
+ 774              	.LFE12:
+ 776              		.global	__aeabi_f2d
+ 777              		.section	.text.calc_motor_vol_side_wall,"ax",%progbits
+ 778              		.align	1
+ 779              		.global	calc_motor_vol_side_wall
+ 780              		.syntax unified
+ 781              		.thumb
+ 782              		.thumb_func
+ 783              		.fpu fpv4-sp-d16
+ 785              	calc_motor_vol_side_wall:
+ 786              	.LFB13:
  242:Src/adjust.c  **** 
  243:Src/adjust.c  **** //機能	: 偏差から横壁制御のモータ印加電圧を計算する。
  244:Src/adjust.c  **** //引数	: なし
@@ -998,60 +1114,60 @@ ARM GAS  C:\Temp\ccfBETwd.s 			page 1
  246:Src/adjust.c  **** //備考 	:1msタスク
  247:Src/adjust.c  **** void calc_motor_vol_side_wall(void)
  248:Src/adjust.c  **** {
- 680              		.loc 1 248 1 is_stmt 1 view -0
- 681              		.cfi_startproc
- 682              		@ args = 0, pretend = 0, frame = 0
- 683              		@ frame_needed = 0, uses_anonymous_args = 0
- 684 0000 38B5     		push	{r3, r4, r5, lr}
- 685              	.LCFI4:
- 686              		.cfi_def_cfa_offset 16
- 687              		.cfi_offset 3, -16
- 688              		.cfi_offset 4, -12
- 689              		.cfi_offset 5, -8
- 690              		.cfi_offset 14, -4
- 691 0002 2DED028B 		vpush.64	{d8}
- 692              	.LCFI5:
- 693              		.cfi_def_cfa_offset 24
- 694              		.cfi_offset 80, -24
- 695              		.cfi_offset 81, -20
+ 787              		.loc 1 248 1 is_stmt 1 view -0
+ 788              		.cfi_startproc
+ 789              		@ args = 0, pretend = 0, frame = 0
+ 790              		@ frame_needed = 0, uses_anonymous_args = 0
+ 791 0000 38B5     		push	{r3, r4, r5, lr}
+ 792              	.LCFI9:
+ 793              		.cfi_def_cfa_offset 16
+ 794              		.cfi_offset 3, -16
+ 795              		.cfi_offset 4, -12
+ 796              		.cfi_offset 5, -8
+ 797              		.cfi_offset 14, -4
+ 798 0002 2DED028B 		vpush.64	{d8}
+ 799              	.LCFI10:
+ 800              		.cfi_def_cfa_offset 24
+ 801              		.cfi_offset 80, -24
+ 802              		.cfi_offset 81, -20
  249:Src/adjust.c  **** 	double side_wall_err = 0;
- 696              		.loc 1 249 2 view .LVU156
- 697              	.LVL44:
+ 803              		.loc 1 249 2 view .LVU157
+ 804              	.LVL66:
  250:Src/adjust.c  **** 	double side_wall_err_P = 0;
-ARM GAS  C:\Temp\ccfBETwd.s 			page 18
-
-
- 698              		.loc 1 250 2 view .LVU157
+ 805              		.loc 1 250 2 view .LVU158
  251:Src/adjust.c  **** 	double side_wall_err_D = 0;
- 699              		.loc 1 251 2 view .LVU158
+ 806              		.loc 1 251 2 view .LVU159
  252:Src/adjust.c  **** 	double side_wall_err_PD = 0;
- 700              		.loc 1 252 2 view .LVU159
+ARM GAS  C:\Temp\ccFcJnVM.s 			page 20
+
+
+ 807              		.loc 1 252 2 view .LVU160
  253:Src/adjust.c  **** 	static double side_wall_err_prev = 0;
- 701              		.loc 1 253 2 view .LVU160
+ 808              		.loc 1 253 2 view .LVU161
  254:Src/adjust.c  **** 	static double side_wall_err_D_prev = 0;
- 702              		.loc 1 254 2 view .LVU161
+ 809              		.loc 1 254 2 view .LVU162
  255:Src/adjust.c  **** 
  256:Src/adjust.c  **** 	//偏差取得
  257:Src/adjust.c  **** 	side_wall_err = get_side_wall_err();
- 703              		.loc 1 257 2 view .LVU162
- 704              		.loc 1 257 18 is_stmt 0 view .LVU163
- 705 0006 FFF7FEFF 		bl	get_side_wall_err
- 706              	.LVL45:
- 707 000a 51EC100B 		vmov	r0, r1, d0
- 708              	.LVL46:
+ 810              		.loc 1 257 2 view .LVU163
+ 811              		.loc 1 257 18 is_stmt 0 view .LVU164
+ 812 0006 FFF7FEFF 		bl	get_side_wall_err
+ 813              	.LVL67:
+ 814 000a 51EC100B 		vmov	r0, r1, d0
+ 815              	.LVL68:
  258:Src/adjust.c  **** 
  259:Src/adjust.c  **** 	//P項
  260:Src/adjust.c  **** 	side_wall_err_P = side_wall_P * side_wall_err;
- 709              		.loc 1 260 2 is_stmt 1 view .LVU164
- 710              		.loc 1 260 18 is_stmt 0 view .LVU165
- 711 000e 0022     		movs	r2, #0
- 712 0010 124B     		ldr	r3, .L54
- 713 0012 FFF7FEFF 		bl	__aeabi_dmul
- 714              	.LVL47:
- 715              		.loc 1 260 18 view .LVU166
- 716 0016 0446     		mov	r4, r0
- 717 0018 0D46     		mov	r5, r1
- 718              	.LVL48:
+ 816              		.loc 1 260 2 is_stmt 1 view .LVU165
+ 817              		.loc 1 260 18 is_stmt 0 view .LVU166
+ 818 000e 0022     		movs	r2, #0
+ 819 0010 114B     		ldr	r3, .L72
+ 820 0012 FFF7FEFF 		bl	__aeabi_dmul
+ 821              	.LVL69:
+ 822              		.loc 1 260 18 view .LVU167
+ 823 0016 0446     		mov	r4, r0
+ 824 0018 0D46     		mov	r5, r1
+ 825              	.LVL70:
  261:Src/adjust.c  **** 	
  262:Src/adjust.c  **** 	//D項
  263:Src/adjust.c  **** 	//side_wall_err_D = (side_wall_err_D_prev + side_wall_D * side_wall_fil * (side_wall_err - side_wa
@@ -1061,123 +1177,120 @@ ARM GAS  C:\Temp\ccfBETwd.s 			page 1
  267:Src/adjust.c  **** 	//y方向の速度
  268:Src/adjust.c  **** 	//速度*目標角度と実角度のエラー
  269:Src/adjust.c  **** 	side_wall_err_D = -1 * side_wall_D * get_move_speed() * (get_rotation_angle() - get_ideal_angle())
- 719              		.loc 1 269 2 is_stmt 1 view .LVU167
- 720              		.loc 1 269 39 is_stmt 0 view .LVU168
- 721 001a FFF7FEFF 		bl	get_move_speed
- 722              	.LVL49:
- 723              		.loc 1 269 37 view .LVU169
- 724 001e DFED108A 		vldr.32	s17, .L54+4
- 725 0022 60EE288A 		vmul.f32	s17, s0, s17
- 726              		.loc 1 269 59 view .LVU170
- 727 0026 FFF7FEFF 		bl	get_rotation_angle
- 728              	.LVL50:
- 729 002a B0EE408A 		vmov.f32	s16, s0
- 730              		.loc 1 269 82 view .LVU171
- 731 002e FFF7FEFF 		bl	get_ideal_angle
- 732              	.LVL51:
- 733              		.loc 1 269 80 view .LVU172
- 734 0032 38EE408A 		vsub.f32	s16, s16, s0
- 735              		.loc 1 269 18 view .LVU173
-ARM GAS  C:\Temp\ccfBETwd.s 			page 19
+ 826              		.loc 1 269 2 is_stmt 1 view .LVU168
+ 827              		.loc 1 269 39 is_stmt 0 view .LVU169
+ 828 001a FFF7FEFF 		bl	get_move_speed
+ 829              	.LVL71:
+ 830              		.loc 1 269 37 view .LVU170
+ 831 001e F1EE408A 		vneg.f32	s17, s0
+ 832              		.loc 1 269 59 view .LVU171
+ 833 0022 FFF7FEFF 		bl	get_rotation_angle
+ 834              	.LVL72:
+ 835 0026 B0EE408A 		vmov.f32	s16, s0
+ 836              		.loc 1 269 82 view .LVU172
+ 837 002a FFF7FEFF 		bl	get_ideal_angle
+ 838              	.LVL73:
+ 839              		.loc 1 269 80 view .LVU173
+ 840 002e 38EE408A 		vsub.f32	s16, s16, s0
+ 841              		.loc 1 269 18 view .LVU174
+ 842 0032 68EE887A 		vmul.f32	s15, s17, s16
+ 843 0036 17EE900A 		vmov	r0, s15
+ 844 003a FFF7FEFF 		bl	__aeabi_f2d
+ 845              	.LVL74:
+ 846 003e 0246     		mov	r2, r0
+ARM GAS  C:\Temp\ccFcJnVM.s 			page 21
 
 
- 736 0036 68EE887A 		vmul.f32	s15, s17, s16
- 737 003a 17EE900A 		vmov	r0, s15
- 738 003e FFF7FEFF 		bl	__aeabi_f2d
- 739              	.LVL52:
- 740 0042 0246     		mov	r2, r0
- 741 0044 0B46     		mov	r3, r1
- 742              	.LVL53:
+ 847 0040 0B46     		mov	r3, r1
+ 848              	.LVL75:
  270:Src/adjust.c  **** 
  271:Src/adjust.c  **** 	//合算
  272:Src/adjust.c  **** 	side_wall_err_PD = side_wall_err_P + side_wall_err_D;
- 743              		.loc 1 272 2 is_stmt 1 view .LVU174
- 744              		.loc 1 272 19 is_stmt 0 view .LVU175
- 745 0046 2046     		mov	r0, r4
- 746 0048 2946     		mov	r1, r5
- 747 004a FFF7FEFF 		bl	__aeabi_dadd
- 748              	.LVL54:
+ 849              		.loc 1 272 2 is_stmt 1 view .LVU175
+ 850              		.loc 1 272 19 is_stmt 0 view .LVU176
+ 851 0042 2046     		mov	r0, r4
+ 852 0044 2946     		mov	r1, r5
+ 853 0046 FFF7FEFF 		bl	__aeabi_dadd
+ 854              	.LVL76:
  273:Src/adjust.c  **** 
  274:Src/adjust.c  **** 	/*印加電圧算出*/
  275:Src/adjust.c  **** 	target_vol_diff_sidewall = (float)side_wall_err_PD;
- 749              		.loc 1 275 2 is_stmt 1 view .LVU176
- 750              		.loc 1 275 29 is_stmt 0 view .LVU177
- 751 004e FFF7FEFF 		bl	__aeabi_d2f
- 752              	.LVL55:
- 753              		.loc 1 275 27 view .LVU178
- 754 0052 044B     		ldr	r3, .L54+8
- 755 0054 1860     		str	r0, [r3]	@ float
+ 855              		.loc 1 275 2 is_stmt 1 view .LVU177
+ 856              		.loc 1 275 29 is_stmt 0 view .LVU178
+ 857 004a FFF7FEFF 		bl	__aeabi_d2f
+ 858              	.LVL77:
+ 859              		.loc 1 275 27 view .LVU179
+ 860 004e 034B     		ldr	r3, .L72+4
+ 861 0050 1860     		str	r0, [r3]	@ float
  276:Src/adjust.c  **** 
  277:Src/adjust.c  **** 	/*パラメータ更新*/
  278:Src/adjust.c  **** 	side_wall_err_prev = side_wall_err;
- 756              		.loc 1 278 2 is_stmt 1 view .LVU179
+ 862              		.loc 1 278 2 is_stmt 1 view .LVU180
  279:Src/adjust.c  **** 	side_wall_err_D_prev = side_wall_err_D;
- 757              		.loc 1 279 2 view .LVU180
+ 863              		.loc 1 279 2 view .LVU181
  280:Src/adjust.c  **** 
  281:Src/adjust.c  **** }
- 758              		.loc 1 281 1 is_stmt 0 view .LVU181
- 759 0056 BDEC028B 		vldm	sp!, {d8}
- 760              	.LCFI6:
- 761              		.cfi_restore 80
- 762              		.cfi_restore 81
- 763              		.cfi_def_cfa_offset 16
- 764 005a 38BD     		pop	{r3, r4, r5, pc}
- 765              	.LVL56:
- 766              	.L55:
- 767              		.loc 1 281 1 view .LVU182
- 768              		.align	2
- 769              	.L54:
- 770 005c 00005940 		.word	1079574528
- 771 0060 00000000 		.word	0
- 772 0064 00000000 		.word	.LANCHOR10
- 773              		.cfi_endproc
- 774              	.LFE13:
- 776              		.section	.text.get_target_vol_diff_sidewall,"ax",%progbits
- 777              		.align	1
- 778              		.global	get_target_vol_diff_sidewall
- 779              		.syntax unified
- 780              		.thumb
- 781              		.thumb_func
-ARM GAS  C:\Temp\ccfBETwd.s 			page 20
-
-
- 782              		.fpu fpv4-sp-d16
- 784              	get_target_vol_diff_sidewall:
- 785              	.LFB14:
+ 864              		.loc 1 281 1 is_stmt 0 view .LVU182
+ 865 0052 BDEC028B 		vldm	sp!, {d8}
+ 866              	.LCFI11:
+ 867              		.cfi_restore 80
+ 868              		.cfi_restore 81
+ 869              		.cfi_def_cfa_offset 16
+ 870 0056 38BD     		pop	{r3, r4, r5, pc}
+ 871              	.LVL78:
+ 872              	.L73:
+ 873              		.loc 1 281 1 view .LVU183
+ 874              		.align	2
+ 875              	.L72:
+ 876 0058 00006940 		.word	1080623104
+ 877 005c 00000000 		.word	.LANCHOR10
+ 878              		.cfi_endproc
+ 879              	.LFE13:
+ 881              		.section	.text.get_target_vol_diff_sidewall,"ax",%progbits
+ 882              		.align	1
+ 883              		.global	get_target_vol_diff_sidewall
+ 884              		.syntax unified
+ 885              		.thumb
+ 886              		.thumb_func
+ 887              		.fpu fpv4-sp-d16
+ 889              	get_target_vol_diff_sidewall:
+ 890              	.LFB14:
  282:Src/adjust.c  **** 
  283:Src/adjust.c  **** //機能	: 横壁補正によるモータ印加電圧の差を取得する
  284:Src/adjust.c  **** //引数	: なし
+ARM GAS  C:\Temp\ccFcJnVM.s 			page 22
+
+
  285:Src/adjust.c  **** //返り値	: 横壁補正による右モータ印加電圧
  286:Src/adjust.c  **** float get_target_vol_diff_sidewall ( void )
  287:Src/adjust.c  **** {
- 786              		.loc 1 287 1 is_stmt 1 view -0
- 787              		.cfi_startproc
- 788              		@ args = 0, pretend = 0, frame = 0
- 789              		@ frame_needed = 0, uses_anonymous_args = 0
- 790              		@ link register save eliminated.
+ 891              		.loc 1 287 1 is_stmt 1 view -0
+ 892              		.cfi_startproc
+ 893              		@ args = 0, pretend = 0, frame = 0
+ 894              		@ frame_needed = 0, uses_anonymous_args = 0
+ 895              		@ link register save eliminated.
  288:Src/adjust.c  **** 	return target_vol_diff_sidewall;
- 791              		.loc 1 288 2 view .LVU184
+ 896              		.loc 1 288 2 view .LVU185
  289:Src/adjust.c  **** }
- 792              		.loc 1 289 1 is_stmt 0 view .LVU185
- 793 0000 014B     		ldr	r3, .L57
- 794 0002 93ED000A 		vldr.32	s0, [r3]
- 795 0006 7047     		bx	lr
- 796              	.L58:
- 797              		.align	2
- 798              	.L57:
- 799 0008 00000000 		.word	.LANCHOR10
- 800              		.cfi_endproc
- 801              	.LFE14:
- 803              		.global	__aeabi_ddiv
- 804              		.section	.text.calc_motor_vol_front_wall,"ax",%progbits
- 805              		.align	1
- 806              		.global	calc_motor_vol_front_wall
- 807              		.syntax unified
- 808              		.thumb
- 809              		.thumb_func
- 810              		.fpu fpv4-sp-d16
- 812              	calc_motor_vol_front_wall:
- 813              	.LFB15:
+ 897              		.loc 1 289 1 is_stmt 0 view .LVU186
+ 898 0000 014B     		ldr	r3, .L75
+ 899 0002 93ED000A 		vldr.32	s0, [r3]
+ 900 0006 7047     		bx	lr
+ 901              	.L76:
+ 902              		.align	2
+ 903              	.L75:
+ 904 0008 00000000 		.word	.LANCHOR10
+ 905              		.cfi_endproc
+ 906              	.LFE14:
+ 908              		.section	.text.calc_motor_vol_front_wall,"ax",%progbits
+ 909              		.align	1
+ 910              		.global	calc_motor_vol_front_wall
+ 911              		.syntax unified
+ 912              		.thumb
+ 913              		.thumb_func
+ 914              		.fpu fpv4-sp-d16
+ 916              	calc_motor_vol_front_wall:
+ 917              	.LFB15:
  290:Src/adjust.c  **** 
  291:Src/adjust.c  **** 
  292:Src/adjust.c  **** //機能	: 前壁制御におけるモータ印加電圧を計算する。
@@ -1186,573 +1299,571 @@ ARM GAS  C:\Temp\ccfBETwd.s 			page 1
  295:Src/adjust.c  **** //備考	:1msタスク
  296:Src/adjust.c  **** void calc_motor_vol_front_wall ( void )
  297:Src/adjust.c  **** {
- 814              		.loc 1 297 1 is_stmt 1 view -0
- 815              		.cfi_startproc
- 816              		@ args = 0, pretend = 0, frame = 24
- 817              		@ frame_needed = 0, uses_anonymous_args = 0
- 818 0000 2DE9F04F 		push	{r4, r5, r6, r7, r8, r9, r10, fp, lr}
- 819              	.LCFI7:
- 820              		.cfi_def_cfa_offset 36
- 821              		.cfi_offset 4, -36
- 822              		.cfi_offset 5, -32
- 823              		.cfi_offset 6, -28
- 824              		.cfi_offset 7, -24
- 825              		.cfi_offset 8, -20
-ARM GAS  C:\Temp\ccfBETwd.s 			page 21
+ 918              		.loc 1 297 1 is_stmt 1 view -0
+ 919              		.cfi_startproc
+ 920              		@ args = 0, pretend = 0, frame = 24
+ 921              		@ frame_needed = 0, uses_anonymous_args = 0
+ 922 0000 2DE9F04F 		push	{r4, r5, r6, r7, r8, r9, r10, fp, lr}
+ 923              	.LCFI12:
+ 924              		.cfi_def_cfa_offset 36
+ 925              		.cfi_offset 4, -36
+ 926              		.cfi_offset 5, -32
+ 927              		.cfi_offset 6, -28
+ 928              		.cfi_offset 7, -24
+ 929              		.cfi_offset 8, -20
+ 930              		.cfi_offset 9, -16
+ 931              		.cfi_offset 10, -12
+ 932              		.cfi_offset 11, -8
+ 933              		.cfi_offset 14, -4
+ 934 0004 2DED088B 		vpush.64	{d8, d9, d10, d11}
+ 935              	.LCFI13:
+ 936              		.cfi_def_cfa_offset 68
+ARM GAS  C:\Temp\ccFcJnVM.s 			page 23
 
 
- 826              		.cfi_offset 9, -16
- 827              		.cfi_offset 10, -12
- 828              		.cfi_offset 11, -8
- 829              		.cfi_offset 14, -4
- 830 0004 2DED088B 		vpush.64	{d8, d9, d10, d11}
- 831              	.LCFI8:
- 832              		.cfi_def_cfa_offset 68
- 833              		.cfi_offset 80, -68
- 834              		.cfi_offset 81, -64
- 835              		.cfi_offset 82, -60
- 836              		.cfi_offset 83, -56
- 837              		.cfi_offset 84, -52
- 838              		.cfi_offset 85, -48
- 839              		.cfi_offset 86, -44
- 840              		.cfi_offset 87, -40
- 841 0008 87B0     		sub	sp, sp, #28
- 842              	.LCFI9:
- 843              		.cfi_def_cfa_offset 96
+ 937              		.cfi_offset 80, -68
+ 938              		.cfi_offset 81, -64
+ 939              		.cfi_offset 82, -60
+ 940              		.cfi_offset 83, -56
+ 941              		.cfi_offset 84, -52
+ 942              		.cfi_offset 85, -48
+ 943              		.cfi_offset 86, -44
+ 944              		.cfi_offset 87, -40
+ 945 0008 87B0     		sub	sp, sp, #28
+ 946              	.LCFI14:
+ 947              		.cfi_def_cfa_offset 96
  298:Src/adjust.c  **** 	double front_sensor_r = 0; 				//右前センサ値
- 844              		.loc 1 298 2 view .LVU187
- 845              	.LVL57:
+ 948              		.loc 1 298 2 view .LVU188
+ 949              	.LVL79:
  299:Src/adjust.c  ****     double front_sensor_l = 0; 				//左前センサ値
- 846              		.loc 1 299 5 view .LVU188
+ 950              		.loc 1 299 5 view .LVU189
  300:Src/adjust.c  ****     double front_sensor_r_err = 0;   		//右前センサの偏差
- 847              		.loc 1 300 5 view .LVU189
+ 951              		.loc 1 300 5 view .LVU190
  301:Src/adjust.c  ****     double front_sensor_l_err = 0;			//左前センサの偏差
- 848              		.loc 1 301 5 view .LVU190
+ 952              		.loc 1 301 5 view .LVU191
  302:Src/adjust.c  ****     double front_sensor_move_err = 0;   	//センサの偏差の和
- 849              		.loc 1 302 5 view .LVU191
+ 953              		.loc 1 302 5 view .LVU192
  303:Src/adjust.c  ****     double front_sensor_rotate_err = 0;		//センサの偏差の差
- 850              		.loc 1 303 5 view .LVU192
+ 954              		.loc 1 303 5 view .LVU193
  304:Src/adjust.c  **** 
  305:Src/adjust.c  ****     double front_sensor_move_err_P = 0;   	//偏差和のP項
- 851              		.loc 1 305 5 view .LVU193
+ 955              		.loc 1 305 5 view .LVU194
  306:Src/adjust.c  ****     double front_sensor_rotate_err_P = 0;   //偏差差のP項
- 852              		.loc 1 306 5 view .LVU194
+ 956              		.loc 1 306 5 view .LVU195
  307:Src/adjust.c  ****     double front_sensor_move_err_D = 0;   	//偏差和のD項
- 853              		.loc 1 307 5 view .LVU195
+ 957              		.loc 1 307 5 view .LVU196
  308:Src/adjust.c  ****     double front_sensor_rotate_err_D = 0;   //偏差差のD項
- 854              		.loc 1 308 5 view .LVU196
+ 958              		.loc 1 308 5 view .LVU197
  309:Src/adjust.c  ****     double front_sensor_move_PID = 0;  		//
- 855              		.loc 1 309 5 view .LVU197
+ 959              		.loc 1 309 5 view .LVU198
  310:Src/adjust.c  ****     double front_sensor_rotate_PID = 0;   		//
- 856              		.loc 1 310 5 view .LVU198
+ 960              		.loc 1 310 5 view .LVU199
  311:Src/adjust.c  **** 
  312:Src/adjust.c  **** 
  313:Src/adjust.c  **** 	//センサ値取得
  314:Src/adjust.c  **** 	front_sensor_l = SensorValue2length(0);
- 857              		.loc 1 314 2 view .LVU199
- 858              		.loc 1 314 19 is_stmt 0 view .LVU200
- 859 000a 0020     		movs	r0, #0
- 860 000c FFF7FEFF 		bl	SensorValue2length
- 861              	.LVL58:
- 862 0010 57EC106B 		vmov	r6, r7, d0
- 863              	.LVL59:
+ 961              		.loc 1 314 2 view .LVU200
+ 962              		.loc 1 314 19 is_stmt 0 view .LVU201
+ 963 000a 0020     		movs	r0, #0
+ 964 000c FFF7FEFF 		bl	SensorValue2length
+ 965              	.LVL80:
+ 966 0010 57EC106B 		vmov	r6, r7, d0
+ 967              	.LVL81:
  315:Src/adjust.c  **** 	front_sensor_r = SensorValue2length(3);
- 864              		.loc 1 315 2 is_stmt 1 view .LVU201
-ARM GAS  C:\Temp\ccfBETwd.s 			page 22
-
-
- 865              		.loc 1 315 19 is_stmt 0 view .LVU202
- 866 0014 0320     		movs	r0, #3
- 867 0016 FFF7FEFF 		bl	SensorValue2length
- 868              	.LVL60:
- 869 001a 55EC104B 		vmov	r4, r5, d0
- 870              	.LVL61:
+ 968              		.loc 1 315 2 is_stmt 1 view .LVU202
+ 969              		.loc 1 315 19 is_stmt 0 view .LVU203
+ 970 0014 0320     		movs	r0, #3
+ 971 0016 FFF7FEFF 		bl	SensorValue2length
+ 972              	.LVL82:
+ 973 001a 55EC104B 		vmov	r4, r5, d0
+ 974              	.LVL83:
  316:Src/adjust.c  **** 
+ARM GAS  C:\Temp\ccFcJnVM.s 			page 24
+
+
  317:Src/adjust.c  **** 	//偏差取得
  318:Src/adjust.c  **** 	front_sensor_l_err = front_sensor_l - front_sensor_l_ref ;
- 871              		.loc 1 318 2 is_stmt 1 view .LVU203
- 872              		.loc 1 318 21 is_stmt 0 view .LVU204
- 873 001e 74A3     		adr	r3, .L61+72
- 874 0020 D3E90023 		ldrd	r2, [r3]
- 875 0024 3046     		mov	r0, r6
- 876 0026 3946     		mov	r1, r7
- 877 0028 FFF7FEFF 		bl	__aeabi_dsub
- 878              	.LVL62:
- 879 002c 0646     		mov	r6, r0
- 880              	.LVL63:
- 881              		.loc 1 318 21 view .LVU205
- 882 002e 0F46     		mov	r7, r1
- 883              	.LVL64:
+ 975              		.loc 1 318 2 is_stmt 1 view .LVU204
+ 976              		.loc 1 318 21 is_stmt 0 view .LVU205
+ 977 001e 74A3     		adr	r3, .L79+72
+ 978 0020 D3E90023 		ldrd	r2, [r3]
+ 979 0024 3046     		mov	r0, r6
+ 980 0026 3946     		mov	r1, r7
+ 981 0028 FFF7FEFF 		bl	__aeabi_dsub
+ 982              	.LVL84:
+ 983 002c 0646     		mov	r6, r0
+ 984              	.LVL85:
+ 985              		.loc 1 318 21 view .LVU206
+ 986 002e 0F46     		mov	r7, r1
+ 987              	.LVL86:
  319:Src/adjust.c  **** 	front_sensor_r_err = front_sensor_r - front_sensor_r_ref ;
- 884              		.loc 1 319 2 is_stmt 1 view .LVU206
- 885              		.loc 1 319 21 is_stmt 0 view .LVU207
- 886 0030 71A3     		adr	r3, .L61+80
- 887 0032 D3E90023 		ldrd	r2, [r3]
- 888 0036 2046     		mov	r0, r4
- 889 0038 2946     		mov	r1, r5
- 890 003a FFF7FEFF 		bl	__aeabi_dsub
- 891              	.LVL65:
- 892 003e 0446     		mov	r4, r0
- 893              	.LVL66:
- 894              		.loc 1 319 21 view .LVU208
- 895 0040 0D46     		mov	r5, r1
- 896              	.LVL67:
+ 988              		.loc 1 319 2 is_stmt 1 view .LVU207
+ 989              		.loc 1 319 21 is_stmt 0 view .LVU208
+ 990 0030 71A3     		adr	r3, .L79+80
+ 991 0032 D3E90023 		ldrd	r2, [r3]
+ 992 0036 2046     		mov	r0, r4
+ 993 0038 2946     		mov	r1, r5
+ 994 003a FFF7FEFF 		bl	__aeabi_dsub
+ 995              	.LVL87:
+ 996 003e 0446     		mov	r4, r0
+ 997              	.LVL88:
+ 998              		.loc 1 319 21 view .LVU209
+ 999 0040 0D46     		mov	r5, r1
+ 1000              	.LVL89:
  320:Src/adjust.c  **** 
  321:Src/adjust.c  **** 	/* 偏差変換*/
  322:Src/adjust.c  **** 	front_sensor_move_err = front_sensor_r_err + front_sensor_l_err;
- 897              		.loc 1 322 2 is_stmt 1 view .LVU209
- 898              		.loc 1 322 24 is_stmt 0 view .LVU210
- 899 0042 0246     		mov	r2, r0
- 900 0044 0B46     		mov	r3, r1
- 901 0046 3046     		mov	r0, r6
- 902 0048 3946     		mov	r1, r7
- 903 004a FFF7FEFF 		bl	__aeabi_dadd
- 904              	.LVL68:
- 905 004e 8046     		mov	r8, r0
- 906 0050 8946     		mov	r9, r1
- 907              	.LVL69:
+ 1001              		.loc 1 322 2 is_stmt 1 view .LVU210
+ 1002              		.loc 1 322 24 is_stmt 0 view .LVU211
+ 1003 0042 0246     		mov	r2, r0
+ 1004 0044 0B46     		mov	r3, r1
+ 1005 0046 3046     		mov	r0, r6
+ 1006 0048 3946     		mov	r1, r7
+ 1007 004a FFF7FEFF 		bl	__aeabi_dadd
+ 1008              	.LVL90:
+ 1009 004e 8046     		mov	r8, r0
+ 1010 0050 8946     		mov	r9, r1
+ 1011              	.LVL91:
  323:Src/adjust.c  **** 	front_sensor_rotate_err = (front_sensor_r_err - front_sensor_l_err)/chassis_width; //角度に変�
- 908              		.loc 1 323 2 is_stmt 1 view .LVU211
- 909              		.loc 1 323 48 is_stmt 0 view .LVU212
- 910 0052 3246     		mov	r2, r6
- 911 0054 3B46     		mov	r3, r7
- 912 0056 2046     		mov	r0, r4
- 913 0058 2946     		mov	r1, r5
-ARM GAS  C:\Temp\ccfBETwd.s 			page 23
+ 1012              		.loc 1 323 2 is_stmt 1 view .LVU212
+ 1013              		.loc 1 323 48 is_stmt 0 view .LVU213
+ 1014 0052 3246     		mov	r2, r6
+ 1015 0054 3B46     		mov	r3, r7
+ 1016 0056 2046     		mov	r0, r4
+ 1017 0058 2946     		mov	r1, r5
+ 1018 005a FFF7FEFF 		bl	__aeabi_dsub
+ 1019              	.LVL92:
+ 1020              		.loc 1 323 26 view .LVU214
+ 1021 005e 68A3     		adr	r3, .L79+88
+ 1022 0060 D3E90023 		ldrd	r2, [r3]
+ 1023 0064 FFF7FEFF 		bl	__aeabi_ddiv
+ 1024              	.LVL93:
+ARM GAS  C:\Temp\ccFcJnVM.s 			page 25
 
 
- 914 005a FFF7FEFF 		bl	__aeabi_dsub
- 915              	.LVL70:
- 916              		.loc 1 323 26 view .LVU213
- 917 005e 68A3     		adr	r3, .L61+88
- 918 0060 D3E90023 		ldrd	r2, [r3]
- 919 0064 FFF7FEFF 		bl	__aeabi_ddiv
- 920              	.LVL71:
- 921 0068 0646     		mov	r6, r0
- 922              	.LVL72:
- 923              		.loc 1 323 26 view .LVU214
- 924 006a 0F46     		mov	r7, r1
- 925              	.LVL73:
+ 1025 0068 0646     		mov	r6, r0
+ 1026              	.LVL94:
+ 1027              		.loc 1 323 26 view .LVU215
+ 1028 006a 0F46     		mov	r7, r1
+ 1029              	.LVL95:
  324:Src/adjust.c  **** 
  325:Src/adjust.c  **** 	/*偏差積分(I項)*/
  326:Src/adjust.c  **** 	front_sensor_move_err_I  += front_sensor_move_KI * 0.001 * front_sensor_move_err;
- 926              		.loc 1 326 2 is_stmt 1 view .LVU215
- 927              		.loc 1 326 59 is_stmt 0 view .LVU216
- 928 006c 66A3     		adr	r3, .L61+96
- 929 006e D3E90023 		ldrd	r2, [r3]
- 930 0072 4046     		mov	r0, r8
- 931 0074 4946     		mov	r1, r9
- 932 0076 FFF7FEFF 		bl	__aeabi_dmul
- 933              	.LVL74:
- 934              		.loc 1 326 27 view .LVU217
- 935 007a 594C     		ldr	r4, .L61+56
- 936              	.LVL75:
- 937              		.loc 1 326 27 view .LVU218
- 938 007c D4E90023 		ldrd	r2, [r4]
- 939 0080 FFF7FEFF 		bl	__aeabi_dadd
- 940              	.LVL76:
- 941 0084 41EC1B0B 		vmov	d11, r0, r1
- 942 0088 C4E90001 		strd	r0, [r4]
+ 1030              		.loc 1 326 2 is_stmt 1 view .LVU216
+ 1031              		.loc 1 326 59 is_stmt 0 view .LVU217
+ 1032 006c 66A3     		adr	r3, .L79+96
+ 1033 006e D3E90023 		ldrd	r2, [r3]
+ 1034 0072 4046     		mov	r0, r8
+ 1035 0074 4946     		mov	r1, r9
+ 1036 0076 FFF7FEFF 		bl	__aeabi_dmul
+ 1037              	.LVL96:
+ 1038              		.loc 1 326 27 view .LVU218
+ 1039 007a 594C     		ldr	r4, .L79+56
+ 1040              	.LVL97:
+ 1041              		.loc 1 326 27 view .LVU219
+ 1042 007c D4E90023 		ldrd	r2, [r4]
+ 1043 0080 FFF7FEFF 		bl	__aeabi_dadd
+ 1044              	.LVL98:
+ 1045 0084 41EC1B0B 		vmov	d11, r0, r1
+ 1046 0088 C4E90001 		strd	r0, [r4]
  327:Src/adjust.c  **** 	front_sensor_rotate_err_I  += front_sensor_rotate_KI * 0.001 * front_sensor_rotate_err;
- 943              		.loc 1 327 2 is_stmt 1 view .LVU219
- 944              		.loc 1 327 63 is_stmt 0 view .LVU220
- 945 008c 46A3     		adr	r3, .L61
- 946 008e D3E90023 		ldrd	r2, [r3]
- 947 0092 3046     		mov	r0, r6
- 948 0094 3946     		mov	r1, r7
- 949 0096 FFF7FEFF 		bl	__aeabi_dmul
- 950              	.LVL77:
- 951              		.loc 1 327 29 view .LVU221
- 952 009a 524C     		ldr	r4, .L61+60
- 953 009c D4E90023 		ldrd	r2, [r4]
- 954 00a0 FFF7FEFF 		bl	__aeabi_dadd
- 955              	.LVL78:
- 956 00a4 41EC1A0B 		vmov	d10, r0, r1
- 957 00a8 C4E90001 		strd	r0, [r4]
+ 1047              		.loc 1 327 2 is_stmt 1 view .LVU220
+ 1048              		.loc 1 327 63 is_stmt 0 view .LVU221
+ 1049 008c 46A3     		adr	r3, .L79
+ 1050 008e D3E90023 		ldrd	r2, [r3]
+ 1051 0092 3046     		mov	r0, r6
+ 1052 0094 3946     		mov	r1, r7
+ 1053 0096 FFF7FEFF 		bl	__aeabi_dmul
+ 1054              	.LVL99:
+ 1055              		.loc 1 327 29 view .LVU222
+ 1056 009a 524C     		ldr	r4, .L79+60
+ 1057 009c D4E90023 		ldrd	r2, [r4]
+ 1058 00a0 FFF7FEFF 		bl	__aeabi_dadd
+ 1059              	.LVL100:
+ 1060 00a4 41EC1A0B 		vmov	d10, r0, r1
+ 1061 00a8 C4E90001 		strd	r0, [r4]
  328:Src/adjust.c  **** 	/*P項*/
  329:Src/adjust.c  **** 	front_sensor_move_err_P = front_sensor_move_KP * front_sensor_move_err;
- 958              		.loc 1 329 2 is_stmt 1 view .LVU222
- 959              		.loc 1 329 26 is_stmt 0 view .LVU223
- 960 00ac 40A3     		adr	r3, .L61+8
- 961 00ae D3E90023 		ldrd	r2, [r3]
- 962 00b2 4046     		mov	r0, r8
- 963 00b4 4946     		mov	r1, r9
- 964 00b6 FFF7FEFF 		bl	__aeabi_dmul
-ARM GAS  C:\Temp\ccfBETwd.s 			page 24
-
-
- 965              	.LVL79:
- 966 00ba 0446     		mov	r4, r0
- 967 00bc 0D46     		mov	r5, r1
- 968              	.LVL80:
+ 1062              		.loc 1 329 2 is_stmt 1 view .LVU223
+ 1063              		.loc 1 329 26 is_stmt 0 view .LVU224
+ 1064 00ac 40A3     		adr	r3, .L79+8
+ 1065 00ae D3E90023 		ldrd	r2, [r3]
+ 1066 00b2 4046     		mov	r0, r8
+ 1067 00b4 4946     		mov	r1, r9
+ 1068 00b6 FFF7FEFF 		bl	__aeabi_dmul
+ 1069              	.LVL101:
+ 1070 00ba 0446     		mov	r4, r0
+ 1071 00bc 0D46     		mov	r5, r1
+ 1072              	.LVL102:
  330:Src/adjust.c  **** 	front_sensor_rotate_err_P = front_sensor_rotate_KP * front_sensor_rotate_err;
- 969              		.loc 1 330 2 is_stmt 1 view .LVU224
- 970              		.loc 1 330 28 is_stmt 0 view .LVU225
- 971 00be 3EA3     		adr	r3, .L61+16
- 972 00c0 D3E90023 		ldrd	r2, [r3]
- 973 00c4 3046     		mov	r0, r6
- 974 00c6 3946     		mov	r1, r7
- 975 00c8 FFF7FEFF 		bl	__aeabi_dmul
- 976              	.LVL81:
- 977 00cc CDE90201 		strd	r0, [sp, #8]
- 978              	.LVL82:
+ 1073              		.loc 1 330 2 is_stmt 1 view .LVU225
+ 1074              		.loc 1 330 28 is_stmt 0 view .LVU226
+ARM GAS  C:\Temp\ccFcJnVM.s 			page 26
+
+
+ 1075 00be 3EA3     		adr	r3, .L79+16
+ 1076 00c0 D3E90023 		ldrd	r2, [r3]
+ 1077 00c4 3046     		mov	r0, r6
+ 1078 00c6 3946     		mov	r1, r7
+ 1079 00c8 FFF7FEFF 		bl	__aeabi_dmul
+ 1080              	.LVL103:
+ 1081 00cc CDE90201 		strd	r0, [sp, #8]
+ 1082              	.LVL104:
  331:Src/adjust.c  **** 	/*D項*/
  332:Src/adjust.c  **** 	front_sensor_move_err_D = (front_sensor_move_D_prev + front_sensor_move_KD * front_sensor_move_fil
- 979              		.loc 1 332 2 is_stmt 1 view .LVU226
- 980              		.loc 1 332 126 is_stmt 0 view .LVU227
- 981 00d0 DFF83CB1 		ldr	fp, .L61+104
- 982 00d4 DBE90023 		ldrd	r2, [fp]
- 983 00d8 CDE90089 		strd	r8, [sp]
- 984 00dc 4046     		mov	r0, r8
- 985              	.LVL83:
- 986              		.loc 1 332 126 view .LVU228
- 987 00de 4946     		mov	r1, r9
- 988 00e0 FFF7FEFF 		bl	__aeabi_dsub
- 989              	.LVL84:
- 990              		.loc 1 332 101 view .LVU229
- 991 00e4 36A3     		adr	r3, .L61+24
- 992 00e6 D3E90023 		ldrd	r2, [r3]
- 993 00ea FFF7FEFF 		bl	__aeabi_dmul
- 994              	.LVL85:
- 995              		.loc 1 332 54 view .LVU230
- 996 00ee DFF82491 		ldr	r9, .L61+108
- 997 00f2 D9E90023 		ldrd	r2, [r9]
- 998 00f6 FFF7FEFF 		bl	__aeabi_dadd
- 999              	.LVL86:
- 1000              		.loc 1 332 26 view .LVU231
- 1001 00fa 33A3     		adr	r3, .L61+32
- 1002 00fc D3E90023 		ldrd	r2, [r3]
- 1003 0100 FFF7FEFF 		bl	__aeabi_ddiv
- 1004              	.LVL87:
- 1005 0104 41EC190B 		vmov	d9, r0, r1
- 1006              	.LVL88:
+ 1083              		.loc 1 332 2 is_stmt 1 view .LVU227
+ 1084              		.loc 1 332 126 is_stmt 0 view .LVU228
+ 1085 00d0 DFF83CB1 		ldr	fp, .L79+104
+ 1086 00d4 DBE90023 		ldrd	r2, [fp]
+ 1087 00d8 CDE90089 		strd	r8, [sp]
+ 1088 00dc 4046     		mov	r0, r8
+ 1089              	.LVL105:
+ 1090              		.loc 1 332 126 view .LVU229
+ 1091 00de 4946     		mov	r1, r9
+ 1092 00e0 FFF7FEFF 		bl	__aeabi_dsub
+ 1093              	.LVL106:
+ 1094              		.loc 1 332 101 view .LVU230
+ 1095 00e4 36A3     		adr	r3, .L79+24
+ 1096 00e6 D3E90023 		ldrd	r2, [r3]
+ 1097 00ea FFF7FEFF 		bl	__aeabi_dmul
+ 1098              	.LVL107:
+ 1099              		.loc 1 332 54 view .LVU231
+ 1100 00ee DFF82491 		ldr	r9, .L79+108
+ 1101 00f2 D9E90023 		ldrd	r2, [r9]
+ 1102 00f6 FFF7FEFF 		bl	__aeabi_dadd
+ 1103              	.LVL108:
+ 1104              		.loc 1 332 26 view .LVU232
+ 1105 00fa 33A3     		adr	r3, .L79+32
+ 1106 00fc D3E90023 		ldrd	r2, [r3]
+ 1107 0100 FFF7FEFF 		bl	__aeabi_ddiv
+ 1108              	.LVL109:
+ 1109 0104 41EC190B 		vmov	d9, r0, r1
+ 1110              	.LVL110:
  333:Src/adjust.c  **** 								/(1+front_sensor_move_fil*0.001);
  334:Src/adjust.c  **** 	front_sensor_rotate_err_D = (front_sensor_rotate_D_prev + front_sensor_rotate_KD * front_sensor_ro
- 1007              		.loc 1 334 2 is_stmt 1 view .LVU232
- 1008              		.loc 1 334 136 is_stmt 0 view .LVU233
- 1009 0108 DFF80CA1 		ldr	r10, .L61+112
- 1010 010c DAE90023 		ldrd	r2, [r10]
- 1011 0110 3046     		mov	r0, r6
- 1012              	.LVL89:
- 1013              		.loc 1 334 136 view .LVU234
- 1014 0112 3946     		mov	r1, r7
- 1015 0114 FFF7FEFF 		bl	__aeabi_dsub
- 1016              	.LVL90:
-ARM GAS  C:\Temp\ccfBETwd.s 			page 25
+ 1111              		.loc 1 334 2 is_stmt 1 view .LVU233
+ 1112              		.loc 1 334 136 is_stmt 0 view .LVU234
+ 1113 0108 DFF80CA1 		ldr	r10, .L79+112
+ 1114 010c DAE90023 		ldrd	r2, [r10]
+ 1115 0110 3046     		mov	r0, r6
+ 1116              	.LVL111:
+ 1117              		.loc 1 334 136 view .LVU235
+ 1118 0112 3946     		mov	r1, r7
+ 1119 0114 FFF7FEFF 		bl	__aeabi_dsub
+ 1120              	.LVL112:
+ 1121              		.loc 1 334 109 view .LVU236
+ 1122 0118 2DA3     		adr	r3, .L79+40
+ 1123 011a D3E90023 		ldrd	r2, [r3]
+ 1124 011e FFF7FEFF 		bl	__aeabi_dmul
+ 1125              	.LVL113:
+ 1126              		.loc 1 334 58 view .LVU237
+ 1127 0122 DFF8F880 		ldr	r8, .L79+116
+ARM GAS  C:\Temp\ccFcJnVM.s 			page 27
 
 
- 1017              		.loc 1 334 109 view .LVU235
- 1018 0118 2DA3     		adr	r3, .L61+40
- 1019 011a D3E90023 		ldrd	r2, [r3]
- 1020 011e FFF7FEFF 		bl	__aeabi_dmul
- 1021              	.LVL91:
- 1022              		.loc 1 334 58 view .LVU236
- 1023 0122 DFF8F880 		ldr	r8, .L61+116
- 1024              	.LVL92:
- 1025              		.loc 1 334 58 view .LVU237
- 1026 0126 D8E90023 		ldrd	r2, [r8]
- 1027 012a FFF7FEFF 		bl	__aeabi_dadd
- 1028              	.LVL93:
- 1029              		.loc 1 334 28 view .LVU238
- 1030 012e 2AA3     		adr	r3, .L61+48
- 1031 0130 D3E90023 		ldrd	r2, [r3]
- 1032 0134 FFF7FEFF 		bl	__aeabi_ddiv
- 1033              	.LVL94:
- 1034 0138 41EC180B 		vmov	d8, r0, r1
- 1035              	.LVL95:
+ 1128              	.LVL114:
+ 1129              		.loc 1 334 58 view .LVU238
+ 1130 0126 D8E90023 		ldrd	r2, [r8]
+ 1131 012a FFF7FEFF 		bl	__aeabi_dadd
+ 1132              	.LVL115:
+ 1133              		.loc 1 334 28 view .LVU239
+ 1134 012e 2AA3     		adr	r3, .L79+48
+ 1135 0130 D3E90023 		ldrd	r2, [r3]
+ 1136 0134 FFF7FEFF 		bl	__aeabi_ddiv
+ 1137              	.LVL116:
+ 1138 0138 41EC180B 		vmov	d8, r0, r1
+ 1139              	.LVL117:
  335:Src/adjust.c  **** 								/(1+front_sensor_rotate_fil*0.001);
  336:Src/adjust.c  **** 	/*PID*/
  337:Src/adjust.c  **** 	front_sensor_move_PID = front_sensor_move_err_P + front_sensor_move_err_I + front_sensor_move_err_
- 1036              		.loc 1 337 2 is_stmt 1 view .LVU239
- 1037              		.loc 1 337 50 is_stmt 0 view .LVU240
- 1038 013c 2246     		mov	r2, r4
- 1039 013e 2B46     		mov	r3, r5
- 1040 0140 51EC1B0B 		vmov	r0, r1, d11
- 1041              	.LVL96:
- 1042              		.loc 1 337 50 view .LVU241
- 1043 0144 FFF7FEFF 		bl	__aeabi_dadd
- 1044              	.LVL97:
- 1045              		.loc 1 337 24 view .LVU242
- 1046 0148 53EC192B 		vmov	r2, r3, d9
- 1047 014c FFF7FEFF 		bl	__aeabi_dadd
- 1048              	.LVL98:
- 1049 0150 CDE90401 		strd	r0, [sp, #16]
- 1050              	.LVL99:
+ 1140              		.loc 1 337 2 is_stmt 1 view .LVU240
+ 1141              		.loc 1 337 50 is_stmt 0 view .LVU241
+ 1142 013c 2246     		mov	r2, r4
+ 1143 013e 2B46     		mov	r3, r5
+ 1144 0140 51EC1B0B 		vmov	r0, r1, d11
+ 1145              	.LVL118:
+ 1146              		.loc 1 337 50 view .LVU242
+ 1147 0144 FFF7FEFF 		bl	__aeabi_dadd
+ 1148              	.LVL119:
+ 1149              		.loc 1 337 24 view .LVU243
+ 1150 0148 53EC192B 		vmov	r2, r3, d9
+ 1151 014c FFF7FEFF 		bl	__aeabi_dadd
+ 1152              	.LVL120:
+ 1153 0150 CDE90401 		strd	r0, [sp, #16]
+ 1154              	.LVL121:
  338:Src/adjust.c  ****     front_sensor_rotate_PID = front_sensor_rotate_err_P + front_sensor_rotate_err_I + front_sensor_
- 1051              		.loc 1 338 5 is_stmt 1 view .LVU243
- 1052              		.loc 1 338 57 is_stmt 0 view .LVU244
- 1053 0154 DDE90223 		ldrd	r2, [sp, #8]
- 1054 0158 51EC1A0B 		vmov	r0, r1, d10
- 1055              	.LVL100:
- 1056              		.loc 1 338 57 view .LVU245
- 1057 015c FFF7FEFF 		bl	__aeabi_dadd
- 1058              	.LVL101:
- 1059              		.loc 1 338 29 view .LVU246
- 1060 0160 53EC182B 		vmov	r2, r3, d8
- 1061 0164 FFF7FEFF 		bl	__aeabi_dadd
- 1062              	.LVL102:
- 1063 0168 0446     		mov	r4, r0
- 1064              	.LVL103:
- 1065              		.loc 1 338 29 view .LVU247
- 1066 016a 0D46     		mov	r5, r1
- 1067              	.LVL104:
+ 1155              		.loc 1 338 5 is_stmt 1 view .LVU244
+ 1156              		.loc 1 338 57 is_stmt 0 view .LVU245
+ 1157 0154 DDE90223 		ldrd	r2, [sp, #8]
+ 1158 0158 51EC1A0B 		vmov	r0, r1, d10
+ 1159              	.LVL122:
+ 1160              		.loc 1 338 57 view .LVU246
+ 1161 015c FFF7FEFF 		bl	__aeabi_dadd
+ 1162              	.LVL123:
+ 1163              		.loc 1 338 29 view .LVU247
+ 1164 0160 53EC182B 		vmov	r2, r3, d8
+ 1165 0164 FFF7FEFF 		bl	__aeabi_dadd
+ 1166              	.LVL124:
+ 1167 0168 0446     		mov	r4, r0
+ 1168              	.LVL125:
+ 1169              		.loc 1 338 29 view .LVU248
+ 1170 016a 0D46     		mov	r5, r1
+ 1171              	.LVL126:
  339:Src/adjust.c  **** 
  340:Src/adjust.c  ****     /*印加電圧算出*/
-ARM GAS  C:\Temp\ccfBETwd.s 			page 26
-
-
  341:Src/adjust.c  **** 	target_vol_sum_frontwall = front_sensor_move_PID;
- 1068              		.loc 1 341 2 is_stmt 1 view .LVU248
- 1069              		.loc 1 341 27 is_stmt 0 view .LVU249
- 1070 016c DDE90401 		ldrd	r0, [sp, #16]
- 1071 0170 FFF7FEFF 		bl	__aeabi_d2f
- 1072              	.LVL105:
- 1073 0174 1C4B     		ldr	r3, .L61+64
- 1074 0176 1860     		str	r0, [r3]	@ float
+ 1172              		.loc 1 341 2 is_stmt 1 view .LVU249
+ 1173              		.loc 1 341 27 is_stmt 0 view .LVU250
+ 1174 016c DDE90401 		ldrd	r0, [sp, #16]
+ 1175 0170 FFF7FEFF 		bl	__aeabi_d2f
+ 1176              	.LVL127:
+ 1177 0174 1C4B     		ldr	r3, .L79+64
+ARM GAS  C:\Temp\ccFcJnVM.s 			page 28
+
+
+ 1178 0176 1860     		str	r0, [r3]	@ float
  342:Src/adjust.c  **** 	target_vol_diff_frontwall = front_sensor_rotate_PID;
- 1075              		.loc 1 342 2 is_stmt 1 view .LVU250
- 1076              		.loc 1 342 28 is_stmt 0 view .LVU251
- 1077 0178 2046     		mov	r0, r4
- 1078 017a 2946     		mov	r1, r5
- 1079 017c FFF7FEFF 		bl	__aeabi_d2f
- 1080              	.LVL106:
- 1081 0180 1A4B     		ldr	r3, .L61+68
- 1082 0182 1860     		str	r0, [r3]	@ float
+ 1179              		.loc 1 342 2 is_stmt 1 view .LVU251
+ 1180              		.loc 1 342 28 is_stmt 0 view .LVU252
+ 1181 0178 2046     		mov	r0, r4
+ 1182 017a 2946     		mov	r1, r5
+ 1183 017c FFF7FEFF 		bl	__aeabi_d2f
+ 1184              	.LVL128:
+ 1185 0180 1A4B     		ldr	r3, .L79+68
+ 1186 0182 1860     		str	r0, [r3]	@ float
  343:Src/adjust.c  **** 
  344:Src/adjust.c  **** 	/*パラメータ更新*/
  345:Src/adjust.c  ****     front_sensor_move_err_prev = front_sensor_move_err;   	
- 1083              		.loc 1 345 5 is_stmt 1 view .LVU252
- 1084              		.loc 1 345 32 is_stmt 0 view .LVU253
- 1085 0184 9DED007B 		vldr.64	d7, [sp]
- 1086 0188 8BED007B 		vstr.64	d7, [fp]
+ 1187              		.loc 1 345 5 is_stmt 1 view .LVU253
+ 1188              		.loc 1 345 32 is_stmt 0 view .LVU254
+ 1189 0184 9DED007B 		vldr.64	d7, [sp]
+ 1190 0188 8BED007B 		vstr.64	d7, [fp]
  346:Src/adjust.c  **** 	front_sensor_rotate_err_prev = front_sensor_rotate_err; 
- 1087              		.loc 1 346 2 is_stmt 1 view .LVU254
- 1088              		.loc 1 346 31 is_stmt 0 view .LVU255
- 1089 018c CAE90067 		strd	r6, [r10]
+ 1191              		.loc 1 346 2 is_stmt 1 view .LVU255
+ 1192              		.loc 1 346 31 is_stmt 0 view .LVU256
+ 1193 018c CAE90067 		strd	r6, [r10]
  347:Src/adjust.c  ****     front_sensor_move_D_prev = front_sensor_move_err_D;		
- 1090              		.loc 1 347 5 is_stmt 1 view .LVU256
- 1091              		.loc 1 347 30 is_stmt 0 view .LVU257
- 1092 0190 89ED009B 		vstr.64	d9, [r9]
+ 1194              		.loc 1 347 5 is_stmt 1 view .LVU257
+ 1195              		.loc 1 347 30 is_stmt 0 view .LVU258
+ 1196 0190 89ED009B 		vstr.64	d9, [r9]
  348:Src/adjust.c  ****     front_sensor_rotate_D_prev = front_sensor_rotate_err_D;
- 1093              		.loc 1 348 5 is_stmt 1 view .LVU258
- 1094              		.loc 1 348 32 is_stmt 0 view .LVU259
- 1095 0194 88ED008B 		vstr.64	d8, [r8]
+ 1197              		.loc 1 348 5 is_stmt 1 view .LVU259
+ 1198              		.loc 1 348 32 is_stmt 0 view .LVU260
+ 1199 0194 88ED008B 		vstr.64	d8, [r8]
  349:Src/adjust.c  **** 
  350:Src/adjust.c  **** }
- 1096              		.loc 1 350 1 view .LVU260
- 1097 0198 07B0     		add	sp, sp, #28
- 1098              	.LCFI10:
- 1099              		.cfi_def_cfa_offset 68
- 1100              	.LVL107:
- 1101              		.loc 1 350 1 view .LVU261
- 1102              		@ sp needed
- 1103 019a BDEC088B 		vldm	sp!, {d8-d11}
- 1104              	.LCFI11:
- 1105              		.cfi_restore 86
- 1106              		.cfi_restore 87
- 1107              		.cfi_restore 84
- 1108              		.cfi_restore 85
- 1109              		.cfi_restore 82
- 1110              		.cfi_restore 83
- 1111              		.cfi_restore 80
- 1112              		.cfi_restore 81
- 1113              		.cfi_def_cfa_offset 36
- 1114              	.LVL108:
-ARM GAS  C:\Temp\ccfBETwd.s 			page 27
+ 1200              		.loc 1 350 1 view .LVU261
+ 1201 0198 07B0     		add	sp, sp, #28
+ 1202              	.LCFI15:
+ 1203              		.cfi_def_cfa_offset 68
+ 1204              	.LVL129:
+ 1205              		.loc 1 350 1 view .LVU262
+ 1206              		@ sp needed
+ 1207 019a BDEC088B 		vldm	sp!, {d8-d11}
+ 1208              	.LCFI16:
+ 1209              		.cfi_restore 86
+ 1210              		.cfi_restore 87
+ 1211              		.cfi_restore 84
+ 1212              		.cfi_restore 85
+ 1213              		.cfi_restore 82
+ 1214              		.cfi_restore 83
+ 1215              		.cfi_restore 80
+ 1216              		.cfi_restore 81
+ 1217              		.cfi_def_cfa_offset 36
+ 1218              	.LVL130:
+ 1219              		.loc 1 350 1 view .LVU263
+ 1220 019e BDE8F08F 		pop	{r4, r5, r6, r7, r8, r9, r10, fp, pc}
+ 1221              	.LVL131:
+ 1222              	.L80:
+ 1223              		.loc 1 350 1 view .LVU264
+ 1224 01a2 00BFAFF3 		.align	3
+ 1224      0080
+ARM GAS  C:\Temp\ccFcJnVM.s 			page 29
 
 
- 1115              		.loc 1 350 1 view .LVU262
- 1116 019e BDE8F08F 		pop	{r4, r5, r6, r7, r8, r9, r10, fp, pc}
- 1117              	.LVL109:
- 1118              	.L62:
- 1119              		.loc 1 350 1 view .LVU263
- 1120 01a2 00BFAFF3 		.align	3
- 1120      0080
- 1121              	.L61:
- 1122 01a8 60E5D022 		.word	584115552
- 1123 01ac 9BA5643F 		.word	1063560603
- 1124 01b0 00000000 		.word	0
- 1125 01b4 631A5F40 		.word	1079974499
- 1126 01b8 000000E0 		.word	-536870912
- 1127 01bc 8A9E1940 		.word	1075420810
- 1128 01c0 00000060 		.word	1610612736
- 1129 01c4 A2AB5340 		.word	1079225250
- 1130 01c8 C1CAA185 		.word	-2052994367
- 1131 01cc 2062F03F 		.word	1072718368
- 1132 01d0 00000000 		.word	0
- 1133 01d4 236C2240 		.word	1075997731
- 1134 01d8 7368916D 		.word	1838246003
- 1135 01dc 81B6F03F 		.word	1072739969
- 1136 01e0 00000000 		.word	.LANCHOR11
- 1137 01e4 00000000 		.word	.LANCHOR12
- 1138 01e8 00000000 		.word	.LANCHOR17
- 1139 01ec 00000000 		.word	.LANCHOR18
- 1140 01f0 00000060 		.word	1610612736
- 1141 01f4 BC74833F 		.word	1065579708
- 1142 01f8 000000E0 		.word	-536870912
- 1143 01fc 4F8D873F 		.word	1065848143
- 1144 0200 000000E0 		.word	-536870912
- 1145 0204 BED5A23F 		.word	1067636158
- 1146 0208 08AC1C5A 		.word	1511828488
- 1147 020c D4DF9A3F 		.word	1067114452
- 1148 0210 00000000 		.word	.LANCHOR13
- 1149 0214 00000000 		.word	.LANCHOR14
- 1150 0218 00000000 		.word	.LANCHOR15
- 1151 021c 00000000 		.word	.LANCHOR16
- 1152              		.cfi_endproc
- 1153              	.LFE15:
- 1155              		.section	.text.get_target_vol_sum_frontwall,"ax",%progbits
- 1156              		.align	1
- 1157              		.global	get_target_vol_sum_frontwall
- 1158              		.syntax unified
- 1159              		.thumb
- 1160              		.thumb_func
- 1161              		.fpu fpv4-sp-d16
- 1163              	get_target_vol_sum_frontwall:
- 1164              	.LFB16:
+ 1225              	.L79:
+ 1226 01a8 60E5D022 		.word	584115552
+ 1227 01ac 9BA5643F 		.word	1063560603
+ 1228 01b0 00000000 		.word	0
+ 1229 01b4 631A5F40 		.word	1079974499
+ 1230 01b8 000000E0 		.word	-536870912
+ 1231 01bc 8A9E1940 		.word	1075420810
+ 1232 01c0 00000060 		.word	1610612736
+ 1233 01c4 A2AB5340 		.word	1079225250
+ 1234 01c8 C1CAA185 		.word	-2052994367
+ 1235 01cc 2062F03F 		.word	1072718368
+ 1236 01d0 00000000 		.word	0
+ 1237 01d4 236C2240 		.word	1075997731
+ 1238 01d8 7368916D 		.word	1838246003
+ 1239 01dc 81B6F03F 		.word	1072739969
+ 1240 01e0 00000000 		.word	.LANCHOR11
+ 1241 01e4 00000000 		.word	.LANCHOR12
+ 1242 01e8 00000000 		.word	.LANCHOR17
+ 1243 01ec 00000000 		.word	.LANCHOR18
+ 1244 01f0 00000060 		.word	1610612736
+ 1245 01f4 BC74833F 		.word	1065579708
+ 1246 01f8 000000E0 		.word	-536870912
+ 1247 01fc 4F8D873F 		.word	1065848143
+ 1248 0200 000000E0 		.word	-536870912
+ 1249 0204 BED5A23F 		.word	1067636158
+ 1250 0208 08AC1C5A 		.word	1511828488
+ 1251 020c D4DF9A3F 		.word	1067114452
+ 1252 0210 00000000 		.word	.LANCHOR13
+ 1253 0214 00000000 		.word	.LANCHOR14
+ 1254 0218 00000000 		.word	.LANCHOR15
+ 1255 021c 00000000 		.word	.LANCHOR16
+ 1256              		.cfi_endproc
+ 1257              	.LFE15:
+ 1259              		.section	.text.get_target_vol_sum_frontwall,"ax",%progbits
+ 1260              		.align	1
+ 1261              		.global	get_target_vol_sum_frontwall
+ 1262              		.syntax unified
+ 1263              		.thumb
+ 1264              		.thumb_func
+ 1265              		.fpu fpv4-sp-d16
+ 1267              	get_target_vol_sum_frontwall:
+ 1268              	.LFB16:
  351:Src/adjust.c  **** 
  352:Src/adjust.c  **** //機能	: 前壁補正によるモータ印加電圧の和を取得する
  353:Src/adjust.c  **** //引数	: なし
  354:Src/adjust.c  **** //返り値	: 前壁補正による右モータ印加電圧
  355:Src/adjust.c  **** float get_target_vol_sum_frontwall ( void )
  356:Src/adjust.c  **** {
- 1165              		.loc 1 356 1 is_stmt 1 view -0
- 1166              		.cfi_startproc
-ARM GAS  C:\Temp\ccfBETwd.s 			page 28
-
-
- 1167              		@ args = 0, pretend = 0, frame = 0
- 1168              		@ frame_needed = 0, uses_anonymous_args = 0
- 1169              		@ link register save eliminated.
+ 1269              		.loc 1 356 1 is_stmt 1 view -0
+ 1270              		.cfi_startproc
+ 1271              		@ args = 0, pretend = 0, frame = 0
+ 1272              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1273              		@ link register save eliminated.
  357:Src/adjust.c  **** 	return target_vol_sum_frontwall;
- 1170              		.loc 1 357 2 view .LVU265
+ 1274              		.loc 1 357 2 view .LVU266
  358:Src/adjust.c  **** }
- 1171              		.loc 1 358 1 is_stmt 0 view .LVU266
- 1172 0000 014B     		ldr	r3, .L64
- 1173 0002 93ED000A 		vldr.32	s0, [r3]
- 1174 0006 7047     		bx	lr
- 1175              	.L65:
- 1176              		.align	2
- 1177              	.L64:
- 1178 0008 00000000 		.word	.LANCHOR17
- 1179              		.cfi_endproc
- 1180              	.LFE16:
- 1182              		.section	.text.get_target_vol_diff_frontwall,"ax",%progbits
- 1183              		.align	1
- 1184              		.global	get_target_vol_diff_frontwall
- 1185              		.syntax unified
- 1186              		.thumb
- 1187              		.thumb_func
- 1188              		.fpu fpv4-sp-d16
- 1190              	get_target_vol_diff_frontwall:
- 1191              	.LFB17:
+ 1275              		.loc 1 358 1 is_stmt 0 view .LVU267
+ARM GAS  C:\Temp\ccFcJnVM.s 			page 30
+
+
+ 1276 0000 014B     		ldr	r3, .L82
+ 1277 0002 93ED000A 		vldr.32	s0, [r3]
+ 1278 0006 7047     		bx	lr
+ 1279              	.L83:
+ 1280              		.align	2
+ 1281              	.L82:
+ 1282 0008 00000000 		.word	.LANCHOR17
+ 1283              		.cfi_endproc
+ 1284              	.LFE16:
+ 1286              		.section	.text.get_target_vol_diff_frontwall,"ax",%progbits
+ 1287              		.align	1
+ 1288              		.global	get_target_vol_diff_frontwall
+ 1289              		.syntax unified
+ 1290              		.thumb
+ 1291              		.thumb_func
+ 1292              		.fpu fpv4-sp-d16
+ 1294              	get_target_vol_diff_frontwall:
+ 1295              	.LFB17:
  359:Src/adjust.c  **** 
  360:Src/adjust.c  **** //機能	: 前壁補正によるモータ印加電圧の差を取得する
  361:Src/adjust.c  **** //引数	: なし
  362:Src/adjust.c  **** //返り値	: 前壁補正による右モータ印加電圧
  363:Src/adjust.c  **** float get_target_vol_diff_frontwall ( void )
  364:Src/adjust.c  **** {
- 1192              		.loc 1 364 1 is_stmt 1 view -0
- 1193              		.cfi_startproc
- 1194              		@ args = 0, pretend = 0, frame = 0
- 1195              		@ frame_needed = 0, uses_anonymous_args = 0
- 1196              		@ link register save eliminated.
+ 1296              		.loc 1 364 1 is_stmt 1 view -0
+ 1297              		.cfi_startproc
+ 1298              		@ args = 0, pretend = 0, frame = 0
+ 1299              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1300              		@ link register save eliminated.
  365:Src/adjust.c  **** 	return target_vol_diff_frontwall;
- 1197              		.loc 1 365 2 view .LVU268
+ 1301              		.loc 1 365 2 view .LVU269
  366:Src/adjust.c  **** }
- 1198              		.loc 1 366 1 is_stmt 0 view .LVU269
- 1199 0000 014B     		ldr	r3, .L67
- 1200 0002 93ED000A 		vldr.32	s0, [r3]
- 1201 0006 7047     		bx	lr
- 1202              	.L68:
- 1203              		.align	2
- 1204              	.L67:
- 1205 0008 00000000 		.word	.LANCHOR18
- 1206              		.cfi_endproc
- 1207              	.LFE17:
- 1209              		.section	.text.clr_frontwall_operate_history,"ax",%progbits
- 1210              		.align	1
- 1211              		.global	clr_frontwall_operate_history
- 1212              		.syntax unified
- 1213              		.thumb
- 1214              		.thumb_func
- 1215              		.fpu fpv4-sp-d16
- 1217              	clr_frontwall_operate_history:
-ARM GAS  C:\Temp\ccfBETwd.s 			page 29
-
-
- 1218              	.LFB18:
+ 1302              		.loc 1 366 1 is_stmt 0 view .LVU270
+ 1303 0000 014B     		ldr	r3, .L85
+ 1304 0002 93ED000A 		vldr.32	s0, [r3]
+ 1305 0006 7047     		bx	lr
+ 1306              	.L86:
+ 1307              		.align	2
+ 1308              	.L85:
+ 1309 0008 00000000 		.word	.LANCHOR18
+ 1310              		.cfi_endproc
+ 1311              	.LFE17:
+ 1313              		.section	.text.clr_frontwall_operate_history,"ax",%progbits
+ 1314              		.align	1
+ 1315              		.global	clr_frontwall_operate_history
+ 1316              		.syntax unified
+ 1317              		.thumb
+ 1318              		.thumb_func
+ 1319              		.fpu fpv4-sp-d16
+ 1321              	clr_frontwall_operate_history:
+ 1322              	.LFB18:
  367:Src/adjust.c  **** 
  368:Src/adjust.c  **** //機能	: 前壁制御の操作履歴を消す
  369:Src/adjust.c  **** //引数	: なし
  370:Src/adjust.c  **** //返り値	: なし
  371:Src/adjust.c  **** void clr_frontwall_operate_history ( void )
  372:Src/adjust.c  **** {
- 1219              		.loc 1 372 1 is_stmt 1 view -0
- 1220              		.cfi_startproc
- 1221              		@ args = 0, pretend = 0, frame = 0
- 1222              		@ frame_needed = 0, uses_anonymous_args = 0
- 1223              		@ link register save eliminated.
+ARM GAS  C:\Temp\ccFcJnVM.s 			page 31
+
+
+ 1323              		.loc 1 372 1 is_stmt 1 view -0
+ 1324              		.cfi_startproc
+ 1325              		@ args = 0, pretend = 0, frame = 0
+ 1326              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1327              		@ link register save eliminated.
  373:Src/adjust.c  **** 	front_sensor_move_err_I = 0;   		
- 1224              		.loc 1 373 2 view .LVU271
- 1225              		.loc 1 373 26 is_stmt 0 view .LVU272
- 1226 0000 0022     		movs	r2, #0
- 1227 0002 0023     		movs	r3, #0
- 1228 0004 0949     		ldr	r1, .L70
- 1229 0006 C1E90023 		strd	r2, [r1]
+ 1328              		.loc 1 373 2 view .LVU272
+ 1329              		.loc 1 373 26 is_stmt 0 view .LVU273
+ 1330 0000 0022     		movs	r2, #0
+ 1331 0002 0023     		movs	r3, #0
+ 1332 0004 0949     		ldr	r1, .L88
+ 1333 0006 C1E90023 		strd	r2, [r1]
  374:Src/adjust.c  **** 	front_sensor_rotate_err_I = 0; 	  	
- 1230              		.loc 1 374 2 is_stmt 1 view .LVU273
- 1231              		.loc 1 374 28 is_stmt 0 view .LVU274
- 1232 000a 0949     		ldr	r1, .L70+4
- 1233 000c C1E90023 		strd	r2, [r1]
+ 1334              		.loc 1 374 2 is_stmt 1 view .LVU274
+ 1335              		.loc 1 374 28 is_stmt 0 view .LVU275
+ 1336 000a 0949     		ldr	r1, .L88+4
+ 1337 000c C1E90023 		strd	r2, [r1]
  375:Src/adjust.c  **** 	front_sensor_move_err_prev = 0;	   	
- 1234              		.loc 1 375 2 is_stmt 1 view .LVU275
- 1235              		.loc 1 375 29 is_stmt 0 view .LVU276
- 1236 0010 0849     		ldr	r1, .L70+8
- 1237 0012 C1E90023 		strd	r2, [r1]
+ 1338              		.loc 1 375 2 is_stmt 1 view .LVU276
+ 1339              		.loc 1 375 29 is_stmt 0 view .LVU277
+ 1340 0010 0849     		ldr	r1, .L88+8
+ 1341 0012 C1E90023 		strd	r2, [r1]
  376:Src/adjust.c  **** 	front_sensor_rotate_err_prev = 0; 	
- 1238              		.loc 1 376 2 is_stmt 1 view .LVU277
- 1239              		.loc 1 376 31 is_stmt 0 view .LVU278
- 1240 0016 0849     		ldr	r1, .L70+12
- 1241 0018 C1E90023 		strd	r2, [r1]
+ 1342              		.loc 1 376 2 is_stmt 1 view .LVU278
+ 1343              		.loc 1 376 31 is_stmt 0 view .LVU279
+ 1344 0016 0849     		ldr	r1, .L88+12
+ 1345 0018 C1E90023 		strd	r2, [r1]
  377:Src/adjust.c  **** 	front_sensor_move_D_prev = 0; 		
- 1242              		.loc 1 377 2 is_stmt 1 view .LVU279
- 1243              		.loc 1 377 27 is_stmt 0 view .LVU280
- 1244 001c 0749     		ldr	r1, .L70+16
- 1245 001e C1E90023 		strd	r2, [r1]
+ 1346              		.loc 1 377 2 is_stmt 1 view .LVU280
+ 1347              		.loc 1 377 27 is_stmt 0 view .LVU281
+ 1348 001c 0749     		ldr	r1, .L88+16
+ 1349 001e C1E90023 		strd	r2, [r1]
  378:Src/adjust.c  **** 	front_sensor_rotate_D_prev = 0;	   	
- 1246              		.loc 1 378 2 is_stmt 1 view .LVU281
- 1247              		.loc 1 378 29 is_stmt 0 view .LVU282
- 1248 0022 0749     		ldr	r1, .L70+20
- 1249 0024 C1E90023 		strd	r2, [r1]
+ 1350              		.loc 1 378 2 is_stmt 1 view .LVU282
+ 1351              		.loc 1 378 29 is_stmt 0 view .LVU283
+ 1352 0022 0749     		ldr	r1, .L88+20
+ 1353 0024 C1E90023 		strd	r2, [r1]
  379:Src/adjust.c  **** }
- 1250              		.loc 1 379 1 view .LVU283
- 1251 0028 7047     		bx	lr
- 1252              	.L71:
- 1253 002a 00BF     		.align	2
- 1254              	.L70:
- 1255 002c 00000000 		.word	.LANCHOR11
- 1256 0030 00000000 		.word	.LANCHOR12
- 1257 0034 00000000 		.word	.LANCHOR13
- 1258 0038 00000000 		.word	.LANCHOR15
- 1259 003c 00000000 		.word	.LANCHOR14
- 1260 0040 00000000 		.word	.LANCHOR16
- 1261              		.cfi_endproc
-ARM GAS  C:\Temp\ccfBETwd.s 			page 30
+ 1354              		.loc 1 379 1 view .LVU284
+ 1355 0028 7047     		bx	lr
+ 1356              	.L89:
+ 1357 002a 00BF     		.align	2
+ 1358              	.L88:
+ 1359 002c 00000000 		.word	.LANCHOR11
+ 1360 0030 00000000 		.word	.LANCHOR12
+ 1361 0034 00000000 		.word	.LANCHOR13
+ 1362 0038 00000000 		.word	.LANCHOR15
+ 1363 003c 00000000 		.word	.LANCHOR14
+ 1364 0040 00000000 		.word	.LANCHOR16
+ 1365              		.cfi_endproc
+ 1366              	.LFE18:
+ 1368              		.section	.text.fornt_wall_calibrate,"ax",%progbits
+ 1369              		.align	1
+ 1370              		.global	fornt_wall_calibrate
+ 1371              		.syntax unified
+ 1372              		.thumb
+ 1373              		.thumb_func
+ARM GAS  C:\Temp\ccFcJnVM.s 			page 32
 
 
- 1262              	.LFE18:
- 1264              		.global	__aeabi_dcmplt
- 1265              		.global	__aeabi_dcmpgt
- 1266              		.section	.text.fornt_wall_calibrate,"ax",%progbits
- 1267              		.align	1
- 1268              		.global	fornt_wall_calibrate
- 1269              		.syntax unified
- 1270              		.thumb
- 1271              		.thumb_func
- 1272              		.fpu fpv4-sp-d16
- 1274              	fornt_wall_calibrate:
- 1275              	.LFB19:
+ 1374              		.fpu fpv4-sp-d16
+ 1376              	fornt_wall_calibrate:
+ 1377              	.LFB19:
  380:Src/adjust.c  **** 
  381:Src/adjust.c  **** 
  382:Src/adjust.c  **** ////////////////////////////////////////
@@ -1765,597 +1876,600 @@ ARM GAS  C:\Temp\ccfBETwd.s 			page 1
  389:Src/adjust.c  ****  *  * */
  390:Src/adjust.c  **** void fornt_wall_calibrate (void)
  391:Src/adjust.c  **** {
- 1276              		.loc 1 391 1 is_stmt 1 view -0
- 1277              		.cfi_startproc
- 1278              		@ args = 0, pretend = 0, frame = 0
- 1279              		@ frame_needed = 0, uses_anonymous_args = 0
- 1280 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
- 1281              	.LCFI12:
- 1282              		.cfi_def_cfa_offset 24
- 1283              		.cfi_offset 3, -24
- 1284              		.cfi_offset 4, -20
- 1285              		.cfi_offset 5, -16
- 1286              		.cfi_offset 6, -12
- 1287              		.cfi_offset 7, -8
- 1288              		.cfi_offset 14, -4
+ 1378              		.loc 1 391 1 is_stmt 1 view -0
+ 1379              		.cfi_startproc
+ 1380              		@ args = 0, pretend = 0, frame = 0
+ 1381              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1382 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 1383              	.LCFI17:
+ 1384              		.cfi_def_cfa_offset 24
+ 1385              		.cfi_offset 3, -24
+ 1386              		.cfi_offset 4, -20
+ 1387              		.cfi_offset 5, -16
+ 1388              		.cfi_offset 6, -12
+ 1389              		.cfi_offset 7, -8
+ 1390              		.cfi_offset 14, -4
  392:Src/adjust.c  **** 	double temp_r;
- 1289              		.loc 1 392 2 view .LVU285
+ 1391              		.loc 1 392 2 view .LVU286
  393:Src/adjust.c  **** 	double temp_l;
- 1290              		.loc 1 393 2 view .LVU286
+ 1392              		.loc 1 393 2 view .LVU287
  394:Src/adjust.c  **** 	double temp;
- 1291              		.loc 1 394 2 view .LVU287
+ 1393              		.loc 1 394 2 view .LVU288
  395:Src/adjust.c  **** 
  396:Src/adjust.c  **** 	set_mode_ctrl(front_wall); 		//制御モードを前壁補正モードに
- 1292              		.loc 1 396 2 view .LVU288
- 1293 0002 0120     		movs	r0, #1
- 1294 0004 FFF7FEFF 		bl	set_mode_ctrl
- 1295              	.LVL110:
+ 1394              		.loc 1 396 2 view .LVU289
+ 1395 0002 0120     		movs	r0, #1
+ 1396 0004 FFF7FEFF 		bl	set_mode_ctrl
+ 1397              	.LVL132:
  397:Src/adjust.c  **** 	fornt_wall_calibrate_tim = 0; 	//前壁制御用タイマを初期化
- 1296              		.loc 1 397 2 view .LVU289
- 1297              		.loc 1 397 27 is_stmt 0 view .LVU290
- 1298 0008 454B     		ldr	r3, .L95+24
- 1299 000a 0022     		movs	r2, #0
- 1300 000c 1A80     		strh	r2, [r3]	@ movhi
- 1301 000e 22E0     		b	.L83
- 1302              	.L92:
-ARM GAS  C:\Temp\ccfBETwd.s 			page 31
-
-
+ 1398              		.loc 1 397 2 view .LVU290
+ 1399              		.loc 1 397 27 is_stmt 0 view .LVU291
+ 1400 0008 454B     		ldr	r3, .L113+24
+ 1401 000a 0022     		movs	r2, #0
+ 1402 000c 1A80     		strh	r2, [r3]	@ movhi
+ 1403 000e 22E0     		b	.L101
+ 1404              	.L110:
  398:Src/adjust.c  **** 
  399:Src/adjust.c  **** 	while(1)
  400:Src/adjust.c  **** 	{
  401:Src/adjust.c  **** 		//偏差取得
  402:Src/adjust.c  **** 		temp_r = ABS(front_sensor_r_ref - SensorValue2length(3));
- 1303              		.loc 1 402 12 discriminator 1 view .LVU291
- 1304 0010 0320     		movs	r0, #3
- 1305 0012 FFF7FEFF 		bl	SensorValue2length
- 1306              	.LVL111:
- 1307 0016 53EC102B 		vmov	r2, r3, d0
- 1308 001a 3BA1     		adr	r1, .L95
- 1309 001c D1E90001 		ldrd	r0, [r1]
- 1310 0020 FFF7FEFF 		bl	__aeabi_dsub
- 1311              	.LVL112:
- 1312 0024 0646     		mov	r6, r0
- 1313 0026 01F10047 		add	r7, r1, #-2147483648
- 1314 002a 30E0     		b	.L75
- 1315              	.LVL113:
- 1316              	.L93:
+ 1405              		.loc 1 402 12 discriminator 1 view .LVU292
+ 1406 0010 0320     		movs	r0, #3
+ 1407 0012 FFF7FEFF 		bl	SensorValue2length
+ 1408              	.LVL133:
+ARM GAS  C:\Temp\ccFcJnVM.s 			page 33
+
+
+ 1409 0016 53EC102B 		vmov	r2, r3, d0
+ 1410 001a 3BA1     		adr	r1, .L113
+ 1411 001c D1E90001 		ldrd	r0, [r1]
+ 1412 0020 FFF7FEFF 		bl	__aeabi_dsub
+ 1413              	.LVL134:
+ 1414 0024 0646     		mov	r6, r0
+ 1415 0026 01F10047 		add	r7, r1, #-2147483648
+ 1416 002a 30E0     		b	.L93
+ 1417              	.LVL135:
+ 1418              	.L111:
  403:Src/adjust.c  **** 		temp_l = ABS(front_sensor_l_ref - SensorValue2length(0));
- 1317              		.loc 1 403 12 discriminator 1 view .LVU292
- 1318 002c 0020     		movs	r0, #0
- 1319 002e FFF7FEFF 		bl	SensorValue2length
- 1320              	.LVL114:
- 1321 0032 53EC102B 		vmov	r2, r3, d0
- 1322 0036 36A1     		adr	r1, .L95+8
- 1323 0038 D1E90001 		ldrd	r0, [r1]
- 1324 003c FFF7FEFF 		bl	__aeabi_dsub
- 1325              	.LVL115:
- 1326 0040 0446     		mov	r4, r0
- 1327 0042 01F10045 		add	r5, r1, #-2147483648
- 1328 0046 3EE0     		b	.L78
- 1329              	.LVL116:
- 1330              	.L94:
+ 1419              		.loc 1 403 12 discriminator 1 view .LVU293
+ 1420 002c 0020     		movs	r0, #0
+ 1421 002e FFF7FEFF 		bl	SensorValue2length
+ 1422              	.LVL136:
+ 1423 0032 53EC102B 		vmov	r2, r3, d0
+ 1424 0036 36A1     		adr	r1, .L113+8
+ 1425 0038 D1E90001 		ldrd	r0, [r1]
+ 1426 003c FFF7FEFF 		bl	__aeabi_dsub
+ 1427              	.LVL137:
+ 1428 0040 0446     		mov	r4, r0
+ 1429 0042 01F10045 		add	r5, r1, #-2147483648
+ 1430 0046 3EE0     		b	.L96
+ 1431              	.LVL138:
+ 1432              	.L112:
  404:Src/adjust.c  **** 		//偏差の最大値取得
  405:Src/adjust.c  **** 		temp = MAX(temp_r,temp_l);
  406:Src/adjust.c  **** 		//センサ値が基準より差を持つとき、タイマをリセット
  407:Src/adjust.c  **** 		if(temp > front_sensor_th)
  408:Src/adjust.c  **** 		{
  409:Src/adjust.c  **** 		 fornt_wall_calibrate_tim = 0;
- 1331              		.loc 1 409 4 is_stmt 1 view .LVU293
- 1332              		.loc 1 409 29 is_stmt 0 view .LVU294
- 1333 0048 354B     		ldr	r3, .L95+24
- 1334 004a 0022     		movs	r2, #0
- 1335 004c 1A80     		strh	r2, [r3]	@ movhi
- 1336              	.L81:
+ 1433              		.loc 1 409 4 is_stmt 1 view .LVU294
+ 1434              		.loc 1 409 29 is_stmt 0 view .LVU295
+ 1435 0048 354B     		ldr	r3, .L113+24
+ 1436 004a 0022     		movs	r2, #0
+ 1437 004c 1A80     		strh	r2, [r3]	@ movhi
+ 1438              	.L99:
  410:Src/adjust.c  **** 		}
  411:Src/adjust.c  **** 		//キャリブレーション時間を超えるとき、ブレイク
  412:Src/adjust.c  **** 		if(fornt_wall_calibrate_tim >= calib_tim )
- 1337              		.loc 1 412 3 is_stmt 1 view .LVU295
- 1338              		.loc 1 412 31 is_stmt 0 view .LVU296
- 1339 004e 344B     		ldr	r3, .L95+24
- 1340 0050 1B88     		ldrh	r3, [r3]
- 1341              		.loc 1 412 5 view .LVU297
- 1342 0052 632B     		cmp	r3, #99
- 1343 0054 4AD8     		bhi	.L91
- 1344              	.LVL117:
-ARM GAS  C:\Temp\ccfBETwd.s 			page 32
-
-
- 1345              	.L83:
+ 1439              		.loc 1 412 3 is_stmt 1 view .LVU296
+ 1440              		.loc 1 412 31 is_stmt 0 view .LVU297
+ 1441 004e 344B     		ldr	r3, .L113+24
+ 1442 0050 1B88     		ldrh	r3, [r3]
+ 1443              		.loc 1 412 5 view .LVU298
+ 1444 0052 632B     		cmp	r3, #99
+ 1445 0054 4AD8     		bhi	.L109
+ 1446              	.LVL139:
+ 1447              	.L101:
  399:Src/adjust.c  **** 	{
- 1346              		.loc 1 399 2 is_stmt 1 view .LVU298
+ 1448              		.loc 1 399 2 is_stmt 1 view .LVU299
  402:Src/adjust.c  **** 		temp_l = ABS(front_sensor_l_ref - SensorValue2length(0));
- 1347              		.loc 1 402 3 view .LVU299
+ 1449              		.loc 1 402 3 view .LVU300
  402:Src/adjust.c  **** 		temp_l = ABS(front_sensor_l_ref - SensorValue2length(0));
- 1348              		.loc 1 402 12 is_stmt 0 view .LVU300
- 1349 0056 0320     		movs	r0, #3
- 1350 0058 FFF7FEFF 		bl	SensorValue2length
- 1351              	.LVL118:
- 1352 005c 53EC102B 		vmov	r2, r3, d0
- 1353 0060 29A1     		adr	r1, .L95
- 1354 0062 D1E90001 		ldrd	r0, [r1]
- 1355 0066 FFF7FEFF 		bl	__aeabi_dsub
- 1356              	.LVL119:
- 1357 006a 0022     		movs	r2, #0
- 1358 006c 0023     		movs	r3, #0
- 1359 006e FFF7FEFF 		bl	__aeabi_dcmplt
- 1360              	.LVL120:
- 1361 0072 0028     		cmp	r0, #0
- 1362 0074 CCD1     		bne	.L92
- 402:Src/adjust.c  **** 		temp_l = ABS(front_sensor_l_ref - SensorValue2length(0));
- 1363              		.loc 1 402 12 discriminator 2 view .LVU301
- 1364 0076 0320     		movs	r0, #3
- 1365 0078 FFF7FEFF 		bl	SensorValue2length
- 1366              	.LVL121:
- 1367 007c 53EC102B 		vmov	r2, r3, d0
- 1368 0080 21A1     		adr	r1, .L95
- 1369 0082 D1E90001 		ldrd	r0, [r1]
- 1370 0086 FFF7FEFF 		bl	__aeabi_dsub
- 1371              	.LVL122:
- 1372 008a 0646     		mov	r6, r0
- 1373 008c 0F46     		mov	r7, r1
- 1374              	.L75:
- 1375              	.LVL123:
- 403:Src/adjust.c  **** 		//偏差の最大値取得
- 1376              		.loc 1 403 3 is_stmt 1 discriminator 4 view .LVU302
- 403:Src/adjust.c  **** 		//偏差の最大値取得
- 1377              		.loc 1 403 12 is_stmt 0 discriminator 4 view .LVU303
- 1378 008e 0020     		movs	r0, #0
- 1379 0090 FFF7FEFF 		bl	SensorValue2length
- 1380              	.LVL124:
- 1381 0094 53EC102B 		vmov	r2, r3, d0
- 1382 0098 1DA1     		adr	r1, .L95+8
- 1383 009a D1E90001 		ldrd	r0, [r1]
- 1384 009e FFF7FEFF 		bl	__aeabi_dsub
- 1385              	.LVL125:
- 1386 00a2 0022     		movs	r2, #0
- 1387 00a4 0023     		movs	r3, #0
- 1388 00a6 FFF7FEFF 		bl	__aeabi_dcmplt
- 1389              	.LVL126:
- 1390 00aa 0028     		cmp	r0, #0
- 1391 00ac BED1     		bne	.L93
- 403:Src/adjust.c  **** 		//偏差の最大値取得
- 1392              		.loc 1 403 12 discriminator 2 view .LVU304
- 1393 00ae 0020     		movs	r0, #0
- 1394 00b0 FFF7FEFF 		bl	SensorValue2length
-ARM GAS  C:\Temp\ccfBETwd.s 			page 33
+ 1450              		.loc 1 402 12 is_stmt 0 view .LVU301
+ 1451 0056 0320     		movs	r0, #3
+ 1452 0058 FFF7FEFF 		bl	SensorValue2length
+ARM GAS  C:\Temp\ccFcJnVM.s 			page 34
 
 
- 1395              	.LVL127:
- 1396 00b4 53EC102B 		vmov	r2, r3, d0
- 1397 00b8 15A1     		adr	r1, .L95+8
- 1398 00ba D1E90001 		ldrd	r0, [r1]
- 1399 00be FFF7FEFF 		bl	__aeabi_dsub
- 1400              	.LVL128:
- 1401 00c2 0446     		mov	r4, r0
- 1402 00c4 0D46     		mov	r5, r1
- 1403              	.L78:
- 1404              	.LVL129:
+ 1453              	.LVL140:
+ 1454 005c 53EC102B 		vmov	r2, r3, d0
+ 1455 0060 29A1     		adr	r1, .L113
+ 1456 0062 D1E90001 		ldrd	r0, [r1]
+ 1457 0066 FFF7FEFF 		bl	__aeabi_dsub
+ 1458              	.LVL141:
+ 1459 006a 0022     		movs	r2, #0
+ 1460 006c 0023     		movs	r3, #0
+ 1461 006e FFF7FEFF 		bl	__aeabi_dcmplt
+ 1462              	.LVL142:
+ 1463 0072 0028     		cmp	r0, #0
+ 1464 0074 CCD1     		bne	.L110
+ 402:Src/adjust.c  **** 		temp_l = ABS(front_sensor_l_ref - SensorValue2length(0));
+ 1465              		.loc 1 402 12 discriminator 2 view .LVU302
+ 1466 0076 0320     		movs	r0, #3
+ 1467 0078 FFF7FEFF 		bl	SensorValue2length
+ 1468              	.LVL143:
+ 1469 007c 53EC102B 		vmov	r2, r3, d0
+ 1470 0080 21A1     		adr	r1, .L113
+ 1471 0082 D1E90001 		ldrd	r0, [r1]
+ 1472 0086 FFF7FEFF 		bl	__aeabi_dsub
+ 1473              	.LVL144:
+ 1474 008a 0646     		mov	r6, r0
+ 1475 008c 0F46     		mov	r7, r1
+ 1476              	.L93:
+ 1477              	.LVL145:
+ 403:Src/adjust.c  **** 		//偏差の最大値取得
+ 1478              		.loc 1 403 3 is_stmt 1 discriminator 4 view .LVU303
+ 403:Src/adjust.c  **** 		//偏差の最大値取得
+ 1479              		.loc 1 403 12 is_stmt 0 discriminator 4 view .LVU304
+ 1480 008e 0020     		movs	r0, #0
+ 1481 0090 FFF7FEFF 		bl	SensorValue2length
+ 1482              	.LVL146:
+ 1483 0094 53EC102B 		vmov	r2, r3, d0
+ 1484 0098 1DA1     		adr	r1, .L113+8
+ 1485 009a D1E90001 		ldrd	r0, [r1]
+ 1486 009e FFF7FEFF 		bl	__aeabi_dsub
+ 1487              	.LVL147:
+ 1488 00a2 0022     		movs	r2, #0
+ 1489 00a4 0023     		movs	r3, #0
+ 1490 00a6 FFF7FEFF 		bl	__aeabi_dcmplt
+ 1491              	.LVL148:
+ 1492 00aa 0028     		cmp	r0, #0
+ 1493 00ac BED1     		bne	.L111
+ 403:Src/adjust.c  **** 		//偏差の最大値取得
+ 1494              		.loc 1 403 12 discriminator 2 view .LVU305
+ 1495 00ae 0020     		movs	r0, #0
+ 1496 00b0 FFF7FEFF 		bl	SensorValue2length
+ 1497              	.LVL149:
+ 1498 00b4 53EC102B 		vmov	r2, r3, d0
+ 1499 00b8 15A1     		adr	r1, .L113+8
+ 1500 00ba D1E90001 		ldrd	r0, [r1]
+ 1501 00be FFF7FEFF 		bl	__aeabi_dsub
+ 1502              	.LVL150:
+ 1503 00c2 0446     		mov	r4, r0
+ 1504 00c4 0D46     		mov	r5, r1
+ 1505              	.L96:
+ARM GAS  C:\Temp\ccFcJnVM.s 			page 35
+
+
+ 1506              	.LVL151:
  405:Src/adjust.c  **** 		//センサ値が基準より差を持つとき、タイマをリセット
- 1405              		.loc 1 405 3 is_stmt 1 discriminator 4 view .LVU305
+ 1507              		.loc 1 405 3 is_stmt 1 discriminator 4 view .LVU306
  405:Src/adjust.c  **** 		//センサ値が基準より差を持つとき、タイマをリセット
- 1406              		.loc 1 405 10 is_stmt 0 discriminator 4 view .LVU306
- 1407 00c6 2246     		mov	r2, r4
- 1408 00c8 2B46     		mov	r3, r5
- 1409 00ca 3046     		mov	r0, r6
- 1410 00cc 3946     		mov	r1, r7
- 1411 00ce FFF7FEFF 		bl	__aeabi_dcmpgt
- 1412              	.LVL130:
- 1413 00d2 08B1     		cbz	r0, .L79
+ 1508              		.loc 1 405 10 is_stmt 0 discriminator 4 view .LVU307
+ 1509 00c6 2246     		mov	r2, r4
+ 1510 00c8 2B46     		mov	r3, r5
+ 1511 00ca 3046     		mov	r0, r6
+ 1512 00cc 3946     		mov	r1, r7
+ 1513 00ce FFF7FEFF 		bl	__aeabi_dcmpgt
+ 1514              	.LVL152:
+ 1515 00d2 08B1     		cbz	r0, .L97
  405:Src/adjust.c  **** 		//センサ値が基準より差を持つとき、タイマをリセット
- 1414              		.loc 1 405 10 view .LVU307
- 1415 00d4 3446     		mov	r4, r6
- 1416              	.LVL131:
+ 1516              		.loc 1 405 10 view .LVU308
+ 1517 00d4 3446     		mov	r4, r6
+ 1518              	.LVL153:
  405:Src/adjust.c  **** 		//センサ値が基準より差を持つとき、タイマをリセット
- 1417              		.loc 1 405 10 view .LVU308
- 1418 00d6 3D46     		mov	r5, r7
- 1419              	.L79:
- 1420              	.LVL132:
+ 1519              		.loc 1 405 10 view .LVU309
+ 1520 00d6 3D46     		mov	r5, r7
+ 1521              	.L97:
+ 1522              	.LVL154:
  407:Src/adjust.c  **** 		{
- 1421              		.loc 1 407 3 is_stmt 1 discriminator 4 view .LVU309
+ 1523              		.loc 1 407 3 is_stmt 1 discriminator 4 view .LVU310
  407:Src/adjust.c  **** 		{
- 1422              		.loc 1 407 5 is_stmt 0 discriminator 4 view .LVU310
- 1423 00d8 0FA3     		adr	r3, .L95+16
- 1424 00da D3E90023 		ldrd	r2, [r3]
- 1425 00de 2046     		mov	r0, r4
- 1426 00e0 2946     		mov	r1, r5
- 1427 00e2 FFF7FEFF 		bl	__aeabi_dcmpgt
- 1428              	.LVL133:
- 1429 00e6 0028     		cmp	r0, #0
- 1430 00e8 B1D0     		beq	.L81
- 1431 00ea ADE7     		b	.L94
- 1432              	.L91:
+ 1524              		.loc 1 407 5 is_stmt 0 discriminator 4 view .LVU311
+ 1525 00d8 0FA3     		adr	r3, .L113+16
+ 1526 00da D3E90023 		ldrd	r2, [r3]
+ 1527 00de 2046     		mov	r0, r4
+ 1528 00e0 2946     		mov	r1, r5
+ 1529 00e2 FFF7FEFF 		bl	__aeabi_dcmpgt
+ 1530              	.LVL155:
+ 1531 00e6 0028     		cmp	r0, #0
+ 1532 00e8 B1D0     		beq	.L99
+ 1533 00ea ADE7     		b	.L112
+ 1534              	.L109:
  413:Src/adjust.c  **** 		{
  414:Src/adjust.c  **** 		 break;
  415:Src/adjust.c  **** 		}
  416:Src/adjust.c  **** 	}
  417:Src/adjust.c  **** 	//補正終了時、移動距離、角度に理想値を代入
  418:Src/adjust.c  **** 	set_move_length(get_ideal_length());
- 1433              		.loc 1 418 2 is_stmt 1 view .LVU311
- 1434 00ec FFF7FEFF 		bl	get_ideal_length
- 1435              	.LVL134:
- 1436 00f0 FFF7FEFF 		bl	set_move_length
- 1437              	.LVL135:
+ 1535              		.loc 1 418 2 is_stmt 1 view .LVU312
+ 1536 00ec FFF7FEFF 		bl	get_ideal_length
+ 1537              	.LVL156:
+ 1538 00f0 FFF7FEFF 		bl	set_move_length
+ 1539              	.LVL157:
  419:Src/adjust.c  **** 	set_rotation_angle(get_ideal_angle());
- 1438              		.loc 1 419 2 view .LVU312
-ARM GAS  C:\Temp\ccfBETwd.s 			page 34
-
-
- 1439 00f4 FFF7FEFF 		bl	get_ideal_angle
- 1440              	.LVL136:
- 1441 00f8 FFF7FEFF 		bl	set_rotation_angle
- 1442              	.LVL137:
+ 1540              		.loc 1 419 2 view .LVU313
+ 1541 00f4 FFF7FEFF 		bl	get_ideal_angle
+ 1542              	.LVL158:
+ 1543 00f8 FFF7FEFF 		bl	set_rotation_angle
+ 1544              	.LVL159:
  420:Src/adjust.c  **** 	
  421:Src/adjust.c  **** 	//制御モードを軌跡制御に変更
  422:Src/adjust.c  **** 	set_mode_ctrl(trace);
- 1443              		.loc 1 422 2 view .LVU313
- 1444 00fc 0020     		movs	r0, #0
- 1445 00fe FFF7FEFF 		bl	set_mode_ctrl
- 1446              	.LVL138:
+ 1545              		.loc 1 422 2 view .LVU314
+ 1546 00fc 0020     		movs	r0, #0
+ARM GAS  C:\Temp\ccFcJnVM.s 			page 36
+
+
+ 1547 00fe FFF7FEFF 		bl	set_mode_ctrl
+ 1548              	.LVL160:
  423:Src/adjust.c  **** }
- 1447              		.loc 1 423 1 is_stmt 0 view .LVU314
- 1448 0102 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
- 1449              	.LVL139:
- 1450              	.L96:
- 1451              		.loc 1 423 1 view .LVU315
- 1452 0104 AFF30080 		.align	3
- 1453              	.L95:
- 1454 0108 000000E0 		.word	-536870912
- 1455 010c 4F8D873F 		.word	1065848143
- 1456 0110 00000060 		.word	1610612736
- 1457 0114 BC74833F 		.word	1065579708
- 1458 0118 61325530 		.word	810889825
- 1459 011c 2AA9333F 		.word	1060350250
- 1460 0120 00000000 		.word	.LANCHOR19
- 1461              		.cfi_endproc
- 1462              	.LFE19:
- 1464              		.section	.text.calibrate_tim,"ax",%progbits
- 1465              		.align	1
- 1466              		.global	calibrate_tim
- 1467              		.syntax unified
- 1468              		.thumb
- 1469              		.thumb_func
- 1470              		.fpu fpv4-sp-d16
- 1472              	calibrate_tim:
- 1473              	.LFB20:
+ 1549              		.loc 1 423 1 is_stmt 0 view .LVU315
+ 1550 0102 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 1551              	.LVL161:
+ 1552              	.L114:
+ 1553              		.loc 1 423 1 view .LVU316
+ 1554 0104 AFF30080 		.align	3
+ 1555              	.L113:
+ 1556 0108 000000E0 		.word	-536870912
+ 1557 010c 4F8D873F 		.word	1065848143
+ 1558 0110 00000060 		.word	1610612736
+ 1559 0114 BC74833F 		.word	1065579708
+ 1560 0118 61325530 		.word	810889825
+ 1561 011c 2AA9333F 		.word	1060350250
+ 1562 0120 00000000 		.word	.LANCHOR19
+ 1563              		.cfi_endproc
+ 1564              	.LFE19:
+ 1566              		.section	.text.calibrate_tim,"ax",%progbits
+ 1567              		.align	1
+ 1568              		.global	calibrate_tim
+ 1569              		.syntax unified
+ 1570              		.thumb
+ 1571              		.thumb_func
+ 1572              		.fpu fpv4-sp-d16
+ 1574              	calibrate_tim:
+ 1575              	.LFB20:
  424:Src/adjust.c  **** 
  425:Src/adjust.c  **** /* memo:前壁補正用タイマ
  426:Src/adjust.c  ****  * param:
  427:Src/adjust.c  ****  *  * */
  428:Src/adjust.c  **** void calibrate_tim (void){
- 1474              		.loc 1 428 26 is_stmt 1 view -0
- 1475              		.cfi_startproc
- 1476              		@ args = 0, pretend = 0, frame = 0
- 1477              		@ frame_needed = 0, uses_anonymous_args = 0
- 1478              		@ link register save eliminated.
+ 1576              		.loc 1 428 26 is_stmt 1 view -0
+ 1577              		.cfi_startproc
+ 1578              		@ args = 0, pretend = 0, frame = 0
+ 1579              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1580              		@ link register save eliminated.
  429:Src/adjust.c  **** 
  430:Src/adjust.c  **** 	fornt_wall_calibrate_tim += 1;
- 1479              		.loc 1 430 2 view .LVU317
- 1480              		.loc 1 430 27 is_stmt 0 view .LVU318
- 1481 0000 054A     		ldr	r2, .L99
- 1482 0002 1388     		ldrh	r3, [r2]
- 1483 0004 0133     		adds	r3, r3, #1
- 1484 0006 9BB2     		uxth	r3, r3
- 1485 0008 1380     		strh	r3, [r2]	@ movhi
+ 1581              		.loc 1 430 2 view .LVU318
+ 1582              		.loc 1 430 27 is_stmt 0 view .LVU319
+ 1583 0000 054A     		ldr	r2, .L117
+ 1584 0002 1388     		ldrh	r3, [r2]
+ 1585 0004 0133     		adds	r3, r3, #1
+ 1586 0006 9BB2     		uxth	r3, r3
+ 1587 0008 1380     		strh	r3, [r2]	@ movhi
  431:Src/adjust.c  **** 
-ARM GAS  C:\Temp\ccfBETwd.s 			page 35
-
-
  432:Src/adjust.c  **** 	if(fornt_wall_calibrate_tim > calib_tim){
- 1486              		.loc 1 432 2 is_stmt 1 view .LVU319
- 1487              		.loc 1 432 4 is_stmt 0 view .LVU320
- 1488 000a 642B     		cmp	r3, #100
- 1489 000c 02D9     		bls	.L97
+ 1588              		.loc 1 432 2 is_stmt 1 view .LVU320
+ 1589              		.loc 1 432 4 is_stmt 0 view .LVU321
+ 1590 000a 642B     		cmp	r3, #100
+ 1591 000c 02D9     		bls	.L115
  433:Src/adjust.c  **** 		fornt_wall_calibrate_tim = calib_tim;
- 1490              		.loc 1 433 3 is_stmt 1 view .LVU321
- 1491              		.loc 1 433 28 is_stmt 0 view .LVU322
- 1492 000e 1346     		mov	r3, r2
- 1493 0010 6422     		movs	r2, #100
- 1494 0012 1A80     		strh	r2, [r3]	@ movhi
- 1495              	.L97:
+ 1592              		.loc 1 433 3 is_stmt 1 view .LVU322
+ 1593              		.loc 1 433 28 is_stmt 0 view .LVU323
+ 1594 000e 1346     		mov	r3, r2
+ARM GAS  C:\Temp\ccFcJnVM.s 			page 37
+
+
+ 1595 0010 6422     		movs	r2, #100
+ 1596 0012 1A80     		strh	r2, [r3]	@ movhi
+ 1597              	.L115:
  434:Src/adjust.c  **** 	}
  435:Src/adjust.c  **** }
- 1496              		.loc 1 435 1 view .LVU323
- 1497 0014 7047     		bx	lr
- 1498              	.L100:
- 1499 0016 00BF     		.align	2
- 1500              	.L99:
- 1501 0018 00000000 		.word	.LANCHOR19
- 1502              		.cfi_endproc
- 1503              	.LFE20:
- 1505              		.section	.text.adjust_1ms,"ax",%progbits
- 1506              		.align	1
- 1507              		.global	adjust_1ms
- 1508              		.syntax unified
- 1509              		.thumb
- 1510              		.thumb_func
- 1511              		.fpu fpv4-sp-d16
- 1513              	adjust_1ms:
- 1514              	.LFB3:
+ 1598              		.loc 1 435 1 view .LVU324
+ 1599 0014 7047     		bx	lr
+ 1600              	.L118:
+ 1601 0016 00BF     		.align	2
+ 1602              	.L117:
+ 1603 0018 00000000 		.word	.LANCHOR19
+ 1604              		.cfi_endproc
+ 1605              	.LFE20:
+ 1607              		.section	.text.adjust_1ms,"ax",%progbits
+ 1608              		.align	1
+ 1609              		.global	adjust_1ms
+ 1610              		.syntax unified
+ 1611              		.thumb
+ 1612              		.thumb_func
+ 1613              		.fpu fpv4-sp-d16
+ 1615              	adjust_1ms:
+ 1616              	.LFB3:
   38:Src/adjust.c  **** 	set_target_side_sensor();		//初期位置のセンサ値を横壁制御目標値にセット
- 1515              		.loc 1 38 1 is_stmt 1 view -0
- 1516              		.cfi_startproc
- 1517              		@ args = 0, pretend = 0, frame = 0
- 1518              		@ frame_needed = 0, uses_anonymous_args = 0
- 1519 0000 08B5     		push	{r3, lr}
- 1520              	.LCFI13:
- 1521              		.cfi_def_cfa_offset 8
- 1522              		.cfi_offset 3, -8
- 1523              		.cfi_offset 14, -4
+ 1617              		.loc 1 38 1 is_stmt 1 view -0
+ 1618              		.cfi_startproc
+ 1619              		@ args = 0, pretend = 0, frame = 0
+ 1620              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1621 0000 08B5     		push	{r3, lr}
+ 1622              	.LCFI18:
+ 1623              		.cfi_def_cfa_offset 8
+ 1624              		.cfi_offset 3, -8
+ 1625              		.cfi_offset 14, -4
   39:Src/adjust.c  **** 	calc_side_wall_ctrl_mode();		//横壁補正のモードを決定
- 1524              		.loc 1 39 2 view .LVU325
- 1525 0002 FFF7FEFF 		bl	set_target_side_sensor
- 1526              	.LVL140:
+ 1626              		.loc 1 39 2 view .LVU326
+ 1627 0002 FFF7FEFF 		bl	set_target_side_sensor
+ 1628              	.LVL162:
   40:Src/adjust.c  **** 	adjust_theta_side_wall();		//横壁補正のモードに応じ、軌跡制御における角度を
- 1527              		.loc 1 40 2 view .LVU326
- 1528 0006 FFF7FEFF 		bl	calc_side_wall_ctrl_mode
- 1529              	.LVL141:
+ 1629              		.loc 1 40 2 view .LVU327
+ 1630 0006 FFF7FEFF 		bl	calc_side_wall_ctrl_mode
+ 1631              	.LVL163:
   41:Src/adjust.c  **** 	calc_motor_vol_side_wall();		//横壁補正における印加電圧計算
- 1530              		.loc 1 41 2 view .LVU327
+ 1632              		.loc 1 41 2 view .LVU328
   42:Src/adjust.c  **** 	calc_motor_vol_front_wall();	//前壁制御における印加電圧計算
- 1531              		.loc 1 42 2 view .LVU328
- 1532 000a FFF7FEFF 		bl	calc_motor_vol_side_wall
- 1533              	.LVL142:
+ 1633              		.loc 1 42 2 view .LVU329
+ 1634 000a FFF7FEFF 		bl	calc_motor_vol_side_wall
+ 1635              	.LVL164:
   43:Src/adjust.c  **** 	calibrate_tim();				//前壁制御用タイマ
- 1534              		.loc 1 43 2 view .LVU329
-ARM GAS  C:\Temp\ccfBETwd.s 			page 36
-
-
- 1535 000e FFF7FEFF 		bl	calc_motor_vol_front_wall
- 1536              	.LVL143:
+ 1636              		.loc 1 43 2 view .LVU330
+ 1637 000e FFF7FEFF 		bl	calc_motor_vol_front_wall
+ 1638              	.LVL165:
   44:Src/adjust.c  **** }
- 1537              		.loc 1 44 2 view .LVU330
- 1538 0012 FFF7FEFF 		bl	calibrate_tim
- 1539              	.LVL144:
+ 1639              		.loc 1 44 2 view .LVU331
+ 1640 0012 FFF7FEFF 		bl	calibrate_tim
+ 1641              	.LVL166:
   45:Src/adjust.c  **** 
- 1540              		.loc 1 45 1 is_stmt 0 view .LVU331
- 1541 0016 08BD     		pop	{r3, pc}
- 1542              		.cfi_endproc
- 1543              	.LFE3:
- 1545              		.section	.bss.ave_counter.7300,"aw",%nobits
- 1546              		.align	1
- 1547              		.set	.LANCHOR8,. + 0
- 1550              	ave_counter.7300:
- 1551 0000 0000     		.space	2
- 1552              		.section	.bss.ave_store.7299,"aw",%nobits
- 1553              		.align	2
- 1554              		.set	.LANCHOR9,. + 0
- 1557              	ave_store.7299:
- 1558 0000 00000000 		.space	40
- 1558      00000000 
- 1558      00000000 
- 1558      00000000 
- 1558      00000000 
- 1559              		.section	.bss.fornt_wall_calibrate_tim,"aw",%nobits
- 1560              		.align	1
- 1561              		.set	.LANCHOR19,. + 0
- 1564              	fornt_wall_calibrate_tim:
- 1565 0000 0000     		.space	2
- 1566              		.section	.bss.front_sensor_move_D_prev,"aw",%nobits
- 1567              		.align	3
- 1568              		.set	.LANCHOR14,. + 0
- 1571              	front_sensor_move_D_prev:
- 1572 0000 00000000 		.space	8
- 1572      00000000 
- 1573              		.section	.bss.front_sensor_move_err_I,"aw",%nobits
- 1574              		.align	3
- 1575              		.set	.LANCHOR11,. + 0
- 1578              	front_sensor_move_err_I:
- 1579 0000 00000000 		.space	8
- 1579      00000000 
- 1580              		.section	.bss.front_sensor_move_err_prev,"aw",%nobits
- 1581              		.align	3
- 1582              		.set	.LANCHOR13,. + 0
- 1585              	front_sensor_move_err_prev:
- 1586 0000 00000000 		.space	8
- 1586      00000000 
- 1587              		.section	.bss.front_sensor_rotate_D_prev,"aw",%nobits
- 1588              		.align	3
- 1589              		.set	.LANCHOR16,. + 0
- 1592              	front_sensor_rotate_D_prev:
- 1593 0000 00000000 		.space	8
- 1593      00000000 
- 1594              		.section	.bss.front_sensor_rotate_err_I,"aw",%nobits
- 1595              		.align	3
- 1596              		.set	.LANCHOR12,. + 0
-ARM GAS  C:\Temp\ccfBETwd.s 			page 37
+ 1642              		.loc 1 45 1 is_stmt 0 view .LVU332
+ 1643 0016 08BD     		pop	{r3, pc}
+ARM GAS  C:\Temp\ccFcJnVM.s 			page 38
 
 
- 1599              	front_sensor_rotate_err_I:
- 1600 0000 00000000 		.space	8
- 1600      00000000 
- 1601              		.section	.bss.front_sensor_rotate_err_prev,"aw",%nobits
- 1602              		.align	3
- 1603              		.set	.LANCHOR15,. + 0
- 1606              	front_sensor_rotate_err_prev:
- 1607 0000 00000000 		.space	8
- 1607      00000000 
- 1608              		.section	.bss.side_sensor_l_old.7288,"aw",%nobits
- 1609              		.align	1
- 1610              		.set	.LANCHOR6,. + 0
- 1613              	side_sensor_l_old.7288:
- 1614 0000 0000     		.space	2
- 1615              		.section	.bss.side_sensor_l_th,"aw",%nobits
- 1616              		.align	1
- 1617              		.set	.LANCHOR3,. + 0
- 1620              	side_sensor_l_th:
- 1621 0000 0000     		.space	2
- 1622              		.section	.bss.side_sensor_r_old.7287,"aw",%nobits
- 1623              		.align	1
- 1624              		.set	.LANCHOR7,. + 0
- 1627              	side_sensor_r_old.7287:
- 1628 0000 0000     		.space	2
- 1629              		.section	.bss.side_sensor_r_th,"aw",%nobits
- 1630              		.align	1
- 1631              		.set	.LANCHOR4,. + 0
- 1634              	side_sensor_r_th:
- 1635 0000 0000     		.space	2
- 1636              		.section	.bss.target_sensor_sl,"aw",%nobits
- 1637              		.align	3
- 1638              		.set	.LANCHOR1,. + 0
- 1641              	target_sensor_sl:
- 1642 0000 00000000 		.space	8
- 1642      00000000 
- 1643              		.section	.bss.target_sensor_sr,"aw",%nobits
- 1644              		.align	3
- 1645              		.set	.LANCHOR2,. + 0
- 1648              	target_sensor_sr:
- 1649 0000 00000000 		.space	8
- 1649      00000000 
- 1650              		.section	.bss.target_set_flg.7266,"aw",%nobits
- 1651              		.set	.LANCHOR0,. + 0
- 1654              	target_set_flg.7266:
- 1655 0000 00       		.space	1
- 1656              		.section	.bss.target_vol_diff_frontwall,"aw",%nobits
- 1657              		.align	2
- 1658              		.set	.LANCHOR18,. + 0
- 1661              	target_vol_diff_frontwall:
- 1662 0000 00000000 		.space	4
- 1663              		.section	.bss.target_vol_diff_sidewall,"aw",%nobits
- 1664              		.align	2
- 1665              		.set	.LANCHOR10,. + 0
- 1668              	target_vol_diff_sidewall:
- 1669 0000 00000000 		.space	4
- 1670              		.section	.bss.target_vol_sum_frontwall,"aw",%nobits
- 1671              		.align	2
-ARM GAS  C:\Temp\ccfBETwd.s 			page 38
+ 1644              		.cfi_endproc
+ 1645              	.LFE3:
+ 1647              		.section	.bss.ave_counter.7300,"aw",%nobits
+ 1648              		.align	1
+ 1649              		.set	.LANCHOR8,. + 0
+ 1652              	ave_counter.7300:
+ 1653 0000 0000     		.space	2
+ 1654              		.section	.bss.ave_store.7299,"aw",%nobits
+ 1655              		.align	3
+ 1656              		.set	.LANCHOR9,. + 0
+ 1659              	ave_store.7299:
+ 1660 0000 00000000 		.space	160
+ 1660      00000000 
+ 1660      00000000 
+ 1660      00000000 
+ 1660      00000000 
+ 1661              		.section	.bss.fornt_wall_calibrate_tim,"aw",%nobits
+ 1662              		.align	1
+ 1663              		.set	.LANCHOR19,. + 0
+ 1666              	fornt_wall_calibrate_tim:
+ 1667 0000 0000     		.space	2
+ 1668              		.section	.bss.front_sensor_move_D_prev,"aw",%nobits
+ 1669              		.align	3
+ 1670              		.set	.LANCHOR14,. + 0
+ 1673              	front_sensor_move_D_prev:
+ 1674 0000 00000000 		.space	8
+ 1674      00000000 
+ 1675              		.section	.bss.front_sensor_move_err_I,"aw",%nobits
+ 1676              		.align	3
+ 1677              		.set	.LANCHOR11,. + 0
+ 1680              	front_sensor_move_err_I:
+ 1681 0000 00000000 		.space	8
+ 1681      00000000 
+ 1682              		.section	.bss.front_sensor_move_err_prev,"aw",%nobits
+ 1683              		.align	3
+ 1684              		.set	.LANCHOR13,. + 0
+ 1687              	front_sensor_move_err_prev:
+ 1688 0000 00000000 		.space	8
+ 1688      00000000 
+ 1689              		.section	.bss.front_sensor_rotate_D_prev,"aw",%nobits
+ 1690              		.align	3
+ 1691              		.set	.LANCHOR16,. + 0
+ 1694              	front_sensor_rotate_D_prev:
+ 1695 0000 00000000 		.space	8
+ 1695      00000000 
+ 1696              		.section	.bss.front_sensor_rotate_err_I,"aw",%nobits
+ 1697              		.align	3
+ 1698              		.set	.LANCHOR12,. + 0
+ 1701              	front_sensor_rotate_err_I:
+ 1702 0000 00000000 		.space	8
+ 1702      00000000 
+ 1703              		.section	.bss.front_sensor_rotate_err_prev,"aw",%nobits
+ 1704              		.align	3
+ 1705              		.set	.LANCHOR15,. + 0
+ 1708              	front_sensor_rotate_err_prev:
+ 1709 0000 00000000 		.space	8
+ 1709      00000000 
+ARM GAS  C:\Temp\ccFcJnVM.s 			page 39
 
 
- 1672              		.set	.LANCHOR17,. + 0
- 1675              	target_vol_sum_frontwall:
- 1676 0000 00000000 		.space	4
- 1677              		.section	.data.side_wall_ctrl_mode,"aw"
- 1678              		.set	.LANCHOR5,. + 0
- 1681              	side_wall_ctrl_mode:
- 1682 0000 03       		.byte	3
- 1683              		.text
- 1684              	.Letext0:
- 1685              		.file 2 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\machine\\_default_t
- 1686              		.file 3 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\lock.h"
- 1687              		.file 4 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\_types.h"
- 1688              		.file 5 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\lib\\gcc\\arm-none-eabi\\9.2.1\\include\\st
- 1689              		.file 6 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\reent.h"
- 1690              		.file 7 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\_stdint.h"
- 1691              		.file 8 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\math.h"
- 1692              		.file 9 "Inc/adjust.h"
- 1693              		.file 10 "Inc/exvol.h"
- 1694              		.file 11 "Inc/ir_sensor.h"
- 1695              		.file 12 "Inc/target.h"
- 1696              		.file 13 "Inc/mouse_state.h"
-ARM GAS  C:\Temp\ccfBETwd.s 			page 39
+ 1710              		.section	.bss.side_sensor_l_old.7288,"aw",%nobits
+ 1711              		.align	3
+ 1712              		.set	.LANCHOR6,. + 0
+ 1715              	side_sensor_l_old.7288:
+ 1716 0000 00000000 		.space	8
+ 1716      00000000 
+ 1717              		.section	.bss.side_sensor_l_th,"aw",%nobits
+ 1718              		.align	3
+ 1719              		.set	.LANCHOR3,. + 0
+ 1722              	side_sensor_l_th:
+ 1723 0000 00000000 		.space	8
+ 1723      00000000 
+ 1724              		.section	.bss.side_sensor_r_old.7287,"aw",%nobits
+ 1725              		.align	3
+ 1726              		.set	.LANCHOR7,. + 0
+ 1729              	side_sensor_r_old.7287:
+ 1730 0000 00000000 		.space	8
+ 1730      00000000 
+ 1731              		.section	.bss.side_sensor_r_th,"aw",%nobits
+ 1732              		.align	3
+ 1733              		.set	.LANCHOR4,. + 0
+ 1736              	side_sensor_r_th:
+ 1737 0000 00000000 		.space	8
+ 1737      00000000 
+ 1738              		.section	.bss.target_sensor_sl,"aw",%nobits
+ 1739              		.align	3
+ 1740              		.set	.LANCHOR1,. + 0
+ 1743              	target_sensor_sl:
+ 1744 0000 00000000 		.space	8
+ 1744      00000000 
+ 1745              		.section	.bss.target_sensor_sr,"aw",%nobits
+ 1746              		.align	3
+ 1747              		.set	.LANCHOR2,. + 0
+ 1750              	target_sensor_sr:
+ 1751 0000 00000000 		.space	8
+ 1751      00000000 
+ 1752              		.section	.bss.target_set_flg.7266,"aw",%nobits
+ 1753              		.set	.LANCHOR0,. + 0
+ 1756              	target_set_flg.7266:
+ 1757 0000 00       		.space	1
+ 1758              		.section	.bss.target_vol_diff_frontwall,"aw",%nobits
+ 1759              		.align	2
+ 1760              		.set	.LANCHOR18,. + 0
+ 1763              	target_vol_diff_frontwall:
+ 1764 0000 00000000 		.space	4
+ 1765              		.section	.bss.target_vol_diff_sidewall,"aw",%nobits
+ 1766              		.align	2
+ 1767              		.set	.LANCHOR10,. + 0
+ 1770              	target_vol_diff_sidewall:
+ 1771 0000 00000000 		.space	4
+ 1772              		.section	.bss.target_vol_sum_frontwall,"aw",%nobits
+ 1773              		.align	2
+ 1774              		.set	.LANCHOR17,. + 0
+ 1777              	target_vol_sum_frontwall:
+ 1778 0000 00000000 		.space	4
+ 1779              		.section	.data.side_wall_ctrl_mode,"aw"
+ 1780              		.set	.LANCHOR5,. + 0
+ARM GAS  C:\Temp\ccFcJnVM.s 			page 40
+
+
+ 1783              	side_wall_ctrl_mode:
+ 1784 0000 03       		.byte	3
+ 1785              		.text
+ 1786              	.Letext0:
+ 1787              		.file 2 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\machine\\_default_t
+ 1788              		.file 3 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\lock.h"
+ 1789              		.file 4 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\_types.h"
+ 1790              		.file 5 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\lib\\gcc\\arm-none-eabi\\9.2.1\\include\\st
+ 1791              		.file 6 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\reent.h"
+ 1792              		.file 7 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 1793              		.file 8 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\math.h"
+ 1794              		.file 9 "Inc/adjust.h"
+ 1795              		.file 10 "Inc/exvol.h"
+ 1796              		.file 11 "Inc/ir_sensor.h"
+ 1797              		.file 12 "Inc/target.h"
+ 1798              		.file 13 "Inc/mouse_state.h"
+ARM GAS  C:\Temp\ccFcJnVM.s 			page 41
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 adjust.c
-  C:\Temp\ccfBETwd.s:18     .text.set_target_side_sensor:00000000 $t
-  C:\Temp\ccfBETwd.s:26     .text.set_target_side_sensor:00000000 set_target_side_sensor
-  C:\Temp\ccfBETwd.s:64     .text.set_target_side_sensor:00000028 $d
-  C:\Temp\ccfBETwd.s:76     .text.get_target_sensor_sr:00000000 $t
-  C:\Temp\ccfBETwd.s:83     .text.get_target_sensor_sr:00000000 get_target_sensor_sr
-  C:\Temp\ccfBETwd.s:106    .text.get_target_sensor_sr:00000014 $d
-  C:\Temp\ccfBETwd.s:111    .text.get_target_sensor_sl:00000000 $t
-  C:\Temp\ccfBETwd.s:118    .text.get_target_sensor_sl:00000000 get_target_sensor_sl
-  C:\Temp\ccfBETwd.s:141    .text.get_target_sensor_sl:00000014 $d
-  C:\Temp\ccfBETwd.s:146    .text.get_side_sensor_l_th:00000000 $t
-  C:\Temp\ccfBETwd.s:153    .text.get_side_sensor_l_th:00000000 get_side_sensor_l_th
-  C:\Temp\ccfBETwd.s:168    .text.get_side_sensor_l_th:00000008 $d
-  C:\Temp\ccfBETwd.s:173    .text.get_side_sensor_r_th:00000000 $t
-  C:\Temp\ccfBETwd.s:180    .text.get_side_sensor_r_th:00000000 get_side_sensor_r_th
-  C:\Temp\ccfBETwd.s:195    .text.get_side_sensor_r_th:00000008 $d
-  C:\Temp\ccfBETwd.s:200    .text.get_side_wall_ctrl_mode:00000000 $t
-  C:\Temp\ccfBETwd.s:207    .text.get_side_wall_ctrl_mode:00000000 get_side_wall_ctrl_mode
-  C:\Temp\ccfBETwd.s:222    .text.get_side_wall_ctrl_mode:00000008 $d
-  C:\Temp\ccfBETwd.s:227    .text.calc_side_wall_ctrl_mode:00000000 $t
-  C:\Temp\ccfBETwd.s:234    .text.calc_side_wall_ctrl_mode:00000000 calc_side_wall_ctrl_mode
-  C:\Temp\ccfBETwd.s:491    .text.calc_side_wall_ctrl_mode:0000011c $d
-  C:\Temp\ccfBETwd.s:506    .text.get_side_wall_err:00000000 $t
-  C:\Temp\ccfBETwd.s:513    .text.get_side_wall_err:00000000 get_side_wall_err
-  C:\Temp\ccfBETwd.s:640    .text.get_side_wall_err:000000b0 $d
-  C:\Temp\ccfBETwd.s:649    .text.adjust_theta_side_wall:00000000 $t
-  C:\Temp\ccfBETwd.s:656    .text.adjust_theta_side_wall:00000000 adjust_theta_side_wall
-  C:\Temp\ccfBETwd.s:671    .text.calc_motor_vol_side_wall:00000000 $t
-  C:\Temp\ccfBETwd.s:678    .text.calc_motor_vol_side_wall:00000000 calc_motor_vol_side_wall
-  C:\Temp\ccfBETwd.s:770    .text.calc_motor_vol_side_wall:0000005c $d
-  C:\Temp\ccfBETwd.s:777    .text.get_target_vol_diff_sidewall:00000000 $t
-  C:\Temp\ccfBETwd.s:784    .text.get_target_vol_diff_sidewall:00000000 get_target_vol_diff_sidewall
-  C:\Temp\ccfBETwd.s:799    .text.get_target_vol_diff_sidewall:00000008 $d
-  C:\Temp\ccfBETwd.s:805    .text.calc_motor_vol_front_wall:00000000 $t
-  C:\Temp\ccfBETwd.s:812    .text.calc_motor_vol_front_wall:00000000 calc_motor_vol_front_wall
-  C:\Temp\ccfBETwd.s:1122   .text.calc_motor_vol_front_wall:000001a8 $d
-  C:\Temp\ccfBETwd.s:1156   .text.get_target_vol_sum_frontwall:00000000 $t
-  C:\Temp\ccfBETwd.s:1163   .text.get_target_vol_sum_frontwall:00000000 get_target_vol_sum_frontwall
-  C:\Temp\ccfBETwd.s:1178   .text.get_target_vol_sum_frontwall:00000008 $d
-  C:\Temp\ccfBETwd.s:1183   .text.get_target_vol_diff_frontwall:00000000 $t
-  C:\Temp\ccfBETwd.s:1190   .text.get_target_vol_diff_frontwall:00000000 get_target_vol_diff_frontwall
-  C:\Temp\ccfBETwd.s:1205   .text.get_target_vol_diff_frontwall:00000008 $d
-  C:\Temp\ccfBETwd.s:1210   .text.clr_frontwall_operate_history:00000000 $t
-  C:\Temp\ccfBETwd.s:1217   .text.clr_frontwall_operate_history:00000000 clr_frontwall_operate_history
-  C:\Temp\ccfBETwd.s:1255   .text.clr_frontwall_operate_history:0000002c $d
-  C:\Temp\ccfBETwd.s:1267   .text.fornt_wall_calibrate:00000000 $t
-  C:\Temp\ccfBETwd.s:1274   .text.fornt_wall_calibrate:00000000 fornt_wall_calibrate
-  C:\Temp\ccfBETwd.s:1454   .text.fornt_wall_calibrate:00000108 $d
-  C:\Temp\ccfBETwd.s:1465   .text.calibrate_tim:00000000 $t
-  C:\Temp\ccfBETwd.s:1472   .text.calibrate_tim:00000000 calibrate_tim
-  C:\Temp\ccfBETwd.s:1501   .text.calibrate_tim:00000018 $d
-  C:\Temp\ccfBETwd.s:1506   .text.adjust_1ms:00000000 $t
-  C:\Temp\ccfBETwd.s:1513   .text.adjust_1ms:00000000 adjust_1ms
-  C:\Temp\ccfBETwd.s:1546   .bss.ave_counter.7300:00000000 $d
-  C:\Temp\ccfBETwd.s:1550   .bss.ave_counter.7300:00000000 ave_counter.7300
-  C:\Temp\ccfBETwd.s:1553   .bss.ave_store.7299:00000000 $d
-ARM GAS  C:\Temp\ccfBETwd.s 			page 40
+  C:\Temp\ccFcJnVM.s:18     .text.set_target_side_sensor:00000000 $t
+  C:\Temp\ccFcJnVM.s:26     .text.set_target_side_sensor:00000000 set_target_side_sensor
+  C:\Temp\ccFcJnVM.s:64     .text.set_target_side_sensor:00000028 $d
+  C:\Temp\ccFcJnVM.s:76     .text.get_target_sensor_sr:00000000 $t
+  C:\Temp\ccFcJnVM.s:83     .text.get_target_sensor_sr:00000000 get_target_sensor_sr
+  C:\Temp\ccFcJnVM.s:106    .text.get_target_sensor_sr:00000014 $d
+  C:\Temp\ccFcJnVM.s:111    .text.get_target_sensor_sl:00000000 $t
+  C:\Temp\ccFcJnVM.s:118    .text.get_target_sensor_sl:00000000 get_target_sensor_sl
+  C:\Temp\ccFcJnVM.s:141    .text.get_target_sensor_sl:00000014 $d
+  C:\Temp\ccFcJnVM.s:146    .text.get_side_sensor_l_th:00000000 $t
+  C:\Temp\ccFcJnVM.s:153    .text.get_side_sensor_l_th:00000000 get_side_sensor_l_th
+  C:\Temp\ccFcJnVM.s:168    .text.get_side_sensor_l_th:00000008 $d
+  C:\Temp\ccFcJnVM.s:173    .text.get_side_sensor_r_th:00000000 $t
+  C:\Temp\ccFcJnVM.s:180    .text.get_side_sensor_r_th:00000000 get_side_sensor_r_th
+  C:\Temp\ccFcJnVM.s:195    .text.get_side_sensor_r_th:00000008 $d
+  C:\Temp\ccFcJnVM.s:200    .text.get_side_wall_ctrl_mode:00000000 $t
+  C:\Temp\ccFcJnVM.s:207    .text.get_side_wall_ctrl_mode:00000000 get_side_wall_ctrl_mode
+  C:\Temp\ccFcJnVM.s:222    .text.get_side_wall_ctrl_mode:00000008 $d
+  C:\Temp\ccFcJnVM.s:232    .text.calc_side_wall_ctrl_mode:00000000 $t
+  C:\Temp\ccFcJnVM.s:239    .text.calc_side_wall_ctrl_mode:00000000 calc_side_wall_ctrl_mode
+  C:\Temp\ccFcJnVM.s:593    .text.calc_side_wall_ctrl_mode:000001c8 $d
+  C:\Temp\ccFcJnVM.s:613    .text.get_side_wall_err:00000000 $t
+  C:\Temp\ccFcJnVM.s:620    .text.get_side_wall_err:00000000 get_side_wall_err
+  C:\Temp\ccFcJnVM.s:747    .text.get_side_wall_err:000000b0 $d
+  C:\Temp\ccFcJnVM.s:756    .text.adjust_theta_side_wall:00000000 $t
+  C:\Temp\ccFcJnVM.s:763    .text.adjust_theta_side_wall:00000000 adjust_theta_side_wall
+  C:\Temp\ccFcJnVM.s:778    .text.calc_motor_vol_side_wall:00000000 $t
+  C:\Temp\ccFcJnVM.s:785    .text.calc_motor_vol_side_wall:00000000 calc_motor_vol_side_wall
+  C:\Temp\ccFcJnVM.s:876    .text.calc_motor_vol_side_wall:00000058 $d
+  C:\Temp\ccFcJnVM.s:882    .text.get_target_vol_diff_sidewall:00000000 $t
+  C:\Temp\ccFcJnVM.s:889    .text.get_target_vol_diff_sidewall:00000000 get_target_vol_diff_sidewall
+  C:\Temp\ccFcJnVM.s:904    .text.get_target_vol_diff_sidewall:00000008 $d
+  C:\Temp\ccFcJnVM.s:909    .text.calc_motor_vol_front_wall:00000000 $t
+  C:\Temp\ccFcJnVM.s:916    .text.calc_motor_vol_front_wall:00000000 calc_motor_vol_front_wall
+  C:\Temp\ccFcJnVM.s:1226   .text.calc_motor_vol_front_wall:000001a8 $d
+  C:\Temp\ccFcJnVM.s:1260   .text.get_target_vol_sum_frontwall:00000000 $t
+  C:\Temp\ccFcJnVM.s:1267   .text.get_target_vol_sum_frontwall:00000000 get_target_vol_sum_frontwall
+  C:\Temp\ccFcJnVM.s:1282   .text.get_target_vol_sum_frontwall:00000008 $d
+  C:\Temp\ccFcJnVM.s:1287   .text.get_target_vol_diff_frontwall:00000000 $t
+  C:\Temp\ccFcJnVM.s:1294   .text.get_target_vol_diff_frontwall:00000000 get_target_vol_diff_frontwall
+  C:\Temp\ccFcJnVM.s:1309   .text.get_target_vol_diff_frontwall:00000008 $d
+  C:\Temp\ccFcJnVM.s:1314   .text.clr_frontwall_operate_history:00000000 $t
+  C:\Temp\ccFcJnVM.s:1321   .text.clr_frontwall_operate_history:00000000 clr_frontwall_operate_history
+  C:\Temp\ccFcJnVM.s:1359   .text.clr_frontwall_operate_history:0000002c $d
+  C:\Temp\ccFcJnVM.s:1369   .text.fornt_wall_calibrate:00000000 $t
+  C:\Temp\ccFcJnVM.s:1376   .text.fornt_wall_calibrate:00000000 fornt_wall_calibrate
+  C:\Temp\ccFcJnVM.s:1556   .text.fornt_wall_calibrate:00000108 $d
+  C:\Temp\ccFcJnVM.s:1567   .text.calibrate_tim:00000000 $t
+  C:\Temp\ccFcJnVM.s:1574   .text.calibrate_tim:00000000 calibrate_tim
+  C:\Temp\ccFcJnVM.s:1603   .text.calibrate_tim:00000018 $d
+  C:\Temp\ccFcJnVM.s:1608   .text.adjust_1ms:00000000 $t
+  C:\Temp\ccFcJnVM.s:1615   .text.adjust_1ms:00000000 adjust_1ms
+  C:\Temp\ccFcJnVM.s:1648   .bss.ave_counter.7300:00000000 $d
+  C:\Temp\ccFcJnVM.s:1652   .bss.ave_counter.7300:00000000 ave_counter.7300
+  C:\Temp\ccFcJnVM.s:1655   .bss.ave_store.7299:00000000 $d
+ARM GAS  C:\Temp\ccFcJnVM.s 			page 42
 
 
-  C:\Temp\ccfBETwd.s:1557   .bss.ave_store.7299:00000000 ave_store.7299
-  C:\Temp\ccfBETwd.s:1560   .bss.fornt_wall_calibrate_tim:00000000 $d
-  C:\Temp\ccfBETwd.s:1564   .bss.fornt_wall_calibrate_tim:00000000 fornt_wall_calibrate_tim
-  C:\Temp\ccfBETwd.s:1567   .bss.front_sensor_move_D_prev:00000000 $d
-  C:\Temp\ccfBETwd.s:1571   .bss.front_sensor_move_D_prev:00000000 front_sensor_move_D_prev
-  C:\Temp\ccfBETwd.s:1574   .bss.front_sensor_move_err_I:00000000 $d
-  C:\Temp\ccfBETwd.s:1578   .bss.front_sensor_move_err_I:00000000 front_sensor_move_err_I
-  C:\Temp\ccfBETwd.s:1581   .bss.front_sensor_move_err_prev:00000000 $d
-  C:\Temp\ccfBETwd.s:1585   .bss.front_sensor_move_err_prev:00000000 front_sensor_move_err_prev
-  C:\Temp\ccfBETwd.s:1588   .bss.front_sensor_rotate_D_prev:00000000 $d
-  C:\Temp\ccfBETwd.s:1592   .bss.front_sensor_rotate_D_prev:00000000 front_sensor_rotate_D_prev
-  C:\Temp\ccfBETwd.s:1595   .bss.front_sensor_rotate_err_I:00000000 $d
-  C:\Temp\ccfBETwd.s:1599   .bss.front_sensor_rotate_err_I:00000000 front_sensor_rotate_err_I
-  C:\Temp\ccfBETwd.s:1602   .bss.front_sensor_rotate_err_prev:00000000 $d
-  C:\Temp\ccfBETwd.s:1606   .bss.front_sensor_rotate_err_prev:00000000 front_sensor_rotate_err_prev
-  C:\Temp\ccfBETwd.s:1609   .bss.side_sensor_l_old.7288:00000000 $d
-  C:\Temp\ccfBETwd.s:1613   .bss.side_sensor_l_old.7288:00000000 side_sensor_l_old.7288
-  C:\Temp\ccfBETwd.s:1616   .bss.side_sensor_l_th:00000000 $d
-  C:\Temp\ccfBETwd.s:1620   .bss.side_sensor_l_th:00000000 side_sensor_l_th
-  C:\Temp\ccfBETwd.s:1623   .bss.side_sensor_r_old.7287:00000000 $d
-  C:\Temp\ccfBETwd.s:1627   .bss.side_sensor_r_old.7287:00000000 side_sensor_r_old.7287
-  C:\Temp\ccfBETwd.s:1630   .bss.side_sensor_r_th:00000000 $d
-  C:\Temp\ccfBETwd.s:1634   .bss.side_sensor_r_th:00000000 side_sensor_r_th
-  C:\Temp\ccfBETwd.s:1637   .bss.target_sensor_sl:00000000 $d
-  C:\Temp\ccfBETwd.s:1641   .bss.target_sensor_sl:00000000 target_sensor_sl
-  C:\Temp\ccfBETwd.s:1644   .bss.target_sensor_sr:00000000 $d
-  C:\Temp\ccfBETwd.s:1648   .bss.target_sensor_sr:00000000 target_sensor_sr
-  C:\Temp\ccfBETwd.s:1654   .bss.target_set_flg.7266:00000000 target_set_flg.7266
-  C:\Temp\ccfBETwd.s:1655   .bss.target_set_flg.7266:00000000 $d
-  C:\Temp\ccfBETwd.s:1657   .bss.target_vol_diff_frontwall:00000000 $d
-  C:\Temp\ccfBETwd.s:1661   .bss.target_vol_diff_frontwall:00000000 target_vol_diff_frontwall
-  C:\Temp\ccfBETwd.s:1664   .bss.target_vol_diff_sidewall:00000000 $d
-  C:\Temp\ccfBETwd.s:1668   .bss.target_vol_diff_sidewall:00000000 target_vol_diff_sidewall
-  C:\Temp\ccfBETwd.s:1671   .bss.target_vol_sum_frontwall:00000000 $d
-  C:\Temp\ccfBETwd.s:1675   .bss.target_vol_sum_frontwall:00000000 target_vol_sum_frontwall
-  C:\Temp\ccfBETwd.s:1681   .data.side_wall_ctrl_mode:00000000 side_wall_ctrl_mode
+  C:\Temp\ccFcJnVM.s:1659   .bss.ave_store.7299:00000000 ave_store.7299
+  C:\Temp\ccFcJnVM.s:1662   .bss.fornt_wall_calibrate_tim:00000000 $d
+  C:\Temp\ccFcJnVM.s:1666   .bss.fornt_wall_calibrate_tim:00000000 fornt_wall_calibrate_tim
+  C:\Temp\ccFcJnVM.s:1669   .bss.front_sensor_move_D_prev:00000000 $d
+  C:\Temp\ccFcJnVM.s:1673   .bss.front_sensor_move_D_prev:00000000 front_sensor_move_D_prev
+  C:\Temp\ccFcJnVM.s:1676   .bss.front_sensor_move_err_I:00000000 $d
+  C:\Temp\ccFcJnVM.s:1680   .bss.front_sensor_move_err_I:00000000 front_sensor_move_err_I
+  C:\Temp\ccFcJnVM.s:1683   .bss.front_sensor_move_err_prev:00000000 $d
+  C:\Temp\ccFcJnVM.s:1687   .bss.front_sensor_move_err_prev:00000000 front_sensor_move_err_prev
+  C:\Temp\ccFcJnVM.s:1690   .bss.front_sensor_rotate_D_prev:00000000 $d
+  C:\Temp\ccFcJnVM.s:1694   .bss.front_sensor_rotate_D_prev:00000000 front_sensor_rotate_D_prev
+  C:\Temp\ccFcJnVM.s:1697   .bss.front_sensor_rotate_err_I:00000000 $d
+  C:\Temp\ccFcJnVM.s:1701   .bss.front_sensor_rotate_err_I:00000000 front_sensor_rotate_err_I
+  C:\Temp\ccFcJnVM.s:1704   .bss.front_sensor_rotate_err_prev:00000000 $d
+  C:\Temp\ccFcJnVM.s:1708   .bss.front_sensor_rotate_err_prev:00000000 front_sensor_rotate_err_prev
+  C:\Temp\ccFcJnVM.s:1711   .bss.side_sensor_l_old.7288:00000000 $d
+  C:\Temp\ccFcJnVM.s:1715   .bss.side_sensor_l_old.7288:00000000 side_sensor_l_old.7288
+  C:\Temp\ccFcJnVM.s:1718   .bss.side_sensor_l_th:00000000 $d
+  C:\Temp\ccFcJnVM.s:1722   .bss.side_sensor_l_th:00000000 side_sensor_l_th
+  C:\Temp\ccFcJnVM.s:1725   .bss.side_sensor_r_old.7287:00000000 $d
+  C:\Temp\ccFcJnVM.s:1729   .bss.side_sensor_r_old.7287:00000000 side_sensor_r_old.7287
+  C:\Temp\ccFcJnVM.s:1732   .bss.side_sensor_r_th:00000000 $d
+  C:\Temp\ccFcJnVM.s:1736   .bss.side_sensor_r_th:00000000 side_sensor_r_th
+  C:\Temp\ccFcJnVM.s:1739   .bss.target_sensor_sl:00000000 $d
+  C:\Temp\ccFcJnVM.s:1743   .bss.target_sensor_sl:00000000 target_sensor_sl
+  C:\Temp\ccFcJnVM.s:1746   .bss.target_sensor_sr:00000000 $d
+  C:\Temp\ccFcJnVM.s:1750   .bss.target_sensor_sr:00000000 target_sensor_sr
+  C:\Temp\ccFcJnVM.s:1756   .bss.target_set_flg.7266:00000000 target_set_flg.7266
+  C:\Temp\ccFcJnVM.s:1757   .bss.target_set_flg.7266:00000000 $d
+  C:\Temp\ccFcJnVM.s:1759   .bss.target_vol_diff_frontwall:00000000 $d
+  C:\Temp\ccFcJnVM.s:1763   .bss.target_vol_diff_frontwall:00000000 target_vol_diff_frontwall
+  C:\Temp\ccFcJnVM.s:1766   .bss.target_vol_diff_sidewall:00000000 $d
+  C:\Temp\ccFcJnVM.s:1770   .bss.target_vol_diff_sidewall:00000000 target_vol_diff_sidewall
+  C:\Temp\ccFcJnVM.s:1773   .bss.target_vol_sum_frontwall:00000000 $d
+  C:\Temp\ccFcJnVM.s:1777   .bss.target_vol_sum_frontwall:00000000 target_vol_sum_frontwall
+  C:\Temp\ccFcJnVM.s:1783   .data.side_wall_ctrl_mode:00000000 side_wall_ctrl_mode
 
 UNDEFINED SYMBOLS
 __aeabi_d2f
-Sensor_GetValue
 __aeabi_dsub
-__aeabi_dmul
+__aeabi_dcmplt
 __aeabi_dadd
+__aeabi_ddiv
+__aeabi_dcmpgt
 SensorValue2length
+__aeabi_dmul
 __aeabi_f2d
 get_move_speed
 get_rotation_angle
 get_ideal_angle
-__aeabi_ddiv
-__aeabi_dcmplt
-__aeabi_dcmpgt
 set_mode_ctrl
 get_ideal_length
 set_move_length

@@ -84,11 +84,11 @@
 #define front_sensor_th     	(0.0003)			//前壁補正時の補正閾値(0.3mm)
 #define calib_tim               (100)				//前壁補正時間(100ms)
 
-#define side_sensor_th          (100)               //横壁センサ値の閾値
-#define side_sensor_th_add      (300)               //横壁センサ値の閾値変化量
-#define side_sensor_diff_th     (2)                 //横壁センサ変化量の閾値
-#define side_wall_P             (100)               //横壁制御　Pゲイン
-#define side_wall_D             (0)               //横壁制御　Dゲイン
+#define side_sensor_th          (0.035)               //横壁センサ値の閾値[m]
+#define side_sensor_th_add      (0.02)               //横壁センサ値の閾値変化量[m]
+#define side_sensor_diff_th     (0.00007)           //横壁センサ変化量の閾値
+#define side_wall_P             (200)               //横壁制御　Pゲイン
+#define side_wall_D             (1)                //横壁制御　Dゲイン
 #define side_wall_fil           (294.083904215522)  //横壁制御　フィルタ係数
 
 #define ir_diff_ave_num         (10)                //IRセンサの変動値の移動平均期間

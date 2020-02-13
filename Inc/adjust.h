@@ -26,8 +26,8 @@ void calc_motor_vol_side_wall(void);
 float get_target_vol_diff_sidewall ( void );
 float get_target_sensor_sr ( void );
 float get_target_sensor_sl ( void );
-uint16_t get_side_sensor_l_th ( void );
-uint16_t get_side_sensor_r_th ( void );
+double get_side_sensor_l_th ( void );
+double get_side_sensor_r_th ( void );
 
 
 
