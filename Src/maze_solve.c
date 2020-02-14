@@ -741,7 +741,7 @@ static void make_map_find(const coder_internal_ref_4 *g_direction, const
     q0 = 255;
   }
 
-  qY = q0 - 1U;
+  qY = q0 ;
   if (qY > (unsigned int)q0) {
     qY = 0U;
   }
@@ -766,8 +766,8 @@ static void make_map_find(const coder_internal_ref_4 *g_direction, const
     /* map更新確認用フラグ */
     tempi = 0U;
     exitg1 = false;
-    while ((!exitg1) && (tempi <= (unsigned char)qY)) {
-      /* 歩数カウントは0~max_length */
+    while ((!exitg1) && (tempi <= (unsigned char)(qY - 1))) {
+      /* 歩数カウントは0~max_length-1 */
       /* 歩数が確定している座標を検索 */
       /* 最初は0,更新され、増加したマスを次々検索していく */
       idx = 0;

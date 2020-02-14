@@ -25,11 +25,11 @@
 //           パラメータ             //
 /////////////////////////////////////
 /*module_test*/
-#define log_count_lim		(20000)	//データ取得する期間[ms]
-#define log_count_step		(20)	//データを取得する時間間隔[ms]
+#define log_count_lim		(15000)	//データ取得する期間[ms]
+#define log_count_step		(15)	//データを取得する時間間隔[ms]
 
-//#define DATA_DEFAULT       (1)     //測定モード１
-#define DATA_SIDE            (1)   //測定モード２
+#define DATA_DEFAULT       (1)     //測定モード１
+//#define DATA_SIDE            (1)   //測定モード２
 
 //maze
 #define x_size              (5)     //x軸方向の壁(縦壁)の枚数+1
@@ -51,7 +51,7 @@
 
 //mouse_state
 #define ave_num 			(10)	    //速度の移動平均フィルタの長さ
-#define Tire_diameter		(0.0128365f)//タイヤの直径    
+#define Tire_diameter		(0.01276994f)//タイヤの直径    
 
 //target
 #define move_accel          (1.5f)      //移動加速度[m/ss]
@@ -70,8 +70,8 @@
 #define rotate_comp_th      (0.005f)    //回転完了の閾値
 
 //adjust
-#define front_sensor_r_ref      (0.0115f)	        //前壁補正時の右前距離目標値(1cm)
-#define front_sensor_l_ref      (0.0095f)	        //前壁補正時の左前距離目標値(1cm)
+#define front_sensor_r_ref      (0.0125f)	        //前壁補正時の右前距離目標値(1cm)
+#define front_sensor_l_ref      (0.0105f)	        //前壁補正時の左前距離目標値(1cm)
 #define chassis_width           (0.036787f)         //シャシー幅
 #define front_sensor_move_KP	(124.412292054546f)	//前壁距離のPゲイン
 #define front_sensor_move_KI	(26.2444668681538f)	//前壁距離のIゲイン
@@ -96,7 +96,7 @@
 //imu
 #define REFFERENCE_NUM		(1000)		//何回の平均をもってジャイロのリファレンス電圧とするか
 #define GYRO_Z_SIGN			(-1.f)		//ジャイロの出力の符号（自分の座標系に合った方向に、1.0fか－1.0fを掛けて修正する）
-#define GYRO_Z_SENSITIVITY	(16.752f)	
+#define GYRO_Z_SENSITIVITY	(16.77f)	
 #define ACCEL_X_SIGN		(1.f)		//加速度計の出力の符号（自分の座標系に合った方向に、1.0fか－1.0fを掛けて修正する）
 #define ACCEL_X_SENSITIVITY	(4096.f)
 

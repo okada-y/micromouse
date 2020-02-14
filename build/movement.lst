@@ -1,4 +1,4 @@
-ARM GAS  C:\Temp\cco4uphb.s 			page 1
+ARM GAS  C:\Temp\ccGrIqT2.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,7 +58,7 @@ ARM GAS  C:\Temp\cco4uphb.s 			page 1
   34              	.LCFI0:
   35              		.cfi_def_cfa_offset 8
   36              		.cfi_offset 3, -8
-ARM GAS  C:\Temp\cco4uphb.s 			page 2
+ARM GAS  C:\Temp\ccGrIqT2.s 			page 2
 
 
   37              		.cfi_offset 14, -4
@@ -118,7 +118,7 @@ ARM GAS  C:\Temp\cco4uphb.s 			page 1
   23:Src/movement.c ****     return (uint8_t)(ABS(get_target_length() - get_ideal_length()) < move_comp_th);
   88              		.loc 1 23 12 discriminator 1 view .LVU8
   89 0058 DFED057A 		vldr.32	s15, .L9+4
-ARM GAS  C:\Temp\cco4uphb.s 			page 3
+ARM GAS  C:\Temp\ccGrIqT2.s 			page 3
 
 
   90 005c B4EEE78A 		vcmpe.f32	s16, s15
@@ -178,7 +178,7 @@ ARM GAS  C:\Temp\cco4uphb.s 			page 1
  139 001e 13D4     		bmi	.L18
  140              		.loc 1 31 22 discriminator 2 view .LVU13
  141 0020 FFF7FEFF 		bl	get_target_angle
-ARM GAS  C:\Temp\cco4uphb.s 			page 4
+ARM GAS  C:\Temp\ccGrIqT2.s 			page 4
 
 
  142              	.LVL8:
@@ -238,7 +238,7 @@ ARM GAS  C:\Temp\cco4uphb.s 			page 1
  194              		.thumb_func
  195              		.fpu fpv4-sp-d16
  197              	start_acceleration:
-ARM GAS  C:\Temp\cco4uphb.s 			page 5
+ARM GAS  C:\Temp\ccGrIqT2.s 			page 5
 
 
  198              	.LFB5:
@@ -298,7 +298,7 @@ ARM GAS  C:\Temp\cco4uphb.s 			page 1
  232              		.align	2
  233              	.L24:
  234 0020 22727A3C 		.word	1014657570
-ARM GAS  C:\Temp\cco4uphb.s 			page 6
+ARM GAS  C:\Temp\ccGrIqT2.s 			page 6
 
 
  235              		.cfi_endproc
@@ -358,7 +358,7 @@ ARM GAS  C:\Temp\cco4uphb.s 			page 1
  276 001a 0028     		cmp	r0, #0
  277 001c FBD0     		beq	.L27
   68:Src/movement.c ****     	{
-ARM GAS  C:\Temp\cco4uphb.s 			page 7
+ARM GAS  C:\Temp\ccGrIqT2.s 			page 7
 
 
   69:Src/movement.c ****     		break;
@@ -418,7 +418,7 @@ ARM GAS  C:\Temp\cco4uphb.s 			page 1
   84:Src/movement.c **** 
   85:Src/movement.c ****     /*半区画進むまで待機*/
   86:Src/movement.c ****     while (1)
-ARM GAS  C:\Temp\cco4uphb.s 			page 8
+ARM GAS  C:\Temp\ccGrIqT2.s 			page 8
 
 
  319              		.loc 1 86 5 view .LVU40
@@ -478,7 +478,7 @@ ARM GAS  C:\Temp\cco4uphb.s 			page 1
  359              		.loc 1 102 5 view .LVU47
  360 0008 0020     		movs	r0, #0
  361 000a FFF7FEFF 		bl	set_accel_mode
-ARM GAS  C:\Temp\cco4uphb.s 			page 9
+ARM GAS  C:\Temp\ccGrIqT2.s 			page 9
 
 
  362              	.LVL25:
@@ -538,7 +538,7 @@ ARM GAS  C:\Temp\cco4uphb.s 			page 1
  401              		.cfi_def_cfa_offset 8
  402              		.cfi_offset 3, -8
  403              		.cfi_offset 14, -4
-ARM GAS  C:\Temp\cco4uphb.s 			page 10
+ARM GAS  C:\Temp\ccGrIqT2.s 			page 10
 
 
  120:Src/movement.c **** 	/*回転方向設定*/
@@ -598,7 +598,7 @@ ARM GAS  C:\Temp\cco4uphb.s 			page 1
  440              		.loc 1 139 1 is_stmt 1 view -0
  441              		.cfi_startproc
  442              		@ args = 0, pretend = 0, frame = 0
-ARM GAS  C:\Temp\cco4uphb.s 			page 11
+ARM GAS  C:\Temp\ccGrIqT2.s 			page 11
 
 
  443              		@ frame_needed = 0, uses_anonymous_args = 0
@@ -658,7 +658,7 @@ ARM GAS  C:\Temp\cco4uphb.s 			page 1
  154:Src/movement.c **** 
  155:Src/movement.c **** //機能	: 反時計回りに180度回転
  156:Src/movement.c **** //引数	: なし
-ARM GAS  C:\Temp\cco4uphb.s 			page 12
+ARM GAS  C:\Temp\ccGrIqT2.s 			page 12
 
 
  157:Src/movement.c **** //返り値	: なし
@@ -718,7 +718,7 @@ ARM GAS  C:\Temp\cco4uphb.s 			page 1
  523              		.syntax unified
  524              		.thumb
  525              		.thumb_func
-ARM GAS  C:\Temp\cco4uphb.s 			page 13
+ARM GAS  C:\Temp\ccGrIqT2.s 			page 13
 
 
  526              		.fpu fpv4-sp-d16
@@ -778,7 +778,7 @@ ARM GAS  C:\Temp\cco4uphb.s 			page 1
  568 0004 1A70     		strb	r2, [r3]
  189:Src/movement.c **** }
  569              		.loc 1 189 1 view .LVU85
-ARM GAS  C:\Temp\cco4uphb.s 			page 14
+ARM GAS  C:\Temp\ccGrIqT2.s 			page 14
 
 
  570 0006 7047     		bx	lr
@@ -838,7 +838,7 @@ ARM GAS  C:\Temp\cco4uphb.s 			page 1
  615              	.LFE14:
  617              		.section	.text.set_front_wall_flg,"ax",%progbits
  618              		.align	1
-ARM GAS  C:\Temp\cco4uphb.s 			page 15
+ARM GAS  C:\Temp\ccGrIqT2.s 			page 15
 
 
  619              		.global	set_front_wall_flg
@@ -898,7 +898,7 @@ ARM GAS  C:\Temp\cco4uphb.s 			page 1
  661              		.loc 1 215 2 view .LVU99
  662              		.loc 1 215 17 is_stmt 0 view .LVU100
  663 0000 014B     		ldr	r3, .L69
-ARM GAS  C:\Temp\cco4uphb.s 			page 16
+ARM GAS  C:\Temp\ccGrIqT2.s 			page 16
 
 
  664 0002 0122     		movs	r2, #1
@@ -958,7 +958,7 @@ ARM GAS  C:\Temp\cco4uphb.s 			page 1
  713              	.LFB18:
  225:Src/movement.c **** 
  226:Src/movement.c **** 
-ARM GAS  C:\Temp\cco4uphb.s 			page 17
+ARM GAS  C:\Temp\ccGrIqT2.s 			page 17
 
 
  227:Src/movement.c **** ////////////////////////////////////////
@@ -1018,7 +1018,7 @@ ARM GAS  C:\Temp\cco4uphb.s 			page 1
  249:Src/movement.c **** }
  746              		.loc 1 249 1 is_stmt 0 view .LVU116
  747 001a 08BD     		pop	{r3, pc}
-ARM GAS  C:\Temp\cco4uphb.s 			page 18
+ARM GAS  C:\Temp\ccGrIqT2.s 			page 18
 
 
  748              	.L78:
@@ -1078,7 +1078,7 @@ ARM GAS  C:\Temp\cco4uphb.s 			page 1
  793              		.loc 1 256 19 is_stmt 0 view .LVU123
  794 0002 134B     		ldr	r3, .L91
  795 0004 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
-ARM GAS  C:\Temp\cco4uphb.s 			page 19
+ARM GAS  C:\Temp\ccGrIqT2.s 			page 19
 
 
  796              		.loc 1 256 4 view .LVU124
@@ -1138,7 +1138,7 @@ ARM GAS  C:\Temp\cco4uphb.s 			page 1
  832              		.loc 1 258 4 is_stmt 1 view .LVU137
  833 002c FFF7FEFF 		bl	fornt_wall_calibrate
  834              	.LVL45:
-ARM GAS  C:\Temp\cco4uphb.s 			page 20
+ARM GAS  C:\Temp\ccGrIqT2.s 			page 20
 
 
  835 0030 EEE7     		b	.L84
@@ -1198,7 +1198,7 @@ ARM GAS  C:\Temp\cco4uphb.s 			page 1
  878              		.loc 1 279 1 view -0
  879              		.cfi_startproc
  880              		@ args = 0, pretend = 0, frame = 0
-ARM GAS  C:\Temp\cco4uphb.s 			page 21
+ARM GAS  C:\Temp\ccGrIqT2.s 			page 21
 
 
  881              		@ frame_needed = 0, uses_anonymous_args = 0
@@ -1258,7 +1258,7 @@ ARM GAS  C:\Temp\cco4uphb.s 			page 1
  919 0022 0122     		movs	r2, #1
  920 0024 1A70     		strb	r2, [r3]
  296:Src/movement.c **** 	clr_wall_flg();
-ARM GAS  C:\Temp\cco4uphb.s 			page 22
+ARM GAS  C:\Temp\ccGrIqT2.s 			page 22
 
 
  921              		.loc 1 296 2 is_stmt 1 view .LVU159
@@ -1318,7 +1318,7 @@ ARM GAS  C:\Temp\cco4uphb.s 			page 1
  967              		.thumb
  968              		.thumb_func
  969              		.fpu fpv4-sp-d16
-ARM GAS  C:\Temp\cco4uphb.s 			page 23
+ARM GAS  C:\Temp\ccGrIqT2.s 			page 23
 
 
  971              	move_back:
@@ -1378,7 +1378,7 @@ ARM GAS  C:\Temp\cco4uphb.s 			page 1
  324:Src/movement.c **** 		}
  325:Src/movement.c **** 		half_acceleration();//半区画加速
  999              		.loc 1 325 3 view .LVU177
-ARM GAS  C:\Temp\cco4uphb.s 			page 24
+ARM GAS  C:\Temp\ccGrIqT2.s 			page 24
 
 
  1000 0014 FFF7FEFF 		bl	half_acceleration
@@ -1438,7 +1438,7 @@ ARM GAS  C:\Temp\cco4uphb.s 			page 1
  1025              		.loc 1 308 4 view .LVU186
  308:Src/movement.c **** 				turn_clk_90();
  1026              		.loc 1 308 22 is_stmt 0 view .LVU187
-ARM GAS  C:\Temp\cco4uphb.s 			page 25
+ARM GAS  C:\Temp\ccGrIqT2.s 			page 25
 
 
  1027 0030 214B     		ldr	r3, .L123+8
@@ -1498,7 +1498,7 @@ ARM GAS  C:\Temp\cco4uphb.s 			page 1
  329:Src/movement.c **** 			fornt_wall_calibrate();
  1069              		.loc 1 329 3 view .LVU200
  329:Src/movement.c **** 			fornt_wall_calibrate();
-ARM GAS  C:\Temp\cco4uphb.s 			page 26
+ARM GAS  C:\Temp\ccGrIqT2.s 			page 26
 
 
  1070              		.loc 1 329 21 is_stmt 0 view .LVU201
@@ -1558,7 +1558,7 @@ ARM GAS  C:\Temp\cco4uphb.s 			page 1
  1111 0096 FFF7FEFF 		bl	fornt_wall_calibrate
  1112              	.LVL75:
  334:Src/movement.c **** 			}
-ARM GAS  C:\Temp\cco4uphb.s 			page 27
+ARM GAS  C:\Temp\ccGrIqT2.s 			page 27
 
 
  1113              		.loc 1 334 5 view .LVU215
@@ -1616,79 +1616,79 @@ ARM GAS  C:\Temp\cco4uphb.s 			page 1
  1171              		.file 9 "Inc/movement.h"
  1172              		.file 10 "Inc/exvol.h"
  1173              		.file 11 "Inc/adjust.h"
-ARM GAS  C:\Temp\cco4uphb.s 			page 28
+ARM GAS  C:\Temp\ccGrIqT2.s 			page 28
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 movement.c
-  C:\Temp\cco4uphb.s:18     .text.move_comp_jud:00000000 $t
-  C:\Temp\cco4uphb.s:26     .text.move_comp_jud:00000000 move_comp_jud
-  C:\Temp\cco4uphb.s:99     .text.move_comp_jud:0000006c $d
-  C:\Temp\cco4uphb.s:105    .text.rotate_comp_jud:00000000 $t
-  C:\Temp\cco4uphb.s:112    .text.rotate_comp_jud:00000000 rotate_comp_jud
-  C:\Temp\cco4uphb.s:184    .text.rotate_comp_jud:0000006c $d
-  C:\Temp\cco4uphb.s:190    .text.start_acceleration:00000000 $t
-  C:\Temp\cco4uphb.s:197    .text.start_acceleration:00000000 start_acceleration
-  C:\Temp\cco4uphb.s:234    .text.start_acceleration:00000020 $d
-  C:\Temp\cco4uphb.s:239    .text.half_acceleration:00000000 $t
-  C:\Temp\cco4uphb.s:246    .text.half_acceleration:00000000 half_acceleration
-  C:\Temp\cco4uphb.s:283    .text.half_acceleration:00000020 $d
-  C:\Temp\cco4uphb.s:288    .text.half_deceleration:00000000 $t
-  C:\Temp\cco4uphb.s:295    .text.half_deceleration:00000000 half_deceleration
-  C:\Temp\cco4uphb.s:332    .text.half_deceleration:00000020 $d
-  C:\Temp\cco4uphb.s:337    .text.constant_speed:00000000 $t
-  C:\Temp\cco4uphb.s:344    .text.constant_speed:00000000 constant_speed
-  C:\Temp\cco4uphb.s:381    .text.constant_speed:00000020 $d
-  C:\Temp\cco4uphb.s:386    .text.turn_clk_90:00000000 $t
-  C:\Temp\cco4uphb.s:393    .text.turn_clk_90:00000000 turn_clk_90
-  C:\Temp\cco4uphb.s:426    .text.turn_clk_90:0000001c $d
-  C:\Temp\cco4uphb.s:431    .text.turn_conclk_90:00000000 $t
-  C:\Temp\cco4uphb.s:438    .text.turn_conclk_90:00000000 turn_conclk_90
-  C:\Temp\cco4uphb.s:471    .text.turn_conclk_90:0000001c $d
-  C:\Temp\cco4uphb.s:476    .text.turn_conclk_180:00000000 $t
-  C:\Temp\cco4uphb.s:483    .text.turn_conclk_180:00000000 turn_conclk_180
-  C:\Temp\cco4uphb.s:516    .text.turn_conclk_180:0000001c $d
-  C:\Temp\cco4uphb.s:521    .text.clr_run_first_flg:00000000 $t
-  C:\Temp\cco4uphb.s:528    .text.clr_run_first_flg:00000000 clr_run_first_flg
-  C:\Temp\cco4uphb.s:545    .text.clr_run_first_flg:00000008 $d
-  C:\Temp\cco4uphb.s:550    .text.set_run_first_flg:00000000 $t
-  C:\Temp\cco4uphb.s:557    .text.set_run_first_flg:00000000 set_run_first_flg
-  C:\Temp\cco4uphb.s:574    .text.set_run_first_flg:00000008 $d
-  C:\Temp\cco4uphb.s:579    .text.clr_wall_flg:00000000 $t
-  C:\Temp\cco4uphb.s:586    .text.clr_wall_flg:00000000 clr_wall_flg
-  C:\Temp\cco4uphb.s:611    .text.clr_wall_flg:00000010 $d
-  C:\Temp\cco4uphb.s:618    .text.set_front_wall_flg:00000000 $t
-  C:\Temp\cco4uphb.s:625    .text.set_front_wall_flg:00000000 set_front_wall_flg
-  C:\Temp\cco4uphb.s:642    .text.set_front_wall_flg:00000008 $d
-  C:\Temp\cco4uphb.s:647    .text.set_rigth_wall_flg:00000000 $t
-  C:\Temp\cco4uphb.s:654    .text.set_rigth_wall_flg:00000000 set_rigth_wall_flg
-  C:\Temp\cco4uphb.s:671    .text.set_rigth_wall_flg:00000008 $d
-  C:\Temp\cco4uphb.s:676    .text.set_left_wall_flg:00000000 $t
-  C:\Temp\cco4uphb.s:683    .text.set_left_wall_flg:00000000 set_left_wall_flg
-  C:\Temp\cco4uphb.s:700    .text.set_left_wall_flg:00000008 $d
-  C:\Temp\cco4uphb.s:705    .text.move_front:00000000 $t
-  C:\Temp\cco4uphb.s:712    .text.move_front:00000000 move_front
-  C:\Temp\cco4uphb.s:769    .text.move_front:00000034 $d
-  C:\Temp\cco4uphb.s:774    .text.move_right:00000000 $t
-  C:\Temp\cco4uphb.s:781    .text.move_right:00000000 move_right
-  C:\Temp\cco4uphb.s:863    .text.move_right:00000050 $d
-  C:\Temp\cco4uphb.s:869    .text.move_left:00000000 $t
-  C:\Temp\cco4uphb.s:876    .text.move_left:00000000 move_left
-  C:\Temp\cco4uphb.s:958    .text.move_left:00000050 $d
-  C:\Temp\cco4uphb.s:964    .text.move_back:00000000 $t
-ARM GAS  C:\Temp\cco4uphb.s 			page 29
+  C:\Temp\ccGrIqT2.s:18     .text.move_comp_jud:00000000 $t
+  C:\Temp\ccGrIqT2.s:26     .text.move_comp_jud:00000000 move_comp_jud
+  C:\Temp\ccGrIqT2.s:99     .text.move_comp_jud:0000006c $d
+  C:\Temp\ccGrIqT2.s:105    .text.rotate_comp_jud:00000000 $t
+  C:\Temp\ccGrIqT2.s:112    .text.rotate_comp_jud:00000000 rotate_comp_jud
+  C:\Temp\ccGrIqT2.s:184    .text.rotate_comp_jud:0000006c $d
+  C:\Temp\ccGrIqT2.s:190    .text.start_acceleration:00000000 $t
+  C:\Temp\ccGrIqT2.s:197    .text.start_acceleration:00000000 start_acceleration
+  C:\Temp\ccGrIqT2.s:234    .text.start_acceleration:00000020 $d
+  C:\Temp\ccGrIqT2.s:239    .text.half_acceleration:00000000 $t
+  C:\Temp\ccGrIqT2.s:246    .text.half_acceleration:00000000 half_acceleration
+  C:\Temp\ccGrIqT2.s:283    .text.half_acceleration:00000020 $d
+  C:\Temp\ccGrIqT2.s:288    .text.half_deceleration:00000000 $t
+  C:\Temp\ccGrIqT2.s:295    .text.half_deceleration:00000000 half_deceleration
+  C:\Temp\ccGrIqT2.s:332    .text.half_deceleration:00000020 $d
+  C:\Temp\ccGrIqT2.s:337    .text.constant_speed:00000000 $t
+  C:\Temp\ccGrIqT2.s:344    .text.constant_speed:00000000 constant_speed
+  C:\Temp\ccGrIqT2.s:381    .text.constant_speed:00000020 $d
+  C:\Temp\ccGrIqT2.s:386    .text.turn_clk_90:00000000 $t
+  C:\Temp\ccGrIqT2.s:393    .text.turn_clk_90:00000000 turn_clk_90
+  C:\Temp\ccGrIqT2.s:426    .text.turn_clk_90:0000001c $d
+  C:\Temp\ccGrIqT2.s:431    .text.turn_conclk_90:00000000 $t
+  C:\Temp\ccGrIqT2.s:438    .text.turn_conclk_90:00000000 turn_conclk_90
+  C:\Temp\ccGrIqT2.s:471    .text.turn_conclk_90:0000001c $d
+  C:\Temp\ccGrIqT2.s:476    .text.turn_conclk_180:00000000 $t
+  C:\Temp\ccGrIqT2.s:483    .text.turn_conclk_180:00000000 turn_conclk_180
+  C:\Temp\ccGrIqT2.s:516    .text.turn_conclk_180:0000001c $d
+  C:\Temp\ccGrIqT2.s:521    .text.clr_run_first_flg:00000000 $t
+  C:\Temp\ccGrIqT2.s:528    .text.clr_run_first_flg:00000000 clr_run_first_flg
+  C:\Temp\ccGrIqT2.s:545    .text.clr_run_first_flg:00000008 $d
+  C:\Temp\ccGrIqT2.s:550    .text.set_run_first_flg:00000000 $t
+  C:\Temp\ccGrIqT2.s:557    .text.set_run_first_flg:00000000 set_run_first_flg
+  C:\Temp\ccGrIqT2.s:574    .text.set_run_first_flg:00000008 $d
+  C:\Temp\ccGrIqT2.s:579    .text.clr_wall_flg:00000000 $t
+  C:\Temp\ccGrIqT2.s:586    .text.clr_wall_flg:00000000 clr_wall_flg
+  C:\Temp\ccGrIqT2.s:611    .text.clr_wall_flg:00000010 $d
+  C:\Temp\ccGrIqT2.s:618    .text.set_front_wall_flg:00000000 $t
+  C:\Temp\ccGrIqT2.s:625    .text.set_front_wall_flg:00000000 set_front_wall_flg
+  C:\Temp\ccGrIqT2.s:642    .text.set_front_wall_flg:00000008 $d
+  C:\Temp\ccGrIqT2.s:647    .text.set_rigth_wall_flg:00000000 $t
+  C:\Temp\ccGrIqT2.s:654    .text.set_rigth_wall_flg:00000000 set_rigth_wall_flg
+  C:\Temp\ccGrIqT2.s:671    .text.set_rigth_wall_flg:00000008 $d
+  C:\Temp\ccGrIqT2.s:676    .text.set_left_wall_flg:00000000 $t
+  C:\Temp\ccGrIqT2.s:683    .text.set_left_wall_flg:00000000 set_left_wall_flg
+  C:\Temp\ccGrIqT2.s:700    .text.set_left_wall_flg:00000008 $d
+  C:\Temp\ccGrIqT2.s:705    .text.move_front:00000000 $t
+  C:\Temp\ccGrIqT2.s:712    .text.move_front:00000000 move_front
+  C:\Temp\ccGrIqT2.s:769    .text.move_front:00000034 $d
+  C:\Temp\ccGrIqT2.s:774    .text.move_right:00000000 $t
+  C:\Temp\ccGrIqT2.s:781    .text.move_right:00000000 move_right
+  C:\Temp\ccGrIqT2.s:863    .text.move_right:00000050 $d
+  C:\Temp\ccGrIqT2.s:869    .text.move_left:00000000 $t
+  C:\Temp\ccGrIqT2.s:876    .text.move_left:00000000 move_left
+  C:\Temp\ccGrIqT2.s:958    .text.move_left:00000050 $d
+  C:\Temp\ccGrIqT2.s:964    .text.move_back:00000000 $t
+ARM GAS  C:\Temp\ccGrIqT2.s 			page 29
 
 
-  C:\Temp\cco4uphb.s:971    .text.move_back:00000000 move_back
-  C:\Temp\cco4uphb.s:1131   .text.move_back:000000b0 $d
-  C:\Temp\cco4uphb.s:1142   .bss.front_wall_flg:00000000 front_wall_flg
-  C:\Temp\cco4uphb.s:1143   .bss.front_wall_flg:00000000 $d
-  C:\Temp\cco4uphb.s:1148   .bss.left_wall_flg:00000000 left_wall_flg
-  C:\Temp\cco4uphb.s:1149   .bss.left_wall_flg:00000000 $d
-  C:\Temp\cco4uphb.s:1154   .bss.right_wall_flg:00000000 right_wall_flg
-  C:\Temp\cco4uphb.s:1155   .bss.right_wall_flg:00000000 $d
-  C:\Temp\cco4uphb.s:1160   .bss.run_first_flg:00000000 run_first_flg
-  C:\Temp\cco4uphb.s:1161   .bss.run_first_flg:00000000 $d
+  C:\Temp\ccGrIqT2.s:971    .text.move_back:00000000 move_back
+  C:\Temp\ccGrIqT2.s:1131   .text.move_back:000000b0 $d
+  C:\Temp\ccGrIqT2.s:1142   .bss.front_wall_flg:00000000 front_wall_flg
+  C:\Temp\ccGrIqT2.s:1143   .bss.front_wall_flg:00000000 $d
+  C:\Temp\ccGrIqT2.s:1148   .bss.left_wall_flg:00000000 left_wall_flg
+  C:\Temp\ccGrIqT2.s:1149   .bss.left_wall_flg:00000000 $d
+  C:\Temp\ccGrIqT2.s:1154   .bss.right_wall_flg:00000000 right_wall_flg
+  C:\Temp\ccGrIqT2.s:1155   .bss.right_wall_flg:00000000 $d
+  C:\Temp\ccGrIqT2.s:1160   .bss.run_first_flg:00000000 run_first_flg
+  C:\Temp\ccGrIqT2.s:1161   .bss.run_first_flg:00000000 $d
 
 UNDEFINED SYMBOLS
 get_target_length

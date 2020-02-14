@@ -173,12 +173,13 @@ int main(void)
       set_mode_ctrl(trace);
     	set_rotation_mode(counter_clockwise);
       set_accel_mode(deceleration);
-      set_target_angle(5*2*PI);
-      HAL_Delay(10000);
+      set_target_angle(10*2*PI);
+      HAL_Delay(15000);
 		  break;
 
 	  case 3:
-      fornt_wall_calibrate();
+      set_mode_ctrl(front_wall);
+      HAL_Delay(15000);
 		  break;
 
 	  case 4:
@@ -194,8 +195,8 @@ int main(void)
 	  case 6:
       set_mode_ctrl(side_wall);
       set_accel_mode(deceleration);
-      set_target_length(0.63);
-      HAL_Delay(5000);
+      set_target_length(1.35);
+      HAL_Delay(10000);
 		  break;
 
 	  case 7:
