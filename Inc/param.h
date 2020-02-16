@@ -25,24 +25,25 @@
 //           パラメータ             //
 /////////////////////////////////////
 /*module_test*/
-#define log_count_lim		(15000)	//データ取得する期間[ms]
-#define log_count_step		(15)	//データを取得する時間間隔[ms]
+#define log_count_lim		(5000)	//データ取得する期間[ms]
+#define log_count_step		(5)	    //データを取得する時間間隔[ms]
 
-#define DATA_DEFAULT       (1)     //測定モード１
-//#define DATA_SIDE            (1)   //測定モード２
+//#define DATA_DEFAULT              //測定モード１
+//#define DATA_SIDE                 //測定モード２
+#define DATA_MAZE                 //測定モード３
 
 //maze
-#define x_size              (5)     //x軸方向の壁(縦壁)の枚数+1
-#define y_size              (5)     //y軸方向の壁(横壁)の枚数+1
+#define x_size              (10)     //x軸方向の壁(縦壁)の枚数+1
+#define y_size              (10)     //y軸方向の壁(横壁)の枚数+1
 #define g_size              (1)     //ゴールのマスの数
-#define goal_cordinate      {4, 0, 0, 0, 0, 0, 0, 0, 0,\
-                             1, 0, 0, 0, 0, 0, 0, 0, 0}
+#define goal_cordinate      {1, 5, 5, 6, 6, 6, 7, 7, 7,\
+                             9, 5, 6, 4, 5, 6, 4, 5, 6}
                               //一行目、ゴールのx座標
                               //二行目、ゴールのy座標
 //ir
-#define front_th            (10) //前壁有無判定の閾値
-#define right_th            (5) //右壁有無判定の閾値
-#define left_th             (5) //左壁有無判定の閾値                             
+#define front_th            (50) //前壁有無判定の閾値
+#define right_th            (100) //右壁有無判定の閾値
+#define left_th             (100) //左壁有無判定の閾値                             
 
 //mode
 #define mode_count_up_th 	(0.10f)     //モードカウントアップの右タイヤ速度閾値
@@ -67,7 +68,7 @@
 
 //movement
 #define move_comp_th        (0.0002f)   //移動完了の閾値
-#define rotate_comp_th      (0.005f)    //回転完了の閾値
+#define rotate_comp_th      (0.001f)    //回転完了の閾値
 
 //adjust
 #define front_sensor_r_ref      (0.0125f)	        //前壁補正時の右前距離目標値(1cm)

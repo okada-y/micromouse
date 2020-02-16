@@ -1,4 +1,4 @@
-ARM GAS  C:\Temp\ccurc7B1.s 			page 1
+ARM GAS  C:\Temp\ccdpjrfY.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,7 +58,7 @@ ARM GAS  C:\Temp\ccurc7B1.s 			page 1
   28:Src/motor.c   **** 	モータ用のタイマーを開始する関数
   29:Src/motor.c   **** --------------------------------------------------------------- */
   30:Src/motor.c   **** void Motor_Initialize( void )
-ARM GAS  C:\Temp\ccurc7B1.s 			page 2
+ARM GAS  C:\Temp\ccdpjrfY.s 			page 2
 
 
   31:Src/motor.c   **** {
@@ -118,7 +118,7 @@ ARM GAS  C:\Temp\ccurc7B1.s 			page 1
   38:Src/motor.c   **** /* ---------------------------------------------------------------
   39:Src/motor.c   **** 	モータのの回転を止める関数
   40:Src/motor.c   **** --------------------------------------------------------------- */
-ARM GAS  C:\Temp\ccurc7B1.s 			page 3
+ARM GAS  C:\Temp\ccdpjrfY.s 			page 3
 
 
   41:Src/motor.c   **** void Motor_StopPWM( void )
@@ -178,7 +178,7 @@ ARM GAS  C:\Temp\ccurc7B1.s 			page 1
  121              		.cfi_def_cfa_offset 8
  122              		.cfi_offset 3, -8
  123              		.cfi_offset 14, -4
-ARM GAS  C:\Temp\ccurc7B1.s 			page 4
+ARM GAS  C:\Temp\ccdpjrfY.s 			page 4
 
 
   54:Src/motor.c   **** 	uint32_t	pulse_l;
@@ -238,7 +238,7 @@ ARM GAS  C:\Temp\ccurc7B1.s 			page 1
  166              		.loc 1 65 2 is_stmt 1 view .LVU30
  167              		.loc 1 65 13 is_stmt 0 view .LVU31
  168 0038 1F4A     		ldr	r2, .L21
-ARM GAS  C:\Temp\ccurc7B1.s 			page 5
+ARM GAS  C:\Temp\ccdpjrfY.s 			page 5
 
 
  169 003a B2F90020 		ldrsh	r2, [r2]
@@ -298,7 +298,7 @@ ARM GAS  C:\Temp\ccurc7B1.s 			page 1
   58:Src/motor.c   **** 	} else if( ABS(duty_l) < MOT_DUTY_MIN ) {
  207              		.loc 1 58 11 view .LVU43
  208 006e E3E7     		b	.L10
-ARM GAS  C:\Temp\ccurc7B1.s 			page 6
+ARM GAS  C:\Temp\ccdpjrfY.s 			page 6
 
 
  209              	.LVL13:
@@ -358,7 +358,7 @@ ARM GAS  C:\Temp\ccurc7B1.s 			page 1
   72:Src/motor.c   **** 		MOT_SET_COMPARE_L_REVERSE( 0 );
  251              		.loc 1 72 3 is_stmt 0 view .LVU56
  252 00a2 1B68     		ldr	r3, [r3]
-ARM GAS  C:\Temp\ccurc7B1.s 			page 7
+ARM GAS  C:\Temp\ccdpjrfY.s 			page 7
 
 
  253 00a4 0022     		movs	r2, #0
@@ -418,7 +418,7 @@ ARM GAS  C:\Temp\ccurc7B1.s 			page 1
   82:Src/motor.c   **** 	uint32_t	pulse_r;
  300              		.loc 1 82 2 is_stmt 1 view .LVU63
   83:Src/motor.c   **** 	duty_r = duty_r_tmp;
-ARM GAS  C:\Temp\ccurc7B1.s 			page 8
+ARM GAS  C:\Temp\ccdpjrfY.s 			page 8
 
 
  301              		.loc 1 83 2 view .LVU64
@@ -478,7 +478,7 @@ ARM GAS  C:\Temp\ccurc7B1.s 			page 1
  346              		.loc 1 92 4 view .LVU81
  347 003e 002A     		cmp	r2, #0
  348 0040 2CDD     		ble	.L29
-ARM GAS  C:\Temp\ccurc7B1.s 			page 9
+ARM GAS  C:\Temp\ccdpjrfY.s 			page 9
 
 
   93:Src/motor.c   **** 		MOT_SET_COMPARE_R_FORWARD( pulse_r );
@@ -538,7 +538,7 @@ ARM GAS  C:\Temp\ccurc7B1.s 			page 1
  386              	.L26:
   89:Src/motor.c   **** 	}
  387              		.loc 1 89 3 is_stmt 1 view .LVU93
-ARM GAS  C:\Temp\ccurc7B1.s 			page 10
+ARM GAS  C:\Temp\ccdpjrfY.s 			page 10
 
 
   89:Src/motor.c   **** 	}
@@ -598,7 +598,7 @@ ARM GAS  C:\Temp\ccurc7B1.s 			page 1
  430 00a6 DA63     		str	r2, [r3, #60]
  100:Src/motor.c   **** 	}
  431              		.loc 1 100 3 is_stmt 1 view .LVU106
-ARM GAS  C:\Temp\ccurc7B1.s 			page 11
+ARM GAS  C:\Temp\ccdpjrfY.s 			page 11
 
 
  432 00a8 1A64     		str	r2, [r3, #64]
@@ -658,7 +658,7 @@ ARM GAS  C:\Temp\ccurc7B1.s 			page 1
  478 0008 00000000 		.word	.LANCHOR1
  479              		.cfi_endproc
  480              	.LFE137:
-ARM GAS  C:\Temp\ccurc7B1.s 			page 12
+ARM GAS  C:\Temp\ccdpjrfY.s 			page 12
 
 
  482              		.section	.text.get_duty_l,"ax",%progbits
@@ -718,38 +718,38 @@ ARM GAS  C:\Temp\ccurc7B1.s 			page 1
  534              		.file 11 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
  535              		.file 12 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h"
  536              		.file 13 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h"
-ARM GAS  C:\Temp\ccurc7B1.s 			page 13
+ARM GAS  C:\Temp\ccdpjrfY.s 			page 13
 
 
  537              		.file 14 "Inc/tim.h"
  538              		.file 15 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h"
-ARM GAS  C:\Temp\ccurc7B1.s 			page 14
+ARM GAS  C:\Temp\ccdpjrfY.s 			page 14
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 motor.c
-  C:\Temp\ccurc7B1.s:18     .text.Motor_Initialize:00000000 $t
-  C:\Temp\ccurc7B1.s:26     .text.Motor_Initialize:00000000 Motor_Initialize
-  C:\Temp\ccurc7B1.s:64     .text.Motor_Initialize:00000028 $d
-  C:\Temp\ccurc7B1.s:69     .text.Motor_StopPWM:00000000 $t
-  C:\Temp\ccurc7B1.s:76     .text.Motor_StopPWM:00000000 Motor_StopPWM
-  C:\Temp\ccurc7B1.s:99     .text.Motor_StopPWM:00000014 $d
-  C:\Temp\ccurc7B1.s:104    .text.set_duty_l:00000000 $t
-  C:\Temp\ccurc7B1.s:111    .text.set_duty_l:00000000 set_duty_l
-  C:\Temp\ccurc7B1.s:272    .text.set_duty_l:000000b8 $d
-  C:\Temp\ccurc7B1.s:280    .text.set_duty_r:00000000 $t
-  C:\Temp\ccurc7B1.s:287    .text.set_duty_r:00000000 set_duty_r
-  C:\Temp\ccurc7B1.s:448    .text.set_duty_r:000000b8 $d
-  C:\Temp\ccurc7B1.s:456    .text.get_duty_r:00000000 $t
-  C:\Temp\ccurc7B1.s:463    .text.get_duty_r:00000000 get_duty_r
-  C:\Temp\ccurc7B1.s:478    .text.get_duty_r:00000008 $d
-  C:\Temp\ccurc7B1.s:483    .text.get_duty_l:00000000 $t
-  C:\Temp\ccurc7B1.s:490    .text.get_duty_l:00000000 get_duty_l
-  C:\Temp\ccurc7B1.s:505    .text.get_duty_l:00000008 $d
-  C:\Temp\ccurc7B1.s:510    .bss.duty_l:00000000 $d
-  C:\Temp\ccurc7B1.s:514    .bss.duty_l:00000000 duty_l
-  C:\Temp\ccurc7B1.s:517    .bss.duty_r:00000000 $d
-  C:\Temp\ccurc7B1.s:521    .bss.duty_r:00000000 duty_r
+  C:\Temp\ccdpjrfY.s:18     .text.Motor_Initialize:00000000 $t
+  C:\Temp\ccdpjrfY.s:26     .text.Motor_Initialize:00000000 Motor_Initialize
+  C:\Temp\ccdpjrfY.s:64     .text.Motor_Initialize:00000028 $d
+  C:\Temp\ccdpjrfY.s:69     .text.Motor_StopPWM:00000000 $t
+  C:\Temp\ccdpjrfY.s:76     .text.Motor_StopPWM:00000000 Motor_StopPWM
+  C:\Temp\ccdpjrfY.s:99     .text.Motor_StopPWM:00000014 $d
+  C:\Temp\ccdpjrfY.s:104    .text.set_duty_l:00000000 $t
+  C:\Temp\ccdpjrfY.s:111    .text.set_duty_l:00000000 set_duty_l
+  C:\Temp\ccdpjrfY.s:272    .text.set_duty_l:000000b8 $d
+  C:\Temp\ccdpjrfY.s:280    .text.set_duty_r:00000000 $t
+  C:\Temp\ccdpjrfY.s:287    .text.set_duty_r:00000000 set_duty_r
+  C:\Temp\ccdpjrfY.s:448    .text.set_duty_r:000000b8 $d
+  C:\Temp\ccdpjrfY.s:456    .text.get_duty_r:00000000 $t
+  C:\Temp\ccdpjrfY.s:463    .text.get_duty_r:00000000 get_duty_r
+  C:\Temp\ccdpjrfY.s:478    .text.get_duty_r:00000008 $d
+  C:\Temp\ccdpjrfY.s:483    .text.get_duty_l:00000000 $t
+  C:\Temp\ccdpjrfY.s:490    .text.get_duty_l:00000000 get_duty_l
+  C:\Temp\ccdpjrfY.s:505    .text.get_duty_l:00000008 $d
+  C:\Temp\ccdpjrfY.s:510    .bss.duty_l:00000000 $d
+  C:\Temp\ccdpjrfY.s:514    .bss.duty_l:00000000 duty_l
+  C:\Temp\ccdpjrfY.s:517    .bss.duty_r:00000000 $d
+  C:\Temp\ccdpjrfY.s:521    .bss.duty_r:00000000 duty_r
 
 UNDEFINED SYMBOLS
 HAL_TIM_PWM_Start

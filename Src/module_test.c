@@ -19,6 +19,7 @@
 #include "encorder.h"
 #include "interrupt.h"
 #include "adjust.h"	
+#include "maze_solve.h"
 
 
 static uint16_t log_counter = 0 ; //ログ取得開始からの時間監視用カウンタ[ms]
@@ -77,8 +78,28 @@ typedef struct {	//データ格納用構造体の定義（最大２０個とす�
 	float   side_vol;			//横壁制御での電圧出力
 	float   side_mode;			//横壁制御のモード
 	float 	V_battery;			//バッテリー電圧
+	#endif
 
-
+	#ifdef DATA_MAZE
+	float	time;				//測定開始からの時間[m/s]
+	float 	ideal_d_m;			//理想の並進方向移動距離[m]
+	float	speed_m_ave;		//並進方向の速度平均[m/s]
+	float	real_d_m;			//並進方向移動距離[m]
+	float	ideal_d_w;			//理想角度
+	float	speed_w;			//実際の角速度(rad/s)
+	float	real_d_w;			//回転角度(rad)
+	float   duty_r;				//右モータ操作量（duty)
+	float   duty_l;				//左モータ操作量(duty)
+	float   front_sensor_r;		//右前壁センサ値
+	float   front_sensor_l;		//左前壁センサ値
+	float   side_sensor_r;		//右横壁センサ値
+	float   side_sensor_l;		//左横壁センサ値
+	float	maze_x;				//マウスのx座標(マス)
+	float	maze_y;				//マウスのy座標(マス)
+	float	wall_s_front;		//前壁判定用センサ値
+	float	wall_s_right;		//右壁判定用センサ値
+	float	wall_s_left;		//左壁判定用センサ値
+	float 	V_battery;			//バッテリー電圧
 	#endif
 } log_struct;
 
@@ -161,6 +182,29 @@ void data_get (void)
 			log_store[i].side_mode = (float)get_side_wall_ctrl_mode();
 			log_store[i].V_battery =(float) Battery_GetVoltage();
 			#endif
+
+			//測定モード３
+			#ifdef DATA_MAZE
+			log_store[i].time = (float)log_counter;
+			log_store[i].ideal_d_m = (float)get_ideal_length();
+			log_store[i].speed_m_ave = (float)get_move_speed_ave();
+			log_store[i].real_d_m = (float)get_move_length();
+			log_store[i].ideal_d_w = (float)get_ideal_angle();
+			log_store[i].speed_w = (float)get_rotation_speed();
+			log_store[i].real_d_w = (float)get_rotation_angle();
+			log_store[i].duty_r = (float)get_target_duty_r();
+			log_store[i].duty_l = (float)get_target_duty_l();
+			log_store[i].front_sensor_r = (float)Sensor_GetValue(3);
+			log_store[i].front_sensor_l = (float)Sensor_GetValue(0);
+			log_store[i].side_sensor_r = (float)Sensor_GetValue(2);
+			log_store[i].side_sensor_l = (float)Sensor_GetValue(1);
+			log_store[i].maze_x = (float)current_x.contents;		//マウスのx座標(マス)
+			log_store[i].maze_y = (float)current_y.contents;		//マウスのy座標(マス)
+			log_store[i].wall_s_front = (float)wall_sensor_front;	//前壁判定用センサ値
+			log_store[i].wall_s_right = (float)wall_sensor_right;	//右壁判定用センサ値
+			log_store[i].wall_s_left = (float)wall_sensor_left;		//左壁判定用センサ値
+			log_store[i].V_battery =(float) Battery_GetVoltage();
+			#endif
 		}
 		log_counter += 1; //logカウンタ更新
 	}
@@ -190,6 +234,14 @@ void data_read(void)
 			"DUTY_R[%%],Duty_L[%%],front_r,front_l,side_r,side_l,"
 			"front_r[m],front_l[m],side_r[m],side_l[m],side_r_target[m],side_l_target[m],"
 			"side_r_th,side_l_th,side_vol[V],side_mode,V_battery[V]\r\n");	//パラメータ名を記述
+	#endif
+
+	#ifdef DATA_MAZE
+	printf ("TIME[ms],ideal_distance[m],current_distance[m],SPEED_m_ave[m/s],"
+			"ideal_angle[rad],speed_w[rad/s],current_angle[rad],"
+			"DUTY_R[%%],Duty_L[%%],front_r,front_l,side_r,side_l,"
+			"maze_x,maze_y,wall_jud_front,wall_jud_right,wall_jud_left,"
+			"V_battery[V]\r\n");	//パラメータ名を記述
 	#endif
 
 	for(i = 0; i <= j ; i++)
@@ -247,9 +299,30 @@ void data_read(void)
 		printf("%f,",log_store[i].side_mode);
 		printf("%f",log_store[i].V_battery);			//最後はカンマなし
 		printf("\r\n"); // 改行
-
 		#endif
 
+		#ifdef DATA_MAZE
+		printf("%f,",log_store[i].time);
+		printf("%f,",log_store[i].ideal_d_m);
+		printf("%f,",log_store[i].real_d_m);
+		printf("%f,",log_store[i].speed_m_ave);
+		printf("%f,",log_store[i].ideal_d_w);
+		printf("%f,",log_store[i].speed_w);
+		printf("%f,",log_store[i].real_d_w);
+		printf("%f,",log_store[i].duty_r);
+		printf("%f,",log_store[i].duty_l);
+		printf("%f,",log_store[i].front_sensor_r);
+		printf("%f,",log_store[i].front_sensor_l);
+		printf("%f,",log_store[i].side_sensor_r);
+		printf("%f,",log_store[i].side_sensor_l);
+		printf("%f,",log_store[i].maze_x);
+		printf("%f,",log_store[i].maze_y);
+		printf("%f,",log_store[i].wall_s_front);
+		printf("%f,",log_store[i].wall_s_right);
+		printf("%f,",log_store[i].wall_s_left);
+		printf("%f",log_store[i].V_battery);		
+		printf("\r\n"); // 改行	
+		#endif
 	}
 
 }

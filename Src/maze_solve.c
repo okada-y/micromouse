@@ -23,23 +23,11 @@
 #include "target.h"
 #include "param.h"
 
-int wall_sensor_front = 0;
-int wall_sensor_front_th = front_th;
-int wall_sensor_right = 0;
-int wall_sensor_right_th = right_th;
-int wall_sensor_left = 0;
-int wall_sensor_left_th = left_th;
 
 
-/* Type Definitions */
-#ifndef typedef_coder_internal_ref
-#define typedef_coder_internal_ref
 
-typedef struct {
-  unsigned char contents;
-} coder_internal_ref;
 
-#endif                                 /*typedef_coder_internal_ref*/
+
 
 #ifndef typedef_d_struct_T
 #define typedef_d_struct_T
@@ -127,7 +115,17 @@ typedef enum{
   immediately_after   //ゴール直後か
 }goal_after;
 
+int wall_sensor_front = 0;
+int wall_sensor_front_th = front_th;
+int wall_sensor_right = 0;
+int wall_sensor_right_th = right_th;
+int wall_sensor_left = 0;
+int wall_sensor_left_th = left_th;
+
 static goal_after goal_after_flg = other;
+coder_internal_ref current_x;
+coder_internal_ref current_y;
+
 //
 
 /* Function Declarations */
@@ -2408,10 +2406,8 @@ void maze_solve(unsigned char maze_wall[1024], unsigned char maze_wall_search
   coder_internal_ref_3 l_direction;
   coder_internal_ref_2 wall;
   coder_internal_ref_1 search;
-  coder_internal_ref current_x;
   unsigned char contour_map[1024];
   unsigned char search_flag;
-  coder_internal_ref current_y;
   coder_internal_ref current_dir;
   int exitg1;
   bool exitg2;
