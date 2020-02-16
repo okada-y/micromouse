@@ -37,6 +37,7 @@ BUILD_DIR = build
 # C sources
 C_SOURCES =  \
 Src/main.c \
+Src/lookuptable.c \
 Src/mouse_state.c \
 Src/control.c \
 Src/adjust.c \

@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-ARM GAS  C:\Temp\cceC97Td.s 			page 1
-=======
-ARM GAS  C:\Temp\ccWjRABX.s 			page 1
->>>>>>> origin/release_side_wall_trace
+ARM GAS  C:\Temp\ccaaC5nP.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -62,11 +58,7 @@ ARM GAS  C:\Temp\ccWjRABX.s 			page 1
   27:Src/imu.c     **** 
   28:Src/imu.c     **** /* ---------------------------------------------------------------
   29:Src/imu.c     **** 	ICM20648に1byte書き込む関数
-<<<<<<< HEAD
-ARM GAS  C:\Temp\cceC97Td.s 			page 2
-=======
-ARM GAS  C:\Temp\ccWjRABX.s 			page 2
->>>>>>> origin/release_side_wall_trace
+ARM GAS  C:\Temp\ccaaC5nP.s 			page 2
 
 
   30:Src/imu.c     **** --------------------------------------------------------------- */
@@ -126,11 +118,7 @@ ARM GAS  C:\Temp\ccWjRABX.s 			page 1
   75              		.loc 1 38 2 view .LVU9
   76 003c 0122     		movs	r2, #1
   77 003e 4FF48051 		mov	r1, #4096
-<<<<<<< HEAD
-ARM GAS  C:\Temp\cceC97Td.s 			page 3
-=======
-ARM GAS  C:\Temp\ccWjRABX.s 			page 3
->>>>>>> origin/release_side_wall_trace
+ARM GAS  C:\Temp\ccaaC5nP.s 			page 3
 
 
   78 0042 2046     		mov	r0, r4
@@ -190,11 +178,7 @@ ARM GAS  C:\Temp\ccWjRABX.s 			page 1
  125 0008 8DF80700 		strb	r0, [sp, #7]
   48:Src/imu.c     **** 	uint8_t value;
  126              		.loc 1 48 2 is_stmt 1 view .LVU16
-<<<<<<< HEAD
-ARM GAS  C:\Temp\cceC97Td.s 			page 4
-=======
-ARM GAS  C:\Temp\ccWjRABX.s 			page 4
->>>>>>> origin/release_side_wall_trace
+ARM GAS  C:\Temp\ccaaC5nP.s 			page 4
 
 
   49:Src/imu.c     **** 
@@ -254,11 +238,7 @@ ARM GAS  C:\Temp\ccWjRABX.s 			page 1
  174              		.syntax unified
  175              		.thumb
  176              		.thumb_func
-<<<<<<< HEAD
-ARM GAS  C:\Temp\cceC97Td.s 			page 5
-=======
-ARM GAS  C:\Temp\ccWjRABX.s 			page 5
->>>>>>> origin/release_side_wall_trace
+ARM GAS  C:\Temp\ccaaC5nP.s 			page 5
 
 
  177              		.fpu fpv4-sp-d16
@@ -318,11 +298,7 @@ ARM GAS  C:\Temp\ccWjRABX.s 			page 1
  218 0000 08B5     		push	{r3, lr}
  219              	.LCFI7:
  220              		.cfi_def_cfa_offset 8
-<<<<<<< HEAD
-ARM GAS  C:\Temp\cceC97Td.s 			page 6
-=======
-ARM GAS  C:\Temp\ccWjRABX.s 			page 6
->>>>>>> origin/release_side_wall_trace
+ARM GAS  C:\Temp\ccaaC5nP.s 			page 6
 
 
  221              		.cfi_offset 3, -8
@@ -382,11 +358,7 @@ ARM GAS  C:\Temp\ccWjRABX.s 			page 1
  256              		.loc 1 88 2 is_stmt 1 view .LVU40
  257 0022 1021     		movs	r1, #16
  258 0024 0320     		movs	r0, #3
-<<<<<<< HEAD
-ARM GAS  C:\Temp\cceC97Td.s 			page 7
-=======
-ARM GAS  C:\Temp\ccWjRABX.s 			page 7
->>>>>>> origin/release_side_wall_trace
+ARM GAS  C:\Temp\ccaaC5nP.s 			page 7
 
 
  259 0026 FFF7FEFF 		bl	IMU_Write1byte
@@ -446,11 +418,7 @@ ARM GAS  C:\Temp\ccWjRABX.s 			page 1
  298 0062 0120     		movs	r0, #1
  299 0064 FFF7FEFF 		bl	HAL_Delay
  300              	.LVL31:
-<<<<<<< HEAD
-ARM GAS  C:\Temp\cceC97Td.s 			page 8
-=======
-ARM GAS  C:\Temp\ccWjRABX.s 			page 8
->>>>>>> origin/release_side_wall_trace
+ARM GAS  C:\Temp\ccaaC5nP.s 			page 8
 
 
  104:Src/imu.c     **** 
@@ -510,11 +478,7 @@ ARM GAS  C:\Temp\ccWjRABX.s 			page 1
  114:Src/imu.c     **** /* ---------------------------------------------------------------
  115:Src/imu.c     **** 	DMA送受信完了後のコールバック関数
  116:Src/imu.c     **** --------------------------------------------------------------- */
-<<<<<<< HEAD
-ARM GAS  C:\Temp\cceC97Td.s 			page 9
-=======
-ARM GAS  C:\Temp\ccWjRABX.s 			page 9
->>>>>>> origin/release_side_wall_trace
+ARM GAS  C:\Temp\ccaaC5nP.s 			page 9
 
 
  117:Src/imu.c     **** void HAL_SPI_TxRxCpltCallback(SPI_HandleTypeDef* hspi)
@@ -574,11 +538,7 @@ ARM GAS  C:\Temp\ccWjRABX.s 			page 1
  123:Src/imu.c     **** 	HAL_SPI_TransmitReceive_DMA( &hspi2, &imu_address, imu_value, sizeof(imu_value)/sizeof(uint8_t) );
  395              		.loc 1 123 2 view .LVU70
  396 0036 0D23     		movs	r3, #13
-<<<<<<< HEAD
-ARM GAS  C:\Temp\cceC97Td.s 			page 10
-=======
-ARM GAS  C:\Temp\ccWjRABX.s 			page 10
->>>>>>> origin/release_side_wall_trace
+ARM GAS  C:\Temp\ccaaC5nP.s 			page 10
 
 
  397 0038 2246     		mov	r2, r4
@@ -638,11 +598,7 @@ ARM GAS  C:\Temp\ccWjRABX.s 			page 1
  443              		.loc 1 133 2 is_stmt 0 discriminator 1 view .LVU77
  444 0004 B4F57A7F 		cmp	r4, #1000
  445 0008 11DA     		bge	.L25
-<<<<<<< HEAD
-ARM GAS  C:\Temp\cceC97Td.s 			page 11
-=======
-ARM GAS  C:\Temp\ccWjRABX.s 			page 11
->>>>>>> origin/release_side_wall_trace
+ARM GAS  C:\Temp\ccaaC5nP.s 			page 11
 
 
  134:Src/imu.c     **** 		HAL_Delay(1);
@@ -702,11 +658,7 @@ ARM GAS  C:\Temp\ccWjRABX.s 			page 1
  490 0044 B1F90030 		ldrsh	r3, [r1]
  491 0048 82FB0302 		smull	r0, r2, r2, r3
  492 004c DB17     		asrs	r3, r3, #31
-<<<<<<< HEAD
-ARM GAS  C:\Temp\cceC97Td.s 			page 12
-=======
-ARM GAS  C:\Temp\ccWjRABX.s 			page 12
->>>>>>> origin/release_side_wall_trace
+ARM GAS  C:\Temp\ccaaC5nP.s 			page 12
 
 
  493 004e C3EBA213 		rsb	r3, r3, r2, asr #6
@@ -766,11 +718,7 @@ ARM GAS  C:\Temp\ccWjRABX.s 			page 1
  540              		.align	2
  541              	.L29:
  542 0028 00000000 		.word	.LANCHOR2
-<<<<<<< HEAD
-ARM GAS  C:\Temp\cceC97Td.s 			page 13
-=======
-ARM GAS  C:\Temp\ccWjRABX.s 			page 13
->>>>>>> origin/release_side_wall_trace
+ARM GAS  C:\Temp\ccaaC5nP.s 			page 13
 
 
  543 002c 00000000 		.word	.LANCHOR4
@@ -830,11 +778,7 @@ ARM GAS  C:\Temp\ccWjRABX.s 			page 1
  592              		.section	.bss.accel_x_reference,"aw",%nobits
  593              		.align	1
  594              		.set	.LANCHOR4,. + 0
-<<<<<<< HEAD
-ARM GAS  C:\Temp\cceC97Td.s 			page 14
-=======
-ARM GAS  C:\Temp\ccWjRABX.s 			page 14
->>>>>>> origin/release_side_wall_trace
+ARM GAS  C:\Temp\ccaaC5nP.s 			page 14
 
 
  597              	accel_x_reference:
@@ -884,88 +828,46 @@ ARM GAS  C:\Temp\ccWjRABX.s 			page 1
  648              		.file 15 "Inc/spi.h"
  649              		.file 16 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h"
  650              		.file 17 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\stdio.h"
-<<<<<<< HEAD
-ARM GAS  C:\Temp\cceC97Td.s 			page 15
-=======
-ARM GAS  C:\Temp\ccWjRABX.s 			page 15
->>>>>>> origin/release_side_wall_trace
+ARM GAS  C:\Temp\ccaaC5nP.s 			page 15
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 imu.c
-<<<<<<< HEAD
-  C:\Temp\cceC97Td.s:18     .text.IMU_Write1byte:00000000 $t
-  C:\Temp\cceC97Td.s:26     .text.IMU_Write1byte:00000000 IMU_Write1byte
-  C:\Temp\cceC97Td.s:90     .text.IMU_Write1byte:0000004c $d
-  C:\Temp\cceC97Td.s:96     .text.IMU_Read1byte:00000000 $t
-  C:\Temp\cceC97Td.s:103    .text.IMU_Read1byte:00000000 IMU_Read1byte
-  C:\Temp\cceC97Td.s:166    .text.IMU_Read1byte:0000004c $d
-  C:\Temp\cceC97Td.s:172    .text.IMU_CheckWHOAMI:00000000 $t
-  C:\Temp\cceC97Td.s:179    .text.IMU_CheckWHOAMI:00000000 IMU_CheckWHOAMI
-  C:\Temp\cceC97Td.s:201    .rodata.IMU_Initialize.str1.4:00000000 $d
-  C:\Temp\cceC97Td.s:205    .text.IMU_Initialize:00000000 $t
-  C:\Temp\cceC97Td.s:212    .text.IMU_Initialize:00000000 IMU_Initialize
-  C:\Temp\cceC97Td.s:328    .text.IMU_Initialize:00000090 $d
-  C:\Temp\cceC97Td.s:337    .text.HAL_SPI_TxRxCpltCallback:00000000 $t
-  C:\Temp\cceC97Td.s:344    .text.HAL_SPI_TxRxCpltCallback:00000000 HAL_SPI_TxRxCpltCallback
-  C:\Temp\cceC97Td.s:407    .text.HAL_SPI_TxRxCpltCallback:00000044 $d
-  C:\Temp\cceC97Td.s:417    .text.IMU_ResetReference:00000000 $t
-  C:\Temp\cceC97Td.s:424    .text.IMU_ResetReference:00000000 IMU_ResetReference
-  C:\Temp\cceC97Td.s:500    .text.IMU_ResetReference:00000058 $d
-  C:\Temp\cceC97Td.s:509    .text.IMU_GetAccel_X:00000000 $t
-  C:\Temp\cceC97Td.s:516    .text.IMU_GetAccel_X:00000000 IMU_GetAccel_X
-  C:\Temp\cceC97Td.s:542    .text.IMU_GetAccel_X:00000028 $d
-  C:\Temp\cceC97Td.s:550    .text.IMU_GetGyro_Z:00000000 $t
-  C:\Temp\cceC97Td.s:557    .text.IMU_GetGyro_Z:00000000 IMU_GetGyro_Z
-  C:\Temp\cceC97Td.s:584    .text.IMU_GetGyro_Z:00000030 $d
-  C:\Temp\cceC97Td.s:593    .bss.accel_x_reference:00000000 $d
-  C:\Temp\cceC97Td.s:597    .bss.accel_x_reference:00000000 accel_x_reference
-  C:\Temp\cceC97Td.s:600    .bss.accel_x_value:00000000 $d
-  C:\Temp\cceC97Td.s:604    .bss.accel_x_value:00000000 accel_x_value
-  C:\Temp\cceC97Td.s:607    .bss.gyro_z_reference:00000000 $d
-  C:\Temp\cceC97Td.s:611    .bss.gyro_z_reference:00000000 gyro_z_reference
-  C:\Temp\cceC97Td.s:614    .bss.gyro_z_value:00000000 $d
-  C:\Temp\cceC97Td.s:618    .bss.gyro_z_value:00000000 gyro_z_value
-  C:\Temp\cceC97Td.s:621    .bss.imu_value:00000000 $d
-  C:\Temp\cceC97Td.s:625    .bss.imu_value:00000000 imu_value
-  C:\Temp\cceC97Td.s:631    .data.imu_address:00000000 imu_address
-=======
-  C:\Temp\ccWjRABX.s:18     .text.IMU_Write1byte:00000000 $t
-  C:\Temp\ccWjRABX.s:26     .text.IMU_Write1byte:00000000 IMU_Write1byte
-  C:\Temp\ccWjRABX.s:90     .text.IMU_Write1byte:0000004c $d
-  C:\Temp\ccWjRABX.s:96     .text.IMU_Read1byte:00000000 $t
-  C:\Temp\ccWjRABX.s:103    .text.IMU_Read1byte:00000000 IMU_Read1byte
-  C:\Temp\ccWjRABX.s:166    .text.IMU_Read1byte:0000004c $d
-  C:\Temp\ccWjRABX.s:172    .text.IMU_CheckWHOAMI:00000000 $t
-  C:\Temp\ccWjRABX.s:179    .text.IMU_CheckWHOAMI:00000000 IMU_CheckWHOAMI
-  C:\Temp\ccWjRABX.s:201    .rodata.IMU_Initialize.str1.4:00000000 $d
-  C:\Temp\ccWjRABX.s:205    .text.IMU_Initialize:00000000 $t
-  C:\Temp\ccWjRABX.s:212    .text.IMU_Initialize:00000000 IMU_Initialize
-  C:\Temp\ccWjRABX.s:328    .text.IMU_Initialize:00000090 $d
-  C:\Temp\ccWjRABX.s:337    .text.HAL_SPI_TxRxCpltCallback:00000000 $t
-  C:\Temp\ccWjRABX.s:344    .text.HAL_SPI_TxRxCpltCallback:00000000 HAL_SPI_TxRxCpltCallback
-  C:\Temp\ccWjRABX.s:407    .text.HAL_SPI_TxRxCpltCallback:00000044 $d
-  C:\Temp\ccWjRABX.s:417    .text.IMU_ResetReference:00000000 $t
-  C:\Temp\ccWjRABX.s:424    .text.IMU_ResetReference:00000000 IMU_ResetReference
-  C:\Temp\ccWjRABX.s:500    .text.IMU_ResetReference:00000058 $d
-  C:\Temp\ccWjRABX.s:509    .text.IMU_GetAccel_X:00000000 $t
-  C:\Temp\ccWjRABX.s:516    .text.IMU_GetAccel_X:00000000 IMU_GetAccel_X
-  C:\Temp\ccWjRABX.s:542    .text.IMU_GetAccel_X:00000028 $d
-  C:\Temp\ccWjRABX.s:550    .text.IMU_GetGyro_Z:00000000 $t
-  C:\Temp\ccWjRABX.s:557    .text.IMU_GetGyro_Z:00000000 IMU_GetGyro_Z
-  C:\Temp\ccWjRABX.s:584    .text.IMU_GetGyro_Z:00000030 $d
-  C:\Temp\ccWjRABX.s:593    .bss.accel_x_reference:00000000 $d
-  C:\Temp\ccWjRABX.s:597    .bss.accel_x_reference:00000000 accel_x_reference
-  C:\Temp\ccWjRABX.s:600    .bss.accel_x_value:00000000 $d
-  C:\Temp\ccWjRABX.s:604    .bss.accel_x_value:00000000 accel_x_value
-  C:\Temp\ccWjRABX.s:607    .bss.gyro_z_reference:00000000 $d
-  C:\Temp\ccWjRABX.s:611    .bss.gyro_z_reference:00000000 gyro_z_reference
-  C:\Temp\ccWjRABX.s:614    .bss.gyro_z_value:00000000 $d
-  C:\Temp\ccWjRABX.s:618    .bss.gyro_z_value:00000000 gyro_z_value
-  C:\Temp\ccWjRABX.s:621    .bss.imu_value:00000000 $d
-  C:\Temp\ccWjRABX.s:625    .bss.imu_value:00000000 imu_value
-  C:\Temp\ccWjRABX.s:631    .data.imu_address:00000000 imu_address
->>>>>>> origin/release_side_wall_trace
+  C:\Temp\ccaaC5nP.s:18     .text.IMU_Write1byte:00000000 $t
+  C:\Temp\ccaaC5nP.s:26     .text.IMU_Write1byte:00000000 IMU_Write1byte
+  C:\Temp\ccaaC5nP.s:90     .text.IMU_Write1byte:0000004c $d
+  C:\Temp\ccaaC5nP.s:96     .text.IMU_Read1byte:00000000 $t
+  C:\Temp\ccaaC5nP.s:103    .text.IMU_Read1byte:00000000 IMU_Read1byte
+  C:\Temp\ccaaC5nP.s:166    .text.IMU_Read1byte:0000004c $d
+  C:\Temp\ccaaC5nP.s:172    .text.IMU_CheckWHOAMI:00000000 $t
+  C:\Temp\ccaaC5nP.s:179    .text.IMU_CheckWHOAMI:00000000 IMU_CheckWHOAMI
+  C:\Temp\ccaaC5nP.s:201    .rodata.IMU_Initialize.str1.4:00000000 $d
+  C:\Temp\ccaaC5nP.s:205    .text.IMU_Initialize:00000000 $t
+  C:\Temp\ccaaC5nP.s:212    .text.IMU_Initialize:00000000 IMU_Initialize
+  C:\Temp\ccaaC5nP.s:328    .text.IMU_Initialize:00000090 $d
+  C:\Temp\ccaaC5nP.s:337    .text.HAL_SPI_TxRxCpltCallback:00000000 $t
+  C:\Temp\ccaaC5nP.s:344    .text.HAL_SPI_TxRxCpltCallback:00000000 HAL_SPI_TxRxCpltCallback
+  C:\Temp\ccaaC5nP.s:407    .text.HAL_SPI_TxRxCpltCallback:00000044 $d
+  C:\Temp\ccaaC5nP.s:417    .text.IMU_ResetReference:00000000 $t
+  C:\Temp\ccaaC5nP.s:424    .text.IMU_ResetReference:00000000 IMU_ResetReference
+  C:\Temp\ccaaC5nP.s:500    .text.IMU_ResetReference:00000058 $d
+  C:\Temp\ccaaC5nP.s:509    .text.IMU_GetAccel_X:00000000 $t
+  C:\Temp\ccaaC5nP.s:516    .text.IMU_GetAccel_X:00000000 IMU_GetAccel_X
+  C:\Temp\ccaaC5nP.s:542    .text.IMU_GetAccel_X:00000028 $d
+  C:\Temp\ccaaC5nP.s:550    .text.IMU_GetGyro_Z:00000000 $t
+  C:\Temp\ccaaC5nP.s:557    .text.IMU_GetGyro_Z:00000000 IMU_GetGyro_Z
+  C:\Temp\ccaaC5nP.s:584    .text.IMU_GetGyro_Z:00000030 $d
+  C:\Temp\ccaaC5nP.s:593    .bss.accel_x_reference:00000000 $d
+  C:\Temp\ccaaC5nP.s:597    .bss.accel_x_reference:00000000 accel_x_reference
+  C:\Temp\ccaaC5nP.s:600    .bss.accel_x_value:00000000 $d
+  C:\Temp\ccaaC5nP.s:604    .bss.accel_x_value:00000000 accel_x_value
+  C:\Temp\ccaaC5nP.s:607    .bss.gyro_z_reference:00000000 $d
+  C:\Temp\ccaaC5nP.s:611    .bss.gyro_z_reference:00000000 gyro_z_reference
+  C:\Temp\ccaaC5nP.s:614    .bss.gyro_z_value:00000000 $d
+  C:\Temp\ccaaC5nP.s:618    .bss.gyro_z_value:00000000 gyro_z_value
+  C:\Temp\ccaaC5nP.s:621    .bss.imu_value:00000000 $d
+  C:\Temp\ccaaC5nP.s:625    .bss.imu_value:00000000 imu_value
+  C:\Temp\ccaaC5nP.s:631    .data.imu_address:00000000 imu_address
 
 UNDEFINED SYMBOLS
 HAL_GPIO_WritePin

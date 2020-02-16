@@ -6,6 +6,9 @@
  */
 
 #include "battery.h"
+#include "ir_sensor.h"
+#include "main.h"
+#include "index.h"
 
 #define BATTERY_REFERENCE	(3.0f)
 #define BATTERY_LIMIT		(3.2f)

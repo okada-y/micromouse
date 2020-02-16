@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-ARM GAS  C:\Temp\ccXny9Z1.s 			page 1
-=======
-ARM GAS  C:\Temp\ccFDByqd.s 			page 1
->>>>>>> origin/release_side_wall_trace
+ARM GAS  C:\Temp\cced9Zfa.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -62,11 +58,7 @@ ARM GAS  C:\Temp\ccFDByqd.s 			page 1
   37 0002 93ED000A 		vldr.32	s0, [r3]
   38 0006 7047     		bx	lr
   39              	.L3:
-<<<<<<< HEAD
-ARM GAS  C:\Temp\ccXny9Z1.s 			page 2
-=======
-ARM GAS  C:\Temp\ccFDByqd.s 			page 2
->>>>>>> origin/release_side_wall_trace
+ARM GAS  C:\Temp\cced9Zfa.s 			page 2
 
 
   40              		.align	2
@@ -126,11 +118,7 @@ ARM GAS  C:\Temp\ccFDByqd.s 			page 1
   31:Src/control.c **** //返り値	: なし
   32:Src/control.c **** //備考  : 1msタスク
   33:Src/control.c **** void calc_motor_vol_ctrl(void)
-<<<<<<< HEAD
-ARM GAS  C:\Temp\ccXny9Z1.s 			page 3
-=======
-ARM GAS  C:\Temp\ccFDByqd.s 			page 3
->>>>>>> origin/release_side_wall_trace
+ARM GAS  C:\Temp\cced9Zfa.s 			page 3
 
 
   34:Src/control.c **** {
@@ -190,11 +178,7 @@ ARM GAS  C:\Temp\ccFDByqd.s 			page 1
  131              	.LVL6:
   44:Src/control.c **** 
   45:Src/control.c ****     /*偏差積分*/
-<<<<<<< HEAD
-ARM GAS  C:\Temp\ccXny9Z1.s 			page 4
-=======
-ARM GAS  C:\Temp\ccFDByqd.s 			page 4
->>>>>>> origin/release_side_wall_trace
+ARM GAS  C:\Temp\cced9Zfa.s 			page 4
 
 
   46:Src/control.c ****     move_speed_err_I = move_speed_err_I + move_speed_I*0.001*move_speed_err;
@@ -254,11 +238,7 @@ ARM GAS  C:\Temp\ccFDByqd.s 			page 1
   50:Src/control.c ****     move_speed_err_PI = move_speed_P * move_speed_err + move_speed_err_I;
  182              		.loc 1 50 5 is_stmt 1 view .LVU27
  183              		.loc 1 50 38 is_stmt 0 view .LVU28
-<<<<<<< HEAD
-ARM GAS  C:\Temp\ccXny9Z1.s 			page 5
-=======
-ARM GAS  C:\Temp\ccFDByqd.s 			page 5
->>>>>>> origin/release_side_wall_trace
+ARM GAS  C:\Temp\cced9Zfa.s 			page 5
 
 
  184 0086 9FED0E0A 		vldr.32	s0, .L9+16
@@ -289,33 +269,6 @@ ARM GAS  C:\Temp\ccFDByqd.s 			page 1
  204 00a4 094B     		ldr	r3, .L9+28
  205 00a6 83ED008A 		vstr.32	s16, [r3]
   56:Src/control.c **** }
-<<<<<<< HEAD
- 211              		.loc 1 56 1 view .LVU39
- 212 00b2 BDEC048B 		vldm	sp!, {d8-d9}
- 213              	.LCFI2:
- 214              		.cfi_restore 82
- 215              		.cfi_restore 83
- 216              		.cfi_restore 80
- 217              		.cfi_restore 81
- 218              		.cfi_def_cfa_offset 16
- 219 00b6 70BD     		pop	{r4, r5, r6, pc}
- 220              	.L10:
- 221              		.align	3
- 222              	.L9:
- 223 00b8 FCA9F1D2 		.word	-755914244
- 224 00bc 3DC9823F 		.word	1065535805
- 225 00c0 00000000 		.word	.LANCHOR2
- 226 00c4 00000000 		.word	.LANCHOR3
- 227 00c8 D1222B40 		.word	1076568785
- 228 00cc AD2FB23E 		.word	1051865005
- 229 00d0 00000000 		.word	.LANCHOR0
- 230 00d4 00000000 		.word	.LANCHOR1
- 231 00d8 8B6CE7FB 		.word	-68719477
- 232 00dc B935A43F 		.word	1067726265
- 233              		.cfi_endproc
- 234              	.LFE5:
-ARM GAS  C:\Temp\ccXny9Z1.s 			page 6
-=======
  206              		.loc 1 56 1 view .LVU37
  207 00aa BDEC048B 		vldm	sp!, {d8-d9}
  208              	.LCFI2:
@@ -345,8 +298,7 @@ ARM GAS  C:\Temp\ccFDByqd.s 			page 1
  233              		.section	.text.clr_trace_operate_history,"ax",%progbits
  234              		.align	1
  235              		.global	clr_trace_operate_history
-ARM GAS  C:\Temp\ccFDByqd.s 			page 6
->>>>>>> origin/release_side_wall_trace
+ARM GAS  C:\Temp\cced9Zfa.s 			page 6
 
 
  236              		.syntax unified
@@ -373,54 +325,6 @@ ARM GAS  C:\Temp\ccFDByqd.s 			page 1
  251 0002 024A     		ldr	r2, .L12
  252 0004 1360     		str	r3, [r2]	@ float
   64:Src/control.c ****     rotate_speed_err_I = 0;	    //角速度偏差積分
-<<<<<<< HEAD
- 256              		.loc 1 64 5 is_stmt 1 view .LVU43
- 257              		.loc 1 64 24 is_stmt 0 view .LVU44
- 258 0006 024A     		ldr	r2, .L12+4
- 259 0008 1360     		str	r3, [r2]	@ float
-  65:Src/control.c **** }...
- 260              		.loc 1 65 1 view .LVU45
- 261 000a 7047     		bx	lr
- 262              	.L13:
- 263              		.align	2
- 264              	.L12:
- 265 000c 00000000 		.word	.LANCHOR2
- 266 0010 00000000 		.word	.LANCHOR3
- 267              		.cfi_endproc
- 268              	.LFE6:
- 270              		.section	.bss.move_speed_err_I,"aw",%nobits
- 271              		.align	2
- 272              		.set	.LANCHOR2,. + 0
- 275              	move_speed_err_I:
- 276 0000 00000000 		.space	4
- 277              		.section	.bss.rotate_speed_err_I,"aw",%nobits
- 278              		.align	2
- 279              		.set	.LANCHOR3,. + 0
- 282              	rotate_speed_err_I:
- 283 0000 00000000 		.space	4
- 284              		.section	.bss.target_vol_l_ctrl,"aw",%nobits
- 285              		.align	2
- 286              		.set	.LANCHOR1,. + 0
- 289              	target_vol_l_ctrl:
- 290 0000 00000000 		.space	4
- 291              		.section	.bss.target_vol_r_ctrl,"aw",%nobits
-ARM GAS  C:\Temp\ccXny9Z1.s 			page 7
-
-
- 292              		.align	2
- 293              		.set	.LANCHOR0,. + 0
- 296              	target_vol_r_ctrl:
- 297 0000 00000000 		.space	4
- 298              		.text
- 299              	.Letext0:
- 300              		.file 2 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\lock.h"
- 301              		.file 3 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\_types.h"
- 302              		.file 4 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\lib\\gcc\\arm-none-eabi\\9.2.1\\include\\st
- 303              		.file 5 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\reent.h"
- 304              		.file 6 "Inc/target.h"
- 305              		.file 7 "Inc/mouse_state.h"
-ARM GAS  C:\Temp\ccXny9Z1.s 			page 8
-=======
  253              		.loc 1 64 5 is_stmt 1 view .LVU42
  254              		.loc 1 64 24 is_stmt 0 view .LVU43
  255 0006 024A     		ldr	r2, .L12+4
@@ -454,7 +358,7 @@ ARM GAS  C:\Temp\ccFDByqd.s 			page 1
  278              		.cfi_startproc
  279              		@ args = 0, pretend = 0, frame = 0
  280              		@ frame_needed = 0, uses_anonymous_args = 0
-ARM GAS  C:\Temp\ccFDByqd.s 			page 7
+ARM GAS  C:\Temp\cced9Zfa.s 			page 7
 
 
  281 0000 10B5     		push	{r4, lr}
@@ -514,63 +418,39 @@ ARM GAS  C:\Temp\ccFDByqd.s 			page 1
  342              		.file 3 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\_types.h"
  343              		.file 4 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\lib\\gcc\\arm-none-eabi\\9.2.1\\include\\st
  344              		.file 5 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\reent.h"
-ARM GAS  C:\Temp\ccFDByqd.s 			page 8
+ARM GAS  C:\Temp\cced9Zfa.s 			page 8
 
 
  345              		.file 6 "Inc/target.h"
  346              		.file 7 "Inc/mouse_state.h"
-ARM GAS  C:\Temp\ccFDByqd.s 			page 9
->>>>>>> origin/release_side_wall_trace
+ARM GAS  C:\Temp\cced9Zfa.s 			page 9
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 control.c
-<<<<<<< HEAD
-  C:\Temp\ccXny9Z1.s:18     .text.get_target_vol_r_ctrl:00000000 $t
-  C:\Temp\ccXny9Z1.s:26     .text.get_target_vol_r_ctrl:00000000 get_target_vol_r_ctrl
-  C:\Temp\ccXny9Z1.s:42     .text.get_target_vol_r_ctrl:00000008 $d
-  C:\Temp\ccXny9Z1.s:47     .text.get_target_vol_l_ctrl:00000000 $t
-  C:\Temp\ccXny9Z1.s:54     .text.get_target_vol_l_ctrl:00000000 get_target_vol_l_ctrl
-  C:\Temp\ccXny9Z1.s:69     .text.get_target_vol_l_ctrl:00000008 $d
-  C:\Temp\ccXny9Z1.s:78     .text.calc_motor_vol_ctrl:00000000 $t
-  C:\Temp\ccXny9Z1.s:85     .text.calc_motor_vol_ctrl:00000000 calc_motor_vol_ctrl
-  C:\Temp\ccXny9Z1.s:223    .text.calc_motor_vol_ctrl:000000b8 $d
-  C:\Temp\ccXny9Z1.s:237    .text.clr_trace_operate_history:00000000 $t
-  C:\Temp\ccXny9Z1.s:244    .text.clr_trace_operate_history:00000000 clr_trace_operate_history
-  C:\Temp\ccXny9Z1.s:265    .text.clr_trace_operate_history:0000000c $d
-  C:\Temp\ccXny9Z1.s:271    .bss.move_speed_err_I:00000000 $d
-  C:\Temp\ccXny9Z1.s:275    .bss.move_speed_err_I:00000000 move_speed_err_I
-  C:\Temp\ccXny9Z1.s:278    .bss.rotate_speed_err_I:00000000 $d
-  C:\Temp\ccXny9Z1.s:282    .bss.rotate_speed_err_I:00000000 rotate_speed_err_I
-  C:\Temp\ccXny9Z1.s:285    .bss.target_vol_l_ctrl:00000000 $d
-  C:\Temp\ccXny9Z1.s:289    .bss.target_vol_l_ctrl:00000000 target_vol_l_ctrl
-  C:\Temp\ccXny9Z1.s:292    .bss.target_vol_r_ctrl:00000000 $d
-  C:\Temp\ccXny9Z1.s:296    .bss.target_vol_r_ctrl:00000000 target_vol_r_ctrl
-=======
-  C:\Temp\ccFDByqd.s:18     .text.get_target_vol_sum_ctrl:00000000 $t
-  C:\Temp\ccFDByqd.s:26     .text.get_target_vol_sum_ctrl:00000000 get_target_vol_sum_ctrl
-  C:\Temp\ccFDByqd.s:42     .text.get_target_vol_sum_ctrl:00000008 $d
-  C:\Temp\ccFDByqd.s:47     .text.get_target_vol_diff_ctrl:00000000 $t
-  C:\Temp\ccFDByqd.s:54     .text.get_target_vol_diff_ctrl:00000000 get_target_vol_diff_ctrl
-  C:\Temp\ccFDByqd.s:69     .text.get_target_vol_diff_ctrl:00000008 $d
-  C:\Temp\ccFDByqd.s:78     .text.calc_motor_vol_ctrl:00000000 $t
-  C:\Temp\ccFDByqd.s:85     .text.calc_motor_vol_ctrl:00000000 calc_motor_vol_ctrl
-  C:\Temp\ccFDByqd.s:220    .text.calc_motor_vol_ctrl:000000b0 $d
-  C:\Temp\ccFDByqd.s:234    .text.clr_trace_operate_history:00000000 $t
-  C:\Temp\ccFDByqd.s:241    .text.clr_trace_operate_history:00000000 clr_trace_operate_history
-  C:\Temp\ccFDByqd.s:262    .text.clr_trace_operate_history:0000000c $d
-  C:\Temp\ccFDByqd.s:268    .text.adjust_trace_theta:00000000 $t
-  C:\Temp\ccFDByqd.s:275    .text.adjust_trace_theta:00000000 adjust_trace_theta
-  C:\Temp\ccFDByqd.s:305    .text.adjust_trace_theta:00000020 $d
-  C:\Temp\ccFDByqd.s:312    .bss.move_speed_err_I:00000000 $d
-  C:\Temp\ccFDByqd.s:316    .bss.move_speed_err_I:00000000 move_speed_err_I
-  C:\Temp\ccFDByqd.s:319    .bss.rotate_speed_err_I:00000000 $d
-  C:\Temp\ccFDByqd.s:323    .bss.rotate_speed_err_I:00000000 rotate_speed_err_I
-  C:\Temp\ccFDByqd.s:326    .bss.target_vol_diff_ctrl:00000000 $d
-  C:\Temp\ccFDByqd.s:330    .bss.target_vol_diff_ctrl:00000000 target_vol_diff_ctrl
-  C:\Temp\ccFDByqd.s:333    .bss.target_vol_sum_ctrl:00000000 $d
-  C:\Temp\ccFDByqd.s:337    .bss.target_vol_sum_ctrl:00000000 target_vol_sum_ctrl
->>>>>>> origin/release_side_wall_trace
+  C:\Temp\cced9Zfa.s:18     .text.get_target_vol_sum_ctrl:00000000 $t
+  C:\Temp\cced9Zfa.s:26     .text.get_target_vol_sum_ctrl:00000000 get_target_vol_sum_ctrl
+  C:\Temp\cced9Zfa.s:42     .text.get_target_vol_sum_ctrl:00000008 $d
+  C:\Temp\cced9Zfa.s:47     .text.get_target_vol_diff_ctrl:00000000 $t
+  C:\Temp\cced9Zfa.s:54     .text.get_target_vol_diff_ctrl:00000000 get_target_vol_diff_ctrl
+  C:\Temp\cced9Zfa.s:69     .text.get_target_vol_diff_ctrl:00000008 $d
+  C:\Temp\cced9Zfa.s:78     .text.calc_motor_vol_ctrl:00000000 $t
+  C:\Temp\cced9Zfa.s:85     .text.calc_motor_vol_ctrl:00000000 calc_motor_vol_ctrl
+  C:\Temp\cced9Zfa.s:220    .text.calc_motor_vol_ctrl:000000b0 $d
+  C:\Temp\cced9Zfa.s:234    .text.clr_trace_operate_history:00000000 $t
+  C:\Temp\cced9Zfa.s:241    .text.clr_trace_operate_history:00000000 clr_trace_operate_history
+  C:\Temp\cced9Zfa.s:262    .text.clr_trace_operate_history:0000000c $d
+  C:\Temp\cced9Zfa.s:268    .text.adjust_trace_theta:00000000 $t
+  C:\Temp\cced9Zfa.s:275    .text.adjust_trace_theta:00000000 adjust_trace_theta
+  C:\Temp\cced9Zfa.s:305    .text.adjust_trace_theta:00000020 $d
+  C:\Temp\cced9Zfa.s:312    .bss.move_speed_err_I:00000000 $d
+  C:\Temp\cced9Zfa.s:316    .bss.move_speed_err_I:00000000 move_speed_err_I
+  C:\Temp\cced9Zfa.s:319    .bss.rotate_speed_err_I:00000000 $d
+  C:\Temp\cced9Zfa.s:323    .bss.rotate_speed_err_I:00000000 rotate_speed_err_I
+  C:\Temp\cced9Zfa.s:326    .bss.target_vol_diff_ctrl:00000000 $d
+  C:\Temp\cced9Zfa.s:330    .bss.target_vol_diff_ctrl:00000000 target_vol_diff_ctrl
+  C:\Temp\cced9Zfa.s:333    .bss.target_vol_sum_ctrl:00000000 $d
+  C:\Temp\cced9Zfa.s:337    .bss.target_vol_sum_ctrl:00000000 target_vol_sum_ctrl
 
 UNDEFINED SYMBOLS
 __aeabi_f2d

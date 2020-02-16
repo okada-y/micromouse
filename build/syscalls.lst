@@ -1,4 +1,4 @@
-ARM GAS  C:\Temp\cc3wEri5.s 			page 1
+ARM GAS  C:\Temp\ccHzYxd8.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,7 +58,7 @@ ARM GAS  C:\Temp\cc3wEri5.s 			page 1
   28:Src/syscalls.c **** **      this list of conditions and the following disclaimer in the documentation
   29:Src/syscalls.c **** **      and/or other materials provided with the distribution.
   30:Src/syscalls.c **** **   3. Neither the name of STMicroelectronics nor the names of its contributors
-ARM GAS  C:\Temp\cc3wEri5.s 			page 2
+ARM GAS  C:\Temp\ccHzYxd8.s 			page 2
 
 
   31:Src/syscalls.c **** **      may be used to endorse or promote products derived from this software
@@ -118,7 +118,7 @@ ARM GAS  C:\Temp\cc3wEri5.s 			page 1
   39              		.section	.text._getpid,"ax",%progbits
   40              		.align	1
   41              		.global	_getpid
-ARM GAS  C:\Temp\cc3wEri5.s 			page 3
+ARM GAS  C:\Temp\ccHzYxd8.s 			page 3
 
 
   42              		.syntax unified
@@ -178,7 +178,7 @@ ARM GAS  C:\Temp\cc3wEri5.s 			page 1
   86:Src/syscalls.c **** }
   89              		.loc 1 86 1 is_stmt 0 view .LVU10
   90 000a 4FF0FF30 		mov	r0, #-1
-ARM GAS  C:\Temp\cc3wEri5.s 			page 4
+ARM GAS  C:\Temp\ccHzYxd8.s 			page 4
 
 
   91 000e 08BD     		pop	{r3, pc}
@@ -238,7 +238,7 @@ ARM GAS  C:\Temp\cc3wEri5.s 			page 1
  140              		.loc 1 95 1 view -0
  141              		.cfi_startproc
  142              		@ args = 0, pretend = 0, frame = 0
-ARM GAS  C:\Temp\cc3wEri5.s 			page 5
+ARM GAS  C:\Temp\ccHzYxd8.s 			page 5
 
 
  143              		@ frame_needed = 0, uses_anonymous_args = 0
@@ -298,7 +298,7 @@ ARM GAS  C:\Temp\cc3wEri5.s 			page 1
  186 001e 70BD     		pop	{r4, r5, r6, pc}
  187              		.loc 1 104 1 view .LVU33
  188              		.cfi_endproc
-ARM GAS  C:\Temp\cc3wEri5.s 			page 6
+ARM GAS  C:\Temp\ccHzYxd8.s 			page 6
 
 
  189              	.LFE29:
@@ -358,7 +358,7 @@ ARM GAS  C:\Temp\cc3wEri5.s 			page 1
  110:Src/syscalls.c **** 	{
  236              		.loc 1 110 42 is_stmt 0 discriminator 3 view .LVU45
  237 0014 0135     		adds	r5, r5, #1
-ARM GAS  C:\Temp\cc3wEri5.s 			page 7
+ARM GAS  C:\Temp\ccHzYxd8.s 			page 7
 
 
  238              	.LVL17:
@@ -418,7 +418,7 @@ ARM GAS  C:\Temp\cc3wEri5.s 			page 1
  122:Src/syscalls.c **** 
  123:Src/syscalls.c **** int _fstat(int file, struct stat *st)
  124:Src/syscalls.c **** {
-ARM GAS  C:\Temp\cc3wEri5.s 			page 8
+ARM GAS  C:\Temp\ccHzYxd8.s 			page 8
 
 
  286              		.loc 1 124 1 is_stmt 1 view -0
@@ -478,7 +478,7 @@ ARM GAS  C:\Temp\cc3wEri5.s 			page 1
  335              		.fpu fpv4-sp-d16
  337              	_lseek:
  338              	.LVL24:
-ARM GAS  C:\Temp\cc3wEri5.s 			page 9
+ARM GAS  C:\Temp\ccHzYxd8.s 			page 9
 
 
  339              	.LFB34:
@@ -538,7 +538,7 @@ ARM GAS  C:\Temp\cc3wEri5.s 			page 1
  384              		.cfi_restore 3
  385              		.cfi_restore 2
  386              		.cfi_restore 1
-ARM GAS  C:\Temp\cc3wEri5.s 			page 10
+ARM GAS  C:\Temp\ccHzYxd8.s 			page 10
 
 
  387              		.cfi_def_cfa_offset 0
@@ -598,7 +598,7 @@ ARM GAS  C:\Temp\cc3wEri5.s 			page 1
  152:Src/syscalls.c **** {
  437              		.loc 1 152 1 is_stmt 1 view -0
  438              		.cfi_startproc
-ARM GAS  C:\Temp\cc3wEri5.s 			page 11
+ARM GAS  C:\Temp\ccHzYxd8.s 			page 11
 
 
  439              		@ args = 0, pretend = 0, frame = 0
@@ -658,7 +658,7 @@ ARM GAS  C:\Temp\cc3wEri5.s 			page 1
  488              		.syntax unified
  489              		.thumb
  490              		.thumb_func
-ARM GAS  C:\Temp\cc3wEri5.s 			page 12
+ARM GAS  C:\Temp\ccHzYxd8.s 			page 12
 
 
  491              		.fpu fpv4-sp-d16
@@ -718,7 +718,7 @@ ARM GAS  C:\Temp\cc3wEri5.s 			page 1
  538              		.loc 1 170 8 is_stmt 0 view .LVU98
  539 0006 1F23     		movs	r3, #31
  540 0008 0360     		str	r3, [r0]
-ARM GAS  C:\Temp\cc3wEri5.s 			page 13
+ARM GAS  C:\Temp\ccHzYxd8.s 			page 13
 
 
  171:Src/syscalls.c **** 	return -1;
@@ -778,7 +778,7 @@ ARM GAS  C:\Temp\cc3wEri5.s 			page 1
  179:Src/syscalls.c **** 
  180:Src/syscalls.c **** int _execve(char *name, char **argv, char **env)
  181:Src/syscalls.c **** {
-ARM GAS  C:\Temp\cc3wEri5.s 			page 14
+ARM GAS  C:\Temp\ccHzYxd8.s 			page 14
 
 
  591              		.loc 1 181 1 is_stmt 1 view -0
@@ -832,51 +832,51 @@ ARM GAS  C:\Temp\cc3wEri5.s 			page 1
  641              		.file 11 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\stdlib.h"
  642              		.file 12 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\errno.h"
  643              		.file 13 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\times.h"
-ARM GAS  C:\Temp\cc3wEri5.s 			page 15
+ARM GAS  C:\Temp\ccHzYxd8.s 			page 15
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 syscalls.c
-  C:\Temp\cc3wEri5.s:18     .text.initialise_monitor_handles:00000000 $t
-  C:\Temp\cc3wEri5.s:26     .text.initialise_monitor_handles:00000000 initialise_monitor_handles
-  C:\Temp\cc3wEri5.s:40     .text._getpid:00000000 $t
-  C:\Temp\cc3wEri5.s:47     .text._getpid:00000000 _getpid
-  C:\Temp\cc3wEri5.s:62     .text._kill:00000000 $t
-  C:\Temp\cc3wEri5.s:69     .text._kill:00000000 _kill
-  C:\Temp\cc3wEri5.s:96     .text._exit:00000000 $t
-  C:\Temp\cc3wEri5.s:103    .text._exit:00000000 _exit
-  C:\Temp\cc3wEri5.s:130    .text._read:00000000 $t
-  C:\Temp\cc3wEri5.s:137    .text._read:00000000 _read
-  C:\Temp\cc3wEri5.s:192    .text._write:00000000 $t
-  C:\Temp\cc3wEri5.s:199    .text._write:00000000 _write
-  C:\Temp\cc3wEri5.s:251    .text._close:00000000 $t
-  C:\Temp\cc3wEri5.s:258    .text._close:00000000 _close
-  C:\Temp\cc3wEri5.s:276    .text._fstat:00000000 $t
-  C:\Temp\cc3wEri5.s:283    .text._fstat:00000000 _fstat
-  C:\Temp\cc3wEri5.s:305    .text._isatty:00000000 $t
-  C:\Temp\cc3wEri5.s:312    .text._isatty:00000000 _isatty
-  C:\Temp\cc3wEri5.s:330    .text._lseek:00000000 $t
-  C:\Temp\cc3wEri5.s:337    .text._lseek:00000000 _lseek
-  C:\Temp\cc3wEri5.s:355    .text._open:00000000 $t
-  C:\Temp\cc3wEri5.s:362    .text._open:00000000 _open
-  C:\Temp\cc3wEri5.s:393    .text._wait:00000000 $t
-  C:\Temp\cc3wEri5.s:400    .text._wait:00000000 _wait
-  C:\Temp\cc3wEri5.s:427    .text._unlink:00000000 $t
-  C:\Temp\cc3wEri5.s:434    .text._unlink:00000000 _unlink
-  C:\Temp\cc3wEri5.s:461    .text._times:00000000 $t
-  C:\Temp\cc3wEri5.s:468    .text._times:00000000 _times
-  C:\Temp\cc3wEri5.s:486    .text._stat:00000000 $t
-  C:\Temp\cc3wEri5.s:493    .text._stat:00000000 _stat
-  C:\Temp\cc3wEri5.s:515    .text._link:00000000 $t
-  C:\Temp\cc3wEri5.s:522    .text._link:00000000 _link
-  C:\Temp\cc3wEri5.s:549    .text._fork:00000000 $t
-  C:\Temp\cc3wEri5.s:556    .text._fork:00000000 _fork
-  C:\Temp\cc3wEri5.s:581    .text._execve:00000000 $t
-  C:\Temp\cc3wEri5.s:588    .text._execve:00000000 _execve
-  C:\Temp\cc3wEri5.s:626    .data.environ:00000000 environ
-  C:\Temp\cc3wEri5.s:620    .bss.__env:00000000 __env
-  C:\Temp\cc3wEri5.s:617    .bss.__env:00000000 $d
-  C:\Temp\cc3wEri5.s:623    .data.environ:00000000 $d
+  C:\Temp\ccHzYxd8.s:18     .text.initialise_monitor_handles:00000000 $t
+  C:\Temp\ccHzYxd8.s:26     .text.initialise_monitor_handles:00000000 initialise_monitor_handles
+  C:\Temp\ccHzYxd8.s:40     .text._getpid:00000000 $t
+  C:\Temp\ccHzYxd8.s:47     .text._getpid:00000000 _getpid
+  C:\Temp\ccHzYxd8.s:62     .text._kill:00000000 $t
+  C:\Temp\ccHzYxd8.s:69     .text._kill:00000000 _kill
+  C:\Temp\ccHzYxd8.s:96     .text._exit:00000000 $t
+  C:\Temp\ccHzYxd8.s:103    .text._exit:00000000 _exit
+  C:\Temp\ccHzYxd8.s:130    .text._read:00000000 $t
+  C:\Temp\ccHzYxd8.s:137    .text._read:00000000 _read
+  C:\Temp\ccHzYxd8.s:192    .text._write:00000000 $t
+  C:\Temp\ccHzYxd8.s:199    .text._write:00000000 _write
+  C:\Temp\ccHzYxd8.s:251    .text._close:00000000 $t
+  C:\Temp\ccHzYxd8.s:258    .text._close:00000000 _close
+  C:\Temp\ccHzYxd8.s:276    .text._fstat:00000000 $t
+  C:\Temp\ccHzYxd8.s:283    .text._fstat:00000000 _fstat
+  C:\Temp\ccHzYxd8.s:305    .text._isatty:00000000 $t
+  C:\Temp\ccHzYxd8.s:312    .text._isatty:00000000 _isatty
+  C:\Temp\ccHzYxd8.s:330    .text._lseek:00000000 $t
+  C:\Temp\ccHzYxd8.s:337    .text._lseek:00000000 _lseek
+  C:\Temp\ccHzYxd8.s:355    .text._open:00000000 $t
+  C:\Temp\ccHzYxd8.s:362    .text._open:00000000 _open
+  C:\Temp\ccHzYxd8.s:393    .text._wait:00000000 $t
+  C:\Temp\ccHzYxd8.s:400    .text._wait:00000000 _wait
+  C:\Temp\ccHzYxd8.s:427    .text._unlink:00000000 $t
+  C:\Temp\ccHzYxd8.s:434    .text._unlink:00000000 _unlink
+  C:\Temp\ccHzYxd8.s:461    .text._times:00000000 $t
+  C:\Temp\ccHzYxd8.s:468    .text._times:00000000 _times
+  C:\Temp\ccHzYxd8.s:486    .text._stat:00000000 $t
+  C:\Temp\ccHzYxd8.s:493    .text._stat:00000000 _stat
+  C:\Temp\ccHzYxd8.s:515    .text._link:00000000 $t
+  C:\Temp\ccHzYxd8.s:522    .text._link:00000000 _link
+  C:\Temp\ccHzYxd8.s:549    .text._fork:00000000 $t
+  C:\Temp\ccHzYxd8.s:556    .text._fork:00000000 _fork
+  C:\Temp\ccHzYxd8.s:581    .text._execve:00000000 $t
+  C:\Temp\ccHzYxd8.s:588    .text._execve:00000000 _execve
+  C:\Temp\ccHzYxd8.s:626    .data.environ:00000000 environ
+  C:\Temp\ccHzYxd8.s:620    .bss.__env:00000000 __env
+  C:\Temp\ccHzYxd8.s:617    .bss.__env:00000000 $d
+  C:\Temp\ccHzYxd8.s:623    .data.environ:00000000 $d
 
 UNDEFINED SYMBOLS
 __errno

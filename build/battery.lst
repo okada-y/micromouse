@@ -1,4 +1,4 @@
-ARM GAS  C:\Temp\ccBDj7gz.s 			page 1
+ARM GAS  C:\Temp\ccjJI4xh.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -26,7 +26,7 @@ ARM GAS  C:\Temp\ccBDj7gz.s 			page 1
   23              		.thumb_func
   24              		.fpu fpv4-sp-d16
   26              	Battery_GetVoltage:
-  27              	.LFB0:
+  27              	.LFB133:
   28              		.file 1 "Src/battery.c"
    1:Src/battery.c **** /*
    2:Src/battery.c ****  * battery.c
@@ -36,17 +36,20 @@ ARM GAS  C:\Temp\ccBDj7gz.s 			page 1
    6:Src/battery.c ****  */
    7:Src/battery.c **** 
    8:Src/battery.c **** #include "battery.h"
-   9:Src/battery.c **** 
-  10:Src/battery.c **** #define BATTERY_REFERENCE	(3.0f)
-  11:Src/battery.c **** #define BATTERY_LIMIT		(3.2f)
+   9:Src/battery.c **** #include "ir_sensor.h"
+  10:Src/battery.c **** #include "main.h"
+  11:Src/battery.c **** #include "index.h"
   12:Src/battery.c **** 
-  13:Src/battery.c **** 
-  14:Src/battery.c **** /* ---------------------------------------------------------------
-  15:Src/battery.c **** 	バッテリの電圧を取得する関数
-  16:Src/battery.c **** --------------------------------------------------------------- */
-  17:Src/battery.c **** float Battery_GetVoltage( void )
-  18:Src/battery.c **** {
-  29              		.loc 1 18 1 view -0
+  13:Src/battery.c **** #define BATTERY_REFERENCE	(3.0f)
+  14:Src/battery.c **** #define BATTERY_LIMIT		(3.2f)
+  15:Src/battery.c **** 
+  16:Src/battery.c **** 
+  17:Src/battery.c **** /* ---------------------------------------------------------------
+  18:Src/battery.c **** 	バッテリの電圧を取得する関数
+  19:Src/battery.c **** --------------------------------------------------------------- */
+  20:Src/battery.c **** float Battery_GetVoltage( void )
+  21:Src/battery.c **** {
+  29              		.loc 1 21 1 view -0
   30              		.cfi_startproc
   31              		@ args = 0, pretend = 0, frame = 0
   32              		@ frame_needed = 0, uses_anonymous_args = 0
@@ -55,22 +58,22 @@ ARM GAS  C:\Temp\ccBDj7gz.s 			page 1
   35              		.cfi_def_cfa_offset 8
   36              		.cfi_offset 3, -8
   37              		.cfi_offset 14, -4
-  19:Src/battery.c **** 	return (BATTERY_REFERENCE * (20.f / 10.f) * (float)Sensor_GetBatteryValue()) / 4096.f;
-  38              		.loc 1 19 2 view .LVU1
-  39              		.loc 1 19 53 is_stmt 0 view .LVU2
-ARM GAS  C:\Temp\ccBDj7gz.s 			page 2
+ARM GAS  C:\Temp\ccjJI4xh.s 			page 2
 
 
+  22:Src/battery.c **** 	return (BATTERY_REFERENCE * (20.f / 10.f) * (float)Sensor_GetBatteryValue()) / 4096.f;
+  38              		.loc 1 22 2 view .LVU1
+  39              		.loc 1 22 53 is_stmt 0 view .LVU2
   40 0002 FFF7FEFF 		bl	Sensor_GetBatteryValue
   41              	.LVL0:
   42 0006 07EE900A 		vmov	s15, r0	@ int
-  43              		.loc 1 19 46 view .LVU3
-  44 000a F8EEE77A 		vcvt.f32.s32	s15, s15
-  45              		.loc 1 19 44 view .LVU4
+  43              		.loc 1 22 46 view .LVU3
+  44 000a F8EE677A 		vcvt.f32.u32	s15, s15
+  45              		.loc 1 22 44 view .LVU4
   46 000e B1EE080A 		vmov.f32	s0, #6.0e+0
   47 0012 67EE807A 		vmul.f32	s15, s15, s0
-  20:Src/battery.c **** }
-  48              		.loc 1 20 1 view .LVU5
+  23:Src/battery.c **** }
+  48              		.loc 1 23 1 view .LVU5
   49 0016 9FED020A 		vldr.32	s0, .L3
   50 001a 27EE800A 		vmul.f32	s0, s15, s0
   51 001e 08BD     		pop	{r3, pc}
@@ -79,7 +82,7 @@ ARM GAS  C:\Temp\ccBDj7gz.s 			page 1
   54              	.L3:
   55 0020 00008039 		.word	964689920
   56              		.cfi_endproc
-  57              	.LFE0:
+  57              	.LFE133:
   59              		.section	.text.Battery_LimiterVoltage,"ax",%progbits
   60              		.align	1
   61              		.global	Battery_LimiterVoltage
@@ -88,14 +91,14 @@ ARM GAS  C:\Temp\ccBDj7gz.s 			page 1
   64              		.thumb_func
   65              		.fpu fpv4-sp-d16
   67              	Battery_LimiterVoltage:
-  68              	.LFB1:
-  21:Src/battery.c **** 
-  22:Src/battery.c **** /* ---------------------------------------------------------------
-  23:Src/battery.c **** 	バッテリの電圧制限関数
-  24:Src/battery.c **** --------------------------------------------------------------- */
-  25:Src/battery.c **** void Battery_LimiterVoltage( void )
-  26:Src/battery.c **** {
-  69              		.loc 1 26 1 is_stmt 1 view -0
+  68              	.LFB134:
+  24:Src/battery.c **** 
+  25:Src/battery.c **** /* ---------------------------------------------------------------
+  26:Src/battery.c **** 	バッテリの電圧制限関数
+  27:Src/battery.c **** --------------------------------------------------------------- */
+  28:Src/battery.c **** void Battery_LimiterVoltage( void )
+  29:Src/battery.c **** {
+  69              		.loc 1 29 1 is_stmt 1 view -0
   70              		.cfi_startproc
   71              		@ args = 0, pretend = 0, frame = 8
   72              		@ frame_needed = 0, uses_anonymous_args = 0
@@ -106,124 +109,147 @@ ARM GAS  C:\Temp\ccBDj7gz.s 			page 1
   77 0002 83B0     		sub	sp, sp, #12
   78              	.LCFI2:
   79              		.cfi_def_cfa_offset 16
-  27:Src/battery.c **** 	volatile int	i;
-  80              		.loc 1 27 2 view .LVU7
-  28:Src/battery.c **** 	volatile float	battery_voltage_average;
-  81              		.loc 1 28 2 view .LVU8
-  29:Src/battery.c **** 
-  30:Src/battery.c **** 	for( i = 0; i < 10; i++) {
-  82              		.loc 1 30 2 view .LVU9
-  83              		.loc 1 30 9 is_stmt 0 view .LVU10
+  30:Src/battery.c **** 	volatile int	i;
+  80              		.loc 1 30 2 view .LVU7
+  31:Src/battery.c **** 	volatile float	battery_voltage_average;
+  81              		.loc 1 31 2 view .LVU8
+  32:Src/battery.c **** 
+  33:Src/battery.c **** 	for( i = 0; i < 10; i++) {
+  82              		.loc 1 33 2 view .LVU9
+  83              		.loc 1 33 9 is_stmt 0 view .LVU10
   84 0004 0023     		movs	r3, #0
+ARM GAS  C:\Temp\ccjJI4xh.s 			page 3
+
+
   85 0006 0193     		str	r3, [sp, #4]
-  86              		.loc 1 30 2 view .LVU11
+  86              		.loc 1 33 2 view .LVU11
   87 0008 0DE0     		b	.L6
-ARM GAS  C:\Temp\ccBDj7gz.s 			page 3
-
-
   88              	.L7:
-  89              	.LBB2:
-  31:Src/battery.c **** 		HAL_Delay(10);
-  90              		.loc 1 31 3 is_stmt 1 discriminator 3 view .LVU12
-  91 000a 0A20     		movs	r0, #10
-  92 000c FFF7FEFF 		bl	HAL_Delay
-  93              	.LVL1:
-  32:Src/battery.c **** 		battery_voltage_average += Battery_GetVoltage();
-  94              		.loc 1 32 3 discriminator 3 view .LVU13
-  95              		.loc 1 32 30 is_stmt 0 discriminator 3 view .LVU14
-  96 0010 FFF7FEFF 		bl	Battery_GetVoltage
-  97              	.LVL2:
-  98              		.loc 1 32 27 discriminator 3 view .LVU15
-  99 0014 DDED007A 		vldr.32	s15, [sp]
- 100 0018 77EE807A 		vadd.f32	s15, s15, s0
- 101 001c CDED007A 		vstr.32	s15, [sp]
- 102              	.LBE2:
-  30:Src/battery.c **** 		HAL_Delay(10);
- 103              		.loc 1 30 22 is_stmt 1 discriminator 3 view .LVU16
-  30:Src/battery.c **** 		HAL_Delay(10);
- 104              		.loc 1 30 23 is_stmt 0 discriminator 3 view .LVU17
- 105 0020 019B     		ldr	r3, [sp, #4]
- 106 0022 0133     		adds	r3, r3, #1
- 107 0024 0193     		str	r3, [sp, #4]
- 108              	.L6:
-  30:Src/battery.c **** 		HAL_Delay(10);
- 109              		.loc 1 30 14 is_stmt 1 discriminator 1 view .LVU18
-  30:Src/battery.c **** 		HAL_Delay(10);
- 110              		.loc 1 30 16 is_stmt 0 discriminator 1 view .LVU19
- 111 0026 019B     		ldr	r3, [sp, #4]
-  30:Src/battery.c **** 		HAL_Delay(10);
- 112              		.loc 1 30 2 discriminator 1 view .LVU20
- 113 0028 092B     		cmp	r3, #9
- 114 002a EEDD     		ble	.L7
-  33:Src/battery.c **** 	}
-  34:Src/battery.c **** 	battery_voltage_average /= 10;
- 115              		.loc 1 34 2 is_stmt 1 view .LVU21
- 116              		.loc 1 34 26 is_stmt 0 view .LVU22
- 117 002c DDED006A 		vldr.32	s13, [sp]
- 118 0030 B2EE047A 		vmov.f32	s14, #1.0e+1
- 119 0034 C6EE877A 		vdiv.f32	s15, s13, s14
- 120 0038 CDED007A 		vstr.32	s15, [sp]
-  35:Src/battery.c **** 
-  36:Src/battery.c **** 	if( battery_voltage_average < BATTERY_LIMIT ) {
- 121              		.loc 1 36 2 is_stmt 1 view .LVU23
- 122              		.loc 1 36 30 is_stmt 0 view .LVU24
- 123 003c 9DED007A 		vldr.32	s14, [sp]
- 124              		.loc 1 36 4 view .LVU25
- 125 0040 DFED077A 		vldr.32	s15, .L13
- 126 0044 B4EEE77A 		vcmpe.f32	s14, s15
- 127 0048 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
- 128 004c 05D5     		bpl	.L11
- 129              	.L10:
-  37:Src/battery.c **** 		while( 1 ) {
- 130              		.loc 1 37 3 is_stmt 1 discriminator 1 view .LVU26
- 131              	.LBB3:
-  38:Src/battery.c **** 			LED_ALL_TOGGLE();
-ARM GAS  C:\Temp\ccBDj7gz.s 			page 4
+  34:Src/battery.c **** 		HAL_Delay(10);
+  89              		.loc 1 34 3 is_stmt 1 discriminator 3 view .LVU12
+  90 000a 0A20     		movs	r0, #10
+  91 000c FFF7FEFF 		bl	HAL_Delay
+  92              	.LVL1:
+  35:Src/battery.c **** 		battery_voltage_average += Battery_GetVoltage();
+  93              		.loc 1 35 3 discriminator 3 view .LVU13
+  94              		.loc 1 35 30 is_stmt 0 discriminator 3 view .LVU14
+  95 0010 FFF7FEFF 		bl	Battery_GetVoltage
+  96              	.LVL2:
+  97              		.loc 1 35 27 discriminator 3 view .LVU15
+  98 0014 DDED007A 		vldr.32	s15, [sp]
+  99 0018 77EE807A 		vadd.f32	s15, s15, s0
+ 100 001c CDED007A 		vstr.32	s15, [sp]
+  33:Src/battery.c **** 		HAL_Delay(10);
+ 101              		.loc 1 33 22 is_stmt 1 discriminator 3 view .LVU16
+  33:Src/battery.c **** 		HAL_Delay(10);
+ 102              		.loc 1 33 23 is_stmt 0 discriminator 3 view .LVU17
+ 103 0020 019B     		ldr	r3, [sp, #4]
+ 104 0022 0133     		adds	r3, r3, #1
+ 105 0024 0193     		str	r3, [sp, #4]
+ 106              	.L6:
+  33:Src/battery.c **** 		HAL_Delay(10);
+ 107              		.loc 1 33 14 is_stmt 1 discriminator 1 view .LVU18
+  33:Src/battery.c **** 		HAL_Delay(10);
+ 108              		.loc 1 33 16 is_stmt 0 discriminator 1 view .LVU19
+ 109 0026 019B     		ldr	r3, [sp, #4]
+  33:Src/battery.c **** 		HAL_Delay(10);
+ 110              		.loc 1 33 2 discriminator 1 view .LVU20
+ 111 0028 092B     		cmp	r3, #9
+ 112 002a EEDD     		ble	.L7
+  36:Src/battery.c **** 	}
+  37:Src/battery.c **** 	battery_voltage_average /= 10;
+ 113              		.loc 1 37 2 is_stmt 1 view .LVU21
+ 114              		.loc 1 37 26 is_stmt 0 view .LVU22
+ 115 002c DDED006A 		vldr.32	s13, [sp]
+ 116 0030 B2EE047A 		vmov.f32	s14, #1.0e+1
+ 117 0034 C6EE877A 		vdiv.f32	s15, s13, s14
+ 118 0038 CDED007A 		vstr.32	s15, [sp]
+  38:Src/battery.c **** 
+  39:Src/battery.c **** 	if( battery_voltage_average < BATTERY_LIMIT ) {
+ 119              		.loc 1 39 2 is_stmt 1 view .LVU23
+ 120              		.loc 1 39 30 is_stmt 0 view .LVU24
+ 121 003c 9DED007A 		vldr.32	s14, [sp]
+ 122              		.loc 1 39 4 view .LVU25
+ 123 0040 DFED097A 		vldr.32	s15, .L13
+ 124 0044 B4EEE77A 		vcmpe.f32	s14, s15
+ 125 0048 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 126 004c 08D5     		bpl	.L11
+ 127              	.L10:
+  40:Src/battery.c **** 		while( 1 ) {
+ 128              		.loc 1 40 3 is_stmt 1 discriminator 1 view .LVU26
+  41:Src/battery.c **** 			LED_ALL_TOGGLE();
+ARM GAS  C:\Temp\ccjJI4xh.s 			page 4
 
 
- 132              		.loc 1 38 4 discriminator 1 view .LVU27
- 133 004e FFF7FEFF 		bl	LED_ALL_TOGGLE
- 134              	.LVL3:
-  39:Src/battery.c **** 			HAL_Delay(200);
- 135              		.loc 1 39 4 discriminator 1 view .LVU28
- 136 0052 C820     		movs	r0, #200
- 137 0054 FFF7FEFF 		bl	HAL_Delay
- 138              	.LVL4:
- 139              	.LBE3:
-  37:Src/battery.c **** 		while( 1 ) {
- 140              		.loc 1 37 8 discriminator 1 view .LVU29
- 141 0058 F9E7     		b	.L10
- 142              	.L11:
-  40:Src/battery.c **** 		}
-  41:Src/battery.c **** 	} else;
-  42:Src/battery.c **** }
- 143              		.loc 1 42 1 is_stmt 0 view .LVU30
- 144 005a 03B0     		add	sp, sp, #12
- 145              	.LCFI3:
- 146              		.cfi_def_cfa_offset 4
- 147              		@ sp needed
- 148 005c 5DF804FB 		ldr	pc, [sp], #4
- 149              	.L14:
- 150              		.align	2
- 151              	.L13:
- 152 0060 CDCC4C40 		.word	1078774989
- 153              		.cfi_endproc
- 154              	.LFE1:
- 156              		.text
- 157              	.Letext0:
-ARM GAS  C:\Temp\ccBDj7gz.s 			page 5
+ 129              		.loc 1 41 4 discriminator 1 view .LVU27
+ 130 004e 4FF46451 		mov	r1, #14592
+ 131 0052 0648     		ldr	r0, .L13+4
+ 132 0054 FFF7FEFF 		bl	HAL_GPIO_TogglePin
+ 133              	.LVL3:
+  42:Src/battery.c **** 			HAL_Delay(200);
+ 134              		.loc 1 42 4 discriminator 1 view .LVU28
+ 135 0058 C820     		movs	r0, #200
+ 136 005a FFF7FEFF 		bl	HAL_Delay
+ 137              	.LVL4:
+  40:Src/battery.c **** 		while( 1 ) {
+ 138              		.loc 1 40 8 discriminator 1 view .LVU29
+ 139 005e F6E7     		b	.L10
+ 140              	.L11:
+  43:Src/battery.c **** 		}
+  44:Src/battery.c **** 	} else;
+  45:Src/battery.c **** }
+ 141              		.loc 1 45 1 is_stmt 0 view .LVU30
+ 142 0060 03B0     		add	sp, sp, #12
+ 143              	.LCFI3:
+ 144              		.cfi_def_cfa_offset 4
+ 145              		@ sp needed
+ 146 0062 5DF804FB 		ldr	pc, [sp], #4
+ 147              	.L14:
+ 148 0066 00BF     		.align	2
+ 149              	.L13:
+ 150 0068 CDCC4C40 		.word	1078774989
+ 151 006c 00000240 		.word	1073872896
+ 152              		.cfi_endproc
+ 153              	.LFE134:
+ 155              		.text
+ 156              	.Letext0:
+ 157              		.file 2 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\machine\\_default_t
+ 158              		.file 3 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\lock.h"
+ 159              		.file 4 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\_types.h"
+ 160              		.file 5 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\lib\\gcc\\arm-none-eabi\\9.2.1\\include\\st
+ 161              		.file 6 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\reent.h"
+ 162              		.file 7 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 163              		.file 8 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\math.h"
+ 164              		.file 9 "Drivers/CMSIS/Include/core_cm4.h"
+ 165              		.file 10 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h"
+ 166              		.file 11 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f413xx.h"
+ 167              		.file 12 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h"
+ 168              		.file 13 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
+ 169              		.file 14 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h"
+ 170              		.file 15 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_adc.h"
+ 171              		.file 16 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h"
+ 172              		.file 17 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h"
+ 173              		.file 18 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h"
+ 174              		.file 19 "Inc/adc.h"
+ 175              		.file 20 "Inc/spi.h"
+ 176              		.file 21 "Inc/tim.h"
+ 177              		.file 22 "Inc/usart.h"
+ 178              		.file 23 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h"
+ 179              		.file 24 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio.h"
+ 180              		.file 25 "Inc/ir_sensor.h"
+ARM GAS  C:\Temp\ccjJI4xh.s 			page 5
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 battery.c
-  C:\Temp\ccBDj7gz.s:18     .text.Battery_GetVoltage:00000000 $t
-  C:\Temp\ccBDj7gz.s:26     .text.Battery_GetVoltage:00000000 Battery_GetVoltage
-  C:\Temp\ccBDj7gz.s:55     .text.Battery_GetVoltage:00000020 $d
-  C:\Temp\ccBDj7gz.s:60     .text.Battery_LimiterVoltage:00000000 $t
-  C:\Temp\ccBDj7gz.s:67     .text.Battery_LimiterVoltage:00000000 Battery_LimiterVoltage
-  C:\Temp\ccBDj7gz.s:152    .text.Battery_LimiterVoltage:00000060 $d
+  C:\Temp\ccjJI4xh.s:18     .text.Battery_GetVoltage:00000000 $t
+  C:\Temp\ccjJI4xh.s:26     .text.Battery_GetVoltage:00000000 Battery_GetVoltage
+  C:\Temp\ccjJI4xh.s:55     .text.Battery_GetVoltage:00000020 $d
+  C:\Temp\ccjJI4xh.s:60     .text.Battery_LimiterVoltage:00000000 $t
+  C:\Temp\ccjJI4xh.s:67     .text.Battery_LimiterVoltage:00000000 Battery_LimiterVoltage
+  C:\Temp\ccjJI4xh.s:150    .text.Battery_LimiterVoltage:00000068 $d
 
 UNDEFINED SYMBOLS
 Sensor_GetBatteryValue
 HAL_Delay
-LED_ALL_TOGGLE
+HAL_GPIO_TogglePin

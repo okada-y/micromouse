@@ -8,6 +8,7 @@
 #include "mouse_state.h"
 #include "target.h"
 #include "ir_sensor.h"
+#include "lookuptable.h"
 
 
 static double front_sensor_move_err_I = 0;   	//偏差和のI項
@@ -132,8 +133,12 @@ void calc_side_wall_ctrl_mode ( void )
 	uint16_t j = 0;
 
 	//センサ値取得
-	side_sensor_l = SensorValue2length(1);
-	side_sensor_r = SensorValue2length(2);
+	// side_sensor_l = SensorValue2length(1);
+	// side_sensor_r = SensorValue2length(2);
+
+	side_sensor_l = get_sidewall_dis_table(Sensor_GetValue(1));
+	side_sensor_r = get_sidewall_dis_table(Sensor_GetValue(2));
+
 
 	//センサ変化量取得
 	side_sensor_l_diff = ABS(side_sensor_l - side_sensor_l_old);
@@ -202,15 +207,16 @@ double get_side_wall_err(void)
 	
 	switch(side_wall_ctrl_mode){
 		case left:
-			side_wall_err_tmp = -2 * (target_sensor_sl - SensorValue2length(1));
+			side_wall_err_tmp = -2 * (target_sensor_sl - get_sidewall_dis_table(Sensor_GetValue(1)));
 			break;
 		
 		case right:
-			side_wall_err_tmp = 2 * (target_sensor_sr - SensorValue2length(2));
+			side_wall_err_tmp = 2 * (target_sensor_sr - get_sidewall_dis_table(Sensor_GetValue(2)));
 			break;
 		
 		case both_side:
-			side_wall_err_tmp = (target_sensor_sr - SensorValue2length(2)) - (target_sensor_sl - SensorValue2length(1));
+			side_wall_err_tmp = (target_sensor_sr - get_sidewall_dis_table(Sensor_GetValue(2))) 
+								- (target_sensor_sl - get_sidewall_dis_table(Sensor_GetValue(1)));
 			break;
 		
 		case none:

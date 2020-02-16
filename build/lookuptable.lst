@@ -1,0 +1,388 @@
+ARM GAS  C:\Temp\ccIoVgLe.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"lookuptable.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.global	__aeabi_f2d
+  18              		.global	__aeabi_dsub
+  19              		.global	__aeabi_d2f
+  20              		.section	.text.get_sidewall_dis_table,"ax",%progbits
+  21              		.align	1
+  22              		.global	get_sidewall_dis_table
+  23              		.arch armv7e-m
+  24              		.syntax unified
+  25              		.thumb
+  26              		.thumb_func
+  27              		.fpu fpv4-sp-d16
+  29              	get_sidewall_dis_table:
+  30              	.LVL0:
+  31              	.LFB3:
+  32              		.file 1 "Src/lookuptable.c"
+   1:Src/lookuptable.c **** #include <stdio.h>
+   2:Src/lookuptable.c **** #include "lookuptable.h"
+   3:Src/lookuptable.c **** 
+   4:Src/lookuptable.c **** float table_sidewall[table_num_sidewall] = {
+   5:Src/lookuptable.c ****     0,
+   6:Src/lookuptable.c ****     0.0249860385419959,
+   7:Src/lookuptable.c ****     0.0353832462503951,
+   8:Src/lookuptable.c ****     0.0414652228720175,
+   9:Src/lookuptable.c ****     0.0457804539587943,
+  10:Src/lookuptable.c ****     0.0491276072285074,
+  11:Src/lookuptable.c ****     0.0518624305804167,
+  12:Src/lookuptable.c ****     0.0541746907778256,
+  13:Src/lookuptable.c ****     0.0561776616671934,
+  14:Src/lookuptable.c ****     0.0579444072020392,
+  15:Src/lookuptable.c ****     0.0595248149369066,
+  16:Src/lookuptable.c ****     0.0609544676339715,
+  17:Src/lookuptable.c ****     0.0622596382888159,
+  18:Src/lookuptable.c ****     0.0634602789039189,
+  19:Src/lookuptable.c ****     0.0645718984862248,
+  20:Src/lookuptable.c ****     0.0656067915585291,
+  21:Src/lookuptable.c ****     0.0665748693755926,
+  22:Src/lookuptable.c ****     0.0674842387028391,
+  23:Src/lookuptable.c ****     0.0683416149104384,
+  24:Src/lookuptable.c ****     0.0691526232294925,
+  25:Src/lookuptable.c ****     0.0699220226453058,
+  26:Src/lookuptable.c ****     0.0706538751078472,
+ARM GAS  C:\Temp\ccIoVgLe.s 			page 2
+
+
+  27:Src/lookuptable.c ****     0.0713516753423706,
+  28:Src/lookuptable.c ****     0.0720184517809331,
+  29:Src/lookuptable.c ****     0.0726568459972151,
+  30:Src/lookuptable.c ****     0.0732691759150189,
+  31:Src/lookuptable.c ****     0.0738574866123181,
+  32:Src/lookuptable.c ****     0.0744235915320608,
+  33:Src/lookuptable.c ****     0.0749691061946239,
+  34:Src/lookuptable.c ****     0.075495475991793,
+  35:Src/lookuptable.c ****     0.0760039992669282,
+  36:Src/lookuptable.c ****     0.0764958466092731,
+  37:Src/lookuptable.c ****     0.0769720770839918,
+  38:Src/lookuptable.c ****     0.0774336519639931,
+  39:Src/lookuptable.c ****     0.0778814464112383,
+  40:Src/lookuptable.c ****     0.0783162594643371,
+  41:Src/lookuptable.c ****     0.0787388226188376,
+  42:Src/lookuptable.c ****     0.0791498072316593,
+  43:Src/lookuptable.c ****     0.0795498309378917,
+  44:Src/lookuptable.c ****     0.0799394632339406,
+  45:Src/lookuptable.c ****     0.0803192303537049,
+  46:Src/lookuptable.c ****     0.0806896195425605,
+  47:Src/lookuptable.c ****     0.0810510828162464,
+  48:Src/lookuptable.c ****     0.0814040402773993,
+  49:Src/lookuptable.c ****     0.0817488830507698,
+  50:Src/lookuptable.c ****     0.0820859758885507,
+  51:Src/lookuptable.c ****     0.0824156594893323,
+  52:Src/lookuptable.c ****     0.0827382525676468,
+  53:Src/lookuptable.c ****     0.0830540537056143,
+  54:Src/lookuptable.c ****     0.0833633430136553,
+  55:Src/lookuptable.c ****     0.0836663836234181,
+  56:Src/lookuptable.c ****     0.0839634230328608,
+  57:Src/lookuptable.c ****     0.0842546943207173,
+  58:Src/lookuptable.c ****     0.0845404172452777,
+  59:Src/lookuptable.c ****     0.08482079924046,
+  60:Src/lookuptable.c ****     0.085096036320483,
+  61:Src/lookuptable.c ****     0.0853663139030231,
+  62:Src/lookuptable.c ****     0.0856318075595141,
+  63:Src/lookuptable.c ****     0.0858926837001922,
+  64:Src/lookuptable.c ****     0.0861491002005817,
+  65:Src/lookuptable.c ****     0.0864012069753274,
+  66:Src/lookuptable.c ****     0.0866491465045956,
+  67:Src/lookuptable.c ****     0.0868930543176723,
+  68:Src/lookuptable.c ****     0.0871330594378689
+  69:Src/lookuptable.c **** };
+  70:Src/lookuptable.c **** 
+  71:Src/lookuptable.c **** //機能	: 横壁センサ値をルックアップテーブルにより距離に変換する
+  72:Src/lookuptable.c **** //引数	: 横壁センサ値
+  73:Src/lookuptable.c **** //返り値	: 距離
+  74:Src/lookuptable.c **** float get_sidewall_dis_table ( int16_t sensor_value )
+  75:Src/lookuptable.c **** {
+  33              		.loc 1 75 1 view -0
+  34              		.cfi_startproc
+  35              		@ args = 0, pretend = 0, frame = 0
+  36              		@ frame_needed = 0, uses_anonymous_args = 0
+  37              		.loc 1 75 1 is_stmt 0 view .LVU1
+  38 0000 08B5     		push	{r3, lr}
+  39              	.LCFI0:
+  40              		.cfi_def_cfa_offset 8
+ARM GAS  C:\Temp\ccIoVgLe.s 			page 3
+
+
+  41              		.cfi_offset 3, -8
+  42              		.cfi_offset 14, -4
+  76:Src/lookuptable.c ****     int16_t table_int = 0;//テーブルの整数部
+  43              		.loc 1 76 5 is_stmt 1 view .LVU2
+  44              	.LVL1:
+  77:Src/lookuptable.c ****     int16_t table_deci = 0;//テーブルの少数部
+  45              		.loc 1 77 5 view .LVU3
+  78:Src/lookuptable.c ****     float table_tilt = 0;//テーブル間の傾き
+  46              		.loc 1 78 5 view .LVU4
+  79:Src/lookuptable.c ****     float side_wall_dis = 0; //距離変換結果
+  47              		.loc 1 79 5 view .LVU5
+  80:Src/lookuptable.c **** 
+  81:Src/lookuptable.c ****     table_int = sensor_value / table_step_sidewall;
+  48              		.loc 1 81 5 view .LVU6
+  49              		.loc 1 81 15 is_stmt 0 view .LVU7
+  50 0002 0346     		mov	r3, r0
+  51 0004 0028     		cmp	r0, #0
+  52 0006 13DB     		blt	.L7
+  53              	.L2:
+  54 0008 5B11     		asrs	r3, r3, #5
+  55              	.LVL2:
+  82:Src/lookuptable.c **** 
+  83:Src/lookuptable.c ****     if( table_int < 0 ){
+  56              		.loc 1 83 5 is_stmt 1 view .LVU8
+  57              		.loc 1 83 7 is_stmt 0 view .LVU9
+  58 000a 10F11F0F 		cmn	r0, #31
+  59 000e 12DA     		bge	.L3
+  84:Src/lookuptable.c ****         side_wall_dis = table_sidewall[0];
+  60              		.loc 1 84 9 is_stmt 1 view .LVU10
+  61              		.loc 1 84 23 is_stmt 0 view .LVU11
+  62 0010 1F4B     		ldr	r3, .L8+8
+  63              	.LVL3:
+  64              		.loc 1 84 23 view .LVU12
+  65 0012 1868     		ldr	r0, [r3]	@ float
+  66              	.LVL4:
+  67              	.L4:
+  85:Src/lookuptable.c ****     }
+  86:Src/lookuptable.c ****     else if (table_int >= table_num_sidewall -1 ){
+  87:Src/lookuptable.c ****         side_wall_dis = table_sidewall[table_num_sidewall -1 ];
+  88:Src/lookuptable.c ****     }
+  89:Src/lookuptable.c ****     else
+  90:Src/lookuptable.c ****     {
+  91:Src/lookuptable.c ****         table_deci = sensor_value % table_step_sidewall;
+  92:Src/lookuptable.c ****         table_tilt = (table_sidewall[table_int+1]-table_sidewall[table_int])/table_step_sidewall;
+  93:Src/lookuptable.c ****         side_wall_dis = table_sidewall[table_int] + (float)table_deci * table_tilt;
+  94:Src/lookuptable.c ****     }
+  95:Src/lookuptable.c **** 
+  96:Src/lookuptable.c ****     side_wall_dis = 0.09 - side_wall_dis;
+  68              		.loc 1 96 5 is_stmt 1 view .LVU13
+  69              		.loc 1 96 26 is_stmt 0 view .LVU14
+  70 0014 FFF7FEFF 		bl	__aeabi_f2d
+  71              	.LVL5:
+  72              		.loc 1 96 26 view .LVU15
+  73 0018 0246     		mov	r2, r0
+  74 001a 0B46     		mov	r3, r1
+  75 001c 1AA1     		adr	r1, .L8
+  76 001e D1E90001 		ldrd	r0, [r1]
+ARM GAS  C:\Temp\ccIoVgLe.s 			page 4
+
+
+  77 0022 FFF7FEFF 		bl	__aeabi_dsub
+  78              	.LVL6:
+  79              		.loc 1 96 19 view .LVU16
+  80 0026 FFF7FEFF 		bl	__aeabi_d2f
+  81              	.LVL7:
+  97:Src/lookuptable.c ****     return side_wall_dis;
+  82              		.loc 1 97 5 is_stmt 1 view .LVU17
+  98:Src/lookuptable.c **** }...
+  83              		.loc 1 98 1 is_stmt 0 view .LVU18
+  84 002a 00EE100A 		vmov	s0, r0
+  85 002e 08BD     		pop	{r3, pc}
+  86              	.LVL8:
+  87              	.L7:
+  81:Src/lookuptable.c ****     table_int = sensor_value / table_step_sidewall;
+  88              		.loc 1 81 15 view .LVU19
+  89 0030 00F11F03 		add	r3, r0, #31
+  90 0034 E8E7     		b	.L2
+  91              	.LVL9:
+  92              	.L3:
+  86:Src/lookuptable.c ****     else if (table_int >= table_num_sidewall -1 ){
+  93              		.loc 1 86 10 is_stmt 1 view .LVU20
+  86:Src/lookuptable.c ****     else if (table_int >= table_num_sidewall -1 ){
+  94              		.loc 1 86 13 is_stmt 0 view .LVU21
+  95 0036 B0F5FC6F 		cmp	r0, #2016
+  96 003a 03DB     		blt	.L5
+  87:Src/lookuptable.c ****         side_wall_dis = table_sidewall[table_num_sidewall -1 ];
+  97              		.loc 1 87 9 is_stmt 1 view .LVU22
+  87:Src/lookuptable.c ****         side_wall_dis = table_sidewall[table_num_sidewall -1 ];
+  98              		.loc 1 87 23 is_stmt 0 view .LVU23
+  99 003c 144B     		ldr	r3, .L8+8
+ 100              	.LVL10:
+  87:Src/lookuptable.c ****         side_wall_dis = table_sidewall[table_num_sidewall -1 ];
+ 101              		.loc 1 87 23 view .LVU24
+ 102 003e D3F8FC00 		ldr	r0, [r3, #252]	@ float
+ 103              	.LVL11:
+  87:Src/lookuptable.c ****         side_wall_dis = table_sidewall[table_num_sidewall -1 ];
+ 104              		.loc 1 87 23 view .LVU25
+ 105 0042 E7E7     		b	.L4
+ 106              	.LVL12:
+ 107              	.L5:
+  91:Src/lookuptable.c ****         table_deci = sensor_value % table_step_sidewall;
+ 108              		.loc 1 91 9 is_stmt 1 view .LVU26
+  91:Src/lookuptable.c ****         table_deci = sensor_value % table_step_sidewall;
+ 109              		.loc 1 91 20 is_stmt 0 view .LVU27
+ 110 0044 4242     		rsbs	r2, r0, #0
+ 111 0046 00F01F00 		and	r0, r0, #31
+ 112              	.LVL13:
+  91:Src/lookuptable.c ****         table_deci = sensor_value % table_step_sidewall;
+ 113              		.loc 1 91 20 view .LVU28
+ 114 004a 02F01F02 		and	r2, r2, #31
+ 115 004e 58BF     		it	pl
+ 116 0050 5042     		rsbpl	r0, r2, #0
+ 117              	.LVL14:
+  92:Src/lookuptable.c ****         table_tilt = (table_sidewall[table_int+1]-table_sidewall[table_int])/table_step_sidewall;
+ 118              		.loc 1 92 9 is_stmt 1 view .LVU29
+  92:Src/lookuptable.c ****         table_tilt = (table_sidewall[table_int+1]-table_sidewall[table_int])/table_step_sidewall;
+ 119              		.loc 1 92 47 is_stmt 0 view .LVU30
+ARM GAS  C:\Temp\ccIoVgLe.s 			page 5
+
+
+ 120 0052 591C     		adds	r1, r3, #1
+  92:Src/lookuptable.c ****         table_tilt = (table_sidewall[table_int+1]-table_sidewall[table_int])/table_step_sidewall;
+ 121              		.loc 1 92 37 view .LVU31
+ 122 0054 0E4A     		ldr	r2, .L8+8
+ 123 0056 02EB8101 		add	r1, r2, r1, lsl #2
+ 124 005a D1ED007A 		vldr.32	s15, [r1]
+  92:Src/lookuptable.c ****         table_tilt = (table_sidewall[table_int+1]-table_sidewall[table_int])/table_step_sidewall;
+ 125              		.loc 1 92 65 view .LVU32
+ 126 005e 02EB8303 		add	r3, r2, r3, lsl #2
+ 127              	.LVL15:
+  92:Src/lookuptable.c ****         table_tilt = (table_sidewall[table_int+1]-table_sidewall[table_int])/table_step_sidewall;
+ 128              		.loc 1 92 65 view .LVU33
+ 129 0062 93ED007A 		vldr.32	s14, [r3]
+  92:Src/lookuptable.c ****         table_tilt = (table_sidewall[table_int+1]-table_sidewall[table_int])/table_step_sidewall;
+ 130              		.loc 1 92 50 view .LVU34
+ 131 0066 77EEC77A 		vsub.f32	s15, s15, s14
+  92:Src/lookuptable.c ****         table_tilt = (table_sidewall[table_int+1]-table_sidewall[table_int])/table_step_sidewall;
+ 132              		.loc 1 92 20 view .LVU35
+ 133 006a DFED0A6A 		vldr.32	s13, .L8+12
+ 134 006e 67EEA66A 		vmul.f32	s13, s15, s13
+ 135              	.LVL16:
+  93:Src/lookuptable.c ****         side_wall_dis = table_sidewall[table_int] + (float)table_deci * table_tilt;
+ 136              		.loc 1 93 9 is_stmt 1 view .LVU36
+  93:Src/lookuptable.c ****         side_wall_dis = table_sidewall[table_int] + (float)table_deci * table_tilt;
+ 137              		.loc 1 93 53 is_stmt 0 view .LVU37
+ 138 0072 07EE900A 		vmov	s15, r0	@ int
+ 139 0076 F8EEE77A 		vcvt.f32.s32	s15, s15
+  93:Src/lookuptable.c ****         side_wall_dis = table_sidewall[table_int] + (float)table_deci * table_tilt;
+ 140              		.loc 1 93 71 view .LVU38
+ 141 007a 67EEA67A 		vmul.f32	s15, s15, s13
+  93:Src/lookuptable.c ****         side_wall_dis = table_sidewall[table_int] + (float)table_deci * table_tilt;
+ 142              		.loc 1 93 23 view .LVU39
+ 143 007e 77EE277A 		vadd.f32	s15, s14, s15
+ 144 0082 17EE900A 		vmov	r0, s15
+ 145              	.LVL17:
+  93:Src/lookuptable.c ****         side_wall_dis = table_sidewall[table_int] + (float)table_deci * table_tilt;
+ 146              		.loc 1 93 23 view .LVU40
+ 147 0086 C5E7     		b	.L4
+ 148              	.L9:
+ 149              		.align	3
+ 150              	.L8:
+ 151 0088 0AD7A370 		.word	1889785610
+ 152 008c 3D0AB73F 		.word	1068960317
+ 153 0090 00000000 		.word	.LANCHOR0
+ 154 0094 0000003D 		.word	1023410176
+ 155              		.cfi_endproc
+ 156              	.LFE3:
+ 158              		.global	table_sidewall
+ 159              		.section	.data.table_sidewall,"aw"
+ 160              		.align	2
+ 161              		.set	.LANCHOR0,. + 0
+ 164              	table_sidewall:
+ 165 0000 00000000 		.word	0
+ 166 0004 85AFCC3C 		.word	1020047237
+ 167 0008 06EE103D 		.word	1024519686
+ 168 000c 70D7293D 		.word	1026152304
+ 169 0010 49843B3D 		.word	1027310665
+ARM GAS  C:\Temp\ccIoVgLe.s 			page 6
+
+
+ 170 0014 083A493D 		.word	1028209160
+ 171 0018 B36D543D 		.word	1028943283
+ 172 001c 48E65D3D 		.word	1029563976
+ 173 0020 8C1A663D 		.word	1030101644
+ 174 0024 1D576D3D 		.word	1030575901
+ 175 0028 4BD0733D 		.word	1031000139
+ 176 002c 64AB793D 		.word	1031383908
+ 177 0030 F6037F3D 		.word	1031734262
+ 178 0034 76F7813D 		.word	1031927670
+ 179 0038 463E843D 		.word	1032076870
+ 180 003c DB5C863D 		.word	1032215771
+ 181 0040 6858883D 		.word	1032345704
+ 182 0044 2D358A3D 		.word	1032467757
+ 183 0048 B0F68B3D 		.word	1032582832
+ 184 004c E49F8D3D 		.word	1032691684
+ 185 0050 47338F3D 		.word	1032794951
+ 186 0054 FBB2903D 		.word	1032893179
+ 187 0058 D420923D 		.word	1032986836
+ 188 005c 697E933D 		.word	1033076329
+ 189 0060 1DCD943D 		.word	1033162013
+ 190 0064 260E963D 		.word	1033244198
+ 191 0068 9842973D 		.word	1033323160
+ 192 006c 656B983D 		.word	1033399141
+ 193 0070 6789993D 		.word	1033472359
+ 194 0074 5F9D9A3D 		.word	1033543007
+ 195 0078 FCA79B3D 		.word	1033611260
+ 196 007c DBA99C3D 		.word	1033677275
+ 197 0080 89A39D3D 		.word	1033741193
+ 198 0084 89959E3D 		.word	1033803145
+ 199 0088 4F809F3D 		.word	1033863247
+ 200 008c 4664A03D 		.word	1033921606
+ 201 0090 D241A13D 		.word	1033978322
+ 202 0094 4B19A23D 		.word	1034033483
+ 203 0098 06EBA23D 		.word	1034087174
+ 204 009c 4DB7A33D 		.word	1034139469
+ 205 00a0 697EA43D 		.word	1034190441
+ 206 00a4 9940A53D 		.word	1034240153
+ 207 00a8 1CFEA53D 		.word	1034288668
+ 208 00ac 29B7A63D 		.word	1034336041
+ 209 00b0 F56BA73D 		.word	1034382325
+ 210 00b4 B11CA83D 		.word	1034427569
+ 211 00b8 8BC9A83D 		.word	1034471819
+ 212 00bc AC72A93D 		.word	1034515116
+ 213 00c0 3E18AA3D 		.word	1034557502
+ 214 00c4 66BAAA3D 		.word	1034599014
+ 215 00c8 4859AB3D 		.word	1034639688
+ 216 00cc 04F5AB3D 		.word	1034679556
+ 217 00d0 BA8DAC3D 		.word	1034718650
+ 218 00d4 8723AD3D 		.word	1034756999
+ 219 00d8 87B6AD3D 		.word	1034794631
+ 220 00dc D546AE3D 		.word	1034831573
+ 221 00e0 89D4AE3D 		.word	1034867849
+ 222 00e4 BB5FAF3D 		.word	1034903483
+ 223 00e8 81E8AF3D 		.word	1034938497
+ 224 00ec F06EB03D 		.word	1034972912
+ 225 00f0 1EF3B03D 		.word	1035006750
+ 226 00f4 1C75B13D 		.word	1035040028
+ARM GAS  C:\Temp\ccIoVgLe.s 			page 7
+
+
+ 227 00f8 FCF4B13D 		.word	1035072764
+ 228 00fc D172B23D 		.word	1035104977
+ 229              		.text
+ 230              	.Letext0:
+ 231              		.file 2 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\machine\\_default_t
+ 232              		.file 3 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\lock.h"
+ 233              		.file 4 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\_types.h"
+ 234              		.file 5 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\lib\\gcc\\arm-none-eabi\\9.2.1\\include\\st
+ 235              		.file 6 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\reent.h"
+ 236              		.file 7 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\_stdint.h"
+ARM GAS  C:\Temp\ccIoVgLe.s 			page 8
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 lookuptable.c
+  C:\Temp\ccIoVgLe.s:21     .text.get_sidewall_dis_table:00000000 $t
+  C:\Temp\ccIoVgLe.s:29     .text.get_sidewall_dis_table:00000000 get_sidewall_dis_table
+  C:\Temp\ccIoVgLe.s:151    .text.get_sidewall_dis_table:00000088 $d
+  C:\Temp\ccIoVgLe.s:164    .data.table_sidewall:00000000 table_sidewall
+  C:\Temp\ccIoVgLe.s:160    .data.table_sidewall:00000000 $d
+
+UNDEFINED SYMBOLS
+__aeabi_f2d
+__aeabi_dsub
+__aeabi_d2f

@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-ARM GAS  C:\Temp\ccnUgkGu.s 			page 1
-=======
-ARM GAS  C:\Temp\cc1v2zHa.s 			page 1
->>>>>>> origin/release_side_wall_trace
+ARM GAS  C:\Temp\ccmwmcpd.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -62,11 +58,7 @@ ARM GAS  C:\Temp\cc1v2zHa.s 			page 1
   28:Src/interrupt.c **** static uint32_t		interrupt_duty_max = 0;
   29:Src/interrupt.c **** static float		boot_time = 0.f;
   30:Src/interrupt.c **** 
-<<<<<<< HEAD
-ARM GAS  C:\Temp\ccnUgkGu.s 			page 2
-=======
-ARM GAS  C:\Temp\cc1v2zHa.s 			page 2
->>>>>>> origin/release_side_wall_trace
+ARM GAS  C:\Temp\ccmwmcpd.s 			page 2
 
 
   31:Src/interrupt.c **** 
@@ -126,11 +118,7 @@ ARM GAS  C:\Temp\cc1v2zHa.s 			page 1
   62:Src/interrupt.c **** 				 adjust_1ms();			//壁制御による印加電圧を計算
   63:Src/interrupt.c **** 				 motor_1ms();			//制御モードに応じた印加電圧を出力
   64:Src/interrupt.c **** 
-<<<<<<< HEAD
-ARM GAS  C:\Temp\ccnUgkGu.s 			page 3
-=======
-ARM GAS  C:\Temp\cc1v2zHa.s 			page 3
->>>>>>> origin/release_side_wall_trace
+ARM GAS  C:\Temp\ccmwmcpd.s 			page 3
 
 
   65:Src/interrupt.c **** 				break;
@@ -190,7 +178,7 @@ ARM GAS  C:\Temp\cc1v2zHa.s 			page 1
  119:Src/interrupt.c **** }
   52              		.loc 1 119 1 view .LVU6
   53 0012 08BD     		pop	{r3, pc}
-ARM GAS  C:\Temp\cc1v2zHa.s 			page 4
+ARM GAS  C:\Temp\ccmwmcpd.s 			page 4
 
 
   54              	.L13:
@@ -203,12 +191,6 @@ ARM GAS  C:\Temp\cc1v2zHa.s 			page 1
   59 0018 0138     		subs	r0, r0, #1
   60 001a 0E28     		cmp	r0, #14
   61 001c F9D8     		bhi	.L1
-<<<<<<< HEAD
-ARM GAS  C:\Temp\ccnUgkGu.s 			page 4
-
-
-=======
->>>>>>> origin/release_side_wall_trace
   62 001e 01A3     		adr	r3, .L4
   63 0020 53F820F0 		ldr	pc, [r3, r0, lsl #2]
   64              		.p2align 2
@@ -256,7 +238,7 @@ ARM GAS  C:\Temp\cc1v2zHa.s 			page 1
  100              	.LVL9:
   55:Src/interrupt.c **** 
  101              		.loc 1 55 5 view .LVU15
-ARM GAS  C:\Temp\cc1v2zHa.s 			page 5
+ARM GAS  C:\Temp\ccmwmcpd.s 			page 5
 
 
  102 0078 CBE7     		b	.L1
@@ -269,12 +251,6 @@ ARM GAS  C:\Temp\cc1v2zHa.s 			page 1
  107              		.loc 1 59 6 view .LVU17
  108 007e FFF7FEFF 		bl	mouse_state_1ms
  109              	.LVL11:
-<<<<<<< HEAD
-ARM GAS  C:\Temp\ccnUgkGu.s 			page 5
-
-
-=======
->>>>>>> origin/release_side_wall_trace
   60:Src/interrupt.c **** 				 calc_motor_vol_ctrl();	//速度、角速度制御による印加電圧を計算
  110              		.loc 1 60 6 view .LVU18
  111 0082 FFF7FEFF 		bl	target_1ms
@@ -322,7 +298,7 @@ ARM GAS  C:\Temp\cc1v2zHa.s 			page 1
   75:Src/interrupt.c **** 
  143              		.loc 1 75 5 view .LVU29
  144 00ac B1E7     		b	.L1
-ARM GAS  C:\Temp\cc1v2zHa.s 			page 6
+ARM GAS  C:\Temp\ccmwmcpd.s 			page 6
 
 
  145              	.L8:
@@ -335,12 +311,6 @@ ARM GAS  C:\Temp\cc1v2zHa.s 			page 1
  150 00b2 AEE7     		b	.L1
  151              	.L7:
   82:Src/interrupt.c **** 				 mouse_state_1ms();		//マウスの速度、角速度、移動距離、角度を計算
-<<<<<<< HEAD
-ARM GAS  C:\Temp\ccnUgkGu.s 			page 6
-
-
-=======
->>>>>>> origin/release_side_wall_trace
  152              		.loc 1 82 6 view .LVU32
  153 00b4 FFF7FEFF 		bl	data_get
  154              	.LVL23:
@@ -372,95 +342,6 @@ ARM GAS  C:\Temp\cc1v2zHa.s 			page 1
  173              		.loc 1 91 5 view .LVU39
  174 00ce FFF7FEFF 		bl	data_get
  175              	.LVL29:
-<<<<<<< HEAD
-  92:Src/interrupt.c **** 
- 176              		.loc 1 92 5 view .LVU40
- 177 00d2 9EE7     		b	.L1
- 178              	.L5:
-  95:Src/interrupt.c **** 				break;
- 179              		.loc 1 95 5 view .LVU41
- 180 00d4 FFF7FEFF 		bl	data_get
- 181              	.LVL30:
-  96:Src/interrupt.c **** 
- 182              		.loc 1 96 5 view .LVU42
- 183 00d8 9BE7     		b	.L1
- 184              	.L3:
-  99:Src/interrupt.c **** 				mouse_state_1ms();		//マウスの速度、角速度、移動距離、角度を計算
- 185              		.loc 1 99 5 view .LVU43
- 186 00da FFF7FEFF 		bl	data_get
- 187              	.LVL31:
- 100:Src/interrupt.c **** 				target_1ms();			//目標距離、角度から目標速度、角速度、加速度、角加速�
- 188              		.loc 1 100 5 view .LVU44
- 189 00de FFF7FEFF 		bl	mouse_state_1ms
- 190              	.LVL32:
- 101:Src/interrupt.c **** 				calc_motor_vol_ctrl();	//速度、角速度制御による印加電圧を計算
- 191              		.loc 1 101 5 view .LVU45
- 192 00e2 FFF7FEFF 		bl	target_1ms
- 193              	.LVL33:
- 102:Src/interrupt.c **** 				adjust_1ms();			//壁制御による印加電圧を計算
- 194              		.loc 1 102 5 view .LVU46
-ARM GAS  C:\Temp\ccnUgkGu.s 			page 7
-
-
- 195 00e6 FFF7FEFF 		bl	calc_motor_vol_ctrl
- 196              	.LVL34:
- 103:Src/interrupt.c **** 				motor_1ms();			//制御モードに応じた印加電圧を出力
- 197              		.loc 1 103 5 view .LVU47
- 198 00ea FFF7FEFF 		bl	adjust_1ms
- 199              	.LVL35:
- 104:Src/interrupt.c **** 				break;
- 200              		.loc 1 104 5 view .LVU48
- 201 00ee FFF7FEFF 		bl	motor_1ms
- 202              	.LVL36:
- 105:Src/interrupt.c **** 
- 203              		.loc 1 105 5 view .LVU49
- 204              		.loc 1 109 1 is_stmt 0 view .LVU50
- 205 00f2 8EE7     		b	.L1
- 206              		.cfi_endproc
- 207              	.LFE133:
- 209              		.section	.text.Interrupt_Initialize,"ax",%progbits
- 210              		.align	1
- 211              		.global	Interrupt_Initialize
- 212              		.syntax unified
- 213              		.thumb
- 214              		.thumb_func
- 215              		.fpu fpv4-sp-d16
- 217              	Interrupt_Initialize:
- 218              	.LFB134:
- 110:Src/interrupt.c **** 
- 111:Src/interrupt.c **** /* ---------------------------------------------------------------
- 112:Src/interrupt.c **** 	メイン割り込みの初期設定関数
- 113:Src/interrupt.c **** --------------------------------------------------------------- */
- 114:Src/interrupt.c **** void Interrupt_Initialize( void )
- 115:Src/interrupt.c **** {
- 219              		.loc 1 115 1 is_stmt 1 view -0
- 220              		.cfi_startproc
- 221              		@ args = 0, pretend = 0, frame = 0
- 222              		@ frame_needed = 0, uses_anonymous_args = 0
- 223 0000 08B5     		push	{r3, lr}
- 224              	.LCFI1:
- 225              		.cfi_def_cfa_offset 8
- 226              		.cfi_offset 3, -8
- 227              		.cfi_offset 14, -4
- 116:Src/interrupt.c **** 	HAL_TIM_Base_Start_IT( &htim6 );
- 228              		.loc 1 116 2 view .LVU52
- 229 0002 0248     		ldr	r0, .L16
- 230 0004 FFF7FEFF 		bl	HAL_TIM_Base_Start_IT
- 231              	.LVL37:
- 117:Src/interrupt.c **** }
- 232              		.loc 1 117 1 is_stmt 0 view .LVU53
- 233 0008 08BD     		pop	{r3, pc}
- 234              	.L17:
- 235 000a 00BF     		.align	2
- 236              	.L16:
- 237 000c 00000000 		.word	htim6
- 238              		.cfi_endproc
- 239              	.LFE134:
- 241              		.global	__aeabi_ul2f
- 242              		.section	.text.Interrupt_PreProcess,"ax",%progbits
- 243              		.align	1
-ARM GAS  C:\Temp\ccnUgkGu.s 			page 8
-=======
   92:Src/interrupt.c **** 				 target_1ms();			//目標距離、角度から目標速度、角速度、加速度、角加速�
  176              		.loc 1 92 6 view .LVU40
  177 00d2 FFF7FEFF 		bl	mouse_state_1ms
@@ -477,7 +358,7 @@ ARM GAS  C:\Temp\cc1v2zHa.s 			page 1
  185              		.loc 1 95 6 view .LVU43
  186 00de FFF7FEFF 		bl	adjust_1ms
  187              	.LVL33:
-ARM GAS  C:\Temp\cc1v2zHa.s 			page 7
+ARM GAS  C:\Temp\ccmwmcpd.s 			page 7
 
 
   96:Src/interrupt.c **** 
@@ -537,8 +418,7 @@ ARM GAS  C:\Temp\cc1v2zHa.s 			page 1
  228 0112 FFF7FEFF 		bl	motor_1ms
  229              	.LVL45:
  115:Src/interrupt.c **** 
-ARM GAS  C:\Temp\cc1v2zHa.s 			page 8
->>>>>>> origin/release_side_wall_trace
+ARM GAS  C:\Temp\ccmwmcpd.s 			page 8
 
 
  230              		.loc 1 115 5 view .LVU58
@@ -595,162 +475,10 @@ ARM GAS  C:\Temp\cc1v2zHa.s 			page 1
  277              	Interrupt_PreProcess:
  278              	.LFB135:
  128:Src/interrupt.c **** 
-<<<<<<< HEAD
- 129:Src/interrupt.c **** 	interrupt_count_now = TIMER_COUNT;
- 262              		.loc 1 129 2 view .LVU56
- 263              		.loc 1 129 24 is_stmt 0 view .LVU57
- 264 0002 0C4B     		ldr	r3, .L20
- 265 0004 1B68     		ldr	r3, [r3]
- 266 0006 5A6A     		ldr	r2, [r3, #36]
- 267              		.loc 1 129 22 view .LVU58
- 268 0008 0B4B     		ldr	r3, .L20+4
- 269 000a 1A60     		str	r2, [r3]
- 130:Src/interrupt.c **** //	boot_time_count += (uint16_t)(interrupt_count_now - interrupt_count_old);
- 131:Src/interrupt.c **** //	interrupt_count_old = interrupt_count_now;
- 132:Src/interrupt.c **** //	boot_time = (float)boot_time_count / (float)(HAL_RCC_GetPCLK1Freq() *2 / ( TIMER_PSC + 1) );
- 133:Src/interrupt.c **** 
- 134:Src/interrupt.c **** 	boot_time_count += 1;
- 270              		.loc 1 134 2 is_stmt 1 view .LVU59
- 271              		.loc 1 134 18 is_stmt 0 view .LVU60
- 272 000c 0B4B     		ldr	r3, .L20+8
- 273 000e 1868     		ldr	r0, [r3]
- 274 0010 5968     		ldr	r1, [r3, #4]
- 275 0012 0130     		adds	r0, r0, #1
- 276 0014 41F10001 		adc	r1, r1, #0
- 277 0018 1860     		str	r0, [r3]
- 278 001a 5960     		str	r1, [r3, #4]
- 135:Src/interrupt.c **** 	boot_time = ((float)boot_time_count /(float)1000);
- 279              		.loc 1 135 2 is_stmt 1 view .LVU61
- 280              		.loc 1 135 15 is_stmt 0 view .LVU62
- 281 001c FFF7FEFF 		bl	__aeabi_ul2f
- 282              	.LVL38:
- 283 0020 06EE900A 		vmov	s13, r0
-ARM GAS  C:\Temp\ccnUgkGu.s 			page 9
-
-
- 284              		.loc 1 135 38 view .LVU63
- 285 0024 9FED067A 		vldr.32	s14, .L20+12
- 286 0028 C6EE877A 		vdiv.f32	s15, s13, s14
- 287              		.loc 1 135 12 view .LVU64
- 288 002c 054B     		ldr	r3, .L20+16
- 289 002e C3ED007A 		vstr.32	s15, [r3]
- 136:Src/interrupt.c **** }
- 290              		.loc 1 136 1 view .LVU65
- 291 0032 08BD     		pop	{r3, pc}
- 292              	.L21:
- 293              		.align	2
- 294              	.L20:
- 295 0034 00000000 		.word	htim6
- 296 0038 00000000 		.word	.LANCHOR0
- 297 003c 00000000 		.word	.LANCHOR1
- 298 0040 00007A44 		.word	1148846080
- 299 0044 00000000 		.word	.LANCHOR2
- 300              		.cfi_endproc
- 301              	.LFE135:
- 303              		.section	.text.Interrupt_PostProcess,"ax",%progbits
- 304              		.align	1
- 305              		.global	Interrupt_PostProcess
- 306              		.syntax unified
- 307              		.thumb
- 308              		.thumb_func
- 309              		.fpu fpv4-sp-d16
- 311              	Interrupt_PostProcess:
- 312              	.LFB136:
- 137:Src/interrupt.c **** 
- 138:Src/interrupt.c **** /* ---------------------------------------------------------------
- 139:Src/interrupt.c **** 	割り込み後処理関数
- 140:Src/interrupt.c **** --------------------------------------------------------------- */
- 141:Src/interrupt.c **** void Interrupt_PostProcess( void )
- 142:Src/interrupt.c **** {
- 313              		.loc 1 142 1 is_stmt 1 view -0
- 314              		.cfi_startproc
- 315              		@ args = 0, pretend = 0, frame = 0
- 316              		@ frame_needed = 0, uses_anonymous_args = 0
- 317              		@ link register save eliminated.
- 143:Src/interrupt.c **** 	interrupt_duty = (TIMER_COUNT - interrupt_count_now) * 1000 / TIMER_LOAD;
- 318              		.loc 1 143 2 view .LVU67
- 319              		.loc 1 143 20 is_stmt 0 view .LVU68
- 320 0000 0A4B     		ldr	r3, .L23
- 321 0002 1968     		ldr	r1, [r3]
- 322 0004 4B6A     		ldr	r3, [r1, #36]
- 323              		.loc 1 143 32 view .LVU69
- 324 0006 0A4A     		ldr	r2, .L23+4
- 325 0008 1268     		ldr	r2, [r2]
- 326 000a 9A1A     		subs	r2, r3, r2
- 327              		.loc 1 143 55 view .LVU70
- 328 000c 4FF47A73 		mov	r3, #1000
- 329 0010 03FB02F3 		mul	r3, r3, r2
- 330              		.loc 1 143 64 view .LVU71
- 331 0014 CA6A     		ldr	r2, [r1, #44]
- 332              		.loc 1 143 62 view .LVU72
- 333 0016 B3FBF2F3 		udiv	r3, r3, r2
- 334              		.loc 1 143 17 view .LVU73
-ARM GAS  C:\Temp\ccnUgkGu.s 			page 10
-
-
- 335 001a 064A     		ldr	r2, .L23+8
- 336 001c 1360     		str	r3, [r2]
- 144:Src/interrupt.c **** 	interrupt_duty_max = MAX( interrupt_duty_max, interrupt_duty );
- 337              		.loc 1 144 2 is_stmt 1 view .LVU74
- 338              		.loc 1 144 23 is_stmt 0 view .LVU75
- 339 001e 064A     		ldr	r2, .L23+12
- 340 0020 1168     		ldr	r1, [r2]
- 341 0022 8B42     		cmp	r3, r1
- 342 0024 38BF     		it	cc
- 343 0026 0B46     		movcc	r3, r1
- 344              		.loc 1 144 21 view .LVU76
- 345 0028 1360     		str	r3, [r2]
- 145:Src/interrupt.c **** }
- 346              		.loc 1 145 1 view .LVU77
- 347 002a 7047     		bx	lr
- 348              	.L24:
- 349              		.align	2
- 350              	.L23:
- 351 002c 00000000 		.word	htim6
- 352 0030 00000000 		.word	.LANCHOR0
- 353 0034 00000000 		.word	.LANCHOR3
- 354 0038 00000000 		.word	.LANCHOR4
- 355              		.cfi_endproc
- 356              	.LFE136:
- 358              		.section	.text.Interrupt_GetDuty,"ax",%progbits
- 359              		.align	1
- 360              		.global	Interrupt_GetDuty
- 361              		.syntax unified
- 362              		.thumb
- 363              		.thumb_func
- 364              		.fpu fpv4-sp-d16
- 366              	Interrupt_GetDuty:
- 367              	.LFB137:
- 146:Src/interrupt.c **** 
- 147:Src/interrupt.c **** /* ---------------------------------------------------------------
- 148:Src/interrupt.c **** 	割り込み周期に占める呼び出し位置までの処理時間の割合を取得する関�
- 149:Src/interrupt.c **** --------------------------------------------------------------- */
- 150:Src/interrupt.c **** uint16_t Interrupt_GetDuty( void )
- 151:Src/interrupt.c **** {
- 368              		.loc 1 151 1 is_stmt 1 view -0
- 369              		.cfi_startproc
- 370              		@ args = 0, pretend = 0, frame = 0
- 371              		@ frame_needed = 0, uses_anonymous_args = 0
- 372              		@ link register save eliminated.
- 152:Src/interrupt.c **** 	return interrupt_duty;
- 373              		.loc 1 152 2 view .LVU79
- 153:Src/interrupt.c **** }
- 374              		.loc 1 153 1 is_stmt 0 view .LVU80
- 375 0000 014B     		ldr	r3, .L26
- 376 0002 1888     		ldrh	r0, [r3]
- 377 0004 7047     		bx	lr
- 378              	.L27:
- 379 0006 00BF     		.align	2
- 380              	.L26:
- 381 0008 00000000 		.word	.LANCHOR3
- 382              		.cfi_endproc
- 383              	.LFE137:
-ARM GAS  C:\Temp\ccnUgkGu.s 			page 11
-=======
  129:Src/interrupt.c **** /* ---------------------------------------------------------------
  130:Src/interrupt.c **** 	割り込み前処理関数
  131:Src/interrupt.c **** --------------------------------------------------------------- */
-ARM GAS  C:\Temp\cc1v2zHa.s 			page 9
+ARM GAS  C:\Temp\ccmwmcpd.s 			page 9
 
 
  132:Src/interrupt.c **** void Interrupt_PreProcess( void )
@@ -810,7 +538,7 @@ ARM GAS  C:\Temp\cc1v2zHa.s 			page 1
  318 0032 08BD     		pop	{r3, pc}
  319              	.L21:
  320              		.align	2
-ARM GAS  C:\Temp\cc1v2zHa.s 			page 10
+ARM GAS  C:\Temp\ccmwmcpd.s 			page 10
 
 
  321              	.L20:
@@ -870,8 +598,7 @@ ARM GAS  C:\Temp\cc1v2zHa.s 			page 1
  369 0024 38BF     		it	cc
  370 0026 0B46     		movcc	r3, r1
  371              		.loc 1 154 21 view .LVU85
-ARM GAS  C:\Temp\cc1v2zHa.s 			page 11
->>>>>>> origin/release_side_wall_trace
+ARM GAS  C:\Temp\ccmwmcpd.s 			page 11
 
 
  372 0028 1360     		str	r3, [r2]
@@ -931,7 +658,7 @@ ARM GAS  C:\Temp\cc1v2zHa.s 			page 1
  421              	.LFB138:
  164:Src/interrupt.c **** 
  165:Src/interrupt.c **** /* ---------------------------------------------------------------
-ARM GAS  C:\Temp\cc1v2zHa.s 			page 12
+ARM GAS  C:\Temp\ccmwmcpd.s 			page 12
 
 
  166:Src/interrupt.c **** 	上記割合の最大値を取得する関数
@@ -943,76 +670,6 @@ ARM GAS  C:\Temp\cc1v2zHa.s 			page 1
  424              		@ args = 0, pretend = 0, frame = 0
  425              		@ frame_needed = 0, uses_anonymous_args = 0
  426              		@ link register save eliminated.
-<<<<<<< HEAD
- 168:Src/interrupt.c **** 	return boot_time;
- 427              		.loc 1 168 2 view .LVU85
- 169:Src/interrupt.c **** }
- 428              		.loc 1 169 1 is_stmt 0 view .LVU86
-ARM GAS  C:\Temp\ccnUgkGu.s 			page 12
-
-
- 429 0000 014B     		ldr	r3, .L32
- 430 0002 93ED000A 		vldr.32	s0, [r3]
- 431 0006 7047     		bx	lr
- 432              	.L33:
- 433              		.align	2
- 434              	.L32:
- 435 0008 00000000 		.word	.LANCHOR2
- 436              		.cfi_endproc
- 437              	.LFE139:
- 439              		.section	.bss.boot_time,"aw",%nobits
- 440              		.align	2
- 441              		.set	.LANCHOR2,. + 0
- 444              	boot_time:
- 445 0000 00000000 		.space	4
- 446              		.section	.bss.boot_time_count.9666,"aw",%nobits
- 447              		.align	3
- 448              		.set	.LANCHOR1,. + 0
- 451              	boot_time_count.9666:
- 452 0000 00000000 		.space	8
- 452      00000000 
- 453              		.section	.bss.interrupt_count_now,"aw",%nobits
- 454              		.align	2
- 455              		.set	.LANCHOR0,. + 0
- 458              	interrupt_count_now:
- 459 0000 00000000 		.space	4
- 460              		.section	.bss.interrupt_duty,"aw",%nobits
- 461              		.align	2
- 462              		.set	.LANCHOR3,. + 0
- 465              	interrupt_duty:
- 466 0000 00000000 		.space	4
- 467              		.section	.bss.interrupt_duty_max,"aw",%nobits
- 468              		.align	2
- 469              		.set	.LANCHOR4,. + 0
- 472              	interrupt_duty_max:
- 473 0000 00000000 		.space	4
- 474              		.text
- 475              	.Letext0:
- 476              		.file 2 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\machine\\_default_t
- 477              		.file 3 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\_stdint.h"
- 478              		.file 4 "Drivers/CMSIS/Include/core_cm4.h"
- 479              		.file 5 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h"
- 480              		.file 6 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f413xx.h"
- 481              		.file 7 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
- 482              		.file 8 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h"
- 483              		.file 9 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h"
- 484              		.file 10 "Inc/mode.h"
- 485              		.file 11 "Inc/tim.h"
- 486              		.file 12 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\lock.h"
- 487              		.file 13 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\_types.h"
- 488              		.file 14 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\lib\\gcc\\arm-none-eabi\\9.2.1\\include\\s
- 489              		.file 15 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\reent.h"
- 490              		.file 16 "Inc/mouse_state.h"
- 491              		.file 17 "Inc/module_test.h"
- 492              		.file 18 "Inc/target.h"
- 493              		.file 19 "Inc/control.h"
- 494              		.file 20 "Inc/adjust.h"
- 495              		.file 21 "Inc/exvol.h"
-ARM GAS  C:\Temp\ccnUgkGu.s 			page 13
-
-
-ARM GAS  C:\Temp\ccnUgkGu.s 			page 14
-=======
  170:Src/interrupt.c **** 	return interrupt_duty_max;
  427              		.loc 1 170 2 view .LVU91
  171:Src/interrupt.c **** }
@@ -1061,7 +718,7 @@ ARM GAS  C:\Temp\cc1v2zHa.s 			page 1
  464              	.LFE139:
  466              		.section	.bss.boot_time,"aw",%nobits
  467              		.align	2
-ARM GAS  C:\Temp\cc1v2zHa.s 			page 13
+ARM GAS  C:\Temp\ccmwmcpd.s 			page 13
 
 
  468              		.set	.LANCHOR2,. + 0
@@ -1110,79 +767,43 @@ ARM GAS  C:\Temp\cc1v2zHa.s 			page 1
  520              		.file 19 "Inc/control.h"
  521              		.file 20 "Inc/adjust.h"
  522              		.file 21 "Inc/exvol.h"
-ARM GAS  C:\Temp\cc1v2zHa.s 			page 14
->>>>>>> origin/release_side_wall_trace
+ARM GAS  C:\Temp\ccmwmcpd.s 			page 14
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 interrupt.c
-<<<<<<< HEAD
-  C:\Temp\ccnUgkGu.s:18     .text.Interrupt_Main:00000000 $t
-  C:\Temp\ccnUgkGu.s:26     .text.Interrupt_Main:00000000 Interrupt_Main
-  C:\Temp\ccnUgkGu.s:66     .text.Interrupt_Main:00000024 $d
-  C:\Temp\ccnUgkGu.s:81     .text.Interrupt_Main:00000060 $t
-  C:\Temp\ccnUgkGu.s:210    .text.Interrupt_Initialize:00000000 $t
-  C:\Temp\ccnUgkGu.s:217    .text.Interrupt_Initialize:00000000 Interrupt_Initialize
-  C:\Temp\ccnUgkGu.s:237    .text.Interrupt_Initialize:0000000c $d
-  C:\Temp\ccnUgkGu.s:243    .text.Interrupt_PreProcess:00000000 $t
-  C:\Temp\ccnUgkGu.s:250    .text.Interrupt_PreProcess:00000000 Interrupt_PreProcess
-  C:\Temp\ccnUgkGu.s:295    .text.Interrupt_PreProcess:00000034 $d
-  C:\Temp\ccnUgkGu.s:304    .text.Interrupt_PostProcess:00000000 $t
-  C:\Temp\ccnUgkGu.s:311    .text.Interrupt_PostProcess:00000000 Interrupt_PostProcess
-  C:\Temp\ccnUgkGu.s:351    .text.Interrupt_PostProcess:0000002c $d
-  C:\Temp\ccnUgkGu.s:359    .text.Interrupt_GetDuty:00000000 $t
-  C:\Temp\ccnUgkGu.s:366    .text.Interrupt_GetDuty:00000000 Interrupt_GetDuty
-  C:\Temp\ccnUgkGu.s:381    .text.Interrupt_GetDuty:00000008 $d
-  C:\Temp\ccnUgkGu.s:386    .text.Interrupt_GetDuty_Max:00000000 $t
-  C:\Temp\ccnUgkGu.s:393    .text.Interrupt_GetDuty_Max:00000000 Interrupt_GetDuty_Max
-  C:\Temp\ccnUgkGu.s:408    .text.Interrupt_GetDuty_Max:00000008 $d
-  C:\Temp\ccnUgkGu.s:413    .text.Interrupt_GetBootTime:00000000 $t
-  C:\Temp\ccnUgkGu.s:420    .text.Interrupt_GetBootTime:00000000 Interrupt_GetBootTime
-  C:\Temp\ccnUgkGu.s:435    .text.Interrupt_GetBootTime:00000008 $d
-  C:\Temp\ccnUgkGu.s:440    .bss.boot_time:00000000 $d
-  C:\Temp\ccnUgkGu.s:444    .bss.boot_time:00000000 boot_time
-  C:\Temp\ccnUgkGu.s:447    .bss.boot_time_count.9666:00000000 $d
-  C:\Temp\ccnUgkGu.s:451    .bss.boot_time_count.9666:00000000 boot_time_count.9666
-  C:\Temp\ccnUgkGu.s:454    .bss.interrupt_count_now:00000000 $d
-  C:\Temp\ccnUgkGu.s:458    .bss.interrupt_count_now:00000000 interrupt_count_now
-  C:\Temp\ccnUgkGu.s:461    .bss.interrupt_duty:00000000 $d
-  C:\Temp\ccnUgkGu.s:465    .bss.interrupt_duty:00000000 interrupt_duty
-  C:\Temp\ccnUgkGu.s:468    .bss.interrupt_duty_max:00000000 $d
-  C:\Temp\ccnUgkGu.s:472    .bss.interrupt_duty_max:00000000 interrupt_duty_max
-=======
-  C:\Temp\cc1v2zHa.s:18     .text.Interrupt_Main:00000000 $t
-  C:\Temp\cc1v2zHa.s:26     .text.Interrupt_Main:00000000 Interrupt_Main
-  C:\Temp\cc1v2zHa.s:66     .text.Interrupt_Main:00000024 $d
-  C:\Temp\cc1v2zHa.s:81     .text.Interrupt_Main:00000060 $t
-  C:\Temp\cc1v2zHa.s:237    .text.Interrupt_Initialize:00000000 $t
-  C:\Temp\cc1v2zHa.s:244    .text.Interrupt_Initialize:00000000 Interrupt_Initialize
-  C:\Temp\cc1v2zHa.s:264    .text.Interrupt_Initialize:0000000c $d
-  C:\Temp\cc1v2zHa.s:270    .text.Interrupt_PreProcess:00000000 $t
-  C:\Temp\cc1v2zHa.s:277    .text.Interrupt_PreProcess:00000000 Interrupt_PreProcess
-  C:\Temp\cc1v2zHa.s:322    .text.Interrupt_PreProcess:00000034 $d
-  C:\Temp\cc1v2zHa.s:331    .text.Interrupt_PostProcess:00000000 $t
-  C:\Temp\cc1v2zHa.s:338    .text.Interrupt_PostProcess:00000000 Interrupt_PostProcess
-  C:\Temp\cc1v2zHa.s:378    .text.Interrupt_PostProcess:0000002c $d
-  C:\Temp\cc1v2zHa.s:386    .text.Interrupt_GetDuty:00000000 $t
-  C:\Temp\cc1v2zHa.s:393    .text.Interrupt_GetDuty:00000000 Interrupt_GetDuty
-  C:\Temp\cc1v2zHa.s:408    .text.Interrupt_GetDuty:00000008 $d
-  C:\Temp\cc1v2zHa.s:413    .text.Interrupt_GetDuty_Max:00000000 $t
-  C:\Temp\cc1v2zHa.s:420    .text.Interrupt_GetDuty_Max:00000000 Interrupt_GetDuty_Max
-  C:\Temp\cc1v2zHa.s:435    .text.Interrupt_GetDuty_Max:00000008 $d
-  C:\Temp\cc1v2zHa.s:440    .text.Interrupt_GetBootTime:00000000 $t
-  C:\Temp\cc1v2zHa.s:447    .text.Interrupt_GetBootTime:00000000 Interrupt_GetBootTime
-  C:\Temp\cc1v2zHa.s:462    .text.Interrupt_GetBootTime:00000008 $d
-  C:\Temp\cc1v2zHa.s:467    .bss.boot_time:00000000 $d
-  C:\Temp\cc1v2zHa.s:471    .bss.boot_time:00000000 boot_time
-  C:\Temp\cc1v2zHa.s:474    .bss.boot_time_count.9702:00000000 $d
-  C:\Temp\cc1v2zHa.s:478    .bss.boot_time_count.9702:00000000 boot_time_count.9702
-  C:\Temp\cc1v2zHa.s:481    .bss.interrupt_count_now:00000000 $d
-  C:\Temp\cc1v2zHa.s:485    .bss.interrupt_count_now:00000000 interrupt_count_now
-  C:\Temp\cc1v2zHa.s:488    .bss.interrupt_duty:00000000 $d
-  C:\Temp\cc1v2zHa.s:492    .bss.interrupt_duty:00000000 interrupt_duty
-  C:\Temp\cc1v2zHa.s:495    .bss.interrupt_duty_max:00000000 $d
-  C:\Temp\cc1v2zHa.s:499    .bss.interrupt_duty_max:00000000 interrupt_duty_max
->>>>>>> origin/release_side_wall_trace
+  C:\Temp\ccmwmcpd.s:18     .text.Interrupt_Main:00000000 $t
+  C:\Temp\ccmwmcpd.s:26     .text.Interrupt_Main:00000000 Interrupt_Main
+  C:\Temp\ccmwmcpd.s:66     .text.Interrupt_Main:00000024 $d
+  C:\Temp\ccmwmcpd.s:81     .text.Interrupt_Main:00000060 $t
+  C:\Temp\ccmwmcpd.s:237    .text.Interrupt_Initialize:00000000 $t
+  C:\Temp\ccmwmcpd.s:244    .text.Interrupt_Initialize:00000000 Interrupt_Initialize
+  C:\Temp\ccmwmcpd.s:264    .text.Interrupt_Initialize:0000000c $d
+  C:\Temp\ccmwmcpd.s:270    .text.Interrupt_PreProcess:00000000 $t
+  C:\Temp\ccmwmcpd.s:277    .text.Interrupt_PreProcess:00000000 Interrupt_PreProcess
+  C:\Temp\ccmwmcpd.s:322    .text.Interrupt_PreProcess:00000034 $d
+  C:\Temp\ccmwmcpd.s:331    .text.Interrupt_PostProcess:00000000 $t
+  C:\Temp\ccmwmcpd.s:338    .text.Interrupt_PostProcess:00000000 Interrupt_PostProcess
+  C:\Temp\ccmwmcpd.s:378    .text.Interrupt_PostProcess:0000002c $d
+  C:\Temp\ccmwmcpd.s:386    .text.Interrupt_GetDuty:00000000 $t
+  C:\Temp\ccmwmcpd.s:393    .text.Interrupt_GetDuty:00000000 Interrupt_GetDuty
+  C:\Temp\ccmwmcpd.s:408    .text.Interrupt_GetDuty:00000008 $d
+  C:\Temp\ccmwmcpd.s:413    .text.Interrupt_GetDuty_Max:00000000 $t
+  C:\Temp\ccmwmcpd.s:420    .text.Interrupt_GetDuty_Max:00000000 Interrupt_GetDuty_Max
+  C:\Temp\ccmwmcpd.s:435    .text.Interrupt_GetDuty_Max:00000008 $d
+  C:\Temp\ccmwmcpd.s:440    .text.Interrupt_GetBootTime:00000000 $t
+  C:\Temp\ccmwmcpd.s:447    .text.Interrupt_GetBootTime:00000000 Interrupt_GetBootTime
+  C:\Temp\ccmwmcpd.s:462    .text.Interrupt_GetBootTime:00000008 $d
+  C:\Temp\ccmwmcpd.s:467    .bss.boot_time:00000000 $d
+  C:\Temp\ccmwmcpd.s:471    .bss.boot_time:00000000 boot_time
+  C:\Temp\ccmwmcpd.s:474    .bss.boot_time_count.9702:00000000 $d
+  C:\Temp\ccmwmcpd.s:478    .bss.boot_time_count.9702:00000000 boot_time_count.9702
+  C:\Temp\ccmwmcpd.s:481    .bss.interrupt_count_now:00000000 $d
+  C:\Temp\ccmwmcpd.s:485    .bss.interrupt_count_now:00000000 interrupt_count_now
+  C:\Temp\ccmwmcpd.s:488    .bss.interrupt_duty:00000000 $d
+  C:\Temp\ccmwmcpd.s:492    .bss.interrupt_duty:00000000 interrupt_duty
+  C:\Temp\ccmwmcpd.s:495    .bss.interrupt_duty_max:00000000 $d
+  C:\Temp\ccmwmcpd.s:499    .bss.interrupt_duty_max:00000000 interrupt_duty_max
 
 UNDEFINED SYMBOLS
 calc_move_speed

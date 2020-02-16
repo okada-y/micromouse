@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-ARM GAS  C:\Temp\ccUMpiQ9.s 			page 1
-=======
-ARM GAS  C:\Temp\ccGE1sIn.s 			page 1
->>>>>>> origin/release_side_wall_trace
+ARM GAS  C:\Temp\ccuzZqih.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -62,11 +58,7 @@ ARM GAS  C:\Temp\ccGE1sIn.s 			page 1
   28:Src/main.c    **** #include "gpio.h"
   29:Src/main.c    **** 
   30:Src/main.c    **** /* Private includes ----------------------------------------------------------*/
-<<<<<<< HEAD
-ARM GAS  C:\Temp\ccUMpiQ9.s 			page 2
-=======
-ARM GAS  C:\Temp\ccGE1sIn.s 			page 2
->>>>>>> origin/release_side_wall_trace
+ARM GAS  C:\Temp\ccuzZqih.s 			page 2
 
 
   31:Src/main.c    **** /* USER CODE BEGIN Includes */
@@ -126,11 +118,7 @@ ARM GAS  C:\Temp\ccGE1sIn.s 			page 1
   85:Src/main.c    **** /* USER CODE BEGIN 0 */
   86:Src/main.c    **** 
   87:Src/main.c    **** 
-<<<<<<< HEAD
-ARM GAS  C:\Temp\ccUMpiQ9.s 			page 3
-=======
-ARM GAS  C:\Temp\ccGE1sIn.s 			page 3
->>>>>>> origin/release_side_wall_trace
+ARM GAS  C:\Temp\ccuzZqih.s 			page 3
 
 
   88:Src/main.c    **** /* USER CODE END 0 */
@@ -190,11 +178,7 @@ ARM GAS  C:\Temp\ccGE1sIn.s 			page 1
  142:Src/main.c    ****   Encoder_Initialize();			/*Encoderタイマ設定、位相初期化*/
  143:Src/main.c    ****   Interrupt_Initialize( );		/*interrupt処理用タイマ(TIM6)初期化*/
  144:Src/main.c    ****   //Battery_LimiterVoltage();		/*a バッテリー下限処理*/
-<<<<<<< HEAD
-ARM GAS  C:\Temp\ccUMpiQ9.s 			page 4
-=======
-ARM GAS  C:\Temp\ccGE1sIn.s 			page 4
->>>>>>> origin/release_side_wall_trace
+ARM GAS  C:\Temp\ccuzZqih.s 			page 4
 
 
  145:Src/main.c    **** 
@@ -254,11 +238,7 @@ ARM GAS  C:\Temp\ccGE1sIn.s 			page 1
  199:Src/main.c    ****       HAL_Delay(10000);
  200:Src/main.c    **** 		  break;
  201:Src/main.c    **** 
-<<<<<<< HEAD
-ARM GAS  C:\Temp\ccUMpiQ9.s 			page 5
-=======
-ARM GAS  C:\Temp\ccGE1sIn.s 			page 5
->>>>>>> origin/release_side_wall_trace
+ARM GAS  C:\Temp\ccuzZqih.s 			page 5
 
 
  202:Src/main.c    **** 	  case 7:
@@ -317,17 +297,8 @@ ARM GAS  C:\Temp\ccGE1sIn.s 			page 1
   39 0002 95B0     		sub	sp, sp, #84
   40              	.LCFI1:
   41              		.cfi_def_cfa_offset 96
-<<<<<<< HEAD
- 241:Src/main.c    ****   RCC_OscInitTypeDef RCC_OscInitStruct = {0};
-  42              		.loc 1 241 3 view .LVU1
-  43              		.loc 1 241 22 is_stmt 0 view .LVU2
-  44 0004 3422     		movs	r2, #52
-  45 0006 0021     		movs	r1, #0
-ARM GAS  C:\Temp\ccUMpiQ9.s 			page 6
-=======
  245:Src/main.c    ****   RCC_OscInitTypeDef RCC_OscInitStruct = {0};
-ARM GAS  C:\Temp\ccGE1sIn.s 			page 6
->>>>>>> origin/release_side_wall_trace
+ARM GAS  C:\Temp\ccuzZqih.s 			page 6
 
 
   42              		.loc 1 245 3 view .LVU1
@@ -384,21 +355,10 @@ ARM GAS  C:\Temp\ccGE1sIn.s 			page 1
   87              		.loc 1 251 3 view .LVU15
   88 0044 019B     		ldr	r3, [sp, #4]
   89              	.LBE3:
-<<<<<<< HEAD
-  90              		.loc 1 247 3 view .LVU16
- 248:Src/main.c    ****   /** Initializes the CPU, AHB and APB busses clocks 
- 249:Src/main.c    ****   */
- 250:Src/main.c    ****   RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI;
-  91              		.loc 1 250 3 view .LVU17
-  92              		.loc 1 250 36 is_stmt 0 view .LVU18
-  93 0046 0225     		movs	r5, #2
-ARM GAS  C:\Temp\ccUMpiQ9.s 			page 7
-=======
   90              		.loc 1 251 3 view .LVU16
  252:Src/main.c    ****   /** Initializes the CPU, AHB and APB busses clocks 
  253:Src/main.c    ****   */
-ARM GAS  C:\Temp\ccGE1sIn.s 			page 7
->>>>>>> origin/release_side_wall_trace
+ARM GAS  C:\Temp\ccuzZqih.s 			page 7
 
 
  254:Src/main.c    ****   RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI;
@@ -451,20 +411,6 @@ ARM GAS  C:\Temp\ccGE1sIn.s 			page 1
  127 0062 07A8     		add	r0, sp, #28
  128 0064 FFF7FEFF 		bl	HAL_RCC_OscConfig
  129              	.LVL1:
-<<<<<<< HEAD
- 261:Src/main.c    ****   {
- 262:Src/main.c    ****     Error_Handler();
- 263:Src/main.c    ****   }
- 264:Src/main.c    ****   /** Initializes the CPU, AHB and APB busses clocks 
- 265:Src/main.c    ****   */
- 266:Src/main.c    ****   RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
- 130              		.loc 1 266 3 is_stmt 1 view .LVU39
- 131              		.loc 1 266 31 is_stmt 0 view .LVU40
- 132 0068 0F23     		movs	r3, #15
- 133 006a 0293     		str	r3, [sp, #8]
- 267:Src/main.c    ****                               |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
-ARM GAS  C:\Temp\ccUMpiQ9.s 			page 8
-=======
  265:Src/main.c    ****   {
  266:Src/main.c    ****     Error_Handler();
  267:Src/main.c    ****   }
@@ -472,8 +418,7 @@ ARM GAS  C:\Temp\ccGE1sIn.s 			page 1
  269:Src/main.c    ****   */
  270:Src/main.c    ****   RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
  130              		.loc 1 270 3 is_stmt 1 view .LVU39
-ARM GAS  C:\Temp\ccGE1sIn.s 			page 8
->>>>>>> origin/release_side_wall_trace
+ARM GAS  C:\Temp\ccuzZqih.s 			page 8
 
 
  131              		.loc 1 270 31 is_stmt 0 view .LVU40
@@ -533,19 +478,13 @@ ARM GAS  C:\Temp\ccGE1sIn.s 			page 1
  176              	.LFB133:
   95:Src/main.c    ****   /* USER CODE BEGIN 1 */
  177              		.loc 1 95 1 is_stmt 1 view -0
-ARM GAS  C:\Temp\ccGE1sIn.s 			page 9
+ARM GAS  C:\Temp\ccuzZqih.s 			page 9
 
 
  178              		.cfi_startproc
  179              		@ args = 0, pretend = 0, frame = 0
  180              		@ frame_needed = 0, uses_anonymous_args = 0
  181 0000 30B5     		push	{r4, r5, lr}
-<<<<<<< HEAD
-ARM GAS  C:\Temp\ccUMpiQ9.s 			page 9
-
-
-=======
->>>>>>> origin/release_side_wall_trace
  182              	.LCFI3:
  183              		.cfi_def_cfa_offset 12
  184              		.cfi_offset 4, -12
@@ -599,19 +538,13 @@ ARM GAS  C:\Temp\ccGE1sIn.s 			page 1
  131:Src/main.c    ****   MX_TIM2_Init();
  218              		.loc 1 131 3 view .LVU67
  219 0020 FFF7FEFF 		bl	MX_ADC1_Init
-ARM GAS  C:\Temp\ccGE1sIn.s 			page 10
+ARM GAS  C:\Temp\ccuzZqih.s 			page 10
 
 
  220              	.LVL10:
  132:Src/main.c    ****   MX_TIM3_Init();
  221              		.loc 1 132 3 view .LVU68
  222 0024 FFF7FEFF 		bl	MX_TIM2_Init
-<<<<<<< HEAD
-ARM GAS  C:\Temp\ccUMpiQ9.s 			page 10
-
-
-=======
->>>>>>> origin/release_side_wall_trace
  223              	.LVL11:
  133:Src/main.c    ****   MX_TIM6_Init();
  224              		.loc 1 133 3 view .LVU69
@@ -665,15 +598,7 @@ ARM GAS  C:\Temp\ccGE1sIn.s 			page 1
  225:Src/main.c    **** 	  set_duty_l(0);	//motor_l 停止
  261              		.loc 1 225 4 view .LVU81
  262 0056 0020     		movs	r0, #0
-<<<<<<< HEAD
- 263 0058 FFF7FEFF 		bl	set_duty_r
- 264              	.LVL23:
- 222:Src/main.c    **** 
- 265              		.loc 1 222 4 view .LVU82
-ARM GAS  C:\Temp\ccUMpiQ9.s 			page 11
-=======
-ARM GAS  C:\Temp\ccGE1sIn.s 			page 11
->>>>>>> origin/release_side_wall_trace
+ARM GAS  C:\Temp\ccuzZqih.s 			page 11
 
 
  263 0058 FFF7FEFF 		bl	set_duty_r
@@ -733,21 +658,14 @@ ARM GAS  C:\Temp\ccGE1sIn.s 			page 1
  304 008a FFF7FEFF 		bl	set_mode_ctrl
  305              	.LVL31:
  174:Src/main.c    ****       set_accel_mode(deceleration);
-ARM GAS  C:\Temp\ccGE1sIn.s 			page 12
+ARM GAS  C:\Temp\ccuzZqih.s 			page 12
 
 
  306              		.loc 1 174 6 view .LVU95
  307 008e 0020     		movs	r0, #0
  308 0090 FFF7FEFF 		bl	set_rotation_mode
  309              	.LVL32:
-<<<<<<< HEAD
-ARM GAS  C:\Temp\ccUMpiQ9.s 			page 12
-
-
- 175:Src/main.c    ****       set_target_angle(5*2*PI);
-=======
  175:Src/main.c    ****       set_target_angle(10*2*PI);
->>>>>>> origin/release_side_wall_trace
  310              		.loc 1 175 7 view .LVU96
  311 0094 0120     		movs	r0, #1
  312 0096 FFF7FEFF 		bl	set_accel_mode
@@ -800,21 +718,7 @@ ARM GAS  C:\Temp\ccGE1sIn.s 			page 1
  349 00ce FFF7FEFF 		bl	set_accel_mode
  350              	.LVL40:
  192:Src/main.c    **** 		  break;
-<<<<<<< HEAD
- 346              		.loc 1 192 7 view .LVU106
- 347 00c8 FFF7FEFF 		bl	turn_conclk_180
- 348              	.LVL40:
- 193:Src/main.c    **** 
- 349              		.loc 1 193 5 view .LVU107
- 350 00cc BFE7     		b	.L6
- 351              	.L9:
- 199:Src/main.c    **** 		  break;
- 352              		.loc 1 199 7 view .LVU108
- 353 00ce FFF7FEFF 		bl	module_test
-ARM GAS  C:\Temp\ccUMpiQ9.s 			page 13
-=======
-ARM GAS  C:\Temp\ccGE1sIn.s 			page 13
->>>>>>> origin/release_side_wall_trace
+ARM GAS  C:\Temp\ccuzZqih.s 			page 13
 
 
  351              		.loc 1 192 7 view .LVU107
@@ -857,48 +761,6 @@ ARM GAS  C:\Temp\ccGE1sIn.s 			page 1
  380 00fa A8E7     		b	.L6
  381              	.L7:
  214:Src/main.c    **** 
-<<<<<<< HEAD
- 368              		.loc 1 214 5 view .LVU112
- 369 00e4 0023     		movs	r3, #0
- 370 00e6 0293     		str	r3, [sp, #8]
- 371 00e8 0123     		movs	r3, #1
- 372 00ea 0193     		str	r3, [sp, #4]
- 373 00ec 284B     		ldr	r3, .L20+16
- 374 00ee 0093     		str	r3, [sp]
- 375 00f0 0523     		movs	r3, #5
- 376 00f2 1A46     		mov	r2, r3
- 377 00f4 2946     		mov	r1, r5
- 378 00f6 2046     		mov	r0, r4
- 379 00f8 FFF7FEFF 		bl	maze_solve
- 380              	.LVL43:
- 216:Src/main.c    **** 	  }
- 381              		.loc 1 216 5 view .LVU113
- 382 00fc A7E7     		b	.L6
- 383              	.LVL44:
- 384              	.L17:
- 385              	.LBB5:
- 225:Src/main.c    **** 	  HAL_Delay(700);
- 386              		.loc 1 225 4 discriminator 3 view .LVU114
- 387 00fe 254D     		ldr	r5, .L20+20
- 388 0100 0122     		movs	r2, #1
- 389 0102 4FF46451 		mov	r1, #14592
- 390 0106 2846     		mov	r0, r5
- 391 0108 FFF7FEFF 		bl	HAL_GPIO_WritePin
- 392              	.LVL45:
- 226:Src/main.c    **** 	  HAL_GPIO_WritePin(GPIOA,LED2_Pin|LED3_Pin|LED4_Pin|LED5_Pin, GPIO_PIN_RESET);
- 393              		.loc 1 226 4 discriminator 3 view .LVU115
- 394 010c 4FF42F70 		mov	r0, #700
- 395 0110 FFF7FEFF 		bl	HAL_Delay
- 396              	.LVL46:
- 227:Src/main.c    **** 	  HAL_Delay(300);
- 397              		.loc 1 227 4 discriminator 3 view .LVU116
- 398 0114 0022     		movs	r2, #0
- 399 0116 4FF46451 		mov	r1, #14592
- 400 011a 2846     		mov	r0, r5
- 401 011c FFF7FEFF 		bl	HAL_GPIO_WritePin
- 402              	.LVL47:
-ARM GAS  C:\Temp\ccUMpiQ9.s 			page 14
-=======
  382              		.loc 1 214 5 view .LVU116
  383 00fc 2E4D     		ldr	r5, .L21+12
  384 00fe 2F4C     		ldr	r4, .L21+16
@@ -916,8 +778,7 @@ ARM GAS  C:\Temp\ccGE1sIn.s 			page 1
  394 010e 0293     		str	r3, [sp, #8]
  395 0110 0123     		movs	r3, #1
  396 0112 0193     		str	r3, [sp, #4]
-ARM GAS  C:\Temp\ccGE1sIn.s 			page 14
->>>>>>> origin/release_side_wall_trace
+ARM GAS  C:\Temp\ccuzZqih.s 			page 14
 
 
  397 0114 2A4B     		ldr	r3, .L21+20
@@ -977,7 +838,7 @@ ARM GAS  C:\Temp\ccGE1sIn.s 			page 1
  228:Src/main.c    **** 	  HAL_GPIO_WritePin(GPIOA,LED2_Pin|LED3_Pin|LED4_Pin|LED5_Pin, GPIO_PIN_SET);
  442              		.loc 1 228 4 discriminator 1 view .LVU128
  443              	.LBE5:
-ARM GAS  C:\Temp\ccGE1sIn.s 			page 15
+ARM GAS  C:\Temp\ccuzZqih.s 			page 15
 
 
  150:Src/main.c    ****   {
@@ -989,163 +850,6 @@ ARM GAS  C:\Temp\ccGE1sIn.s 			page 1
  158:Src/main.c    **** 
  448              		.loc 1 158 4 view .LVU131
  158:Src/main.c    **** 
-<<<<<<< HEAD
- 425              		.loc 1 158 11 is_stmt 0 view .LVU126
- 426 0132 FFF7FEFF 		bl	get_mode_number
- 427              	.LVL52:
- 428 0136 0F28     		cmp	r0, #15
- 429 0138 89D8     		bhi	.L6
- 430 013a 01A3     		adr	r3, .L8
- 431 013c 53F820F0 		ldr	pc, [r3, r0, lsl #2]
- 432              		.p2align 2
- 433              	.L8:
- 434 0140 4B000000 		.word	.L15+1
- 435 0144 67000000 		.word	.L14+1
- 436 0148 89000000 		.word	.L13+1
- 437 014c AD000000 		.word	.L12+1
- 438 0150 B3000000 		.word	.L11+1
- 439 0154 BD000000 		.word	.L10+1
- 440 0158 4F000000 		.word	.L6+1
- 441 015c CF000000 		.word	.L9+1
- 442 0160 4F000000 		.word	.L6+1
- 443 0164 4F000000 		.word	.L6+1
- 444 0168 4F000000 		.word	.L6+1
- 445 016c 4F000000 		.word	.L6+1
- 446 0170 4F000000 		.word	.L6+1
- 447 0174 4F000000 		.word	.L6+1
- 448 0178 4F000000 		.word	.L6+1
- 449 017c D5000000 		.word	.L7+1
-ARM GAS  C:\Temp\ccUMpiQ9.s 			page 15
-
-
- 450              		.p2align 1
- 451              	.L21:
- 452              		.align	2
- 453              	.L20:
- 454 0180 EC51B83D 		.word	1035489772
- 455 0184 D053FB41 		.word	1106990032
- 456 0188 00000000 		.word	.LANCHOR0
- 457 018c 00000000 		.word	.LANCHOR1
- 458 0190 00000000 		.word	.LANCHOR2
- 459 0194 00000240 		.word	1073872896
- 460              		.cfi_endproc
- 461              	.LFE133:
- 463              		.section	.text.Error_Handler,"ax",%progbits
- 464              		.align	1
- 465              		.global	Error_Handler
- 466              		.syntax unified
- 467              		.thumb
- 468              		.thumb_func
- 469              		.fpu fpv4-sp-d16
- 471              	Error_Handler:
- 472              	.LFB135:
- 278:Src/main.c    **** 
- 279:Src/main.c    **** /* USER CODE BEGIN 4 */
- 280:Src/main.c    **** 
- 281:Src/main.c    **** /* USER CODE END 4 */
- 282:Src/main.c    **** 
- 283:Src/main.c    **** /**
- 284:Src/main.c    ****   * @brief  This function is executed in case of error occurrence.
- 285:Src/main.c    ****   * @retval None
- 286:Src/main.c    ****   */
- 287:Src/main.c    **** void Error_Handler(void)
- 288:Src/main.c    **** {
- 473              		.loc 1 288 1 is_stmt 1 view -0
- 474              		.cfi_startproc
- 475              		@ args = 0, pretend = 0, frame = 0
- 476              		@ frame_needed = 0, uses_anonymous_args = 0
- 477              		@ link register save eliminated.
- 289:Src/main.c    ****   /* USER CODE BEGIN Error_Handler_Debug */
- 290:Src/main.c    ****   /* User can add his own implementation to report the HAL error return state */
- 291:Src/main.c    **** 
- 292:Src/main.c    ****   /* USER CODE END Error_Handler_Debug */
- 293:Src/main.c    **** }
- 478              		.loc 1 293 1 view .LVU128
- 479 0000 7047     		bx	lr
- 480              		.cfi_endproc
- 481              	.LFE135:
- 483              		.section	.bss.m_search_tmp.10725,"aw",%nobits
- 484              		.align	2
- 485              		.set	.LANCHOR0,. + 0
- 488              	m_search_tmp.10725:
- 489 0000 00000000 		.space	1024
- 489      00000000 
- 489      00000000 
- 489      00000000 
- 489      00000000 
- 490              		.section	.bss.m_wall_tmp.10724,"aw",%nobits
- 491              		.align	2
-ARM GAS  C:\Temp\ccUMpiQ9.s 			page 16
-
-
- 492              		.set	.LANCHOR1,. + 0
- 495              	m_wall_tmp.10724:
- 496 0000 00000000 		.space	1024
- 496      00000000 
- 496      00000000 
- 496      00000000 
- 496      00000000 
- 497              		.section	.data.maze_goal.10723,"aw"
- 498              		.align	2
- 499              		.set	.LANCHOR2,. + 0
- 502              	maze_goal.10723:
- 503 0000 04020203 		.ascii	"\004\002\002\003\003\003\004\004\004\001\002\003\001"
- 503      03030404 
- 503      04010203 
- 503      01
- 504 000d 02030102 		.ascii	"\002\003\001\002\003"
- 504      03
- 505              		.text
- 506              	.Letext0:
- 507              		.file 2 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\machine\\_default_t
- 508              		.file 3 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\_stdint.h"
- 509              		.file 4 "Drivers/CMSIS/Include/core_cm4.h"
- 510              		.file 5 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h"
- 511              		.file 6 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f413xx.h"
- 512              		.file 7 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h"
- 513              		.file 8 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
- 514              		.file 9 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc_ex.h"
- 515              		.file 10 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h"
- 516              		.file 11 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio.h"
- 517              		.file 12 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h"
- 518              		.file 13 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_adc.h"
- 519              		.file 14 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h"
- 520              		.file 15 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h"
- 521              		.file 16 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h"
- 522              		.file 17 "Inc/adc.h"
- 523              		.file 18 "Inc/spi.h"
- 524              		.file 19 "Inc/tim.h"
- 525              		.file 20 "Inc/usart.h"
- 526              		.file 21 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\lock.h"
- 527              		.file 22 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\_types.h"
- 528              		.file 23 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\lib\\gcc\\arm-none-eabi\\9.2.1\\include\\s
- 529              		.file 24 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\reent.h"
- 530              		.file 25 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\math.h"
- 531              		.file 26 "Inc/target.h"
- 532              		.file 27 "Inc/exvol.h"
- 533              		.file 28 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\stdlib.h"
- 534              		.file 29 "Inc/matlab_code_gen_data.h"
- 535              		.file 30 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h"
- 536              		.file 31 "Inc/gpio.h"
- 537              		.file 32 "Inc/dma.h"
- 538              		.file 33 "Inc/motor.h"
- 539              		.file 34 "Inc/index.h"
- 540              		.file 35 "Inc/imu.h"
- 541              		.file 36 "Inc/encorder.h"
- 542              		.file 37 "Inc/interrupt.h"
- 543              		.file 38 "Inc/module_test.h"
- 544              		.file 39 "Inc/mode.h"
-ARM GAS  C:\Temp\ccUMpiQ9.s 			page 17
-
-
- 545              		.file 40 "Inc/ir_sensor.h"
- 546              		.file 41 "Inc/adjust.h"
- 547              		.file 42 "Inc/movement.h"
- 548              		.file 43 "Inc/maze_init.h"
- 549              		.file 44 "Inc/maze_solve.h"
- 550              		.file 45 "<built-in>"
-ARM GAS  C:\Temp\ccUMpiQ9.s 			page 18
-=======
  449              		.loc 1 158 11 is_stmt 0 view .LVU132
  450 015a FFF7FEFF 		bl	get_mode_number
  451              	.LVL57:
@@ -1194,7 +898,7 @@ ARM GAS  C:\Temp\ccGE1sIn.s 			page 1
  496              	Error_Handler:
  497              	.LFB135:
  282:Src/main.c    **** 
-ARM GAS  C:\Temp\ccGE1sIn.s 			page 16
+ARM GAS  C:\Temp\ccuzZqih.s 			page 16
 
 
  283:Src/main.c    **** /* USER CODE BEGIN 4 */
@@ -1243,18 +947,18 @@ ARM GAS  C:\Temp\ccGE1sIn.s 			page 1
  523              		.align	2
  524              		.set	.LANCHOR2,. + 0
  527              	maze_goal.10761:
- 528 0000 01050506 		.ascii	"\001\005\005\006\006\006\007\007\007\011\005\006\004"
- 528      06060707 
- 528      07090506 
- 528      04
- 529 000d 05060405 		.ascii	"\005\006\004\005\006"
- 529      06
+ 528 0000 01070808 		.ascii	"\001\007\010\010\003\003\004\004\004\011\013\012\013"
+ 528      03030404 
+ 528      04090B0A 
+ 528      0B
+ 529 000d 02030102 		.ascii	"\002\003\001\002\003"
+ 529      03
  530              		.text
  531              	.Letext0:
  532              		.file 2 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\machine\\_default_t
  533              		.file 3 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\_stdint.h"
  534              		.file 4 "Drivers/CMSIS/Include/core_cm4.h"
-ARM GAS  C:\Temp\ccGE1sIn.s 			page 17
+ARM GAS  C:\Temp\ccuzZqih.s 			page 17
 
 
  535              		.file 5 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h"
@@ -1296,45 +1000,26 @@ ARM GAS  C:\Temp\ccGE1sIn.s 			page 1
  571              		.file 41 "Inc/movement.h"
  572              		.file 42 "Inc/maze_init.h"
  573              		.file 43 "<built-in>"
-ARM GAS  C:\Temp\ccGE1sIn.s 			page 18
->>>>>>> origin/release_side_wall_trace
+ARM GAS  C:\Temp\ccuzZqih.s 			page 18
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 main.c
-<<<<<<< HEAD
-  C:\Temp\ccUMpiQ9.s:18     .text.SystemClock_Config:00000000 $t
-  C:\Temp\ccUMpiQ9.s:26     .text.SystemClock_Config:00000000 SystemClock_Config
-  C:\Temp\ccUMpiQ9.s:162    .text.SystemClock_Config:00000084 $d
-  C:\Temp\ccUMpiQ9.s:168    .text.main:00000000 $t
-  C:\Temp\ccUMpiQ9.s:175    .text.main:00000000 main
-  C:\Temp\ccUMpiQ9.s:434    .text.main:00000140 $d
-  C:\Temp\ccUMpiQ9.s:454    .text.main:00000180 $d
-  C:\Temp\ccUMpiQ9.s:464    .text.Error_Handler:00000000 $t
-  C:\Temp\ccUMpiQ9.s:471    .text.Error_Handler:00000000 Error_Handler
-  C:\Temp\ccUMpiQ9.s:484    .bss.m_search_tmp.10725:00000000 $d
-  C:\Temp\ccUMpiQ9.s:488    .bss.m_search_tmp.10725:00000000 m_search_tmp.10725
-  C:\Temp\ccUMpiQ9.s:491    .bss.m_wall_tmp.10724:00000000 $d
-  C:\Temp\ccUMpiQ9.s:495    .bss.m_wall_tmp.10724:00000000 m_wall_tmp.10724
-  C:\Temp\ccUMpiQ9.s:498    .data.maze_goal.10723:00000000 $d
-  C:\Temp\ccUMpiQ9.s:502    .data.maze_goal.10723:00000000 maze_goal.10723
-=======
-  C:\Temp\ccGE1sIn.s:18     .text.SystemClock_Config:00000000 $t
-  C:\Temp\ccGE1sIn.s:26     .text.SystemClock_Config:00000000 SystemClock_Config
-  C:\Temp\ccGE1sIn.s:162    .text.SystemClock_Config:00000084 $d
-  C:\Temp\ccGE1sIn.s:168    .text.main:00000000 $t
-  C:\Temp\ccGE1sIn.s:175    .text.main:00000000 main
-  C:\Temp\ccGE1sIn.s:458    .text.main:0000016c $d
-  C:\Temp\ccGE1sIn.s:478    .text.main:000001ac $d
-  C:\Temp\ccGE1sIn.s:489    .text.Error_Handler:00000000 $t
-  C:\Temp\ccGE1sIn.s:496    .text.Error_Handler:00000000 Error_Handler
-  C:\Temp\ccGE1sIn.s:509    .bss.m_search_tmp.10763:00000000 $d
-  C:\Temp\ccGE1sIn.s:513    .bss.m_search_tmp.10763:00000000 m_search_tmp.10763
-  C:\Temp\ccGE1sIn.s:516    .bss.m_wall_tmp.10762:00000000 $d
-  C:\Temp\ccGE1sIn.s:520    .bss.m_wall_tmp.10762:00000000 m_wall_tmp.10762
-  C:\Temp\ccGE1sIn.s:523    .data.maze_goal.10761:00000000 $d
-  C:\Temp\ccGE1sIn.s:527    .data.maze_goal.10761:00000000 maze_goal.10761
->>>>>>> origin/release_side_wall_trace
+  C:\Temp\ccuzZqih.s:18     .text.SystemClock_Config:00000000 $t
+  C:\Temp\ccuzZqih.s:26     .text.SystemClock_Config:00000000 SystemClock_Config
+  C:\Temp\ccuzZqih.s:162    .text.SystemClock_Config:00000084 $d
+  C:\Temp\ccuzZqih.s:168    .text.main:00000000 $t
+  C:\Temp\ccuzZqih.s:175    .text.main:00000000 main
+  C:\Temp\ccuzZqih.s:458    .text.main:0000016c $d
+  C:\Temp\ccuzZqih.s:478    .text.main:000001ac $d
+  C:\Temp\ccuzZqih.s:489    .text.Error_Handler:00000000 $t
+  C:\Temp\ccuzZqih.s:496    .text.Error_Handler:00000000 Error_Handler
+  C:\Temp\ccuzZqih.s:509    .bss.m_search_tmp.10763:00000000 $d
+  C:\Temp\ccuzZqih.s:513    .bss.m_search_tmp.10763:00000000 m_search_tmp.10763
+  C:\Temp\ccuzZqih.s:516    .bss.m_wall_tmp.10762:00000000 $d
+  C:\Temp\ccuzZqih.s:520    .bss.m_wall_tmp.10762:00000000 m_wall_tmp.10762
+  C:\Temp\ccuzZqih.s:523    .data.maze_goal.10761:00000000 $d
+  C:\Temp\ccuzZqih.s:527    .data.maze_goal.10761:00000000 maze_goal.10761
 
 UNDEFINED SYMBOLS
 memset
@@ -1374,11 +1059,7 @@ maze_init
 maze_solve
 HAL_GPIO_WritePin
 mode_main
-<<<<<<< HEAD
-ARM GAS  C:\Temp\ccUMpiQ9.s 			page 19
-=======
 get_mode_number
-ARM GAS  C:\Temp\ccGE1sIn.s 			page 19
->>>>>>> origin/release_side_wall_trace
+ARM GAS  C:\Temp\ccuzZqih.s 			page 19
 
 
