@@ -18,6 +18,7 @@ void clr_motor_vol(void);
 void clr_operate_history(void);
 void calc_vol2duty ( void );
 void motor_duty_adjust (void);
+void calc_motor_vol ( void );
 void set_motor_duty (void);
 int16_t get_target_duty_r ( void );
 int16_t get_target_duty_l ( void );

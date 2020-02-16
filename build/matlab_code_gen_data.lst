@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 ARM GAS  C:\Temp\ccXK2GfR.s 			page 1
+=======
+ARM GAS  C:\Temp\cczt4Fvv.s 			page 1
+>>>>>>> origin/release_side_wall_trace
 
 
    1              		.cpu cortex-m4
@@ -17,6 +21,7 @@ ARM GAS  C:\Temp\ccXK2GfR.s 			page 1
   14              		.text
   15              	.Ltext0:
   16              		.cfi_sections	.debug_frame
+<<<<<<< HEAD
   17              		.global	wall_sensor_left_th
   18              		.global	wall_sensor_left
   19              		.global	wall_sensor_right_th
@@ -77,10 +82,38 @@ ARM GAS  C:\Temp\ccXK2GfR.s 			page 1
   83              		.file 23 "Inc/matlab_code_gen_data.h"
   84              		.file 24 "Src/matlab_code_gen_data.c"
 ARM GAS  C:\Temp\ccXK2GfR.s 			page 3
+=======
+  17              	.Letext0:
+  18              		.file 1 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\machine\\_default_t
+  19              		.file 2 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\lock.h"
+  20              		.file 3 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\_types.h"
+  21              		.file 4 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\lib\\gcc\\arm-none-eabi\\9.2.1\\include\\st
+  22              		.file 5 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\reent.h"
+  23              		.file 6 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\stdlib.h"
+  24              		.file 7 "Inc/maze_solve.h"
+  25              		.file 8 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\_stdint.h"
+  26              		.file 9 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\math.h"
+  27              		.file 10 "Drivers/CMSIS/Include/core_cm4.h"
+  28              		.file 11 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h"
+  29              		.file 12 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f413xx.h"
+  30              		.file 13 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h"
+  31              		.file 14 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
+  32              		.file 15 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h"
+  33              		.file 16 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_adc.h"
+  34              		.file 17 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h"
+  35              		.file 18 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h"
+  36              		.file 19 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h"
+  37              		.file 20 "Inc/adc.h"
+  38              		.file 21 "Inc/spi.h"
+  39              		.file 22 "Inc/tim.h"
+  40              		.file 23 "Inc/usart.h"
+ARM GAS  C:\Temp\cczt4Fvv.s 			page 2
+>>>>>>> origin/release_side_wall_trace
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 matlab_code_gen_data.c
+<<<<<<< HEAD
   C:\Temp\ccXK2GfR.s:51     .data.wall_sensor_left_th:00000000 wall_sensor_left_th
   C:\Temp\ccXK2GfR.s:33     .bss.wall_sensor_left:00000000 wall_sensor_left
   C:\Temp\ccXK2GfR.s:57     .data.wall_sensor_right_th:00000000 wall_sensor_right_th
@@ -93,5 +126,7 @@ DEFINED SYMBOLS
   C:\Temp\ccXK2GfR.s:42     .data.wall_sensor_front_th:00000000 $d
   C:\Temp\ccXK2GfR.s:48     .data.wall_sensor_left_th:00000000 $d
   C:\Temp\ccXK2GfR.s:54     .data.wall_sensor_right_th:00000000 $d
+=======
+>>>>>>> origin/release_side_wall_trace
 
 NO UNDEFINED SYMBOLS

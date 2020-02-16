@@ -19,12 +19,6 @@
 #include "index.h"
 
 /* Variable Declarations */
-extern short wall_sensor_front;
-extern short wall_sensor_front_th;
-extern short wall_sensor_right;
-extern short wall_sensor_right_th;
-extern short wall_sensor_left;
-extern short wall_sensor_left_th;
 
 #endif
 

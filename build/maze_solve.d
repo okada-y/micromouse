@@ -31,7 +31,7 @@ build/maze_solve.o: Src/maze_solve.c Inc/maze_init.h Inc/rtwtypes.h \
  Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h \
  Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h Inc/adc.h \
  Inc/dma.h Inc/spi.h Inc/tim.h Inc/usart.h Inc/gpio.h Inc/index.h \
- Inc/movement.h Inc/ir_sensor.h Inc/adjust.h Inc/target.h
+ Inc/movement.h Inc/ir_sensor.h Inc/adjust.h Inc/target.h Inc/param.h
 
 Inc/maze_init.h:
 
@@ -134,3 +134,5 @@ Inc/ir_sensor.h:
 Inc/adjust.h:
 
 Inc/target.h:
+
+Inc/param.h:

@@ -17,6 +17,25 @@
 #include "rtwtypes.h"
 #include "matlab_code_gen_types.h"
 
+/* Type Definitions */
+#ifndef typedef_coder_internal_ref
+#define typedef_coder_internal_ref
+
+typedef struct {
+  unsigned char contents;
+} coder_internal_ref;
+
+#endif                                 /*typedef_coder_internal_ref*/
+
+/*extern var*/
+extern int wall_sensor_front;
+extern int wall_sensor_right;
+extern int wall_sensor_left;
+extern coder_internal_ref current_x;
+extern coder_internal_ref current_y;
+
+
+
 /* Function Declarations */
 extern void maze_solve(unsigned char maze_wall[1024], unsigned char
   maze_wall_search[1024], unsigned char maze_row_size, unsigned char

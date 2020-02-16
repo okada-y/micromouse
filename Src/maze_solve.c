@@ -21,17 +21,13 @@
 #include "ir_sensor.h"
 #include "adjust.h"
 #include "target.h"
+#include "param.h"
 
 
-/* Type Definitions */
-#ifndef typedef_coder_internal_ref
-#define typedef_coder_internal_ref
 
-typedef struct {
-  unsigned char contents;
-} coder_internal_ref;
 
-#endif                                 /*typedef_coder_internal_ref*/
+
+
 
 #ifndef typedef_d_struct_T
 #define typedef_d_struct_T
@@ -119,7 +115,17 @@ typedef enum{
   immediately_after   //ゴール直後か
 }goal_after;
 
+int wall_sensor_front = 0;
+int wall_sensor_front_th = front_th;
+int wall_sensor_right = 0;
+int wall_sensor_right_th = right_th;
+int wall_sensor_left = 0;
+int wall_sensor_left_th = left_th;
+
 static goal_after goal_after_flg = other;
+coder_internal_ref current_x;
+coder_internal_ref current_y;
+
 //
 
 /* Function Declarations */
@@ -733,7 +739,7 @@ static void make_map_find(const coder_internal_ref_4 *g_direction, const
     q0 = 255;
   }
 
-  qY = q0 - 1U;
+  qY = q0 ;
   if (qY > (unsigned int)q0) {
     qY = 0U;
   }
@@ -758,8 +764,8 @@ static void make_map_find(const coder_internal_ref_4 *g_direction, const
     /* map更新確認用フラグ */
     tempi = 0U;
     exitg1 = false;
-    while ((!exitg1) && (tempi <= (unsigned char)qY)) {
-      /* 歩数カウントは0~max_length */
+    while ((!exitg1) && (tempi <= (unsigned char)(qY - 1))) {
+      /* 歩数カウントは0~max_length-1 */
       /* 歩数が確定している座標を検索 */
       /* 最初は0,更新され、増加したマスを次々検索していく */
       idx = 0;
@@ -2400,10 +2406,8 @@ void maze_solve(unsigned char maze_wall[1024], unsigned char maze_wall_search
   coder_internal_ref_3 l_direction;
   coder_internal_ref_2 wall;
   coder_internal_ref_1 search;
-  coder_internal_ref current_x;
   unsigned char contour_map[1024];
   unsigned char search_flag;
-  coder_internal_ref current_y;
   coder_internal_ref current_dir;
   int exitg1;
   bool exitg2;

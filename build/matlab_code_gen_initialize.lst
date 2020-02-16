@@ -1,4 +1,4 @@
-ARM GAS  C:\Temp\cchZWdqt.s 			page 1
+ARM GAS  C:\Temp\ccC0Z2Vq.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -17,135 +17,34 @@ ARM GAS  C:\Temp\cchZWdqt.s 			page 1
   14              		.text
   15              	.Ltext0:
   16              		.cfi_sections	.debug_frame
-  17              		.section	.text.matlab_code_gen_initialize,"ax",%progbits
-  18              		.align	1
-  19              		.global	matlab_code_gen_initialize
-  20              		.arch armv7e-m
-  21              		.syntax unified
-  22              		.thumb
-  23              		.thumb_func
-  24              		.fpu fpv4-sp-d16
-  26              	matlab_code_gen_initialize:
-  27              	.LFB133:
-  28              		.file 1 "Src/matlab_code_gen_initialize.c"
-   1:Src/matlab_code_gen_initialize.c **** /*
-   2:Src/matlab_code_gen_initialize.c ****  * Sponsored License - for use in support of a program or activity
-   3:Src/matlab_code_gen_initialize.c ****  * sponsored by MathWorks.  Not for government, commercial or other
-   4:Src/matlab_code_gen_initialize.c ****  * non-sponsored organizational use.
-   5:Src/matlab_code_gen_initialize.c ****  * File: matlab_code_gen_initialize.c
-   6:Src/matlab_code_gen_initialize.c ****  *
-   7:Src/matlab_code_gen_initialize.c ****  * MATLAB Coder version            : 4.2
-   8:Src/matlab_code_gen_initialize.c ****  * C/C++ source code generated on  : 18-Nov-2019 23:53:15
-   9:Src/matlab_code_gen_initialize.c ****  */
-  10:Src/matlab_code_gen_initialize.c **** 
-  11:Src/matlab_code_gen_initialize.c **** /* Include Files */
-  12:Src/matlab_code_gen_initialize.c **** #include "maze_init.h"
-  13:Src/matlab_code_gen_initialize.c **** #include "maze_solve.h"
-  14:Src/matlab_code_gen_initialize.c **** #include "matlab_code_gen_initialize.h"
-  15:Src/matlab_code_gen_initialize.c **** #include "matlab_code_gen_data.h"
-  16:Src/matlab_code_gen_initialize.c **** 
-  17:Src/matlab_code_gen_initialize.c **** /* Function Definitions */
-  18:Src/matlab_code_gen_initialize.c **** 
-  19:Src/matlab_code_gen_initialize.c **** /*
-  20:Src/matlab_code_gen_initialize.c ****  * Arguments    : void
-  21:Src/matlab_code_gen_initialize.c ****  * Return Type  : void
-  22:Src/matlab_code_gen_initialize.c ****  */
-  23:Src/matlab_code_gen_initialize.c **** void matlab_code_gen_initialize(void)
-  24:Src/matlab_code_gen_initialize.c **** {
-  29              		.loc 1 24 1 view -0
-  30              		.cfi_startproc
-  31              		@ args = 0, pretend = 0, frame = 0
-  32              		@ frame_needed = 0, uses_anonymous_args = 0
-  33              		@ link register save eliminated.
-  25:Src/matlab_code_gen_initialize.c ****   wall_sensor_left_th = 0;
-ARM GAS  C:\Temp\cchZWdqt.s 			page 2
-
-
-  34              		.loc 1 25 3 view .LVU1
-  35              		.loc 1 25 23 is_stmt 0 view .LVU2
-  36 0000 0023     		movs	r3, #0
-  37 0002 064A     		ldr	r2, .L2
-  38 0004 1380     		strh	r3, [r2]	@ movhi
-  26:Src/matlab_code_gen_initialize.c ****   wall_sensor_left = 0;
-  39              		.loc 1 26 3 is_stmt 1 view .LVU3
-  40              		.loc 1 26 20 is_stmt 0 view .LVU4
-  41 0006 064A     		ldr	r2, .L2+4
-  42 0008 1380     		strh	r3, [r2]	@ movhi
-  27:Src/matlab_code_gen_initialize.c ****   wall_sensor_right_th = 0;
-  43              		.loc 1 27 3 is_stmt 1 view .LVU5
-  44              		.loc 1 27 24 is_stmt 0 view .LVU6
-  45 000a 064A     		ldr	r2, .L2+8
-  46 000c 1380     		strh	r3, [r2]	@ movhi
-  28:Src/matlab_code_gen_initialize.c ****   wall_sensor_right = 0;
-  47              		.loc 1 28 3 is_stmt 1 view .LVU7
-  48              		.loc 1 28 21 is_stmt 0 view .LVU8
-  49 000e 064A     		ldr	r2, .L2+12
-  50 0010 1380     		strh	r3, [r2]	@ movhi
-  29:Src/matlab_code_gen_initialize.c ****   wall_sensor_front_th = 0;
-  51              		.loc 1 29 3 is_stmt 1 view .LVU9
-  52              		.loc 1 29 24 is_stmt 0 view .LVU10
-  53 0012 064A     		ldr	r2, .L2+16
-  54 0014 1380     		strh	r3, [r2]	@ movhi
-  30:Src/matlab_code_gen_initialize.c ****   wall_sensor_front = 0;
-  55              		.loc 1 30 3 is_stmt 1 view .LVU11
-  56              		.loc 1 30 21 is_stmt 0 view .LVU12
-  57 0016 064A     		ldr	r2, .L2+20
-  58 0018 1380     		strh	r3, [r2]	@ movhi
-  31:Src/matlab_code_gen_initialize.c **** }
-  59              		.loc 1 31 1 view .LVU13
-  60 001a 7047     		bx	lr
-  61              	.L3:
-  62              		.align	2
-  63              	.L2:
-  64 001c 00000000 		.word	wall_sensor_left_th
-  65 0020 00000000 		.word	wall_sensor_left
-  66 0024 00000000 		.word	wall_sensor_right_th
-  67 0028 00000000 		.word	wall_sensor_right
-  68 002c 00000000 		.word	wall_sensor_front_th
-  69 0030 00000000 		.word	wall_sensor_front
-  70              		.cfi_endproc
-  71              	.LFE133:
-  73              		.text
-  74              	.Letext0:
-  75              		.file 2 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\machine\\_default_t
-  76              		.file 3 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\lock.h"
-  77              		.file 4 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\_types.h"
-  78              		.file 5 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\lib\\gcc\\arm-none-eabi\\9.2.1\\include\\st
-  79              		.file 6 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\reent.h"
-  80              		.file 7 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\stdlib.h"
-  81              		.file 8 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\_stdint.h"
-  82              		.file 9 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\math.h"
-  83              		.file 10 "Drivers/CMSIS/Include/core_cm4.h"
-  84              		.file 11 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h"
-  85              		.file 12 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f413xx.h"
-ARM GAS  C:\Temp\cchZWdqt.s 			page 3
-
-
-  86              		.file 13 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h"
-  87              		.file 14 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
-  88              		.file 15 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h"
-  89              		.file 16 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_adc.h"
-  90              		.file 17 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h"
-  91              		.file 18 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h"
-  92              		.file 19 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h"
-  93              		.file 20 "Inc/adc.h"
-  94              		.file 21 "Inc/spi.h"
-  95              		.file 22 "Inc/tim.h"
-  96              		.file 23 "Inc/usart.h"
-  97              		.file 24 "Inc/matlab_code_gen_data.h"
-ARM GAS  C:\Temp\cchZWdqt.s 			page 4
+  17              	.Letext0:
+  18              		.file 1 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\machine\\_default_t
+  19              		.file 2 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\lock.h"
+  20              		.file 3 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\_types.h"
+  21              		.file 4 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\lib\\gcc\\arm-none-eabi\\9.2.1\\include\\st
+  22              		.file 5 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\reent.h"
+  23              		.file 6 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\stdlib.h"
+  24              		.file 7 "Inc/maze_solve.h"
+  25              		.file 8 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\_stdint.h"
+  26              		.file 9 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\math.h"
+  27              		.file 10 "Drivers/CMSIS/Include/core_cm4.h"
+  28              		.file 11 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h"
+  29              		.file 12 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f413xx.h"
+  30              		.file 13 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h"
+  31              		.file 14 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
+  32              		.file 15 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h"
+  33              		.file 16 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_adc.h"
+  34              		.file 17 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h"
+  35              		.file 18 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h"
+  36              		.file 19 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h"
+  37              		.file 20 "Inc/adc.h"
+  38              		.file 21 "Inc/spi.h"
+  39              		.file 22 "Inc/tim.h"
+  40              		.file 23 "Inc/usart.h"
+ARM GAS  C:\Temp\ccC0Z2Vq.s 			page 2
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 matlab_code_gen_initialize.c
-  C:\Temp\cchZWdqt.s:18     .text.matlab_code_gen_initialize:00000000 $t
-  C:\Temp\cchZWdqt.s:26     .text.matlab_code_gen_initialize:00000000 matlab_code_gen_initialize
-  C:\Temp\cchZWdqt.s:64     .text.matlab_code_gen_initialize:0000001c $d
 
-UNDEFINED SYMBOLS
-wall_sensor_left_th
-wall_sensor_left
-wall_sensor_right_th
-wall_sensor_right
-wall_sensor_front_th
-wall_sensor_front
+NO UNDEFINED SYMBOLS

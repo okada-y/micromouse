@@ -7,6 +7,8 @@
 #include "target.h"
 #include "movement.h"
 #include "adjust.h"
+#include "exvol.h"
+#include "mouse_state.h"
 
 static run_start run_first_flg = 0;			// 走行開始フラグ 0:走行開始時　1:それ以外
 static wall_flg	front_wall_flg = nowall;	//　前壁の有無フラグ
@@ -19,7 +21,7 @@ static wall_flg	left_wall_flg = nowall;		//　左壁の有無フラグ
 //返り値	: 判断結果(0:未完,1:完了)
 uint8_t move_comp_jud ( void )
 {
-    return (uint8_t)(ABS(get_target_length() - get_ideal_length()) < move_comp_th);
+    return (uint8_t)(ABS(get_target_length() - get_move_length()) < move_comp_th);
 }
 
 //機能	: 回転完了判断
@@ -239,7 +241,9 @@ void move_front (void)
 	}
 	if(run_first_flg == already)
 	{
+		set_mode_ctrl(side_wall);
 		constant_speed();//定速で一マス前進
+		set_mode_ctrl(trace);
 	}
 	run_first_flg = already;
 	clr_wall_flg();
