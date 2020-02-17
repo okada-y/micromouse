@@ -24,6 +24,7 @@
 /////////////////////////////////////
 //           パラメータ             //
 /////////////////////////////////////
+
 /*module_test*/
 #define log_count_lim		(3000)	//データ取得する期間[ms]
 #define log_count_step		(3)	    //データを取得する時間間隔[ms]
@@ -71,10 +72,10 @@
 #define rotate_comp_th      (0.001f)    //回転完了の閾値
 
 //adjust
-#define front_sensor_r_ref      (0.0125f)	        //前壁補正時の右前距離目標値(1cm)
-#define front_sensor_l_ref      (0.0105f)	        //前壁補正時の左前距離目標値(1cm)
+#define front_sensor_r_ref      (0.0107f)	        //前壁補正時の右前距離目標値(1cm)
+#define front_sensor_l_ref      (0.0092)	        //前壁補正時の左前距離目標値(1cm)
 #define chassis_width           (0.036787f)         //シャシー幅
-#define front_sensor_move_KP	(100.412292054546f)	//前壁距離のPゲイン
+#define front_sensor_move_KP	(200.412292054546f)	//前壁距離のPゲイン
 #define front_sensor_move_KI	(26.2444668681538f)	//前壁距離のIゲイン
 #define front_sensor_move_KD	(3.28431998107001f)	//前壁距離のDゲイン
 #define front_sensor_move_fil	(23.9567963129851f)	//前壁距離フィルタ係数

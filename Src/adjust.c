@@ -307,8 +307,8 @@ void calc_motor_vol_front_wall ( void )
 
 
 	//センサ値取得
-	front_sensor_l = SensorValue2length(0);
-	front_sensor_r = SensorValue2length(3);
+	front_sensor_l = get_frontleftwall_dis_table(Sensor_GetValue(0));
+	front_sensor_r = get_frontrightwall_dis_table(Sensor_GetValue(3));
 
 	//偏差取得
 	front_sensor_l_err = front_sensor_l - front_sensor_l_ref ;
@@ -395,8 +395,8 @@ void fornt_wall_calibrate (void)
 	while(1)
 	{
 		//偏差取得
-		temp_r = ABS(front_sensor_r_ref - SensorValue2length(3));
-		temp_l = ABS(front_sensor_l_ref - SensorValue2length(0));
+		temp_r = ABS(front_sensor_r_ref - get_frontrightwall_dis_table(Sensor_GetValue(3)));
+		temp_l = ABS(front_sensor_l_ref - get_frontleftwall_dis_table(Sensor_GetValue(0)));
 		//偏差の最大値取得
 		temp = MAX(temp_r,temp_l);
 		//センサ値が基準より差を持つとき、タイマをリセット

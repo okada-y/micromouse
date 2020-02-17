@@ -379,8 +379,8 @@ void module_test( void )
 		// a壁センサ用タイマ
 		// printf("<IR Sensor_tim> tim: %5.8f\r\n",ABS(front_sensor_ref - SensorValue2length(3)) );line++;
 		// 壁センサ
-		printf("front_sensor_ref - real, r: %5.8f  l: %5.8f \r\n",ABS(front_sensor_r_ref - SensorValue2length(3)),ABS(front_sensor_l_ref - SensorValue2length(0)) );line++;
-		printf("front_sensor, sl: %5.8f  sr: %5.8f \r\n",get_sidewall_dis_table(Sensor_GetValue(1)),get_sidewall_dis_table(Sensor_GetValue(2)));line++;
+		printf("front_sensor, fr: %5.8f  fl: %5.8f \r\n",get_frontrightwall_dis_table(Sensor_GetValue(3)),get_frontleftwall_dis_table(Sensor_GetValue(0)));line++;
+		printf("side_sensor, sl: %5.8f  sr: %5.8f \r\n",get_sidewall_dis_table(Sensor_GetValue(1)),get_sidewall_dis_table(Sensor_GetValue(2)));line++;
 
 		// 横壁制御
 		printf("side_wall_ctrl_mode %d \r\n",get_side_wall_ctrl_mode());line++;

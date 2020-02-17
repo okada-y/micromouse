@@ -1,4 +1,4 @@
-ARM GAS  C:\Temp\ccxSpnkg.s 			page 1
+ARM GAS  C:\Temp\ccxpPsMn.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,7 +58,7 @@ ARM GAS  C:\Temp\ccxSpnkg.s 			page 1
   28:Src/motor.c   **** 	モータ用のタイマーを開始する関数
   29:Src/motor.c   **** --------------------------------------------------------------- */
   30:Src/motor.c   **** void Motor_Initialize( void )
-ARM GAS  C:\Temp\ccxSpnkg.s 			page 2
+ARM GAS  C:\Temp\ccxpPsMn.s 			page 2
 
 
   31:Src/motor.c   **** {
@@ -118,7 +118,7 @@ ARM GAS  C:\Temp\ccxSpnkg.s 			page 1
   38:Src/motor.c   **** /* ---------------------------------------------------------------
   39:Src/motor.c   **** 	モータのの回転を止める関数
   40:Src/motor.c   **** --------------------------------------------------------------- */
-ARM GAS  C:\Temp\ccxSpnkg.s 			page 3
+ARM GAS  C:\Temp\ccxpPsMn.s 			page 3
 
 
   41:Src/motor.c   **** void Motor_StopPWM( void )
@@ -178,7 +178,7 @@ ARM GAS  C:\Temp\ccxSpnkg.s 			page 1
  121              		.cfi_def_cfa_offset 8
  122              		.cfi_offset 3, -8
  123              		.cfi_offset 14, -4
-ARM GAS  C:\Temp\ccxSpnkg.s 			page 4
+ARM GAS  C:\Temp\ccxpPsMn.s 			page 4
 
 
   54:Src/motor.c   **** 	uint32_t	pulse_l;
@@ -238,7 +238,7 @@ ARM GAS  C:\Temp\ccxSpnkg.s 			page 1
  166 0034 1F4A     		ldr	r2, .L21
  167 0036 B2F90020 		ldrsh	r2, [r2]
  168              		.loc 1 65 4 view .LVU31
-ARM GAS  C:\Temp\ccxSpnkg.s 			page 5
+ARM GAS  C:\Temp\ccxpPsMn.s 			page 5
 
 
  169 003a 002A     		cmp	r2, #0
@@ -298,7 +298,7 @@ ARM GAS  C:\Temp\ccxSpnkg.s 			page 1
  206 0068 E4E7     		b	.L10
  207              	.LVL13:
  208              	.L11:
-ARM GAS  C:\Temp\ccxSpnkg.s 			page 6
+ARM GAS  C:\Temp\ccxpPsMn.s 			page 6
 
 
   62:Src/motor.c   **** 	}
@@ -358,7 +358,7 @@ ARM GAS  C:\Temp\ccxSpnkg.s 			page 1
  250 009c 1B68     		ldr	r3, [r3]
  251 009e 0022     		movs	r2, #0
  252 00a0 9A63     		str	r2, [r3, #56]
-ARM GAS  C:\Temp\ccxSpnkg.s 			page 7
+ARM GAS  C:\Temp\ccxpPsMn.s 			page 7
 
 
   73:Src/motor.c   **** 	}
@@ -418,7 +418,7 @@ ARM GAS  C:\Temp\ccxSpnkg.s 			page 1
   83:Src/motor.c   **** 	duty_r = duty_r_tmp;
  299              		.loc 1 83 2 view .LVU63
  300              		.loc 1 83 9 is_stmt 0 view .LVU64
-ARM GAS  C:\Temp\ccxSpnkg.s 			page 8
+ARM GAS  C:\Temp\ccxpPsMn.s 			page 8
 
 
  301 0002 2C4B     		ldr	r3, .L36
@@ -478,7 +478,7 @@ ARM GAS  C:\Temp\ccxSpnkg.s 			page 1
  345              		.loc 1 93 3 is_stmt 1 view .LVU80
  346 003e 204A     		ldr	r2, .L36+12
  347 0040 1268     		ldr	r2, [r2]
-ARM GAS  C:\Temp\ccxSpnkg.s 			page 9
+ARM GAS  C:\Temp\ccxpPsMn.s 			page 9
 
 
  348 0042 D363     		str	r3, [r2, #60]
@@ -538,7 +538,7 @@ ARM GAS  C:\Temp\ccxSpnkg.s 			page 1
  384              		.loc 1 89 24 is_stmt 0 view .LVU92
  385 006a FFF7FEFF 		bl	HAL_RCC_GetPCLK2Freq
  386              	.LVL30:
-ARM GAS  C:\Temp\ccxSpnkg.s 			page 10
+ARM GAS  C:\Temp\ccxpPsMn.s 			page 10
 
 
   89:Src/motor.c   **** 	}
@@ -598,7 +598,7 @@ ARM GAS  C:\Temp\ccxSpnkg.s 			page 1
  429              		.loc 1 102 1 is_stmt 0 view .LVU105
  430 00a4 D0E7     		b	.L23
  431              	.LVL35:
-ARM GAS  C:\Temp\ccxSpnkg.s 			page 11
+ARM GAS  C:\Temp\ccxpPsMn.s 			page 11
 
 
  432              	.L35:
@@ -658,7 +658,7 @@ ARM GAS  C:\Temp\ccxSpnkg.s 			page 1
  479              		.align	1
  480              		.global	get_duty_l
  481              		.syntax unified
-ARM GAS  C:\Temp\ccxSpnkg.s 			page 12
+ARM GAS  C:\Temp\ccxpPsMn.s 			page 12
 
 
  482              		.thumb
@@ -716,33 +716,33 @@ ARM GAS  C:\Temp\ccxSpnkg.s 			page 1
  532              		.file 13 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h"
  533              		.file 14 "Inc/tim.h"
  534              		.file 15 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h"
-ARM GAS  C:\Temp\ccxSpnkg.s 			page 13
+ARM GAS  C:\Temp\ccxpPsMn.s 			page 13
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 motor.c
-  C:\Temp\ccxSpnkg.s:18     .text.Motor_Initialize:00000000 $t
-  C:\Temp\ccxSpnkg.s:26     .text.Motor_Initialize:00000000 Motor_Initialize
-  C:\Temp\ccxSpnkg.s:64     .text.Motor_Initialize:00000028 $d
-  C:\Temp\ccxSpnkg.s:69     .text.Motor_StopPWM:00000000 $t
-  C:\Temp\ccxSpnkg.s:76     .text.Motor_StopPWM:00000000 Motor_StopPWM
-  C:\Temp\ccxSpnkg.s:99     .text.Motor_StopPWM:00000014 $d
-  C:\Temp\ccxSpnkg.s:104    .text.set_duty_l:00000000 $t
-  C:\Temp\ccxSpnkg.s:111    .text.set_duty_l:00000000 set_duty_l
-  C:\Temp\ccxSpnkg.s:270    .text.set_duty_l:000000b4 $d
-  C:\Temp\ccxSpnkg.s:278    .text.set_duty_r:00000000 $t
-  C:\Temp\ccxSpnkg.s:285    .text.set_duty_r:00000000 set_duty_r
-  C:\Temp\ccxSpnkg.s:444    .text.set_duty_r:000000b4 $d
-  C:\Temp\ccxSpnkg.s:452    .text.get_duty_r:00000000 $t
-  C:\Temp\ccxSpnkg.s:459    .text.get_duty_r:00000000 get_duty_r
-  C:\Temp\ccxSpnkg.s:474    .text.get_duty_r:00000008 $d
-  C:\Temp\ccxSpnkg.s:479    .text.get_duty_l:00000000 $t
-  C:\Temp\ccxSpnkg.s:486    .text.get_duty_l:00000000 get_duty_l
-  C:\Temp\ccxSpnkg.s:501    .text.get_duty_l:00000008 $d
-  C:\Temp\ccxSpnkg.s:506    .bss.duty_l:00000000 $d
-  C:\Temp\ccxSpnkg.s:510    .bss.duty_l:00000000 duty_l
-  C:\Temp\ccxSpnkg.s:513    .bss.duty_r:00000000 $d
-  C:\Temp\ccxSpnkg.s:517    .bss.duty_r:00000000 duty_r
+  C:\Temp\ccxpPsMn.s:18     .text.Motor_Initialize:00000000 $t
+  C:\Temp\ccxpPsMn.s:26     .text.Motor_Initialize:00000000 Motor_Initialize
+  C:\Temp\ccxpPsMn.s:64     .text.Motor_Initialize:00000028 $d
+  C:\Temp\ccxpPsMn.s:69     .text.Motor_StopPWM:00000000 $t
+  C:\Temp\ccxpPsMn.s:76     .text.Motor_StopPWM:00000000 Motor_StopPWM
+  C:\Temp\ccxpPsMn.s:99     .text.Motor_StopPWM:00000014 $d
+  C:\Temp\ccxpPsMn.s:104    .text.set_duty_l:00000000 $t
+  C:\Temp\ccxpPsMn.s:111    .text.set_duty_l:00000000 set_duty_l
+  C:\Temp\ccxpPsMn.s:270    .text.set_duty_l:000000b4 $d
+  C:\Temp\ccxpPsMn.s:278    .text.set_duty_r:00000000 $t
+  C:\Temp\ccxpPsMn.s:285    .text.set_duty_r:00000000 set_duty_r
+  C:\Temp\ccxpPsMn.s:444    .text.set_duty_r:000000b4 $d
+  C:\Temp\ccxpPsMn.s:452    .text.get_duty_r:00000000 $t
+  C:\Temp\ccxpPsMn.s:459    .text.get_duty_r:00000000 get_duty_r
+  C:\Temp\ccxpPsMn.s:474    .text.get_duty_r:00000008 $d
+  C:\Temp\ccxpPsMn.s:479    .text.get_duty_l:00000000 $t
+  C:\Temp\ccxpPsMn.s:486    .text.get_duty_l:00000000 get_duty_l
+  C:\Temp\ccxpPsMn.s:501    .text.get_duty_l:00000008 $d
+  C:\Temp\ccxpPsMn.s:506    .bss.duty_l:00000000 $d
+  C:\Temp\ccxpPsMn.s:510    .bss.duty_l:00000000 duty_l
+  C:\Temp\ccxpPsMn.s:513    .bss.duty_r:00000000 $d
+  C:\Temp\ccxpPsMn.s:517    .bss.duty_r:00000000 duty_r
 
 UNDEFINED SYMBOLS
 HAL_TIM_PWM_Start
