@@ -9,7 +9,7 @@
 #include "adjust.h"
 #include "battery.h"
 #include "param.h"
-
+#include "mouse_state.h"
 
 static ctrl_mode_num ctrl_mode = trace;
 static float target_vol_sum = 0;
@@ -90,30 +90,39 @@ void set_motor_vol_front_wall(void)
 //返り値:なし
 void set_motor_vol_side_wall(void)
 {
-	switch(get_side_wall_ctrl_mode()){
-		case right:
-			target_vol_sum = get_target_vol_sum_ctrl();	
-			target_vol_diff = rate_side_wall * get_target_vol_diff_sidewall()
-								+(1 - rate_side_wall) * get_target_vol_diff_ctrl();
-			break;
-		
-		case left:
-			target_vol_sum = get_target_vol_sum_ctrl();	
-			target_vol_diff = rate_side_wall * get_target_vol_diff_sidewall()
-								+(1 - rate_side_wall) * get_target_vol_diff_ctrl();
-			break;
+	if(get_move_speed() > side_wall_cont_speed_th)
+	{
+		switch(get_side_wall_ctrl_mode()){
+			case right:
+				target_vol_sum = get_target_vol_sum_ctrl();	
+				target_vol_diff = rate_side_wall * get_target_vol_diff_sidewall()
+									+(1 - rate_side_wall) * get_target_vol_diff_ctrl();
+				break;
+			
+			case left:
+				target_vol_sum = get_target_vol_sum_ctrl();	
+				target_vol_diff = rate_side_wall * get_target_vol_diff_sidewall()
+									+(1 - rate_side_wall) * get_target_vol_diff_ctrl();
+				break;
 
-		case both_side:
-			target_vol_sum = get_target_vol_sum_ctrl();
-			target_vol_diff = rate_side_wall * get_target_vol_diff_sidewall()
-								+(1 - rate_side_wall) * get_target_vol_diff_ctrl();
-			break;
+			case both_side:
+				target_vol_sum = get_target_vol_sum_ctrl();
+				target_vol_diff = rate_side_wall * get_target_vol_diff_sidewall()
+									+(1 - rate_side_wall) * get_target_vol_diff_ctrl();
+				break;
 
-		case none: //両壁がないときは軌跡制御に
-			target_vol_sum = get_target_vol_sum_ctrl();
-			target_vol_diff = get_target_vol_diff_ctrl();
-			break;
+			case none: //両壁がないときは軌跡制御に
+				target_vol_sum = get_target_vol_sum_ctrl();
+				target_vol_diff = get_target_vol_diff_ctrl();
+				break;
+		}
 	}
+	else
+	{
+		target_vol_sum = get_target_vol_sum_ctrl();
+		target_vol_diff = get_target_vol_diff_ctrl();
+	}
+	
 }
 
 //機能 	:モータ印可電圧初期化
@@ -141,12 +150,14 @@ void clr_operate_history(void)
 			break;
 		
 		case side_wall:
-			switch(get_side_wall_ctrl_mode()){
-				case none:
-					break;
-				default:
-					adjust_trace_theta();
-			}
+			if(get_move_speed() > side_wall_cont_speed_th){
+				switch(get_side_wall_ctrl_mode()){
+					case none:
+						break;
+					default:
+						adjust_trace_theta();
+				}
+			}	
 			clr_frontwall_operate_history(); //前壁制御の操作履歴をクリア
 			break;
 	}

@@ -111,6 +111,7 @@
 
 //exvol
 #define rate_side_wall      (0.3)                 //壁制御時の壁制御による印加電圧の割合
+#define side_wall_cont_speed_th (0.1)             //壁制御時の最低速度   
 
 //motor
 #define MOT_DUTY_MIN	(30)						//モータの最低Duty
