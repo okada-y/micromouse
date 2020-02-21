@@ -1,4 +1,4 @@
-ARM GAS  C:\Temp\ccGa7WPS.s 			page 1
+ARM GAS  C:\Temp\ccwobR3f.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -26,7 +26,7 @@ ARM GAS  C:\Temp\ccGa7WPS.s 			page 1
   23              		.thumb_func
   24              		.fpu fpv4-sp-d16
   26              	move_comp_jud:
-  27              	.LFB3:
+  27              	.LFB133:
   28              		.file 1 "Src/movement.c"
    1:Src/movement.c **** //動作方法を記述予定(move_back)など
    2:Src/movement.c **** 
@@ -39,28 +39,29 @@ ARM GAS  C:\Temp\ccGa7WPS.s 			page 1
    9:Src/movement.c **** #include "adjust.h"
   10:Src/movement.c **** #include "exvol.h"
   11:Src/movement.c **** #include "mouse_state.h"
-  12:Src/movement.c **** 
-  13:Src/movement.c **** static run_start run_first_flg = 0;			// 走行開始フラグ 0:走行開始時　1:それ以外
-  14:Src/movement.c **** static wall_flg	front_wall_flg = nowall;	//　前壁の有無フラグ
-  15:Src/movement.c **** static wall_flg	right_wall_flg = nowall;	//　右壁の有無フラグ
-  16:Src/movement.c **** static wall_flg	left_wall_flg = nowall;		//　左壁の有無フラグ
-  17:Src/movement.c **** 
+  12:Src/movement.c **** #include "main.h"
+  13:Src/movement.c **** 
+  14:Src/movement.c **** static run_start run_first_flg = 0;			// 走行開始フラグ 0:走行開始時　1:それ以外
+  15:Src/movement.c **** static wall_flg	front_wall_flg = nowall;	//　前壁の有無フラグ
+  16:Src/movement.c **** static wall_flg	right_wall_flg = nowall;	//　右壁の有無フラグ
+  17:Src/movement.c **** static wall_flg	left_wall_flg = nowall;		//　左壁の有無フラグ
   18:Src/movement.c **** 
-  19:Src/movement.c **** //機能	: 移動完了判断
-  20:Src/movement.c **** //引数	: なし
-  21:Src/movement.c **** //返り値	: 判断結果(0:未完,1:完了)
-  22:Src/movement.c **** uint8_t move_comp_jud ( void )
-  23:Src/movement.c **** {
-  29              		.loc 1 23 1 view -0
+  19:Src/movement.c **** 
+  20:Src/movement.c **** //機能	: 移動完了判断
+  21:Src/movement.c **** //引数	: なし
+  22:Src/movement.c **** //返り値	: 判断結果(0:未完,1:完了)
+  23:Src/movement.c **** uint8_t move_comp_jud ( void )
+  24:Src/movement.c **** {
+  29              		.loc 1 24 1 view -0
   30              		.cfi_startproc
   31              		@ args = 0, pretend = 0, frame = 0
   32              		@ frame_needed = 0, uses_anonymous_args = 0
   33 0000 08B5     		push	{r3, lr}
   34              	.LCFI0:
+ARM GAS  C:\Temp\ccwobR3f.s 			page 2
+
+
   35              		.cfi_def_cfa_offset 8
-ARM GAS  C:\Temp\ccGa7WPS.s 			page 2
-
-
   36              		.cfi_offset 3, -8
   37              		.cfi_offset 14, -4
   38 0002 2DED028B 		vpush.64	{d8}
@@ -68,1335 +69,1404 @@ ARM GAS  C:\Temp\ccGa7WPS.s 			page 1
   40              		.cfi_def_cfa_offset 16
   41              		.cfi_offset 80, -16
   42              		.cfi_offset 81, -12
-  24:Src/movement.c ****     return (uint8_t)(ABS(get_target_length() - get_move_length()) < move_comp_th);
-  43              		.loc 1 24 5 view .LVU1
-  44              		.loc 1 24 22 is_stmt 0 view .LVU2
+  25:Src/movement.c ****     return (uint8_t)((get_target_length() - get_move_length()) < 0);
+  43              		.loc 1 25 5 view .LVU1
+  44              		.loc 1 25 23 is_stmt 0 view .LVU2
   45 0006 FFF7FEFF 		bl	get_target_length
   46              	.LVL0:
   47 000a B0EE408A 		vmov.f32	s16, s0
-  48 000e FFF7FEFF 		bl	get_move_length
-  49              	.LVL1:
-  50 0012 38EE408A 		vsub.f32	s16, s16, s0
-  51              		.loc 1 24 12 view .LVU3
-  52 0016 B5EEC08A 		vcmpe.f32	s16, #0
-  53 001a F1EE10FA 		vmrs	APSR_nzcv, FPSCR
-  54 001e 13D4     		bmi	.L8
-  55              		.loc 1 24 22 discriminator 2 view .LVU4
-  56 0020 FFF7FEFF 		bl	get_target_length
-  57              	.LVL2:
-  58 0024 B0EE408A 		vmov.f32	s16, s0
-  59 0028 FFF7FEFF 		bl	get_move_length
-  60              	.LVL3:
-  61 002c 38EE408A 		vsub.f32	s16, s16, s0
-  62              		.loc 1 24 12 discriminator 2 view .LVU5
-  63 0030 DFED0E7A 		vldr.32	s15, .L9
-  64 0034 B4EEE78A 		vcmpe.f32	s16, s15
-  65 0038 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
-  66 003c 4CBF     		ite	mi
-  67 003e 0120     		movmi	r0, #1
-  68 0040 0020     		movpl	r0, #0
-  69              	.L4:
-  25:Src/movement.c **** }
-  70              		.loc 1 25 1 discriminator 4 view .LVU6
-  71 0042 BDEC028B 		vldm	sp!, {d8}
-  72              	.LCFI2:
-  73              		.cfi_remember_state
-  74              		.cfi_restore 80
-  75              		.cfi_restore 81
-  76              		.cfi_def_cfa_offset 8
-  77 0046 08BD     		pop	{r3, pc}
-  78              	.L8:
-  79              	.LCFI3:
-  80              		.cfi_restore_state
-  24:Src/movement.c ****     return (uint8_t)(ABS(get_target_length() - get_move_length()) < move_comp_th);
-  81              		.loc 1 24 22 discriminator 1 view .LVU7
-  82 0048 FFF7FEFF 		bl	get_target_length
-  83              	.LVL4:
-  84 004c B0EE408A 		vmov.f32	s16, s0
-  85 0050 FFF7FEFF 		bl	get_move_length
-  86              	.LVL5:
-  87 0054 38EE408A 		vsub.f32	s16, s16, s0
-  24:Src/movement.c ****     return (uint8_t)(ABS(get_target_length() - get_move_length()) < move_comp_th);
-  88              		.loc 1 24 12 discriminator 1 view .LVU8
-ARM GAS  C:\Temp\ccGa7WPS.s 			page 3
+  48              		.loc 1 25 45 view .LVU3
+  49 000e FFF7FEFF 		bl	get_move_length
+  50              	.LVL1:
+  51              		.loc 1 25 43 view .LVU4
+  52 0012 38EE408A 		vsub.f32	s16, s16, s0
+  53              		.loc 1 25 12 view .LVU5
+  54 0016 B5EEC08A 		vcmpe.f32	s16, #0
+  55 001a F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+  26:Src/movement.c **** }
+  56              		.loc 1 26 1 view .LVU6
+  57 001e 4CBF     		ite	mi
+  58 0020 0120     		movmi	r0, #1
+  59 0022 0020     		movpl	r0, #0
+  60 0024 BDEC028B 		vldm	sp!, {d8}
+  61              	.LCFI2:
+  62              		.cfi_restore 80
+  63              		.cfi_restore 81
+  64              		.cfi_def_cfa_offset 8
+  65 0028 08BD     		pop	{r3, pc}
+  66              		.cfi_endproc
+  67              	.LFE133:
+  69              		.section	.text.move_comp_jud_stop,"ax",%progbits
+  70              		.align	1
+  71              		.global	move_comp_jud_stop
+  72              		.syntax unified
+  73              		.thumb
+  74              		.thumb_func
+  75              		.fpu fpv4-sp-d16
+  77              	move_comp_jud_stop:
+  78              	.LFB134:
+  27:Src/movement.c **** 
+  28:Src/movement.c **** //機能	: 移動完了判断（停止時）
+  29:Src/movement.c **** //引数	: なし
+  30:Src/movement.c **** //返り値	: 判断結果(0:未完,1:完了)
+  31:Src/movement.c **** uint8_t move_comp_jud_stop ( void )
+  32:Src/movement.c **** {
+  79              		.loc 1 32 1 is_stmt 1 view -0
+  80              		.cfi_startproc
+  81              		@ args = 0, pretend = 0, frame = 0
+  82              		@ frame_needed = 0, uses_anonymous_args = 0
+  83 0000 08B5     		push	{r3, lr}
+  84              	.LCFI3:
+  85              		.cfi_def_cfa_offset 8
+ARM GAS  C:\Temp\ccwobR3f.s 			page 3
 
 
-  89 0058 DFED057A 		vldr.32	s15, .L9+4
-  90 005c B4EEE78A 		vcmpe.f32	s16, s15
-  91 0060 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
-  92 0064 CCBF     		ite	gt
-  93 0066 0120     		movgt	r0, #1
-  94 0068 0020     		movle	r0, #0
-  95 006a EAE7     		b	.L4
-  96              	.L10:
-  97              		.align	2
-  98              	.L9:
-  99 006c 6F12833A 		.word	981668463
- 100 0070 6F1283BA 		.word	-1165815185
- 101              		.cfi_endproc
- 102              	.LFE3:
- 104              		.section	.text.rotate_comp_jud,"ax",%progbits
- 105              		.align	1
- 106              		.global	rotate_comp_jud
- 107              		.syntax unified
- 108              		.thumb
- 109              		.thumb_func
- 110              		.fpu fpv4-sp-d16
- 112              	rotate_comp_jud:
- 113              	.LFB4:
-  26:Src/movement.c **** 
-  27:Src/movement.c **** //機能	: 回転完了判断
-  28:Src/movement.c **** //引数	: なし
-  29:Src/movement.c **** //返り値	: 判断結果(0:未完,1:完了)
-  30:Src/movement.c **** uint8_t rotate_comp_jud ( void )
-  31:Src/movement.c **** {
- 114              		.loc 1 31 1 is_stmt 1 view -0
- 115              		.cfi_startproc
- 116              		@ args = 0, pretend = 0, frame = 0
- 117              		@ frame_needed = 0, uses_anonymous_args = 0
- 118 0000 08B5     		push	{r3, lr}
- 119              	.LCFI4:
- 120              		.cfi_def_cfa_offset 8
- 121              		.cfi_offset 3, -8
- 122              		.cfi_offset 14, -4
- 123 0002 2DED028B 		vpush.64	{d8}
- 124              	.LCFI5:
- 125              		.cfi_def_cfa_offset 16
- 126              		.cfi_offset 80, -16
- 127              		.cfi_offset 81, -12
-  32:Src/movement.c ****     return (uint8_t)(ABS(get_target_angle() - get_ideal_angle()) < rotate_comp_th);
- 128              		.loc 1 32 5 view .LVU10
- 129              		.loc 1 32 22 is_stmt 0 view .LVU11
- 130 0006 FFF7FEFF 		bl	get_target_angle
- 131              	.LVL6:
- 132 000a B0EE408A 		vmov.f32	s16, s0
- 133 000e FFF7FEFF 		bl	get_ideal_angle
- 134              	.LVL7:
- 135 0012 38EE408A 		vsub.f32	s16, s16, s0
- 136              		.loc 1 32 12 view .LVU12
- 137 0016 B5EEC08A 		vcmpe.f32	s16, #0
- 138 001a F1EE10FA 		vmrs	APSR_nzcv, FPSCR
- 139 001e 13D4     		bmi	.L18
- 140              		.loc 1 32 22 discriminator 2 view .LVU13
-ARM GAS  C:\Temp\ccGa7WPS.s 			page 4
+  86              		.cfi_offset 3, -8
+  87              		.cfi_offset 14, -4
+  88 0002 2DED028B 		vpush.64	{d8}
+  89              	.LCFI4:
+  90              		.cfi_def_cfa_offset 16
+  91              		.cfi_offset 80, -16
+  92              		.cfi_offset 81, -12
+  33:Src/movement.c ****     return (uint8_t)((get_target_length() - get_move_length()) 
+  93              		.loc 1 33 5 view .LVU8
+  94              		.loc 1 33 23 is_stmt 0 view .LVU9
+  95 0006 FFF7FEFF 		bl	get_target_length
+  96              	.LVL2:
+  97 000a B0EE408A 		vmov.f32	s16, s0
+  98              		.loc 1 33 45 view .LVU10
+  99 000e FFF7FEFF 		bl	get_move_length
+ 100              	.LVL3:
+ 101              		.loc 1 33 43 view .LVU11
+ 102 0012 38EE408A 		vsub.f32	s16, s16, s0
+  34:Src/movement.c **** 							< get_target_move_speed() * get_target_move_speed()/(2 * move_accel));
+ 103              		.loc 1 34 10 view .LVU12
+ 104 0016 FFF7FEFF 		bl	get_target_move_speed
+ 105              	.LVL4:
+ 106 001a F0EE408A 		vmov.f32	s17, s0
+ 107              		.loc 1 34 36 view .LVU13
+ 108 001e FFF7FEFF 		bl	get_target_move_speed
+ 109              	.LVL5:
+ 110              		.loc 1 34 34 view .LVU14
+ 111 0022 68EE808A 		vmul.f32	s17, s17, s0
+ 112              		.loc 1 34 59 view .LVU15
+ 113 0026 B0EE087A 		vmov.f32	s14, #3.0e+0
+ 114 002a C8EE877A 		vdiv.f32	s15, s17, s14
+  33:Src/movement.c ****     return (uint8_t)((get_target_length() - get_move_length()) 
+ 115              		.loc 1 33 12 view .LVU16
+ 116 002e B4EEE78A 		vcmpe.f32	s16, s15
+ 117 0032 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+  35:Src/movement.c **** }
+ 118              		.loc 1 35 1 view .LVU17
+ 119 0036 4CBF     		ite	mi
+ 120 0038 0120     		movmi	r0, #1
+ 121 003a 0020     		movpl	r0, #0
+ 122 003c BDEC028B 		vldm	sp!, {d8}
+ 123              	.LCFI5:
+ 124              		.cfi_restore 80
+ 125              		.cfi_restore 81
+ 126              		.cfi_def_cfa_offset 8
+ 127 0040 08BD     		pop	{r3, pc}
+ 128              		.cfi_endproc
+ 129              	.LFE134:
+ 131              		.section	.text.rotate_comp_jud,"ax",%progbits
+ 132              		.align	1
+ 133              		.global	rotate_comp_jud
+ 134              		.syntax unified
+ 135              		.thumb
+ 136              		.thumb_func
+ 137              		.fpu fpv4-sp-d16
+ 139              	rotate_comp_jud:
+ 140              	.LFB135:
+ARM GAS  C:\Temp\ccwobR3f.s 			page 4
 
 
- 141 0020 FFF7FEFF 		bl	get_target_angle
- 142              	.LVL8:
- 143 0024 B0EE408A 		vmov.f32	s16, s0
- 144 0028 FFF7FEFF 		bl	get_ideal_angle
- 145              	.LVL9:
- 146 002c 38EE408A 		vsub.f32	s16, s16, s0
- 147              		.loc 1 32 12 discriminator 2 view .LVU14
- 148 0030 DFED0E7A 		vldr.32	s15, .L19
- 149 0034 B4EEE78A 		vcmpe.f32	s16, s15
- 150 0038 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
- 151 003c 4CBF     		ite	mi
- 152 003e 0120     		movmi	r0, #1
- 153 0040 0020     		movpl	r0, #0
- 154              	.L14:
-  33:Src/movement.c **** }
- 155              		.loc 1 33 1 discriminator 4 view .LVU15
- 156 0042 BDEC028B 		vldm	sp!, {d8}
- 157              	.LCFI6:
- 158              		.cfi_remember_state
- 159              		.cfi_restore 80
- 160              		.cfi_restore 81
- 161              		.cfi_def_cfa_offset 8
- 162 0046 08BD     		pop	{r3, pc}
- 163              	.L18:
- 164              	.LCFI7:
- 165              		.cfi_restore_state
-  32:Src/movement.c ****     return (uint8_t)(ABS(get_target_angle() - get_ideal_angle()) < rotate_comp_th);
- 166              		.loc 1 32 22 discriminator 1 view .LVU16
- 167 0048 FFF7FEFF 		bl	get_target_angle
- 168              	.LVL10:
- 169 004c B0EE408A 		vmov.f32	s16, s0
- 170 0050 FFF7FEFF 		bl	get_ideal_angle
- 171              	.LVL11:
- 172 0054 38EE408A 		vsub.f32	s16, s16, s0
-  32:Src/movement.c ****     return (uint8_t)(ABS(get_target_angle() - get_ideal_angle()) < rotate_comp_th);
- 173              		.loc 1 32 12 discriminator 1 view .LVU17
- 174 0058 DFED057A 		vldr.32	s15, .L19+4
- 175 005c B4EEE78A 		vcmpe.f32	s16, s15
- 176 0060 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
- 177 0064 CCBF     		ite	gt
- 178 0066 0120     		movgt	r0, #1
- 179 0068 0020     		movle	r0, #0
- 180 006a EAE7     		b	.L14
- 181              	.L20:
- 182              		.align	2
- 183              	.L19:
- 184 006c 6F12833A 		.word	981668463
- 185 0070 6F1283BA 		.word	-1165815185
- 186              		.cfi_endproc
- 187              	.LFE4:
- 189              		.section	.text.start_acceleration,"ax",%progbits
- 190              		.align	1
- 191              		.global	start_acceleration
- 192              		.syntax unified
- 193              		.thumb
- 194              		.thumb_func
- 195              		.fpu fpv4-sp-d16
-ARM GAS  C:\Temp\ccGa7WPS.s 			page 5
+  36:Src/movement.c **** 
+  37:Src/movement.c **** 
+  38:Src/movement.c **** //機能	: 回転完了判断
+  39:Src/movement.c **** //引数	: なし
+  40:Src/movement.c **** //返り値	: 判断結果(0:未完,1:完了)
+  41:Src/movement.c **** uint8_t rotate_comp_jud ( void )
+  42:Src/movement.c **** {
+ 141              		.loc 1 42 1 is_stmt 1 view -0
+ 142              		.cfi_startproc
+ 143              		@ args = 0, pretend = 0, frame = 0
+ 144              		@ frame_needed = 0, uses_anonymous_args = 0
+ 145 0000 08B5     		push	{r3, lr}
+ 146              	.LCFI6:
+ 147              		.cfi_def_cfa_offset 8
+ 148              		.cfi_offset 3, -8
+ 149              		.cfi_offset 14, -4
+ 150 0002 2DED028B 		vpush.64	{d8}
+ 151              	.LCFI7:
+ 152              		.cfi_def_cfa_offset 16
+ 153              		.cfi_offset 80, -16
+ 154              		.cfi_offset 81, -12
+  43:Src/movement.c ****     return (uint8_t)(ABS(get_target_angle() - get_ideal_angle()) < rotate_comp_th);
+ 155              		.loc 1 43 5 view .LVU19
+ 156              		.loc 1 43 22 is_stmt 0 view .LVU20
+ 157 0006 FFF7FEFF 		bl	get_target_angle
+ 158              	.LVL6:
+ 159 000a B0EE408A 		vmov.f32	s16, s0
+ 160 000e FFF7FEFF 		bl	get_ideal_angle
+ 161              	.LVL7:
+ 162 0012 38EE408A 		vsub.f32	s16, s16, s0
+ 163              		.loc 1 43 12 view .LVU21
+ 164 0016 B5EEC08A 		vcmpe.f32	s16, #0
+ 165 001a F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 166 001e 13D4     		bmi	.L12
+ 167              		.loc 1 43 22 discriminator 2 view .LVU22
+ 168 0020 FFF7FEFF 		bl	get_target_angle
+ 169              	.LVL8:
+ 170 0024 B0EE408A 		vmov.f32	s16, s0
+ 171 0028 FFF7FEFF 		bl	get_ideal_angle
+ 172              	.LVL9:
+ 173 002c 38EE408A 		vsub.f32	s16, s16, s0
+ 174              		.loc 1 43 12 discriminator 2 view .LVU23
+ 175 0030 DFED0E7A 		vldr.32	s15, .L13
+ 176 0034 B4EEE78A 		vcmpe.f32	s16, s15
+ 177 0038 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 178 003c 4CBF     		ite	mi
+ 179 003e 0120     		movmi	r0, #1
+ 180 0040 0020     		movpl	r0, #0
+ 181              	.L8:
+  44:Src/movement.c **** }
+ 182              		.loc 1 44 1 discriminator 4 view .LVU24
+ 183 0042 BDEC028B 		vldm	sp!, {d8}
+ 184              	.LCFI8:
+ 185              		.cfi_remember_state
+ 186              		.cfi_restore 80
+ 187              		.cfi_restore 81
+ 188              		.cfi_def_cfa_offset 8
+ARM GAS  C:\Temp\ccwobR3f.s 			page 5
 
 
- 197              	start_acceleration:
- 198              	.LFB5:
-  34:Src/movement.c **** 
-  35:Src/movement.c **** //機能	: スタート時加速
-  36:Src/movement.c **** //引数	: なし
-  37:Src/movement.c **** //返り値	: なし
-  38:Src/movement.c **** void start_acceleration (void)
-  39:Src/movement.c **** {
- 199              		.loc 1 39 1 is_stmt 1 view -0
- 200              		.cfi_startproc
- 201              		@ args = 0, pretend = 0, frame = 0
- 202              		@ frame_needed = 0, uses_anonymous_args = 0
- 203 0000 08B5     		push	{r3, lr}
- 204              	.LCFI8:
- 205              		.cfi_def_cfa_offset 8
- 206              		.cfi_offset 3, -8
- 207              		.cfi_offset 14, -4
-  40:Src/movement.c **** 	/*移動方向、加速モード設定*/
-  41:Src/movement.c **** 	set_direction_mode(forward_mode);
- 208              		.loc 1 41 2 view .LVU19
- 209 0002 0020     		movs	r0, #0
- 210 0004 FFF7FEFF 		bl	set_direction_mode
- 211              	.LVL12:
-  42:Src/movement.c **** 	set_accel_mode(acceleration);
- 212              		.loc 1 42 2 view .LVU20
- 213 0008 0020     		movs	r0, #0
- 214 000a FFF7FEFF 		bl	set_accel_mode
- 215              	.LVL13:
-  43:Src/movement.c ****     set_target_length(0.060286-0.045);
- 216              		.loc 1 43 5 view .LVU21
- 217 000e 9FED040A 		vldr.32	s0, .L24
- 218 0012 FFF7FEFF 		bl	set_target_length
- 219              	.LVL14:
- 220              	.L22:
-  44:Src/movement.c **** 
-  45:Src/movement.c ****     /*半区画進むまで待機*/
-  46:Src/movement.c ****     while (1)
- 221              		.loc 1 46 5 view .LVU22
-  47:Src/movement.c ****     {
-  48:Src/movement.c ****     	if(move_comp_jud())
- 222              		.loc 1 48 6 view .LVU23
- 223              		.loc 1 48 9 is_stmt 0 view .LVU24
- 224 0016 FFF7FEFF 		bl	move_comp_jud
- 225              	.LVL15:
- 226              		.loc 1 48 8 view .LVU25
- 227 001a 0028     		cmp	r0, #0
- 228 001c FBD0     		beq	.L22
-  49:Src/movement.c **** 	 	{
-  50:Src/movement.c ****     		break;
-  51:Src/movement.c ****     	}
-  52:Src/movement.c ****     }
-  53:Src/movement.c **** }
- 229              		.loc 1 53 1 view .LVU26
- 230 001e 08BD     		pop	{r3, pc}
- 231              	.L25:
- 232              		.align	2
- 233              	.L24:
-ARM GAS  C:\Temp\ccGa7WPS.s 			page 6
+ 189 0046 08BD     		pop	{r3, pc}
+ 190              	.L12:
+ 191              	.LCFI9:
+ 192              		.cfi_restore_state
+  43:Src/movement.c ****     return (uint8_t)(ABS(get_target_angle() - get_ideal_angle()) < rotate_comp_th);
+ 193              		.loc 1 43 22 discriminator 1 view .LVU25
+ 194 0048 FFF7FEFF 		bl	get_target_angle
+ 195              	.LVL10:
+ 196 004c B0EE408A 		vmov.f32	s16, s0
+ 197 0050 FFF7FEFF 		bl	get_ideal_angle
+ 198              	.LVL11:
+ 199 0054 38EE408A 		vsub.f32	s16, s16, s0
+  43:Src/movement.c ****     return (uint8_t)(ABS(get_target_angle() - get_ideal_angle()) < rotate_comp_th);
+ 200              		.loc 1 43 12 discriminator 1 view .LVU26
+ 201 0058 DFED057A 		vldr.32	s15, .L13+4
+ 202 005c B4EEE78A 		vcmpe.f32	s16, s15
+ 203 0060 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 204 0064 CCBF     		ite	gt
+ 205 0066 0120     		movgt	r0, #1
+ 206 0068 0020     		movle	r0, #0
+ 207 006a EAE7     		b	.L8
+ 208              	.L14:
+ 209              		.align	2
+ 210              	.L13:
+ 211 006c 6F12833A 		.word	981668463
+ 212 0070 6F1283BA 		.word	-1165815185
+ 213              		.cfi_endproc
+ 214              	.LFE135:
+ 216              		.section	.text.start_acceleration,"ax",%progbits
+ 217              		.align	1
+ 218              		.global	start_acceleration
+ 219              		.syntax unified
+ 220              		.thumb
+ 221              		.thumb_func
+ 222              		.fpu fpv4-sp-d16
+ 224              	start_acceleration:
+ 225              	.LFB136:
+  45:Src/movement.c **** 
+  46:Src/movement.c **** //機能	: スタート時加速
+  47:Src/movement.c **** //引数	: なし
+  48:Src/movement.c **** //返り値	: なし
+  49:Src/movement.c **** void start_acceleration (void)
+  50:Src/movement.c **** {
+ 226              		.loc 1 50 1 is_stmt 1 view -0
+ 227              		.cfi_startproc
+ 228              		@ args = 0, pretend = 0, frame = 0
+ 229              		@ frame_needed = 0, uses_anonymous_args = 0
+ 230 0000 08B5     		push	{r3, lr}
+ 231              	.LCFI10:
+ 232              		.cfi_def_cfa_offset 8
+ 233              		.cfi_offset 3, -8
+ 234              		.cfi_offset 14, -4
+  51:Src/movement.c **** 	/*移動方向、加速モード設定*/
+  52:Src/movement.c **** 	set_direction_mode(forward_mode);
+ 235              		.loc 1 52 2 view .LVU28
+ 236 0002 0020     		movs	r0, #0
+ 237 0004 FFF7FEFF 		bl	set_direction_mode
+ARM GAS  C:\Temp\ccwobR3f.s 			page 6
 
 
- 234 0020 22727A3C 		.word	1014657570
- 235              		.cfi_endproc
- 236              	.LFE5:
- 238              		.section	.text.half_acceleration,"ax",%progbits
- 239              		.align	1
- 240              		.global	half_acceleration
- 241              		.syntax unified
- 242              		.thumb
- 243              		.thumb_func
- 244              		.fpu fpv4-sp-d16
- 246              	half_acceleration:
- 247              	.LFB6:
-  54:Src/movement.c **** 
-  55:Src/movement.c **** //機能	: 半分区画加速
-  56:Src/movement.c **** //引数	: なし
-  57:Src/movement.c **** //返り値	: なし
-  58:Src/movement.c **** void half_acceleration (void)
-  59:Src/movement.c **** {
- 248              		.loc 1 59 1 is_stmt 1 view -0
- 249              		.cfi_startproc
- 250              		@ args = 0, pretend = 0, frame = 0
- 251              		@ frame_needed = 0, uses_anonymous_args = 0
- 252 0000 08B5     		push	{r3, lr}
- 253              	.LCFI9:
- 254              		.cfi_def_cfa_offset 8
- 255              		.cfi_offset 3, -8
- 256              		.cfi_offset 14, -4
-  60:Src/movement.c **** 	/*移動方向、加速モード設定*/
-  61:Src/movement.c **** 	set_direction_mode(forward_mode);
- 257              		.loc 1 61 2 view .LVU28
- 258 0002 0020     		movs	r0, #0
- 259 0004 FFF7FEFF 		bl	set_direction_mode
- 260              	.LVL16:
-  62:Src/movement.c **** 	set_accel_mode(acceleration);
- 261              		.loc 1 62 2 view .LVU29
- 262 0008 0020     		movs	r0, #0
- 263 000a FFF7FEFF 		bl	set_accel_mode
- 264              	.LVL17:
-  63:Src/movement.c ****     set_target_length(0.045);
- 265              		.loc 1 63 5 view .LVU30
- 266 000e 9FED040A 		vldr.32	s0, .L29
- 267 0012 FFF7FEFF 		bl	set_target_length
- 268              	.LVL18:
- 269              	.L27:
-  64:Src/movement.c **** 
-  65:Src/movement.c ****     /*半区画進むまで待機*/
-  66:Src/movement.c ****     while (1)
- 270              		.loc 1 66 5 view .LVU31
-  67:Src/movement.c ****     {
-  68:Src/movement.c ****     	if(move_comp_jud())
- 271              		.loc 1 68 6 view .LVU32
- 272              		.loc 1 68 9 is_stmt 0 view .LVU33
- 273 0016 FFF7FEFF 		bl	move_comp_jud
- 274              	.LVL19:
- 275              		.loc 1 68 8 view .LVU34
- 276 001a 0028     		cmp	r0, #0
- 277 001c FBD0     		beq	.L27
-ARM GAS  C:\Temp\ccGa7WPS.s 			page 7
+ 238              	.LVL12:
+  53:Src/movement.c **** 	set_accel_mode(acceleration);
+ 239              		.loc 1 53 2 view .LVU29
+ 240 0008 0020     		movs	r0, #0
+ 241 000a FFF7FEFF 		bl	set_accel_mode
+ 242              	.LVL13:
+  54:Src/movement.c ****     set_target_length(0.060286-0.045);
+ 243              		.loc 1 54 5 view .LVU30
+ 244 000e 9FED040A 		vldr.32	s0, .L18
+ 245 0012 FFF7FEFF 		bl	set_target_length
+ 246              	.LVL14:
+ 247              	.L16:
+  55:Src/movement.c **** 
+  56:Src/movement.c ****     /*半区画進むまで待機*/
+  57:Src/movement.c ****     while (1)
+ 248              		.loc 1 57 5 view .LVU31
+  58:Src/movement.c ****     {
+  59:Src/movement.c ****     	if(move_comp_jud())
+ 249              		.loc 1 59 6 view .LVU32
+ 250              		.loc 1 59 9 is_stmt 0 view .LVU33
+ 251 0016 FFF7FEFF 		bl	move_comp_jud
+ 252              	.LVL15:
+ 253              		.loc 1 59 8 view .LVU34
+ 254 001a 0028     		cmp	r0, #0
+ 255 001c FBD0     		beq	.L16
+  60:Src/movement.c **** 	 	{
+  61:Src/movement.c ****     		break;
+  62:Src/movement.c ****     	}
+  63:Src/movement.c ****     }
+  64:Src/movement.c **** }
+ 256              		.loc 1 64 1 view .LVU35
+ 257 001e 08BD     		pop	{r3, pc}
+ 258              	.L19:
+ 259              		.align	2
+ 260              	.L18:
+ 261 0020 22727A3C 		.word	1014657570
+ 262              		.cfi_endproc
+ 263              	.LFE136:
+ 265              		.section	.text.half_acceleration,"ax",%progbits
+ 266              		.align	1
+ 267              		.global	half_acceleration
+ 268              		.syntax unified
+ 269              		.thumb
+ 270              		.thumb_func
+ 271              		.fpu fpv4-sp-d16
+ 273              	half_acceleration:
+ 274              	.LFB137:
+  65:Src/movement.c **** 
+  66:Src/movement.c **** //機能	: 半分区画加速
+  67:Src/movement.c **** //引数	: なし
+  68:Src/movement.c **** //返り値	: なし
+  69:Src/movement.c **** void half_acceleration (void)
+  70:Src/movement.c **** {
+ 275              		.loc 1 70 1 is_stmt 1 view -0
+ 276              		.cfi_startproc
+ 277              		@ args = 0, pretend = 0, frame = 0
+ 278              		@ frame_needed = 0, uses_anonymous_args = 0
+ARM GAS  C:\Temp\ccwobR3f.s 			page 7
 
 
-  69:Src/movement.c ****     	{
-  70:Src/movement.c ****     		break;
-  71:Src/movement.c ****     	}
-  72:Src/movement.c ****     }
-  73:Src/movement.c **** }
- 278              		.loc 1 73 1 view .LVU35
- 279 001e 08BD     		pop	{r3, pc}
- 280              	.L30:
- 281              		.align	2
- 282              	.L29:
- 283 0020 EC51383D 		.word	1027101164
- 284              		.cfi_endproc
- 285              	.LFE6:
- 287              		.section	.text.half_deceleration,"ax",%progbits
- 288              		.align	1
- 289              		.global	half_deceleration
- 290              		.syntax unified
- 291              		.thumb
- 292              		.thumb_func
- 293              		.fpu fpv4-sp-d16
- 295              	half_deceleration:
- 296              	.LFB7:
-  74:Src/movement.c **** 
+ 279 0000 08B5     		push	{r3, lr}
+ 280              	.LCFI11:
+ 281              		.cfi_def_cfa_offset 8
+ 282              		.cfi_offset 3, -8
+ 283              		.cfi_offset 14, -4
+  71:Src/movement.c **** 	/*移動方向、加速モード設定*/
+  72:Src/movement.c **** 	set_direction_mode(forward_mode);
+ 284              		.loc 1 72 2 view .LVU37
+ 285 0002 0020     		movs	r0, #0
+ 286 0004 FFF7FEFF 		bl	set_direction_mode
+ 287              	.LVL16:
+  73:Src/movement.c **** 	set_accel_mode(acceleration);
+ 288              		.loc 1 73 2 view .LVU38
+ 289 0008 0020     		movs	r0, #0
+ 290 000a FFF7FEFF 		bl	set_accel_mode
+ 291              	.LVL17:
+  74:Src/movement.c ****     set_target_length(0.045);
+ 292              		.loc 1 74 5 view .LVU39
+ 293 000e 9FED040A 		vldr.32	s0, .L23
+ 294 0012 FFF7FEFF 		bl	set_target_length
+ 295              	.LVL18:
+ 296              	.L21:
   75:Src/movement.c **** 
-  76:Src/movement.c **** //機能	: 反区画減速
-  77:Src/movement.c **** //引数	: なし
-  78:Src/movement.c **** //返り値	: なし
-  79:Src/movement.c **** void half_deceleration (void)
-  80:Src/movement.c **** {
- 297              		.loc 1 80 1 is_stmt 1 view -0
- 298              		.cfi_startproc
- 299              		@ args = 0, pretend = 0, frame = 0
- 300              		@ frame_needed = 0, uses_anonymous_args = 0
- 301 0000 08B5     		push	{r3, lr}
- 302              	.LCFI10:
- 303              		.cfi_def_cfa_offset 8
- 304              		.cfi_offset 3, -8
- 305              		.cfi_offset 14, -4
-  81:Src/movement.c **** 	/*移動方向、加速モード設定*/
-  82:Src/movement.c **** 	set_direction_mode(forward_mode);
- 306              		.loc 1 82 2 view .LVU37
- 307 0002 0020     		movs	r0, #0
- 308 0004 FFF7FEFF 		bl	set_direction_mode
- 309              	.LVL20:
-  83:Src/movement.c **** 	set_accel_mode(deceleration);
- 310              		.loc 1 83 2 view .LVU38
- 311 0008 0120     		movs	r0, #1
- 312 000a FFF7FEFF 		bl	set_accel_mode
- 313              	.LVL21:
-  84:Src/movement.c ****     set_target_length(0.045);
- 314              		.loc 1 84 5 view .LVU39
- 315 000e 9FED040A 		vldr.32	s0, .L34
- 316 0012 FFF7FEFF 		bl	set_target_length
- 317              	.LVL22:
- 318              	.L32:
+  76:Src/movement.c ****     /*半区画進むまで待機*/
+  77:Src/movement.c ****     while (1)
+ 297              		.loc 1 77 5 view .LVU40
+  78:Src/movement.c ****     {
+  79:Src/movement.c ****     	if(move_comp_jud())
+ 298              		.loc 1 79 6 view .LVU41
+ 299              		.loc 1 79 9 is_stmt 0 view .LVU42
+ 300 0016 FFF7FEFF 		bl	move_comp_jud
+ 301              	.LVL19:
+ 302              		.loc 1 79 8 view .LVU43
+ 303 001a 0028     		cmp	r0, #0
+ 304 001c FBD0     		beq	.L21
+  80:Src/movement.c ****     	{
+  81:Src/movement.c ****     		break;
+  82:Src/movement.c ****     	}
+  83:Src/movement.c ****     }
+  84:Src/movement.c **** }
+ 305              		.loc 1 84 1 view .LVU44
+ 306 001e 08BD     		pop	{r3, pc}
+ 307              	.L24:
+ 308              		.align	2
+ 309              	.L23:
+ 310 0020 EC51383D 		.word	1027101164
+ 311              		.cfi_endproc
+ 312              	.LFE137:
+ 314              		.section	.text.half_deceleration,"ax",%progbits
+ 315              		.align	1
+ 316              		.global	half_deceleration
+ 317              		.syntax unified
+ 318              		.thumb
+ 319              		.thumb_func
+ 320              		.fpu fpv4-sp-d16
+ 322              	half_deceleration:
+ 323              	.LFB138:
+ARM GAS  C:\Temp\ccwobR3f.s 			page 8
+
+
   85:Src/movement.c **** 
-  86:Src/movement.c ****     /*半区画進むまで待機*/
-ARM GAS  C:\Temp\ccGa7WPS.s 			page 8
+  86:Src/movement.c **** 
+  87:Src/movement.c **** //機能	: 反区画減速
+  88:Src/movement.c **** //引数	: なし
+  89:Src/movement.c **** //返り値	: なし
+  90:Src/movement.c **** void half_deceleration (void)
+  91:Src/movement.c **** {
+ 324              		.loc 1 91 1 is_stmt 1 view -0
+ 325              		.cfi_startproc
+ 326              		@ args = 0, pretend = 0, frame = 0
+ 327              		@ frame_needed = 0, uses_anonymous_args = 0
+ 328 0000 08B5     		push	{r3, lr}
+ 329              	.LCFI12:
+ 330              		.cfi_def_cfa_offset 8
+ 331              		.cfi_offset 3, -8
+ 332              		.cfi_offset 14, -4
+  92:Src/movement.c **** 	/*移動方向、加速モード設定*/
+  93:Src/movement.c **** 	set_direction_mode(forward_mode);
+ 333              		.loc 1 93 2 view .LVU46
+ 334 0002 0020     		movs	r0, #0
+ 335 0004 FFF7FEFF 		bl	set_direction_mode
+ 336              	.LVL20:
+  94:Src/movement.c **** 	set_accel_mode(deceleration);
+ 337              		.loc 1 94 2 view .LVU47
+ 338 0008 0120     		movs	r0, #1
+ 339 000a FFF7FEFF 		bl	set_accel_mode
+ 340              	.LVL21:
+  95:Src/movement.c ****     set_target_length(0.045);
+ 341              		.loc 1 95 5 view .LVU48
+ 342 000e 9FED090A 		vldr.32	s0, .L28
+ 343 0012 FFF7FEFF 		bl	set_target_length
+ 344              	.LVL22:
+  96:Src/movement.c **** 	set_speed_under_lim_flg(slow);
+ 345              		.loc 1 96 2 view .LVU49
+ 346 0016 0120     		movs	r0, #1
+ 347 0018 FFF7FEFF 		bl	set_speed_under_lim_flg
+ 348              	.LVL23:
+ 349              	.L26:
+  97:Src/movement.c ****     /*半区画進むまで待機*/
+  98:Src/movement.c ****     while (1)
+ 350              		.loc 1 98 5 view .LVU50
+  99:Src/movement.c ****     {
+ 100:Src/movement.c ****     	if(move_comp_jud_stop())
+ 351              		.loc 1 100 6 view .LVU51
+ 352              		.loc 1 100 9 is_stmt 0 view .LVU52
+ 353 001c FFF7FEFF 		bl	move_comp_jud_stop
+ 354              	.LVL24:
+ 355              		.loc 1 100 8 view .LVU53
+ 356 0020 0028     		cmp	r0, #0
+ 357 0022 FBD0     		beq	.L26
+ 101:Src/movement.c ****     	{
+ 102:Src/movement.c **** 			set_speed_under_lim_flg(zero);
+ 358              		.loc 1 102 4 is_stmt 1 view .LVU54
+ 359 0024 0020     		movs	r0, #0
+ 360 0026 FFF7FEFF 		bl	set_speed_under_lim_flg
+ 361              	.LVL25:
+ 103:Src/movement.c **** 			HAL_Delay(100);
+ARM GAS  C:\Temp\ccwobR3f.s 			page 9
 
 
-  87:Src/movement.c ****     while (1)
- 319              		.loc 1 87 5 view .LVU40
-  88:Src/movement.c ****     {
-  89:Src/movement.c ****     	if(move_comp_jud())
- 320              		.loc 1 89 6 view .LVU41
- 321              		.loc 1 89 9 is_stmt 0 view .LVU42
- 322 0016 FFF7FEFF 		bl	move_comp_jud
- 323              	.LVL23:
- 324              		.loc 1 89 8 view .LVU43
- 325 001a 0028     		cmp	r0, #0
- 326 001c FBD0     		beq	.L32
-  90:Src/movement.c ****     	{
-  91:Src/movement.c ****     		break;
-  92:Src/movement.c ****     	}
-  93:Src/movement.c ****     }
-  94:Src/movement.c **** }
- 327              		.loc 1 94 1 view .LVU44
- 328 001e 08BD     		pop	{r3, pc}
- 329              	.L35:
- 330              		.align	2
- 331              	.L34:
- 332 0020 EC51383D 		.word	1027101164
- 333              		.cfi_endproc
- 334              	.LFE7:
- 336              		.section	.text.constant_speed,"ax",%progbits
- 337              		.align	1
- 338              		.global	constant_speed
- 339              		.syntax unified
- 340              		.thumb
- 341              		.thumb_func
- 342              		.fpu fpv4-sp-d16
- 344              	constant_speed:
- 345              	.LFB8:
-  95:Src/movement.c **** 
-  96:Src/movement.c **** //機能	: 一区画定速
-  97:Src/movement.c **** //引数	: なし
-  98:Src/movement.c **** //返り値	: なし
-  99:Src/movement.c **** void constant_speed (void)
- 100:Src/movement.c **** {
- 346              		.loc 1 100 1 is_stmt 1 view -0
- 347              		.cfi_startproc
- 348              		@ args = 0, pretend = 0, frame = 0
- 349              		@ frame_needed = 0, uses_anonymous_args = 0
- 350 0000 08B5     		push	{r3, lr}
- 351              	.LCFI11:
- 352              		.cfi_def_cfa_offset 8
- 353              		.cfi_offset 3, -8
- 354              		.cfi_offset 14, -4
- 101:Src/movement.c **** 	/*移動方向、加速モード設定*/
- 102:Src/movement.c **** 	set_direction_mode(forward_mode);
- 355              		.loc 1 102 2 view .LVU46
- 356 0002 0020     		movs	r0, #0
- 357 0004 FFF7FEFF 		bl	set_direction_mode
- 358              	.LVL24:
- 103:Src/movement.c ****     set_accel_mode(acceleration);
- 359              		.loc 1 103 5 view .LVU47
- 360 0008 0020     		movs	r0, #0
-ARM GAS  C:\Temp\ccGa7WPS.s 			page 9
+ 362              		.loc 1 103 4 view .LVU55
+ 363 002a 6420     		movs	r0, #100
+ 364 002c FFF7FEFF 		bl	HAL_Delay
+ 365              	.LVL26:
+ 104:Src/movement.c ****     		break;
+ 366              		.loc 1 104 7 view .LVU56
+ 105:Src/movement.c ****     	}
+ 106:Src/movement.c ****     }
+ 107:Src/movement.c **** }
+ 367              		.loc 1 107 1 is_stmt 0 view .LVU57
+ 368 0030 08BD     		pop	{r3, pc}
+ 369              	.L29:
+ 370 0032 00BF     		.align	2
+ 371              	.L28:
+ 372 0034 EC51383D 		.word	1027101164
+ 373              		.cfi_endproc
+ 374              	.LFE138:
+ 376              		.section	.text.constant_speed,"ax",%progbits
+ 377              		.align	1
+ 378              		.global	constant_speed
+ 379              		.syntax unified
+ 380              		.thumb
+ 381              		.thumb_func
+ 382              		.fpu fpv4-sp-d16
+ 384              	constant_speed:
+ 385              	.LFB139:
+ 108:Src/movement.c **** 
+ 109:Src/movement.c **** //機能	: 一区画定速
+ 110:Src/movement.c **** //引数	: なし
+ 111:Src/movement.c **** //返り値	: なし
+ 112:Src/movement.c **** void constant_speed (void)
+ 113:Src/movement.c **** {
+ 386              		.loc 1 113 1 is_stmt 1 view -0
+ 387              		.cfi_startproc
+ 388              		@ args = 0, pretend = 0, frame = 0
+ 389              		@ frame_needed = 0, uses_anonymous_args = 0
+ 390 0000 08B5     		push	{r3, lr}
+ 391              	.LCFI13:
+ 392              		.cfi_def_cfa_offset 8
+ 393              		.cfi_offset 3, -8
+ 394              		.cfi_offset 14, -4
+ 114:Src/movement.c **** 	/*移動方向、加速モード設定*/
+ 115:Src/movement.c **** 	set_direction_mode(forward_mode);
+ 395              		.loc 1 115 2 view .LVU59
+ 396 0002 0020     		movs	r0, #0
+ 397 0004 FFF7FEFF 		bl	set_direction_mode
+ 398              	.LVL27:
+ 116:Src/movement.c ****     set_accel_mode(acceleration);
+ 399              		.loc 1 116 5 view .LVU60
+ 400 0008 0020     		movs	r0, #0
+ 401 000a FFF7FEFF 		bl	set_accel_mode
+ 402              	.LVL28:
+ 117:Src/movement.c ****     set_target_length(0.09);
+ 403              		.loc 1 117 5 view .LVU61
+ 404 000e 9FED040A 		vldr.32	s0, .L33
+ 405 0012 FFF7FEFF 		bl	set_target_length
+ 406              	.LVL29:
+ARM GAS  C:\Temp\ccwobR3f.s 			page 10
 
 
- 361 000a FFF7FEFF 		bl	set_accel_mode
- 362              	.LVL25:
- 104:Src/movement.c ****     set_target_length(0.09);
- 363              		.loc 1 104 5 view .LVU48
- 364 000e 9FED040A 		vldr.32	s0, .L39
- 365 0012 FFF7FEFF 		bl	set_target_length
- 366              	.LVL26:
- 367              	.L37:
- 105:Src/movement.c **** 
- 106:Src/movement.c ****     /*一区画進むまで待機*/
- 107:Src/movement.c ****     while (1)
- 368              		.loc 1 107 5 view .LVU49
- 108:Src/movement.c ****     {
- 109:Src/movement.c ****     	if(move_comp_jud())
- 369              		.loc 1 109 6 view .LVU50
- 370              		.loc 1 109 9 is_stmt 0 view .LVU51
- 371 0016 FFF7FEFF 		bl	move_comp_jud
- 372              	.LVL27:
- 373              		.loc 1 109 8 view .LVU52
- 374 001a 0028     		cmp	r0, #0
- 375 001c FBD0     		beq	.L37
- 110:Src/movement.c ****     	{
- 111:Src/movement.c ****     		break;
- 112:Src/movement.c ****     	}
- 113:Src/movement.c ****     }
- 114:Src/movement.c **** }
- 376              		.loc 1 114 1 view .LVU53
- 377 001e 08BD     		pop	{r3, pc}
- 378              	.L40:
- 379              		.align	2
- 380              	.L39:
- 381 0020 EC51B83D 		.word	1035489772
- 382              		.cfi_endproc
- 383              	.LFE8:
- 385              		.section	.text.turn_clk_90,"ax",%progbits
- 386              		.align	1
- 387              		.global	turn_clk_90
- 388              		.syntax unified
- 389              		.thumb
- 390              		.thumb_func
- 391              		.fpu fpv4-sp-d16
- 393              	turn_clk_90:
- 394              	.LFB9:
- 115:Src/movement.c **** 
- 116:Src/movement.c **** //機能	: 時計回りに90度回転
- 117:Src/movement.c **** //引数	: なし
- 118:Src/movement.c **** //返り値	: なし
- 119:Src/movement.c **** void turn_clk_90 (void)
- 120:Src/movement.c **** {
- 395              		.loc 1 120 1 is_stmt 1 view -0
- 396              		.cfi_startproc
- 397              		@ args = 0, pretend = 0, frame = 0
- 398              		@ frame_needed = 0, uses_anonymous_args = 0
- 399 0000 08B5     		push	{r3, lr}
- 400              	.LCFI12:
- 401              		.cfi_def_cfa_offset 8
- 402              		.cfi_offset 3, -8
-ARM GAS  C:\Temp\ccGa7WPS.s 			page 10
+ 407              	.L31:
+ 118:Src/movement.c **** 
+ 119:Src/movement.c ****     /*一区画進むまで待機*/
+ 120:Src/movement.c ****     while (1)
+ 408              		.loc 1 120 5 view .LVU62
+ 121:Src/movement.c ****     {
+ 122:Src/movement.c ****     	if(move_comp_jud())
+ 409              		.loc 1 122 6 view .LVU63
+ 410              		.loc 1 122 9 is_stmt 0 view .LVU64
+ 411 0016 FFF7FEFF 		bl	move_comp_jud
+ 412              	.LVL30:
+ 413              		.loc 1 122 8 view .LVU65
+ 414 001a 0028     		cmp	r0, #0
+ 415 001c FBD0     		beq	.L31
+ 123:Src/movement.c ****     	{
+ 124:Src/movement.c ****     		break;
+ 125:Src/movement.c ****     	}
+ 126:Src/movement.c ****     }
+ 127:Src/movement.c **** }
+ 416              		.loc 1 127 1 view .LVU66
+ 417 001e 08BD     		pop	{r3, pc}
+ 418              	.L34:
+ 419              		.align	2
+ 420              	.L33:
+ 421 0020 EC51B83D 		.word	1035489772
+ 422              		.cfi_endproc
+ 423              	.LFE139:
+ 425              		.section	.text.turn_clk_90,"ax",%progbits
+ 426              		.align	1
+ 427              		.global	turn_clk_90
+ 428              		.syntax unified
+ 429              		.thumb
+ 430              		.thumb_func
+ 431              		.fpu fpv4-sp-d16
+ 433              	turn_clk_90:
+ 434              	.LFB140:
+ 128:Src/movement.c **** 
+ 129:Src/movement.c **** //機能	: 時計回りに90度回転
+ 130:Src/movement.c **** //引数	: なし
+ 131:Src/movement.c **** //返り値	: なし
+ 132:Src/movement.c **** void turn_clk_90 (void)
+ 133:Src/movement.c **** {
+ 435              		.loc 1 133 1 is_stmt 1 view -0
+ 436              		.cfi_startproc
+ 437              		@ args = 0, pretend = 0, frame = 0
+ 438              		@ frame_needed = 0, uses_anonymous_args = 0
+ 439 0000 08B5     		push	{r3, lr}
+ 440              	.LCFI14:
+ 441              		.cfi_def_cfa_offset 8
+ 442              		.cfi_offset 3, -8
+ 443              		.cfi_offset 14, -4
+ 134:Src/movement.c **** 	/*回転方向設定*/
+ 135:Src/movement.c **** 	set_rotation_mode(clockwise);
+ 444              		.loc 1 135 2 view .LVU68
+ 445 0002 0120     		movs	r0, #1
+ 446 0004 FFF7FEFF 		bl	set_rotation_mode
+ 447              	.LVL31:
+ARM GAS  C:\Temp\ccwobR3f.s 			page 11
 
 
- 403              		.cfi_offset 14, -4
- 121:Src/movement.c **** 	/*回転方向設定*/
- 122:Src/movement.c **** 	set_rotation_mode(clockwise);
- 404              		.loc 1 122 2 view .LVU55
- 405 0002 0120     		movs	r0, #1
- 406 0004 FFF7FEFF 		bl	set_rotation_mode
- 407              	.LVL28:
- 123:Src/movement.c ****     set_target_angle(-PI/2);
- 408              		.loc 1 123 5 view .LVU56
- 409 0008 9FED040A 		vldr.32	s0, .L44
- 410 000c FFF7FEFF 		bl	set_target_angle
- 411              	.LVL29:
- 412              	.L42:
- 124:Src/movement.c **** 
- 125:Src/movement.c ****     /*90度回転するまで待機*/
- 126:Src/movement.c ****     while (1)
- 413              		.loc 1 126 5 view .LVU57
- 127:Src/movement.c ****     {
- 128:Src/movement.c ****     	if(rotate_comp_jud())
- 414              		.loc 1 128 6 view .LVU58
- 415              		.loc 1 128 9 is_stmt 0 view .LVU59
- 416 0010 FFF7FEFF 		bl	rotate_comp_jud
- 417              	.LVL30:
- 418              		.loc 1 128 8 view .LVU60
- 419 0014 0028     		cmp	r0, #0
- 420 0016 FBD0     		beq	.L42
- 129:Src/movement.c ****     	{
- 130:Src/movement.c ****     		break;
- 131:Src/movement.c ****     	}
- 132:Src/movement.c ****     }
- 133:Src/movement.c **** 
- 134:Src/movement.c **** }
- 421              		.loc 1 134 1 view .LVU61
- 422 0018 08BD     		pop	{r3, pc}
- 423              	.L45:
- 424 001a 00BF     		.align	2
- 425              	.L44:
- 426 001c DA0FC9BF 		.word	-1077342246
- 427              		.cfi_endproc
- 428              	.LFE9:
- 430              		.section	.text.turn_conclk_90,"ax",%progbits
- 431              		.align	1
- 432              		.global	turn_conclk_90
- 433              		.syntax unified
- 434              		.thumb
- 435              		.thumb_func
- 436              		.fpu fpv4-sp-d16
- 438              	turn_conclk_90:
- 439              	.LFB10:
- 135:Src/movement.c **** 
- 136:Src/movement.c **** //機能	: 反時計回りに90度回転
- 137:Src/movement.c **** //引数	: なし
- 138:Src/movement.c **** //返り値	: なし
- 139:Src/movement.c **** void turn_conclk_90 (void)
- 140:Src/movement.c **** {
- 440              		.loc 1 140 1 is_stmt 1 view -0
- 441              		.cfi_startproc
-ARM GAS  C:\Temp\ccGa7WPS.s 			page 11
+ 136:Src/movement.c ****     set_target_angle(-PI/2);
+ 448              		.loc 1 136 5 view .LVU69
+ 449 0008 9FED040A 		vldr.32	s0, .L38
+ 450 000c FFF7FEFF 		bl	set_target_angle
+ 451              	.LVL32:
+ 452              	.L36:
+ 137:Src/movement.c **** 
+ 138:Src/movement.c ****     /*90度回転するまで待機*/
+ 139:Src/movement.c ****     while (1)
+ 453              		.loc 1 139 5 view .LVU70
+ 140:Src/movement.c ****     {
+ 141:Src/movement.c ****     	if(rotate_comp_jud())
+ 454              		.loc 1 141 6 view .LVU71
+ 455              		.loc 1 141 9 is_stmt 0 view .LVU72
+ 456 0010 FFF7FEFF 		bl	rotate_comp_jud
+ 457              	.LVL33:
+ 458              		.loc 1 141 8 view .LVU73
+ 459 0014 0028     		cmp	r0, #0
+ 460 0016 FBD0     		beq	.L36
+ 142:Src/movement.c ****     	{
+ 143:Src/movement.c ****     		break;
+ 144:Src/movement.c ****     	}
+ 145:Src/movement.c ****     }
+ 146:Src/movement.c **** 
+ 147:Src/movement.c **** }
+ 461              		.loc 1 147 1 view .LVU74
+ 462 0018 08BD     		pop	{r3, pc}
+ 463              	.L39:
+ 464 001a 00BF     		.align	2
+ 465              	.L38:
+ 466 001c DA0FC9BF 		.word	-1077342246
+ 467              		.cfi_endproc
+ 468              	.LFE140:
+ 470              		.section	.text.turn_conclk_90,"ax",%progbits
+ 471              		.align	1
+ 472              		.global	turn_conclk_90
+ 473              		.syntax unified
+ 474              		.thumb
+ 475              		.thumb_func
+ 476              		.fpu fpv4-sp-d16
+ 478              	turn_conclk_90:
+ 479              	.LFB141:
+ 148:Src/movement.c **** 
+ 149:Src/movement.c **** //機能	: 反時計回りに90度回転
+ 150:Src/movement.c **** //引数	: なし
+ 151:Src/movement.c **** //返り値	: なし
+ 152:Src/movement.c **** void turn_conclk_90 (void)
+ 153:Src/movement.c **** {
+ 480              		.loc 1 153 1 is_stmt 1 view -0
+ 481              		.cfi_startproc
+ 482              		@ args = 0, pretend = 0, frame = 0
+ 483              		@ frame_needed = 0, uses_anonymous_args = 0
+ 484 0000 08B5     		push	{r3, lr}
+ 485              	.LCFI15:
+ 486              		.cfi_def_cfa_offset 8
+ 487              		.cfi_offset 3, -8
+ 488              		.cfi_offset 14, -4
+ARM GAS  C:\Temp\ccwobR3f.s 			page 12
 
 
- 442              		@ args = 0, pretend = 0, frame = 0
- 443              		@ frame_needed = 0, uses_anonymous_args = 0
- 444 0000 08B5     		push	{r3, lr}
- 445              	.LCFI13:
- 446              		.cfi_def_cfa_offset 8
- 447              		.cfi_offset 3, -8
- 448              		.cfi_offset 14, -4
- 141:Src/movement.c **** 	/*回転方向設定*/
- 142:Src/movement.c **** 	set_rotation_mode(counter_clockwise);
- 449              		.loc 1 142 2 view .LVU63
- 450 0002 0020     		movs	r0, #0
- 451 0004 FFF7FEFF 		bl	set_rotation_mode
- 452              	.LVL31:
- 143:Src/movement.c ****     set_target_angle(PI/2);
- 453              		.loc 1 143 5 view .LVU64
- 454 0008 9FED040A 		vldr.32	s0, .L49
- 455 000c FFF7FEFF 		bl	set_target_angle
- 456              	.LVL32:
- 457              	.L47:
- 144:Src/movement.c **** 
- 145:Src/movement.c ****     /*90度回転するまで待機*/
- 146:Src/movement.c ****     while (1)
- 458              		.loc 1 146 5 view .LVU65
- 147:Src/movement.c ****     {
- 148:Src/movement.c ****     	if(rotate_comp_jud())
- 459              		.loc 1 148 6 view .LVU66
- 460              		.loc 1 148 9 is_stmt 0 view .LVU67
- 461 0010 FFF7FEFF 		bl	rotate_comp_jud
- 462              	.LVL33:
- 463              		.loc 1 148 8 view .LVU68
- 464 0014 0028     		cmp	r0, #0
- 465 0016 FBD0     		beq	.L47
- 149:Src/movement.c ****     	{
- 150:Src/movement.c ****     		break;
- 151:Src/movement.c ****     	}
- 152:Src/movement.c ****     }
- 153:Src/movement.c **** 
- 154:Src/movement.c **** }
- 466              		.loc 1 154 1 view .LVU69
- 467 0018 08BD     		pop	{r3, pc}
- 468              	.L50:
- 469 001a 00BF     		.align	2
- 470              	.L49:
- 471 001c DA0FC93F 		.word	1070141402
- 472              		.cfi_endproc
- 473              	.LFE10:
- 475              		.section	.text.turn_conclk_180,"ax",%progbits
- 476              		.align	1
- 477              		.global	turn_conclk_180
- 478              		.syntax unified
- 479              		.thumb
- 480              		.thumb_func
- 481              		.fpu fpv4-sp-d16
- 483              	turn_conclk_180:
- 484              	.LFB11:
- 155:Src/movement.c **** 
- 156:Src/movement.c **** //機能	: 反時計回りに180度回転
-ARM GAS  C:\Temp\ccGa7WPS.s 			page 12
+ 154:Src/movement.c **** 	/*回転方向設定*/
+ 155:Src/movement.c **** 	set_rotation_mode(counter_clockwise);
+ 489              		.loc 1 155 2 view .LVU76
+ 490 0002 0020     		movs	r0, #0
+ 491 0004 FFF7FEFF 		bl	set_rotation_mode
+ 492              	.LVL34:
+ 156:Src/movement.c ****     set_target_angle(PI/2);
+ 493              		.loc 1 156 5 view .LVU77
+ 494 0008 9FED040A 		vldr.32	s0, .L43
+ 495 000c FFF7FEFF 		bl	set_target_angle
+ 496              	.LVL35:
+ 497              	.L41:
+ 157:Src/movement.c **** 
+ 158:Src/movement.c ****     /*90度回転するまで待機*/
+ 159:Src/movement.c ****     while (1)
+ 498              		.loc 1 159 5 view .LVU78
+ 160:Src/movement.c ****     {
+ 161:Src/movement.c ****     	if(rotate_comp_jud())
+ 499              		.loc 1 161 6 view .LVU79
+ 500              		.loc 1 161 9 is_stmt 0 view .LVU80
+ 501 0010 FFF7FEFF 		bl	rotate_comp_jud
+ 502              	.LVL36:
+ 503              		.loc 1 161 8 view .LVU81
+ 504 0014 0028     		cmp	r0, #0
+ 505 0016 FBD0     		beq	.L41
+ 162:Src/movement.c ****     	{
+ 163:Src/movement.c ****     		break;
+ 164:Src/movement.c ****     	}
+ 165:Src/movement.c ****     }
+ 166:Src/movement.c **** 
+ 167:Src/movement.c **** }
+ 506              		.loc 1 167 1 view .LVU82
+ 507 0018 08BD     		pop	{r3, pc}
+ 508              	.L44:
+ 509 001a 00BF     		.align	2
+ 510              	.L43:
+ 511 001c DA0FC93F 		.word	1070141402
+ 512              		.cfi_endproc
+ 513              	.LFE141:
+ 515              		.section	.text.turn_conclk_180,"ax",%progbits
+ 516              		.align	1
+ 517              		.global	turn_conclk_180
+ 518              		.syntax unified
+ 519              		.thumb
+ 520              		.thumb_func
+ 521              		.fpu fpv4-sp-d16
+ 523              	turn_conclk_180:
+ 524              	.LFB142:
+ 168:Src/movement.c **** 
+ 169:Src/movement.c **** //機能	: 反時計回りに180度回転
+ 170:Src/movement.c **** //引数	: なし
+ 171:Src/movement.c **** //返り値	: なし
+ 172:Src/movement.c **** void turn_conclk_180 (void)
+ 173:Src/movement.c **** {
+ 525              		.loc 1 173 1 is_stmt 1 view -0
+ 526              		.cfi_startproc
+ 527              		@ args = 0, pretend = 0, frame = 0
+ARM GAS  C:\Temp\ccwobR3f.s 			page 13
 
 
- 157:Src/movement.c **** //引数	: なし
- 158:Src/movement.c **** //返り値	: なし
- 159:Src/movement.c **** void turn_conclk_180 (void)
- 160:Src/movement.c **** {
- 485              		.loc 1 160 1 is_stmt 1 view -0
- 486              		.cfi_startproc
- 487              		@ args = 0, pretend = 0, frame = 0
- 488              		@ frame_needed = 0, uses_anonymous_args = 0
- 489 0000 08B5     		push	{r3, lr}
- 490              	.LCFI14:
- 491              		.cfi_def_cfa_offset 8
- 492              		.cfi_offset 3, -8
- 493              		.cfi_offset 14, -4
- 161:Src/movement.c **** 	/*回転方向設定*/
- 162:Src/movement.c **** 	set_rotation_mode(counter_clockwise);
- 494              		.loc 1 162 2 view .LVU71
- 495 0002 0020     		movs	r0, #0
- 496 0004 FFF7FEFF 		bl	set_rotation_mode
- 497              	.LVL34:
- 163:Src/movement.c ****     set_target_angle(PI);
- 498              		.loc 1 163 5 view .LVU72
- 499 0008 9FED040A 		vldr.32	s0, .L54
- 500 000c FFF7FEFF 		bl	set_target_angle
- 501              	.LVL35:
- 502              	.L52:
- 164:Src/movement.c **** 
- 165:Src/movement.c ****     /*180度回転するまで待機*/
- 166:Src/movement.c ****     while (1)
- 503              		.loc 1 166 5 view .LVU73
- 167:Src/movement.c ****     {
- 168:Src/movement.c ****     	if(rotate_comp_jud())//0.3deg手前まできたらブレイク
- 504              		.loc 1 168 6 view .LVU74
- 505              		.loc 1 168 9 is_stmt 0 view .LVU75
- 506 0010 FFF7FEFF 		bl	rotate_comp_jud
- 507              	.LVL36:
- 508              		.loc 1 168 8 view .LVU76
- 509 0014 0028     		cmp	r0, #0
- 510 0016 FBD0     		beq	.L52
- 169:Src/movement.c ****     	{
- 170:Src/movement.c ****     		break;
- 171:Src/movement.c ****     	}
- 172:Src/movement.c ****     }
- 173:Src/movement.c **** 
- 174:Src/movement.c **** }
- 511              		.loc 1 174 1 view .LVU77
- 512 0018 08BD     		pop	{r3, pc}
- 513              	.L55:
- 514 001a 00BF     		.align	2
- 515              	.L54:
- 516 001c DA0F4940 		.word	1078530010
- 517              		.cfi_endproc
- 518              	.LFE11:
- 520              		.section	.text.clr_run_first_flg,"ax",%progbits
- 521              		.align	1
- 522              		.global	clr_run_first_flg
- 523              		.syntax unified
- 524              		.thumb
-ARM GAS  C:\Temp\ccGa7WPS.s 			page 13
+ 528              		@ frame_needed = 0, uses_anonymous_args = 0
+ 529 0000 08B5     		push	{r3, lr}
+ 530              	.LCFI16:
+ 531              		.cfi_def_cfa_offset 8
+ 532              		.cfi_offset 3, -8
+ 533              		.cfi_offset 14, -4
+ 174:Src/movement.c **** 	/*回転方向設定*/
+ 175:Src/movement.c **** 	set_rotation_mode(counter_clockwise);
+ 534              		.loc 1 175 2 view .LVU84
+ 535 0002 0020     		movs	r0, #0
+ 536 0004 FFF7FEFF 		bl	set_rotation_mode
+ 537              	.LVL37:
+ 176:Src/movement.c ****     set_target_angle(PI);
+ 538              		.loc 1 176 5 view .LVU85
+ 539 0008 9FED040A 		vldr.32	s0, .L48
+ 540 000c FFF7FEFF 		bl	set_target_angle
+ 541              	.LVL38:
+ 542              	.L46:
+ 177:Src/movement.c **** 
+ 178:Src/movement.c ****     /*180度回転するまで待機*/
+ 179:Src/movement.c ****     while (1)
+ 543              		.loc 1 179 5 view .LVU86
+ 180:Src/movement.c ****     {
+ 181:Src/movement.c ****     	if(rotate_comp_jud())//0.3deg手前まできたらブレイク
+ 544              		.loc 1 181 6 view .LVU87
+ 545              		.loc 1 181 9 is_stmt 0 view .LVU88
+ 546 0010 FFF7FEFF 		bl	rotate_comp_jud
+ 547              	.LVL39:
+ 548              		.loc 1 181 8 view .LVU89
+ 549 0014 0028     		cmp	r0, #0
+ 550 0016 FBD0     		beq	.L46
+ 182:Src/movement.c ****     	{
+ 183:Src/movement.c ****     		break;
+ 184:Src/movement.c ****     	}
+ 185:Src/movement.c ****     }
+ 186:Src/movement.c **** 
+ 187:Src/movement.c **** }
+ 551              		.loc 1 187 1 view .LVU90
+ 552 0018 08BD     		pop	{r3, pc}
+ 553              	.L49:
+ 554 001a 00BF     		.align	2
+ 555              	.L48:
+ 556 001c DA0F4940 		.word	1078530010
+ 557              		.cfi_endproc
+ 558              	.LFE142:
+ 560              		.section	.text.clr_run_first_flg,"ax",%progbits
+ 561              		.align	1
+ 562              		.global	clr_run_first_flg
+ 563              		.syntax unified
+ 564              		.thumb
+ 565              		.thumb_func
+ 566              		.fpu fpv4-sp-d16
+ 568              	clr_run_first_flg:
+ 569              	.LFB143:
+ 188:Src/movement.c **** 
+ 189:Src/movement.c **** //機能	: 走行開始フラグのクリア
+ 190:Src/movement.c **** //引数	: なし
+ARM GAS  C:\Temp\ccwobR3f.s 			page 14
 
 
- 525              		.thumb_func
- 526              		.fpu fpv4-sp-d16
- 528              	clr_run_first_flg:
- 529              	.LFB12:
- 175:Src/movement.c **** 
- 176:Src/movement.c **** //機能	: 走行開始フラグのクリア
- 177:Src/movement.c **** //引数	: なし
- 178:Src/movement.c **** //返り値	: なし
- 179:Src/movement.c **** void clr_run_first_flg (void)
- 180:Src/movement.c **** {
- 530              		.loc 1 180 1 is_stmt 1 view -0
- 531              		.cfi_startproc
- 532              		@ args = 0, pretend = 0, frame = 0
- 533              		@ frame_needed = 0, uses_anonymous_args = 0
- 534              		@ link register save eliminated.
- 181:Src/movement.c **** 	run_first_flg = start;
- 535              		.loc 1 181 2 view .LVU79
- 536              		.loc 1 181 16 is_stmt 0 view .LVU80
- 537 0000 014B     		ldr	r3, .L57
- 538 0002 0022     		movs	r2, #0
- 539 0004 1A70     		strb	r2, [r3]
- 182:Src/movement.c **** }
- 540              		.loc 1 182 1 view .LVU81
- 541 0006 7047     		bx	lr
- 542              	.L58:
- 543              		.align	2
- 544              	.L57:
- 545 0008 00000000 		.word	.LANCHOR0
- 546              		.cfi_endproc
- 547              	.LFE12:
- 549              		.section	.text.set_run_first_flg,"ax",%progbits
- 550              		.align	1
- 551              		.global	set_run_first_flg
- 552              		.syntax unified
- 553              		.thumb
- 554              		.thumb_func
- 555              		.fpu fpv4-sp-d16
- 557              	set_run_first_flg:
- 558              	.LFB13:
- 183:Src/movement.c **** 
- 184:Src/movement.c **** //機能	: 走行開始フラグセット
- 185:Src/movement.c **** //引数	: なし
- 186:Src/movement.c **** //返り値	: なし
- 187:Src/movement.c **** void set_run_first_flg (void)
- 188:Src/movement.c **** {
- 559              		.loc 1 188 1 is_stmt 1 view -0
- 560              		.cfi_startproc
- 561              		@ args = 0, pretend = 0, frame = 0
- 562              		@ frame_needed = 0, uses_anonymous_args = 0
- 563              		@ link register save eliminated.
- 189:Src/movement.c **** 	run_first_flg = already;
- 564              		.loc 1 189 2 view .LVU83
- 565              		.loc 1 189 16 is_stmt 0 view .LVU84
- 566 0000 014B     		ldr	r3, .L60
- 567 0002 0122     		movs	r2, #1
- 568 0004 1A70     		strb	r2, [r3]
- 190:Src/movement.c **** }
-ARM GAS  C:\Temp\ccGa7WPS.s 			page 14
+ 191:Src/movement.c **** //返り値	: なし
+ 192:Src/movement.c **** void clr_run_first_flg (void)
+ 193:Src/movement.c **** {
+ 570              		.loc 1 193 1 is_stmt 1 view -0
+ 571              		.cfi_startproc
+ 572              		@ args = 0, pretend = 0, frame = 0
+ 573              		@ frame_needed = 0, uses_anonymous_args = 0
+ 574              		@ link register save eliminated.
+ 194:Src/movement.c **** 	run_first_flg = start;
+ 575              		.loc 1 194 2 view .LVU92
+ 576              		.loc 1 194 16 is_stmt 0 view .LVU93
+ 577 0000 014B     		ldr	r3, .L51
+ 578 0002 0022     		movs	r2, #0
+ 579 0004 1A70     		strb	r2, [r3]
+ 195:Src/movement.c **** }
+ 580              		.loc 1 195 1 view .LVU94
+ 581 0006 7047     		bx	lr
+ 582              	.L52:
+ 583              		.align	2
+ 584              	.L51:
+ 585 0008 00000000 		.word	.LANCHOR0
+ 586              		.cfi_endproc
+ 587              	.LFE143:
+ 589              		.section	.text.set_run_first_flg,"ax",%progbits
+ 590              		.align	1
+ 591              		.global	set_run_first_flg
+ 592              		.syntax unified
+ 593              		.thumb
+ 594              		.thumb_func
+ 595              		.fpu fpv4-sp-d16
+ 597              	set_run_first_flg:
+ 598              	.LFB144:
+ 196:Src/movement.c **** 
+ 197:Src/movement.c **** //機能	: 走行開始フラグセット
+ 198:Src/movement.c **** //引数	: なし
+ 199:Src/movement.c **** //返り値	: なし
+ 200:Src/movement.c **** void set_run_first_flg (void)
+ 201:Src/movement.c **** {
+ 599              		.loc 1 201 1 is_stmt 1 view -0
+ 600              		.cfi_startproc
+ 601              		@ args = 0, pretend = 0, frame = 0
+ 602              		@ frame_needed = 0, uses_anonymous_args = 0
+ 603              		@ link register save eliminated.
+ 202:Src/movement.c **** 	run_first_flg = already;
+ 604              		.loc 1 202 2 view .LVU96
+ 605              		.loc 1 202 16 is_stmt 0 view .LVU97
+ 606 0000 014B     		ldr	r3, .L54
+ 607 0002 0122     		movs	r2, #1
+ 608 0004 1A70     		strb	r2, [r3]
+ 203:Src/movement.c **** }
+ 609              		.loc 1 203 1 view .LVU98
+ 610 0006 7047     		bx	lr
+ 611              	.L55:
+ 612              		.align	2
+ 613              	.L54:
+ 614 0008 00000000 		.word	.LANCHOR0
+ 615              		.cfi_endproc
+ARM GAS  C:\Temp\ccwobR3f.s 			page 15
 
 
- 569              		.loc 1 190 1 view .LVU85
- 570 0006 7047     		bx	lr
- 571              	.L61:
- 572              		.align	2
- 573              	.L60:
- 574 0008 00000000 		.word	.LANCHOR0
- 575              		.cfi_endproc
- 576              	.LFE13:
- 578              		.section	.text.clr_wall_flg,"ax",%progbits
- 579              		.align	1
- 580              		.global	clr_wall_flg
- 581              		.syntax unified
- 582              		.thumb
- 583              		.thumb_func
- 584              		.fpu fpv4-sp-d16
- 586              	clr_wall_flg:
- 587              	.LFB14:
- 191:Src/movement.c **** 
- 192:Src/movement.c **** 
- 193:Src/movement.c **** //機能	: 壁の有無フラグのクリア
- 194:Src/movement.c **** //引数	: なし
- 195:Src/movement.c **** //返り値	: なし
- 196:Src/movement.c **** void clr_wall_flg (void)
- 197:Src/movement.c **** {
- 588              		.loc 1 197 1 is_stmt 1 view -0
- 589              		.cfi_startproc
- 590              		@ args = 0, pretend = 0, frame = 0
- 591              		@ frame_needed = 0, uses_anonymous_args = 0
- 592              		@ link register save eliminated.
- 198:Src/movement.c **** 	front_wall_flg = nowall;
- 593              		.loc 1 198 2 view .LVU87
- 594              		.loc 1 198 17 is_stmt 0 view .LVU88
- 595 0000 0023     		movs	r3, #0
- 596 0002 034A     		ldr	r2, .L63
- 597 0004 1370     		strb	r3, [r2]
- 199:Src/movement.c **** 	right_wall_flg = nowall;
- 598              		.loc 1 199 2 is_stmt 1 view .LVU89
- 599              		.loc 1 199 17 is_stmt 0 view .LVU90
- 600 0006 034A     		ldr	r2, .L63+4
- 601 0008 1370     		strb	r3, [r2]
- 200:Src/movement.c **** 	left_wall_flg = nowall;
- 602              		.loc 1 200 2 is_stmt 1 view .LVU91
- 603              		.loc 1 200 16 is_stmt 0 view .LVU92
- 604 000a 034A     		ldr	r2, .L63+8
- 605 000c 1370     		strb	r3, [r2]
- 201:Src/movement.c **** }
- 606              		.loc 1 201 1 view .LVU93
- 607 000e 7047     		bx	lr
- 608              	.L64:
- 609              		.align	2
- 610              	.L63:
- 611 0010 00000000 		.word	.LANCHOR1
- 612 0014 00000000 		.word	.LANCHOR2
- 613 0018 00000000 		.word	.LANCHOR3
- 614              		.cfi_endproc
- 615              	.LFE14:
- 617              		.section	.text.set_front_wall_flg,"ax",%progbits
-ARM GAS  C:\Temp\ccGa7WPS.s 			page 15
+ 616              	.LFE144:
+ 618              		.section	.text.clr_wall_flg,"ax",%progbits
+ 619              		.align	1
+ 620              		.global	clr_wall_flg
+ 621              		.syntax unified
+ 622              		.thumb
+ 623              		.thumb_func
+ 624              		.fpu fpv4-sp-d16
+ 626              	clr_wall_flg:
+ 627              	.LFB145:
+ 204:Src/movement.c **** 
+ 205:Src/movement.c **** 
+ 206:Src/movement.c **** //機能	: 壁の有無フラグのクリア
+ 207:Src/movement.c **** //引数	: なし
+ 208:Src/movement.c **** //返り値	: なし
+ 209:Src/movement.c **** void clr_wall_flg (void)
+ 210:Src/movement.c **** {
+ 628              		.loc 1 210 1 is_stmt 1 view -0
+ 629              		.cfi_startproc
+ 630              		@ args = 0, pretend = 0, frame = 0
+ 631              		@ frame_needed = 0, uses_anonymous_args = 0
+ 632              		@ link register save eliminated.
+ 211:Src/movement.c **** 	front_wall_flg = nowall;
+ 633              		.loc 1 211 2 view .LVU100
+ 634              		.loc 1 211 17 is_stmt 0 view .LVU101
+ 635 0000 0023     		movs	r3, #0
+ 636 0002 034A     		ldr	r2, .L57
+ 637 0004 1370     		strb	r3, [r2]
+ 212:Src/movement.c **** 	right_wall_flg = nowall;
+ 638              		.loc 1 212 2 is_stmt 1 view .LVU102
+ 639              		.loc 1 212 17 is_stmt 0 view .LVU103
+ 640 0006 034A     		ldr	r2, .L57+4
+ 641 0008 1370     		strb	r3, [r2]
+ 213:Src/movement.c **** 	left_wall_flg = nowall;
+ 642              		.loc 1 213 2 is_stmt 1 view .LVU104
+ 643              		.loc 1 213 16 is_stmt 0 view .LVU105
+ 644 000a 034A     		ldr	r2, .L57+8
+ 645 000c 1370     		strb	r3, [r2]
+ 214:Src/movement.c **** }
+ 646              		.loc 1 214 1 view .LVU106
+ 647 000e 7047     		bx	lr
+ 648              	.L58:
+ 649              		.align	2
+ 650              	.L57:
+ 651 0010 00000000 		.word	.LANCHOR1
+ 652 0014 00000000 		.word	.LANCHOR2
+ 653 0018 00000000 		.word	.LANCHOR3
+ 654              		.cfi_endproc
+ 655              	.LFE145:
+ 657              		.section	.text.set_front_wall_flg,"ax",%progbits
+ 658              		.align	1
+ 659              		.global	set_front_wall_flg
+ 660              		.syntax unified
+ 661              		.thumb
+ 662              		.thumb_func
+ 663              		.fpu fpv4-sp-d16
+ 665              	set_front_wall_flg:
+ARM GAS  C:\Temp\ccwobR3f.s 			page 16
 
 
- 618              		.align	1
- 619              		.global	set_front_wall_flg
- 620              		.syntax unified
- 621              		.thumb
- 622              		.thumb_func
- 623              		.fpu fpv4-sp-d16
- 625              	set_front_wall_flg:
- 626              	.LFB15:
- 202:Src/movement.c **** 
- 203:Src/movement.c **** //機能	: 前壁フラグセット
- 204:Src/movement.c **** //引数	: なし
- 205:Src/movement.c **** //返り値	: なし
- 206:Src/movement.c **** void set_front_wall_flg ( void )
- 207:Src/movement.c **** {
- 627              		.loc 1 207 1 is_stmt 1 view -0
- 628              		.cfi_startproc
- 629              		@ args = 0, pretend = 0, frame = 0
- 630              		@ frame_needed = 0, uses_anonymous_args = 0
- 631              		@ link register save eliminated.
- 208:Src/movement.c **** 	front_wall_flg = wall;
- 632              		.loc 1 208 2 view .LVU95
- 633              		.loc 1 208 17 is_stmt 0 view .LVU96
- 634 0000 014B     		ldr	r3, .L66
- 635 0002 0122     		movs	r2, #1
- 636 0004 1A70     		strb	r2, [r3]
- 209:Src/movement.c **** }
- 637              		.loc 1 209 1 view .LVU97
- 638 0006 7047     		bx	lr
- 639              	.L67:
- 640              		.align	2
- 641              	.L66:
- 642 0008 00000000 		.word	.LANCHOR1
- 643              		.cfi_endproc
- 644              	.LFE15:
- 646              		.section	.text.set_rigth_wall_flg,"ax",%progbits
- 647              		.align	1
- 648              		.global	set_rigth_wall_flg
- 649              		.syntax unified
- 650              		.thumb
- 651              		.thumb_func
- 652              		.fpu fpv4-sp-d16
- 654              	set_rigth_wall_flg:
- 655              	.LFB16:
- 210:Src/movement.c **** 
- 211:Src/movement.c **** //機能	: 右壁フラグセット
- 212:Src/movement.c **** //引数	: なし
- 213:Src/movement.c **** //返り値	: なし
- 214:Src/movement.c **** void set_rigth_wall_flg ( void )
- 215:Src/movement.c **** {
- 656              		.loc 1 215 1 is_stmt 1 view -0
- 657              		.cfi_startproc
- 658              		@ args = 0, pretend = 0, frame = 0
- 659              		@ frame_needed = 0, uses_anonymous_args = 0
- 660              		@ link register save eliminated.
- 216:Src/movement.c **** 	right_wall_flg = wall;
- 661              		.loc 1 216 2 view .LVU99
- 662              		.loc 1 216 17 is_stmt 0 view .LVU100
-ARM GAS  C:\Temp\ccGa7WPS.s 			page 16
+ 666              	.LFB146:
+ 215:Src/movement.c **** 
+ 216:Src/movement.c **** //機能	: 前壁フラグセット
+ 217:Src/movement.c **** //引数	: なし
+ 218:Src/movement.c **** //返り値	: なし
+ 219:Src/movement.c **** void set_front_wall_flg ( void )
+ 220:Src/movement.c **** {
+ 667              		.loc 1 220 1 is_stmt 1 view -0
+ 668              		.cfi_startproc
+ 669              		@ args = 0, pretend = 0, frame = 0
+ 670              		@ frame_needed = 0, uses_anonymous_args = 0
+ 671              		@ link register save eliminated.
+ 221:Src/movement.c **** 	front_wall_flg = wall;
+ 672              		.loc 1 221 2 view .LVU108
+ 673              		.loc 1 221 17 is_stmt 0 view .LVU109
+ 674 0000 014B     		ldr	r3, .L60
+ 675 0002 0122     		movs	r2, #1
+ 676 0004 1A70     		strb	r2, [r3]
+ 222:Src/movement.c **** }
+ 677              		.loc 1 222 1 view .LVU110
+ 678 0006 7047     		bx	lr
+ 679              	.L61:
+ 680              		.align	2
+ 681              	.L60:
+ 682 0008 00000000 		.word	.LANCHOR1
+ 683              		.cfi_endproc
+ 684              	.LFE146:
+ 686              		.section	.text.set_rigth_wall_flg,"ax",%progbits
+ 687              		.align	1
+ 688              		.global	set_rigth_wall_flg
+ 689              		.syntax unified
+ 690              		.thumb
+ 691              		.thumb_func
+ 692              		.fpu fpv4-sp-d16
+ 694              	set_rigth_wall_flg:
+ 695              	.LFB147:
+ 223:Src/movement.c **** 
+ 224:Src/movement.c **** //機能	: 右壁フラグセット
+ 225:Src/movement.c **** //引数	: なし
+ 226:Src/movement.c **** //返り値	: なし
+ 227:Src/movement.c **** void set_rigth_wall_flg ( void )
+ 228:Src/movement.c **** {
+ 696              		.loc 1 228 1 is_stmt 1 view -0
+ 697              		.cfi_startproc
+ 698              		@ args = 0, pretend = 0, frame = 0
+ 699              		@ frame_needed = 0, uses_anonymous_args = 0
+ 700              		@ link register save eliminated.
+ 229:Src/movement.c **** 	right_wall_flg = wall;
+ 701              		.loc 1 229 2 view .LVU112
+ 702              		.loc 1 229 17 is_stmt 0 view .LVU113
+ 703 0000 014B     		ldr	r3, .L63
+ 704 0002 0122     		movs	r2, #1
+ 705 0004 1A70     		strb	r2, [r3]
+ 230:Src/movement.c **** }
+ 706              		.loc 1 230 1 view .LVU114
+ 707 0006 7047     		bx	lr
+ 708              	.L64:
+ARM GAS  C:\Temp\ccwobR3f.s 			page 17
 
 
- 663 0000 014B     		ldr	r3, .L69
- 664 0002 0122     		movs	r2, #1
- 665 0004 1A70     		strb	r2, [r3]
- 217:Src/movement.c **** }
- 666              		.loc 1 217 1 view .LVU101
- 667 0006 7047     		bx	lr
- 668              	.L70:
- 669              		.align	2
- 670              	.L69:
- 671 0008 00000000 		.word	.LANCHOR2
- 672              		.cfi_endproc
- 673              	.LFE16:
- 675              		.section	.text.set_left_wall_flg,"ax",%progbits
- 676              		.align	1
- 677              		.global	set_left_wall_flg
- 678              		.syntax unified
- 679              		.thumb
- 680              		.thumb_func
- 681              		.fpu fpv4-sp-d16
- 683              	set_left_wall_flg:
- 684              	.LFB17:
- 218:Src/movement.c **** 
- 219:Src/movement.c **** //機能	: 左壁フラグセット
- 220:Src/movement.c **** //引数	: なし
- 221:Src/movement.c **** //返り値	: なし
- 222:Src/movement.c **** void set_left_wall_flg ( void )
- 223:Src/movement.c **** {
- 685              		.loc 1 223 1 is_stmt 1 view -0
- 686              		.cfi_startproc
- 687              		@ args = 0, pretend = 0, frame = 0
- 688              		@ frame_needed = 0, uses_anonymous_args = 0
- 689              		@ link register save eliminated.
- 224:Src/movement.c **** 	left_wall_flg = wall;
- 690              		.loc 1 224 2 view .LVU103
- 691              		.loc 1 224 16 is_stmt 0 view .LVU104
- 692 0000 014B     		ldr	r3, .L72
- 693 0002 0122     		movs	r2, #1
- 694 0004 1A70     		strb	r2, [r3]
- 225:Src/movement.c **** }
- 695              		.loc 1 225 1 view .LVU105
- 696 0006 7047     		bx	lr
- 697              	.L73:
- 698              		.align	2
- 699              	.L72:
- 700 0008 00000000 		.word	.LANCHOR3
- 701              		.cfi_endproc
- 702              	.LFE17:
- 704              		.section	.text.move_front,"ax",%progbits
- 705              		.align	1
- 706              		.global	move_front
- 707              		.syntax unified
- 708              		.thumb
- 709              		.thumb_func
- 710              		.fpu fpv4-sp-d16
- 712              	move_front:
- 713              	.LFB18:
- 226:Src/movement.c **** 
-ARM GAS  C:\Temp\ccGa7WPS.s 			page 17
-
-
- 227:Src/movement.c **** 
- 228:Src/movement.c **** ////////////////////////////////////////
- 229:Src/movement.c **** /* 軌跡生成関数						*/
- 230:Src/movement.c **** ////////////////////////////////////////
+ 709              		.align	2
+ 710              	.L63:
+ 711 0008 00000000 		.word	.LANCHOR2
+ 712              		.cfi_endproc
+ 713              	.LFE147:
+ 715              		.section	.text.set_left_wall_flg,"ax",%progbits
+ 716              		.align	1
+ 717              		.global	set_left_wall_flg
+ 718              		.syntax unified
+ 719              		.thumb
+ 720              		.thumb_func
+ 721              		.fpu fpv4-sp-d16
+ 723              	set_left_wall_flg:
+ 724              	.LFB148:
  231:Src/movement.c **** 
- 232:Src/movement.c **** 
- 233:Src/movement.c **** //機能	: 前進
- 234:Src/movement.c **** //引数	: なし
- 235:Src/movement.c **** //返り値	: なし
- 236:Src/movement.c **** void move_front (void)
- 237:Src/movement.c **** {
- 714              		.loc 1 237 1 is_stmt 1 view -0
- 715              		.cfi_startproc
- 716              		@ args = 0, pretend = 0, frame = 0
- 717              		@ frame_needed = 0, uses_anonymous_args = 0
- 718 0000 08B5     		push	{r3, lr}
- 719              	.LCFI15:
- 720              		.cfi_def_cfa_offset 8
- 721              		.cfi_offset 3, -8
- 722              		.cfi_offset 14, -4
- 238:Src/movement.c **** 	if(run_first_flg == start)
- 723              		.loc 1 238 2 view .LVU107
- 724              		.loc 1 238 19 is_stmt 0 view .LVU108
- 725 0002 0C4B     		ldr	r3, .L80
- 726 0004 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
- 727              		.loc 1 238 4 view .LVU109
- 728 0006 4BB1     		cbz	r3, .L78
- 729              	.L75:
- 239:Src/movement.c **** 	{
- 240:Src/movement.c **** 		half_acceleration();//半区画加速
- 241:Src/movement.c **** 	}
- 242:Src/movement.c **** 	if(run_first_flg == already)
- 730              		.loc 1 242 2 is_stmt 1 view .LVU110
- 731              		.loc 1 242 19 is_stmt 0 view .LVU111
- 732 0008 0A4B     		ldr	r3, .L80
- 733 000a 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
- 734              		.loc 1 242 4 view .LVU112
- 735 000c 012B     		cmp	r3, #1
- 736 000e 08D0     		beq	.L79
- 737              	.L76:
- 243:Src/movement.c **** 	{
- 244:Src/movement.c **** 		set_mode_ctrl(side_wall);
- 245:Src/movement.c **** 		constant_speed();//定速で一マス前進
- 246:Src/movement.c **** 		set_mode_ctrl(trace);
- 247:Src/movement.c **** 	}
- 248:Src/movement.c **** 	run_first_flg = already;
- 738              		.loc 1 248 2 is_stmt 1 view .LVU113
- 739              		.loc 1 248 16 is_stmt 0 view .LVU114
- 740 0010 084B     		ldr	r3, .L80
- 741 0012 0122     		movs	r2, #1
- 742 0014 1A70     		strb	r2, [r3]
- 249:Src/movement.c **** 	clr_wall_flg();
- 743              		.loc 1 249 2 is_stmt 1 view .LVU115
- 744 0016 FFF7FEFF 		bl	clr_wall_flg
- 745              	.LVL37:
- 250:Src/movement.c **** }
- 746              		.loc 1 250 1 is_stmt 0 view .LVU116
-ARM GAS  C:\Temp\ccGa7WPS.s 			page 18
+ 232:Src/movement.c **** //機能	: 左壁フラグセット
+ 233:Src/movement.c **** //引数	: なし
+ 234:Src/movement.c **** //返り値	: なし
+ 235:Src/movement.c **** void set_left_wall_flg ( void )
+ 236:Src/movement.c **** {
+ 725              		.loc 1 236 1 is_stmt 1 view -0
+ 726              		.cfi_startproc
+ 727              		@ args = 0, pretend = 0, frame = 0
+ 728              		@ frame_needed = 0, uses_anonymous_args = 0
+ 729              		@ link register save eliminated.
+ 237:Src/movement.c **** 	left_wall_flg = wall;
+ 730              		.loc 1 237 2 view .LVU116
+ 731              		.loc 1 237 16 is_stmt 0 view .LVU117
+ 732 0000 014B     		ldr	r3, .L66
+ 733 0002 0122     		movs	r2, #1
+ 734 0004 1A70     		strb	r2, [r3]
+ 238:Src/movement.c **** }
+ 735              		.loc 1 238 1 view .LVU118
+ 736 0006 7047     		bx	lr
+ 737              	.L67:
+ 738              		.align	2
+ 739              	.L66:
+ 740 0008 00000000 		.word	.LANCHOR3
+ 741              		.cfi_endproc
+ 742              	.LFE148:
+ 744              		.section	.text.move_front,"ax",%progbits
+ 745              		.align	1
+ 746              		.global	move_front
+ 747              		.syntax unified
+ 748              		.thumb
+ 749              		.thumb_func
+ 750              		.fpu fpv4-sp-d16
+ 752              	move_front:
+ 753              	.LFB149:
+ 239:Src/movement.c **** 
+ 240:Src/movement.c **** 
+ 241:Src/movement.c **** ////////////////////////////////////////
+ 242:Src/movement.c **** /* 軌跡生成関数						*/
+ 243:Src/movement.c **** ////////////////////////////////////////
+ 244:Src/movement.c **** 
+ 245:Src/movement.c **** 
+ 246:Src/movement.c **** //機能	: 前進
+ARM GAS  C:\Temp\ccwobR3f.s 			page 18
 
 
- 747 001a 08BD     		pop	{r3, pc}
- 748              	.L78:
- 240:Src/movement.c **** 	}
- 749              		.loc 1 240 3 is_stmt 1 view .LVU117
- 750 001c FFF7FEFF 		bl	half_acceleration
- 751              	.LVL38:
- 752 0020 F2E7     		b	.L75
- 753              	.L79:
- 244:Src/movement.c **** 		constant_speed();//定速で一マス前進
- 754              		.loc 1 244 3 view .LVU118
- 755 0022 0220     		movs	r0, #2
- 756 0024 FFF7FEFF 		bl	set_mode_ctrl
- 757              	.LVL39:
- 245:Src/movement.c **** 		set_mode_ctrl(trace);
- 758              		.loc 1 245 3 view .LVU119
- 759 0028 FFF7FEFF 		bl	constant_speed
- 760              	.LVL40:
- 246:Src/movement.c **** 	}
- 761              		.loc 1 246 3 view .LVU120
- 762 002c 0020     		movs	r0, #0
- 763 002e FFF7FEFF 		bl	set_mode_ctrl
- 764              	.LVL41:
- 765 0032 EDE7     		b	.L76
- 766              	.L81:
- 767              		.align	2
- 768              	.L80:
- 769 0034 00000000 		.word	.LANCHOR0
- 770              		.cfi_endproc
- 771              	.LFE18:
- 773              		.section	.text.move_right,"ax",%progbits
- 774              		.align	1
- 775              		.global	move_right
- 776              		.syntax unified
- 777              		.thumb
- 778              		.thumb_func
- 779              		.fpu fpv4-sp-d16
- 781              	move_right:
- 782              	.LFB19:
- 251:Src/movement.c **** 
- 252:Src/movement.c **** //機能	: 右折
- 253:Src/movement.c **** //引数	: なし
- 254:Src/movement.c **** //返り値	: なし
- 255:Src/movement.c **** void move_right (void)
- 256:Src/movement.c **** {
- 783              		.loc 1 256 1 view -0
- 784              		.cfi_startproc
- 785              		@ args = 0, pretend = 0, frame = 0
- 786              		@ frame_needed = 0, uses_anonymous_args = 0
- 787 0000 08B5     		push	{r3, lr}
- 788              	.LCFI16:
- 789              		.cfi_def_cfa_offset 8
- 790              		.cfi_offset 3, -8
- 791              		.cfi_offset 14, -4
- 257:Src/movement.c **** 	if(run_first_flg == start){
- 792              		.loc 1 257 2 view .LVU122
- 793              		.loc 1 257 19 is_stmt 0 view .LVU123
- 794 0002 134B     		ldr	r3, .L91
-ARM GAS  C:\Temp\ccGa7WPS.s 			page 19
+ 247:Src/movement.c **** //引数	: なし
+ 248:Src/movement.c **** //返り値	: なし
+ 249:Src/movement.c **** void move_front (void)
+ 250:Src/movement.c **** {
+ 754              		.loc 1 250 1 is_stmt 1 view -0
+ 755              		.cfi_startproc
+ 756              		@ args = 0, pretend = 0, frame = 0
+ 757              		@ frame_needed = 0, uses_anonymous_args = 0
+ 758 0000 08B5     		push	{r3, lr}
+ 759              	.LCFI17:
+ 760              		.cfi_def_cfa_offset 8
+ 761              		.cfi_offset 3, -8
+ 762              		.cfi_offset 14, -4
+ 251:Src/movement.c **** 	if(run_first_flg == start)
+ 763              		.loc 1 251 2 view .LVU120
+ 764              		.loc 1 251 19 is_stmt 0 view .LVU121
+ 765 0002 0F4B     		ldr	r3, .L74
+ 766 0004 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 767              		.loc 1 251 4 view .LVU122
+ 768 0006 4BB1     		cbz	r3, .L72
+ 769              	.L69:
+ 252:Src/movement.c **** 	{
+ 253:Src/movement.c **** 		set_mode_ctrl(side_wall);
+ 254:Src/movement.c **** 		half_acceleration();//半区画加速
+ 255:Src/movement.c **** 		set_mode_ctrl(trace);
+ 256:Src/movement.c **** 	}
+ 257:Src/movement.c **** 	if(run_first_flg == already)
+ 770              		.loc 1 257 2 is_stmt 1 view .LVU123
+ 771              		.loc 1 257 19 is_stmt 0 view .LVU124
+ 772 0008 0D4B     		ldr	r3, .L74
+ 773 000a 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 774              		.loc 1 257 4 view .LVU125
+ 775 000c 012B     		cmp	r3, #1
+ 776 000e 0ED0     		beq	.L73
+ 777              	.L70:
+ 258:Src/movement.c **** 	{
+ 259:Src/movement.c **** 		set_mode_ctrl(side_wall);
+ 260:Src/movement.c **** 		constant_speed();//定速で一マス前進
+ 261:Src/movement.c **** 		set_mode_ctrl(trace);
+ 262:Src/movement.c **** 	}
+ 263:Src/movement.c **** 	run_first_flg = already;
+ 778              		.loc 1 263 2 is_stmt 1 view .LVU126
+ 779              		.loc 1 263 16 is_stmt 0 view .LVU127
+ 780 0010 0B4B     		ldr	r3, .L74
+ 781 0012 0122     		movs	r2, #1
+ 782 0014 1A70     		strb	r2, [r3]
+ 264:Src/movement.c **** 	clr_wall_flg();
+ 783              		.loc 1 264 2 is_stmt 1 view .LVU128
+ 784 0016 FFF7FEFF 		bl	clr_wall_flg
+ 785              	.LVL40:
+ 265:Src/movement.c **** }
+ 786              		.loc 1 265 1 is_stmt 0 view .LVU129
+ 787 001a 08BD     		pop	{r3, pc}
+ 788              	.L72:
+ 253:Src/movement.c **** 		half_acceleration();//半区画加速
+ 789              		.loc 1 253 3 is_stmt 1 view .LVU130
+ 790 001c 0220     		movs	r0, #2
+ARM GAS  C:\Temp\ccwobR3f.s 			page 19
 
 
- 795 0004 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
- 796              		.loc 1 257 4 view .LVU124
- 797 0006 3BB9     		cbnz	r3, .L83
- 258:Src/movement.c **** 		if(front_wall_flg == wall){
- 798              		.loc 1 258 3 is_stmt 1 view .LVU125
- 799              		.loc 1 258 21 is_stmt 0 view .LVU126
- 800 0008 124B     		ldr	r3, .L91+4
- 801 000a 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
- 802              		.loc 1 258 5 view .LVU127
- 803 000c 012B     		cmp	r3, #1
- 804 000e 0DD0     		beq	.L88
- 805              	.L84:
- 259:Src/movement.c **** 			fornt_wall_calibrate();
- 260:Src/movement.c **** 		}
- 261:Src/movement.c **** 		turn_clk_90();		//時計回りに90度回転
- 806              		.loc 1 261 3 is_stmt 1 view .LVU128
- 807 0010 FFF7FEFF 		bl	turn_clk_90
- 808              	.LVL42:
- 262:Src/movement.c **** 		half_acceleration();//半区画加速
- 809              		.loc 1 262 3 view .LVU129
- 810 0014 FFF7FEFF 		bl	half_acceleration
- 811              	.LVL43:
- 812              	.L83:
- 263:Src/movement.c **** 	}
- 264:Src/movement.c **** 	if(run_first_flg == already){
- 813              		.loc 1 264 2 view .LVU130
- 814              		.loc 1 264 19 is_stmt 0 view .LVU131
- 815 0018 0D4B     		ldr	r3, .L91
- 816 001a 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
- 817              		.loc 1 264 4 view .LVU132
- 818 001c 012B     		cmp	r3, #1
- 819 001e 08D0     		beq	.L89
- 820              	.L85:
- 265:Src/movement.c **** 		half_deceleration();//半区画減速で中央に停止
- 266:Src/movement.c **** 		if(front_wall_flg == wall){
- 267:Src/movement.c **** 			fornt_wall_calibrate();
- 268:Src/movement.c **** 		}
- 269:Src/movement.c **** 		turn_clk_90();		//時計回りに90度回転
- 270:Src/movement.c **** 		half_acceleration();//半区画加速
- 271:Src/movement.c **** 	}
- 272:Src/movement.c **** 	run_first_flg = already;
- 821              		.loc 1 272 2 is_stmt 1 view .LVU133
- 822              		.loc 1 272 16 is_stmt 0 view .LVU134
- 823 0020 0B4B     		ldr	r3, .L91
- 824 0022 0122     		movs	r2, #1
- 825 0024 1A70     		strb	r2, [r3]
- 273:Src/movement.c **** 	clr_wall_flg();
- 826              		.loc 1 273 2 is_stmt 1 view .LVU135
- 827 0026 FFF7FEFF 		bl	clr_wall_flg
- 828              	.LVL44:
- 274:Src/movement.c **** }
- 829              		.loc 1 274 1 is_stmt 0 view .LVU136
- 830 002a 08BD     		pop	{r3, pc}
- 831              	.L88:
- 259:Src/movement.c **** 		}
- 832              		.loc 1 259 4 is_stmt 1 view .LVU137
- 833 002c FFF7FEFF 		bl	fornt_wall_calibrate
-ARM GAS  C:\Temp\ccGa7WPS.s 			page 20
+ 791 001e FFF7FEFF 		bl	set_mode_ctrl
+ 792              	.LVL41:
+ 254:Src/movement.c **** 		set_mode_ctrl(trace);
+ 793              		.loc 1 254 3 view .LVU131
+ 794 0022 FFF7FEFF 		bl	half_acceleration
+ 795              	.LVL42:
+ 255:Src/movement.c **** 	}
+ 796              		.loc 1 255 3 view .LVU132
+ 797 0026 0020     		movs	r0, #0
+ 798 0028 FFF7FEFF 		bl	set_mode_ctrl
+ 799              	.LVL43:
+ 800 002c ECE7     		b	.L69
+ 801              	.L73:
+ 259:Src/movement.c **** 		constant_speed();//定速で一マス前進
+ 802              		.loc 1 259 3 view .LVU133
+ 803 002e 0220     		movs	r0, #2
+ 804 0030 FFF7FEFF 		bl	set_mode_ctrl
+ 805              	.LVL44:
+ 260:Src/movement.c **** 		set_mode_ctrl(trace);
+ 806              		.loc 1 260 3 view .LVU134
+ 807 0034 FFF7FEFF 		bl	constant_speed
+ 808              	.LVL45:
+ 261:Src/movement.c **** 	}
+ 809              		.loc 1 261 3 view .LVU135
+ 810 0038 0020     		movs	r0, #0
+ 811 003a FFF7FEFF 		bl	set_mode_ctrl
+ 812              	.LVL46:
+ 813 003e E7E7     		b	.L70
+ 814              	.L75:
+ 815              		.align	2
+ 816              	.L74:
+ 817 0040 00000000 		.word	.LANCHOR0
+ 818              		.cfi_endproc
+ 819              	.LFE149:
+ 821              		.section	.text.move_right,"ax",%progbits
+ 822              		.align	1
+ 823              		.global	move_right
+ 824              		.syntax unified
+ 825              		.thumb
+ 826              		.thumb_func
+ 827              		.fpu fpv4-sp-d16
+ 829              	move_right:
+ 830              	.LFB150:
+ 266:Src/movement.c **** 
+ 267:Src/movement.c **** //機能	: 右折
+ 268:Src/movement.c **** //引数	: なし
+ 269:Src/movement.c **** //返り値	: なし
+ 270:Src/movement.c **** void move_right (void)
+ 271:Src/movement.c **** {
+ 831              		.loc 1 271 1 view -0
+ 832              		.cfi_startproc
+ 833              		@ args = 0, pretend = 0, frame = 0
+ 834              		@ frame_needed = 0, uses_anonymous_args = 0
+ 835 0000 08B5     		push	{r3, lr}
+ 836              	.LCFI18:
+ 837              		.cfi_def_cfa_offset 8
+ 838              		.cfi_offset 3, -8
+ARM GAS  C:\Temp\ccwobR3f.s 			page 20
 
 
- 834              	.LVL45:
- 835 0030 EEE7     		b	.L84
- 836              	.L89:
- 265:Src/movement.c **** 		if(front_wall_flg == wall){
- 837              		.loc 1 265 3 view .LVU138
- 838 0032 FFF7FEFF 		bl	half_deceleration
- 839              	.LVL46:
- 266:Src/movement.c **** 			fornt_wall_calibrate();
- 840              		.loc 1 266 3 view .LVU139
- 266:Src/movement.c **** 			fornt_wall_calibrate();
- 841              		.loc 1 266 21 is_stmt 0 view .LVU140
- 842 0036 074B     		ldr	r3, .L91+4
- 843 0038 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
- 266:Src/movement.c **** 			fornt_wall_calibrate();
- 844              		.loc 1 266 5 view .LVU141
- 845 003a 012B     		cmp	r3, #1
- 846 003c 04D0     		beq	.L90
- 847              	.L86:
- 269:Src/movement.c **** 		half_acceleration();//半区画加速
- 848              		.loc 1 269 3 is_stmt 1 view .LVU142
- 849 003e FFF7FEFF 		bl	turn_clk_90
- 850              	.LVL47:
- 270:Src/movement.c **** 	}
- 851              		.loc 1 270 3 view .LVU143
- 852 0042 FFF7FEFF 		bl	half_acceleration
- 853              	.LVL48:
- 854 0046 EBE7     		b	.L85
- 855              	.L90:
- 267:Src/movement.c **** 		}
- 856              		.loc 1 267 4 view .LVU144
- 857 0048 FFF7FEFF 		bl	fornt_wall_calibrate
- 858              	.LVL49:
- 859 004c F7E7     		b	.L86
- 860              	.L92:
- 861 004e 00BF     		.align	2
- 862              	.L91:
- 863 0050 00000000 		.word	.LANCHOR0
- 864 0054 00000000 		.word	.LANCHOR1
- 865              		.cfi_endproc
- 866              	.LFE19:
- 868              		.section	.text.move_left,"ax",%progbits
- 869              		.align	1
- 870              		.global	move_left
- 871              		.syntax unified
- 872              		.thumb
- 873              		.thumb_func
- 874              		.fpu fpv4-sp-d16
- 876              	move_left:
- 877              	.LFB20:
- 275:Src/movement.c **** 
- 276:Src/movement.c **** //機能	: 左折
- 277:Src/movement.c **** //引数	: なし
- 278:Src/movement.c **** //返り値	: なし
- 279:Src/movement.c **** void move_left (void)
- 280:Src/movement.c **** {
- 878              		.loc 1 280 1 view -0
- 879              		.cfi_startproc
-ARM GAS  C:\Temp\ccGa7WPS.s 			page 21
+ 839              		.cfi_offset 14, -4
+ 272:Src/movement.c **** 	if(run_first_flg == start){
+ 840              		.loc 1 272 2 view .LVU137
+ 841              		.loc 1 272 19 is_stmt 0 view .LVU138
+ 842 0002 194B     		ldr	r3, .L85
+ 843 0004 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 844              		.loc 1 272 4 view .LVU139
+ 845 0006 6BB9     		cbnz	r3, .L77
+ 273:Src/movement.c **** 		if(front_wall_flg == wall){
+ 846              		.loc 1 273 3 is_stmt 1 view .LVU140
+ 847              		.loc 1 273 21 is_stmt 0 view .LVU141
+ 848 0008 184B     		ldr	r3, .L85+4
+ 849 000a 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 850              		.loc 1 273 5 view .LVU142
+ 851 000c 012B     		cmp	r3, #1
+ 852 000e 13D0     		beq	.L82
+ 853              	.L78:
+ 274:Src/movement.c **** 			fornt_wall_calibrate();
+ 275:Src/movement.c **** 		}
+ 276:Src/movement.c **** 		turn_clk_90();		//時計回りに90度回転
+ 854              		.loc 1 276 3 is_stmt 1 view .LVU143
+ 855 0010 FFF7FEFF 		bl	turn_clk_90
+ 856              	.LVL47:
+ 277:Src/movement.c **** 		set_mode_ctrl(side_wall);
+ 857              		.loc 1 277 3 view .LVU144
+ 858 0014 0220     		movs	r0, #2
+ 859 0016 FFF7FEFF 		bl	set_mode_ctrl
+ 860              	.LVL48:
+ 278:Src/movement.c **** 		half_acceleration();//半区画加速
+ 861              		.loc 1 278 3 view .LVU145
+ 862 001a FFF7FEFF 		bl	half_acceleration
+ 863              	.LVL49:
+ 279:Src/movement.c **** 		set_mode_ctrl(trace);
+ 864              		.loc 1 279 3 view .LVU146
+ 865 001e 0020     		movs	r0, #0
+ 866 0020 FFF7FEFF 		bl	set_mode_ctrl
+ 867              	.LVL50:
+ 868              	.L77:
+ 280:Src/movement.c **** 	}
+ 281:Src/movement.c **** 	if(run_first_flg == already){
+ 869              		.loc 1 281 2 view .LVU147
+ 870              		.loc 1 281 19 is_stmt 0 view .LVU148
+ 871 0024 104B     		ldr	r3, .L85
+ 872 0026 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 873              		.loc 1 281 4 view .LVU149
+ 874 0028 012B     		cmp	r3, #1
+ 875 002a 08D0     		beq	.L83
+ 876              	.L79:
+ 282:Src/movement.c **** 		half_deceleration();//半区画減速で中央に停止
+ 283:Src/movement.c **** 		if(front_wall_flg == wall){
+ 284:Src/movement.c **** 			fornt_wall_calibrate();
+ 285:Src/movement.c **** 		}
+ 286:Src/movement.c **** 		turn_clk_90();		//時計回りに90度回転
+ 287:Src/movement.c **** 		set_mode_ctrl(side_wall);
+ 288:Src/movement.c **** 		half_acceleration();//半区画加速
+ 289:Src/movement.c **** 		set_mode_ctrl(trace);
+ 290:Src/movement.c **** 	}
+ARM GAS  C:\Temp\ccwobR3f.s 			page 21
 
 
- 880              		@ args = 0, pretend = 0, frame = 0
- 881              		@ frame_needed = 0, uses_anonymous_args = 0
- 882 0000 08B5     		push	{r3, lr}
- 883              	.LCFI17:
- 884              		.cfi_def_cfa_offset 8
- 885              		.cfi_offset 3, -8
- 886              		.cfi_offset 14, -4
- 281:Src/movement.c **** 	if(run_first_flg == start){
- 887              		.loc 1 281 2 view .LVU146
- 888              		.loc 1 281 19 is_stmt 0 view .LVU147
- 889 0002 134B     		ldr	r3, .L102
- 890 0004 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
- 891              		.loc 1 281 4 view .LVU148
- 892 0006 3BB9     		cbnz	r3, .L94
+ 291:Src/movement.c **** 	run_first_flg = already;
+ 877              		.loc 1 291 2 is_stmt 1 view .LVU150
+ 878              		.loc 1 291 16 is_stmt 0 view .LVU151
+ 879 002c 0E4B     		ldr	r3, .L85
+ 880 002e 0122     		movs	r2, #1
+ 881 0030 1A70     		strb	r2, [r3]
+ 292:Src/movement.c **** 	clr_wall_flg();
+ 882              		.loc 1 292 2 is_stmt 1 view .LVU152
+ 883 0032 FFF7FEFF 		bl	clr_wall_flg
+ 884              	.LVL51:
+ 293:Src/movement.c **** }
+ 885              		.loc 1 293 1 is_stmt 0 view .LVU153
+ 886 0036 08BD     		pop	{r3, pc}
+ 887              	.L82:
+ 274:Src/movement.c **** 		}
+ 888              		.loc 1 274 4 is_stmt 1 view .LVU154
+ 889 0038 FFF7FEFF 		bl	fornt_wall_calibrate
+ 890              	.LVL52:
+ 891 003c E8E7     		b	.L78
+ 892              	.L83:
  282:Src/movement.c **** 		if(front_wall_flg == wall){
- 893              		.loc 1 282 3 is_stmt 1 view .LVU149
- 894              		.loc 1 282 21 is_stmt 0 view .LVU150
- 895 0008 124B     		ldr	r3, .L102+4
- 896 000a 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
- 897              		.loc 1 282 5 view .LVU151
- 898 000c 012B     		cmp	r3, #1
- 899 000e 0DD0     		beq	.L99
- 900              	.L95:
+ 893              		.loc 1 282 3 view .LVU155
+ 894 003e FFF7FEFF 		bl	half_deceleration
+ 895              	.LVL53:
  283:Src/movement.c **** 			fornt_wall_calibrate();
+ 896              		.loc 1 283 3 view .LVU156
+ 283:Src/movement.c **** 			fornt_wall_calibrate();
+ 897              		.loc 1 283 21 is_stmt 0 view .LVU157
+ 898 0042 0A4B     		ldr	r3, .L85+4
+ 899 0044 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 283:Src/movement.c **** 			fornt_wall_calibrate();
+ 900              		.loc 1 283 5 view .LVU158
+ 901 0046 012B     		cmp	r3, #1
+ 902 0048 0AD0     		beq	.L84
+ 903              	.L80:
+ 286:Src/movement.c **** 		set_mode_ctrl(side_wall);
+ 904              		.loc 1 286 3 is_stmt 1 view .LVU159
+ 905 004a FFF7FEFF 		bl	turn_clk_90
+ 906              	.LVL54:
+ 287:Src/movement.c **** 		half_acceleration();//半区画加速
+ 907              		.loc 1 287 3 view .LVU160
+ 908 004e 0220     		movs	r0, #2
+ 909 0050 FFF7FEFF 		bl	set_mode_ctrl
+ 910              	.LVL55:
+ 288:Src/movement.c **** 		set_mode_ctrl(trace);
+ 911              		.loc 1 288 3 view .LVU161
+ 912 0054 FFF7FEFF 		bl	half_acceleration
+ 913              	.LVL56:
+ 289:Src/movement.c **** 	}
+ 914              		.loc 1 289 3 view .LVU162
+ 915 0058 0020     		movs	r0, #0
+ 916 005a FFF7FEFF 		bl	set_mode_ctrl
+ 917              	.LVL57:
+ 918 005e E5E7     		b	.L79
+ 919              	.L84:
  284:Src/movement.c **** 		}
- 285:Src/movement.c **** 		turn_conclk_90();	//m反時計回りに90度回転
- 901              		.loc 1 285 3 is_stmt 1 view .LVU152
- 902 0010 FFF7FEFF 		bl	turn_conclk_90
- 903              	.LVL50:
- 286:Src/movement.c **** 		half_acceleration();//m半区画加速
- 904              		.loc 1 286 3 view .LVU153
- 905 0014 FFF7FEFF 		bl	half_acceleration
- 906              	.LVL51:
- 907              	.L94:
- 287:Src/movement.c **** 	}
- 288:Src/movement.c **** 	if(run_first_flg == already){
- 908              		.loc 1 288 2 view .LVU154
- 909              		.loc 1 288 19 is_stmt 0 view .LVU155
- 910 0018 0D4B     		ldr	r3, .L102
- 911 001a 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
- 912              		.loc 1 288 4 view .LVU156
- 913 001c 012B     		cmp	r3, #1
- 914 001e 08D0     		beq	.L100
- 915              	.L96:
- 289:Src/movement.c **** 		half_deceleration();//m半区画減速で中央に停止
- 290:Src/movement.c **** 		if(front_wall_flg == wall){
- 291:Src/movement.c **** 			fornt_wall_calibrate();
- 292:Src/movement.c **** 		}
- 293:Src/movement.c **** 		turn_conclk_90();	//m反時計回りに90度回転
- 294:Src/movement.c **** 		half_acceleration();//m半区画加速
- 295:Src/movement.c **** 	}
- 296:Src/movement.c **** 	run_first_flg = already;
- 916              		.loc 1 296 2 is_stmt 1 view .LVU157
- 917              		.loc 1 296 16 is_stmt 0 view .LVU158
- 918 0020 0B4B     		ldr	r3, .L102
- 919 0022 0122     		movs	r2, #1
- 920 0024 1A70     		strb	r2, [r3]
-ARM GAS  C:\Temp\ccGa7WPS.s 			page 22
+ 920              		.loc 1 284 4 view .LVU163
+ARM GAS  C:\Temp\ccwobR3f.s 			page 22
 
 
- 297:Src/movement.c **** 	clr_wall_flg();
- 921              		.loc 1 297 2 is_stmt 1 view .LVU159
- 922 0026 FFF7FEFF 		bl	clr_wall_flg
- 923              	.LVL52:
- 298:Src/movement.c **** }
- 924              		.loc 1 298 1 is_stmt 0 view .LVU160
- 925 002a 08BD     		pop	{r3, pc}
- 926              	.L99:
- 283:Src/movement.c **** 		}
- 927              		.loc 1 283 4 is_stmt 1 view .LVU161
- 928 002c FFF7FEFF 		bl	fornt_wall_calibrate
- 929              	.LVL53:
- 930 0030 EEE7     		b	.L95
- 931              	.L100:
- 289:Src/movement.c **** 		if(front_wall_flg == wall){
- 932              		.loc 1 289 3 view .LVU162
- 933 0032 FFF7FEFF 		bl	half_deceleration
- 934              	.LVL54:
- 290:Src/movement.c **** 			fornt_wall_calibrate();
- 935              		.loc 1 290 3 view .LVU163
- 290:Src/movement.c **** 			fornt_wall_calibrate();
- 936              		.loc 1 290 21 is_stmt 0 view .LVU164
- 937 0036 074B     		ldr	r3, .L102+4
- 938 0038 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
- 290:Src/movement.c **** 			fornt_wall_calibrate();
- 939              		.loc 1 290 5 view .LVU165
- 940 003a 012B     		cmp	r3, #1
- 941 003c 04D0     		beq	.L101
- 942              	.L97:
- 293:Src/movement.c **** 		half_acceleration();//m半区画加速
- 943              		.loc 1 293 3 is_stmt 1 view .LVU166
- 944 003e FFF7FEFF 		bl	turn_conclk_90
- 945              	.LVL55:
- 294:Src/movement.c **** 	}
- 946              		.loc 1 294 3 view .LVU167
- 947 0042 FFF7FEFF 		bl	half_acceleration
- 948              	.LVL56:
- 949 0046 EBE7     		b	.L96
- 950              	.L101:
- 291:Src/movement.c **** 		}
- 951              		.loc 1 291 4 view .LVU168
- 952 0048 FFF7FEFF 		bl	fornt_wall_calibrate
- 953              	.LVL57:
- 954 004c F7E7     		b	.L97
- 955              	.L103:
- 956 004e 00BF     		.align	2
- 957              	.L102:
- 958 0050 00000000 		.word	.LANCHOR0
- 959 0054 00000000 		.word	.LANCHOR1
- 960              		.cfi_endproc
- 961              	.LFE20:
- 963              		.section	.text.move_back,"ax",%progbits
- 964              		.align	1
- 965              		.global	move_back
- 966              		.syntax unified
- 967              		.thumb
- 968              		.thumb_func
-ARM GAS  C:\Temp\ccGa7WPS.s 			page 23
+ 921 0060 FFF7FEFF 		bl	fornt_wall_calibrate
+ 922              	.LVL58:
+ 923 0064 F1E7     		b	.L80
+ 924              	.L86:
+ 925 0066 00BF     		.align	2
+ 926              	.L85:
+ 927 0068 00000000 		.word	.LANCHOR0
+ 928 006c 00000000 		.word	.LANCHOR1
+ 929              		.cfi_endproc
+ 930              	.LFE150:
+ 932              		.section	.text.move_left,"ax",%progbits
+ 933              		.align	1
+ 934              		.global	move_left
+ 935              		.syntax unified
+ 936              		.thumb
+ 937              		.thumb_func
+ 938              		.fpu fpv4-sp-d16
+ 940              	move_left:
+ 941              	.LFB151:
+ 294:Src/movement.c **** 
+ 295:Src/movement.c **** //機能	: 左折
+ 296:Src/movement.c **** //引数	: なし
+ 297:Src/movement.c **** //返り値	: なし
+ 298:Src/movement.c **** void move_left (void)
+ 299:Src/movement.c **** {
+ 942              		.loc 1 299 1 view -0
+ 943              		.cfi_startproc
+ 944              		@ args = 0, pretend = 0, frame = 0
+ 945              		@ frame_needed = 0, uses_anonymous_args = 0
+ 946 0000 08B5     		push	{r3, lr}
+ 947              	.LCFI19:
+ 948              		.cfi_def_cfa_offset 8
+ 949              		.cfi_offset 3, -8
+ 950              		.cfi_offset 14, -4
+ 300:Src/movement.c **** 	if(run_first_flg == start){
+ 951              		.loc 1 300 2 view .LVU165
+ 952              		.loc 1 300 19 is_stmt 0 view .LVU166
+ 953 0002 194B     		ldr	r3, .L96
+ 954 0004 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 955              		.loc 1 300 4 view .LVU167
+ 956 0006 6BB9     		cbnz	r3, .L88
+ 301:Src/movement.c **** 		if(front_wall_flg == wall){
+ 957              		.loc 1 301 3 is_stmt 1 view .LVU168
+ 958              		.loc 1 301 21 is_stmt 0 view .LVU169
+ 959 0008 184B     		ldr	r3, .L96+4
+ 960 000a 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 961              		.loc 1 301 5 view .LVU170
+ 962 000c 012B     		cmp	r3, #1
+ 963 000e 13D0     		beq	.L93
+ 964              	.L89:
+ 302:Src/movement.c **** 			fornt_wall_calibrate();
+ 303:Src/movement.c **** 		}
+ 304:Src/movement.c **** 		turn_conclk_90();	//m反時計回りに90度回転
+ 965              		.loc 1 304 3 is_stmt 1 view .LVU171
+ 966 0010 FFF7FEFF 		bl	turn_conclk_90
+ 967              	.LVL59:
+ 305:Src/movement.c **** 		set_mode_ctrl(side_wall);
+ARM GAS  C:\Temp\ccwobR3f.s 			page 23
 
 
- 969              		.fpu fpv4-sp-d16
- 971              	move_back:
- 972              	.LFB21:
- 299:Src/movement.c **** 
- 300:Src/movement.c **** //機能	: 後進
- 301:Src/movement.c **** //引数	: なし
- 302:Src/movement.c **** //返り値	: なし
- 303:Src/movement.c **** void move_back (void)
- 304:Src/movement.c **** {
- 973              		.loc 1 304 1 view -0
- 974              		.cfi_startproc
- 975              		@ args = 0, pretend = 0, frame = 0
- 976              		@ frame_needed = 0, uses_anonymous_args = 0
- 977 0000 08B5     		push	{r3, lr}
- 978              	.LCFI18:
- 979              		.cfi_def_cfa_offset 8
- 980              		.cfi_offset 3, -8
- 981              		.cfi_offset 14, -4
- 305:Src/movement.c **** 	if(run_first_flg == start){
- 982              		.loc 1 305 2 view .LVU170
- 983              		.loc 1 305 19 is_stmt 0 view .LVU171
- 984 0002 2B4B     		ldr	r3, .L123
- 985 0004 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
- 986              		.loc 1 305 4 view .LVU172
- 987 0006 3BB9     		cbnz	r3, .L105
- 306:Src/movement.c **** 
- 307:Src/movement.c **** 		if(front_wall_flg == wall){
- 988              		.loc 1 307 3 is_stmt 1 view .LVU173
- 989              		.loc 1 307 21 is_stmt 0 view .LVU174
- 990 0008 2A4B     		ldr	r3, .L123+4
- 991 000a 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
- 992              		.loc 1 307 5 view .LVU175
- 993 000c 012B     		cmp	r3, #1
- 994 000e 0DD0     		beq	.L116
- 308:Src/movement.c **** 			fornt_wall_calibrate();
- 309:Src/movement.c **** 			if(right_wall_flg == wall){
- 310:Src/movement.c **** 				turn_clk_90();
- 311:Src/movement.c **** 				fornt_wall_calibrate();
- 312:Src/movement.c **** 				turn_clk_90();
- 313:Src/movement.c **** 			}
- 314:Src/movement.c **** 			else if(left_wall_flg == wall){
- 315:Src/movement.c **** 					turn_conclk_90();
- 316:Src/movement.c **** 					fornt_wall_calibrate();
- 317:Src/movement.c **** 					turn_conclk_90();
- 318:Src/movement.c **** 			}
- 319:Src/movement.c **** 			else {
- 320:Src/movement.c **** 				turn_conclk_180();	//反時計回りに180度回転
- 321:Src/movement.c **** 			}
- 322:Src/movement.c **** 		}
- 323:Src/movement.c **** 		else{
- 324:Src/movement.c **** 			turn_conclk_180();	//反時計回りに180度回転
- 995              		.loc 1 324 4 is_stmt 1 view .LVU176
- 996 0010 FFF7FEFF 		bl	turn_conclk_180
- 997              	.LVL58:
- 998              	.L108:
- 325:Src/movement.c **** 		}
- 326:Src/movement.c **** 		half_acceleration();//半区画加速
-ARM GAS  C:\Temp\ccGa7WPS.s 			page 24
+ 968              		.loc 1 305 3 view .LVU172
+ 969 0014 0220     		movs	r0, #2
+ 970 0016 FFF7FEFF 		bl	set_mode_ctrl
+ 971              	.LVL60:
+ 306:Src/movement.c **** 		half_acceleration();//m半区画加速
+ 972              		.loc 1 306 3 view .LVU173
+ 973 001a FFF7FEFF 		bl	half_acceleration
+ 974              	.LVL61:
+ 307:Src/movement.c **** 		set_mode_ctrl(trace);
+ 975              		.loc 1 307 3 view .LVU174
+ 976 001e 0020     		movs	r0, #0
+ 977 0020 FFF7FEFF 		bl	set_mode_ctrl
+ 978              	.LVL62:
+ 979              	.L88:
+ 308:Src/movement.c **** 	}
+ 309:Src/movement.c **** 	if(run_first_flg == already){
+ 980              		.loc 1 309 2 view .LVU175
+ 981              		.loc 1 309 19 is_stmt 0 view .LVU176
+ 982 0024 104B     		ldr	r3, .L96
+ 983 0026 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 984              		.loc 1 309 4 view .LVU177
+ 985 0028 012B     		cmp	r3, #1
+ 986 002a 08D0     		beq	.L94
+ 987              	.L90:
+ 310:Src/movement.c **** 		half_deceleration();//m半区画減速で中央に停止
+ 311:Src/movement.c **** 		if(front_wall_flg == wall){
+ 312:Src/movement.c **** 			fornt_wall_calibrate();
+ 313:Src/movement.c **** 		}
+ 314:Src/movement.c **** 		turn_conclk_90();	//m反時計回りに90度回転
+ 315:Src/movement.c **** 		set_mode_ctrl(side_wall);
+ 316:Src/movement.c **** 		half_acceleration();//m半区画加速
+ 317:Src/movement.c **** 		set_mode_ctrl(trace);
+ 318:Src/movement.c **** 	}
+ 319:Src/movement.c **** 	run_first_flg = already;
+ 988              		.loc 1 319 2 is_stmt 1 view .LVU178
+ 989              		.loc 1 319 16 is_stmt 0 view .LVU179
+ 990 002c 0E4B     		ldr	r3, .L96
+ 991 002e 0122     		movs	r2, #1
+ 992 0030 1A70     		strb	r2, [r3]
+ 320:Src/movement.c **** 	clr_wall_flg();
+ 993              		.loc 1 320 2 is_stmt 1 view .LVU180
+ 994 0032 FFF7FEFF 		bl	clr_wall_flg
+ 995              	.LVL63:
+ 321:Src/movement.c **** }
+ 996              		.loc 1 321 1 is_stmt 0 view .LVU181
+ 997 0036 08BD     		pop	{r3, pc}
+ 998              	.L93:
+ 302:Src/movement.c **** 		}
+ 999              		.loc 1 302 4 is_stmt 1 view .LVU182
+ 1000 0038 FFF7FEFF 		bl	fornt_wall_calibrate
+ 1001              	.LVL64:
+ 1002 003c E8E7     		b	.L89
+ 1003              	.L94:
+ 310:Src/movement.c **** 		if(front_wall_flg == wall){
+ 1004              		.loc 1 310 3 view .LVU183
+ 1005 003e FFF7FEFF 		bl	half_deceleration
+ 1006              	.LVL65:
+ARM GAS  C:\Temp\ccwobR3f.s 			page 24
 
 
- 999              		.loc 1 326 3 view .LVU177
- 1000 0014 FFF7FEFF 		bl	half_acceleration
- 1001              	.LVL59:
- 1002              	.L105:
- 327:Src/movement.c **** 	}
- 328:Src/movement.c **** 	if(run_first_flg == already){
- 1003              		.loc 1 328 2 view .LVU178
- 1004              		.loc 1 328 19 is_stmt 0 view .LVU179
- 1005 0018 254B     		ldr	r3, .L123
- 1006 001a 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
- 1007              		.loc 1 328 4 view .LVU180
- 1008 001c 012B     		cmp	r3, #1
- 1009 001e 20D0     		beq	.L117
- 1010              	.L110:
- 329:Src/movement.c **** 		half_deceleration();//m半区画減速で中央に停止
+ 311:Src/movement.c **** 			fornt_wall_calibrate();
+ 1007              		.loc 1 311 3 view .LVU184
+ 311:Src/movement.c **** 			fornt_wall_calibrate();
+ 1008              		.loc 1 311 21 is_stmt 0 view .LVU185
+ 1009 0042 0A4B     		ldr	r3, .L96+4
+ 1010 0044 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 311:Src/movement.c **** 			fornt_wall_calibrate();
+ 1011              		.loc 1 311 5 view .LVU186
+ 1012 0046 012B     		cmp	r3, #1
+ 1013 0048 0AD0     		beq	.L95
+ 1014              	.L91:
+ 314:Src/movement.c **** 		set_mode_ctrl(side_wall);
+ 1015              		.loc 1 314 3 is_stmt 1 view .LVU187
+ 1016 004a FFF7FEFF 		bl	turn_conclk_90
+ 1017              	.LVL66:
+ 315:Src/movement.c **** 		half_acceleration();//m半区画加速
+ 1018              		.loc 1 315 3 view .LVU188
+ 1019 004e 0220     		movs	r0, #2
+ 1020 0050 FFF7FEFF 		bl	set_mode_ctrl
+ 1021              	.LVL67:
+ 316:Src/movement.c **** 		set_mode_ctrl(trace);
+ 1022              		.loc 1 316 3 view .LVU189
+ 1023 0054 FFF7FEFF 		bl	half_acceleration
+ 1024              	.LVL68:
+ 317:Src/movement.c **** 	}
+ 1025              		.loc 1 317 3 view .LVU190
+ 1026 0058 0020     		movs	r0, #0
+ 1027 005a FFF7FEFF 		bl	set_mode_ctrl
+ 1028              	.LVL69:
+ 1029 005e E5E7     		b	.L90
+ 1030              	.L95:
+ 312:Src/movement.c **** 		}
+ 1031              		.loc 1 312 4 view .LVU191
+ 1032 0060 FFF7FEFF 		bl	fornt_wall_calibrate
+ 1033              	.LVL70:
+ 1034 0064 F1E7     		b	.L91
+ 1035              	.L97:
+ 1036 0066 00BF     		.align	2
+ 1037              	.L96:
+ 1038 0068 00000000 		.word	.LANCHOR0
+ 1039 006c 00000000 		.word	.LANCHOR1
+ 1040              		.cfi_endproc
+ 1041              	.LFE151:
+ 1043              		.section	.text.move_back,"ax",%progbits
+ 1044              		.align	1
+ 1045              		.global	move_back
+ 1046              		.syntax unified
+ 1047              		.thumb
+ 1048              		.thumb_func
+ 1049              		.fpu fpv4-sp-d16
+ 1051              	move_back:
+ 1052              	.LFB152:
+ 322:Src/movement.c **** 
+ 323:Src/movement.c **** //機能	: 後進
+ 324:Src/movement.c **** //引数	: なし
+ 325:Src/movement.c **** //返り値	: なし
+ 326:Src/movement.c **** void move_back (void)
+ARM GAS  C:\Temp\ccwobR3f.s 			page 25
+
+
+ 327:Src/movement.c **** {
+ 1053              		.loc 1 327 1 view -0
+ 1054              		.cfi_startproc
+ 1055              		@ args = 0, pretend = 0, frame = 0
+ 1056              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1057 0000 08B5     		push	{r3, lr}
+ 1058              	.LCFI20:
+ 1059              		.cfi_def_cfa_offset 8
+ 1060              		.cfi_offset 3, -8
+ 1061              		.cfi_offset 14, -4
+ 328:Src/movement.c **** 	if(run_first_flg == start){
+ 1062              		.loc 1 328 2 view .LVU193
+ 1063              		.loc 1 328 19 is_stmt 0 view .LVU194
+ 1064 0002 344B     		ldr	r3, .L117
+ 1065 0004 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1066              		.loc 1 328 4 view .LVU195
+ 1067 0006 6BB9     		cbnz	r3, .L99
+ 329:Src/movement.c **** 
  330:Src/movement.c **** 		if(front_wall_flg == wall){
+ 1068              		.loc 1 330 3 is_stmt 1 view .LVU196
+ 1069              		.loc 1 330 21 is_stmt 0 view .LVU197
+ 1070 0008 334B     		ldr	r3, .L117+4
+ 1071 000a 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1072              		.loc 1 330 5 view .LVU198
+ 1073 000c 012B     		cmp	r3, #1
+ 1074 000e 13D0     		beq	.L110
  331:Src/movement.c **** 			fornt_wall_calibrate();
  332:Src/movement.c **** 			if(right_wall_flg == wall){
  333:Src/movement.c **** 				turn_clk_90();
@@ -1404,305 +1474,388 @@ ARM GAS  C:\Temp\ccGa7WPS.s 			page 1
  335:Src/movement.c **** 				turn_clk_90();
  336:Src/movement.c **** 			}
  337:Src/movement.c **** 			else if(left_wall_flg == wall){
- 338:Src/movement.c **** 				turn_conclk_90();
- 339:Src/movement.c **** 				fornt_wall_calibrate();
- 340:Src/movement.c **** 				turn_conclk_90();
+ 338:Src/movement.c **** 					turn_conclk_90();
+ 339:Src/movement.c **** 					fornt_wall_calibrate();
+ 340:Src/movement.c **** 					turn_conclk_90();
  341:Src/movement.c **** 			}
  342:Src/movement.c **** 			else {
  343:Src/movement.c **** 				turn_conclk_180();	//反時計回りに180度回転
  344:Src/movement.c **** 			}
  345:Src/movement.c **** 		}
  346:Src/movement.c **** 		else{
- 347:Src/movement.c **** 			turn_conclk_180();	//m反時計回りに180度回転
+ 347:Src/movement.c **** 			turn_conclk_180();	//反時計回りに180度回転
+ 1075              		.loc 1 347 4 is_stmt 1 view .LVU199
+ 1076 0010 FFF7FEFF 		bl	turn_conclk_180
+ 1077              	.LVL71:
+ 1078              	.L102:
  348:Src/movement.c **** 		}
- 349:Src/movement.c **** 		half_acceleration();//半区画加速
- 350:Src/movement.c **** 	}
- 351:Src/movement.c **** 	run_first_flg = already;
- 1011              		.loc 1 351 2 is_stmt 1 view .LVU181
- 1012              		.loc 1 351 16 is_stmt 0 view .LVU182
- 1013 0020 234B     		ldr	r3, .L123
- 1014 0022 0122     		movs	r2, #1
- 1015 0024 1A70     		strb	r2, [r3]
- 352:Src/movement.c **** 	clr_wall_flg();
- 1016              		.loc 1 352 2 is_stmt 1 view .LVU183
- 1017 0026 FFF7FEFF 		bl	clr_wall_flg
- 1018              	.LVL60:
- 353:Src/movement.c **** }
- 1019              		.loc 1 353 1 is_stmt 0 view .LVU184
- 1020 002a 08BD     		pop	{r3, pc}
- 1021              	.L116:
- 308:Src/movement.c **** 			if(right_wall_flg == wall){
- 1022              		.loc 1 308 4 is_stmt 1 view .LVU185
- 1023 002c FFF7FEFF 		bl	fornt_wall_calibrate
- 1024              	.LVL61:
- 309:Src/movement.c **** 				turn_clk_90();
- 1025              		.loc 1 309 4 view .LVU186
- 309:Src/movement.c **** 				turn_clk_90();
-ARM GAS  C:\Temp\ccGa7WPS.s 			page 25
+ 349:Src/movement.c **** 		set_mode_ctrl(side_wall);
+ 1079              		.loc 1 349 3 view .LVU200
+ 1080 0014 0220     		movs	r0, #2
+ 1081 0016 FFF7FEFF 		bl	set_mode_ctrl
+ 1082              	.LVL72:
+ 350:Src/movement.c **** 		half_acceleration();//半区画加速
+ 1083              		.loc 1 350 3 view .LVU201
+ 1084 001a FFF7FEFF 		bl	half_acceleration
+ 1085              	.LVL73:
+ARM GAS  C:\Temp\ccwobR3f.s 			page 26
 
 
- 1026              		.loc 1 309 22 is_stmt 0 view .LVU187
- 1027 0030 214B     		ldr	r3, .L123+8
- 1028 0032 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
- 309:Src/movement.c **** 				turn_clk_90();
- 1029              		.loc 1 309 6 view .LVU188
- 1030 0034 012B     		cmp	r3, #1
- 1031 0036 06D0     		beq	.L118
- 314:Src/movement.c **** 					turn_conclk_90();
- 1032              		.loc 1 314 9 is_stmt 1 view .LVU189
- 314:Src/movement.c **** 					turn_conclk_90();
- 1033              		.loc 1 314 26 is_stmt 0 view .LVU190
- 1034 0038 204B     		ldr	r3, .L123+12
- 1035 003a 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
- 314:Src/movement.c **** 					turn_conclk_90();
- 1036              		.loc 1 314 11 view .LVU191
- 1037 003c 012B     		cmp	r3, #1
- 1038 003e 09D0     		beq	.L119
- 320:Src/movement.c **** 			}
- 1039              		.loc 1 320 5 is_stmt 1 view .LVU192
- 1040 0040 FFF7FEFF 		bl	turn_conclk_180
- 1041              	.LVL62:
- 1042 0044 E6E7     		b	.L108
- 1043              	.L118:
- 310:Src/movement.c **** 				fornt_wall_calibrate();
- 1044              		.loc 1 310 5 view .LVU193
- 1045 0046 FFF7FEFF 		bl	turn_clk_90
- 1046              	.LVL63:
- 311:Src/movement.c **** 				turn_clk_90();
- 1047              		.loc 1 311 5 view .LVU194
- 1048 004a FFF7FEFF 		bl	fornt_wall_calibrate
- 1049              	.LVL64:
- 312:Src/movement.c **** 			}
- 1050              		.loc 1 312 5 view .LVU195
- 1051 004e FFF7FEFF 		bl	turn_clk_90
- 1052              	.LVL65:
- 1053 0052 DFE7     		b	.L108
- 1054              	.L119:
- 315:Src/movement.c **** 					fornt_wall_calibrate();
- 1055              		.loc 1 315 6 view .LVU196
- 1056 0054 FFF7FEFF 		bl	turn_conclk_90
- 1057              	.LVL66:
- 316:Src/movement.c **** 					turn_conclk_90();
- 1058              		.loc 1 316 6 view .LVU197
- 1059 0058 FFF7FEFF 		bl	fornt_wall_calibrate
- 1060              	.LVL67:
- 317:Src/movement.c **** 			}
- 1061              		.loc 1 317 6 view .LVU198
- 1062 005c FFF7FEFF 		bl	turn_conclk_90
- 1063              	.LVL68:
- 1064 0060 D8E7     		b	.L108
- 1065              	.L117:
- 329:Src/movement.c **** 		if(front_wall_flg == wall){
- 1066              		.loc 1 329 3 view .LVU199
- 1067 0062 FFF7FEFF 		bl	half_deceleration
- 1068              	.LVL69:
- 330:Src/movement.c **** 			fornt_wall_calibrate();
- 1069              		.loc 1 330 3 view .LVU200
-ARM GAS  C:\Temp\ccGa7WPS.s 			page 26
-
-
- 330:Src/movement.c **** 			fornt_wall_calibrate();
- 1070              		.loc 1 330 21 is_stmt 0 view .LVU201
- 1071 0066 134B     		ldr	r3, .L123+4
- 1072 0068 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
- 330:Src/movement.c **** 			fornt_wall_calibrate();
- 1073              		.loc 1 330 5 view .LVU202
- 1074 006a 012B     		cmp	r3, #1
- 1075 006c 04D0     		beq	.L120
- 347:Src/movement.c **** 		}
- 1076              		.loc 1 347 4 is_stmt 1 view .LVU203
- 1077 006e FFF7FEFF 		bl	turn_conclk_180
- 1078              	.LVL70:
- 1079              	.L113:
- 349:Src/movement.c **** 	}
- 1080              		.loc 1 349 3 view .LVU204
- 1081 0072 FFF7FEFF 		bl	half_acceleration
- 1082              	.LVL71:
- 1083 0076 D3E7     		b	.L110
- 1084              	.L120:
+ 351:Src/movement.c **** 		set_mode_ctrl(trace);
+ 1086              		.loc 1 351 3 view .LVU202
+ 1087 001e 0020     		movs	r0, #0
+ 1088 0020 FFF7FEFF 		bl	set_mode_ctrl
+ 1089              	.LVL74:
+ 1090              	.L99:
+ 352:Src/movement.c **** 	}
+ 353:Src/movement.c **** 	if(run_first_flg == already){
+ 1091              		.loc 1 353 2 view .LVU203
+ 1092              		.loc 1 353 19 is_stmt 0 view .LVU204
+ 1093 0024 2B4B     		ldr	r3, .L117
+ 1094 0026 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1095              		.loc 1 353 4 view .LVU205
+ 1096 0028 012B     		cmp	r3, #1
+ 1097 002a 20D0     		beq	.L111
+ 1098              	.L104:
+ 354:Src/movement.c **** 		set_mode_ctrl(side_wall);
+ 355:Src/movement.c **** 		half_deceleration();//m半区画減速で中央に停止
+ 356:Src/movement.c **** 		set_mode_ctrl(trace);
+ 357:Src/movement.c **** 		if(front_wall_flg == wall){
+ 358:Src/movement.c **** 			fornt_wall_calibrate();
+ 359:Src/movement.c **** 			if(right_wall_flg == wall){
+ 360:Src/movement.c **** 				turn_clk_90();
+ 361:Src/movement.c **** 				fornt_wall_calibrate();
+ 362:Src/movement.c **** 				turn_clk_90();
+ 363:Src/movement.c **** 			}
+ 364:Src/movement.c **** 			else if(left_wall_flg == wall){
+ 365:Src/movement.c **** 				turn_conclk_90();
+ 366:Src/movement.c **** 				fornt_wall_calibrate();
+ 367:Src/movement.c **** 				turn_conclk_90();
+ 368:Src/movement.c **** 			}
+ 369:Src/movement.c **** 			else {
+ 370:Src/movement.c **** 				turn_conclk_180();	//反時計回りに180度回転
+ 371:Src/movement.c **** 			}
+ 372:Src/movement.c **** 		}
+ 373:Src/movement.c **** 		else{
+ 374:Src/movement.c **** 			turn_conclk_180();	//m反時計回りに180度回転
+ 375:Src/movement.c **** 		}
+ 376:Src/movement.c **** 		set_mode_ctrl(side_wall);
+ 377:Src/movement.c **** 		half_acceleration();//半区画加速
+ 378:Src/movement.c **** 		set_mode_ctrl(trace);
+ 379:Src/movement.c **** 	}
+ 380:Src/movement.c **** 	run_first_flg = already;
+ 1099              		.loc 1 380 2 is_stmt 1 view .LVU206
+ 1100              		.loc 1 380 16 is_stmt 0 view .LVU207
+ 1101 002c 294B     		ldr	r3, .L117
+ 1102 002e 0122     		movs	r2, #1
+ 1103 0030 1A70     		strb	r2, [r3]
+ 381:Src/movement.c **** 	clr_wall_flg();
+ 1104              		.loc 1 381 2 is_stmt 1 view .LVU208
+ 1105 0032 FFF7FEFF 		bl	clr_wall_flg
+ 1106              	.LVL75:
+ 382:Src/movement.c **** }
+ 1107              		.loc 1 382 1 is_stmt 0 view .LVU209
+ 1108 0036 08BD     		pop	{r3, pc}
+ 1109              	.L110:
  331:Src/movement.c **** 			if(right_wall_flg == wall){
- 1085              		.loc 1 331 4 view .LVU205
- 1086 0078 FFF7FEFF 		bl	fornt_wall_calibrate
- 1087              	.LVL72:
+ARM GAS  C:\Temp\ccwobR3f.s 			page 27
+
+
+ 1110              		.loc 1 331 4 is_stmt 1 view .LVU210
+ 1111 0038 FFF7FEFF 		bl	fornt_wall_calibrate
+ 1112              	.LVL76:
  332:Src/movement.c **** 				turn_clk_90();
- 1088              		.loc 1 332 4 view .LVU206
+ 1113              		.loc 1 332 4 view .LVU211
  332:Src/movement.c **** 				turn_clk_90();
- 1089              		.loc 1 332 22 is_stmt 0 view .LVU207
- 1090 007c 0E4B     		ldr	r3, .L123+8
- 1091 007e 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1114              		.loc 1 332 22 is_stmt 0 view .LVU212
+ 1115 003c 274B     		ldr	r3, .L117+8
+ 1116 003e 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
  332:Src/movement.c **** 				turn_clk_90();
- 1092              		.loc 1 332 6 view .LVU208
- 1093 0080 012B     		cmp	r3, #1
- 1094 0082 06D0     		beq	.L121
- 337:Src/movement.c **** 				turn_conclk_90();
- 1095              		.loc 1 337 9 is_stmt 1 view .LVU209
- 337:Src/movement.c **** 				turn_conclk_90();
- 1096              		.loc 1 337 26 is_stmt 0 view .LVU210
- 1097 0084 0D4B     		ldr	r3, .L123+12
- 1098 0086 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
- 337:Src/movement.c **** 				turn_conclk_90();
- 1099              		.loc 1 337 11 view .LVU211
- 1100 0088 012B     		cmp	r3, #1
- 1101 008a 09D0     		beq	.L122
+ 1117              		.loc 1 332 6 view .LVU213
+ 1118 0040 012B     		cmp	r3, #1
+ 1119 0042 06D0     		beq	.L112
+ 337:Src/movement.c **** 					turn_conclk_90();
+ 1120              		.loc 1 337 9 is_stmt 1 view .LVU214
+ 337:Src/movement.c **** 					turn_conclk_90();
+ 1121              		.loc 1 337 26 is_stmt 0 view .LVU215
+ 1122 0044 264B     		ldr	r3, .L117+12
+ 1123 0046 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 337:Src/movement.c **** 					turn_conclk_90();
+ 1124              		.loc 1 337 11 view .LVU216
+ 1125 0048 012B     		cmp	r3, #1
+ 1126 004a 09D0     		beq	.L113
  343:Src/movement.c **** 			}
- 1102              		.loc 1 343 5 is_stmt 1 view .LVU212
- 1103 008c FFF7FEFF 		bl	turn_conclk_180
- 1104              	.LVL73:
- 1105 0090 EFE7     		b	.L113
- 1106              	.L121:
+ 1127              		.loc 1 343 5 is_stmt 1 view .LVU217
+ 1128 004c FFF7FEFF 		bl	turn_conclk_180
+ 1129              	.LVL77:
+ 1130 0050 E0E7     		b	.L102
+ 1131              	.L112:
  333:Src/movement.c **** 				fornt_wall_calibrate();
- 1107              		.loc 1 333 5 view .LVU213
- 1108 0092 FFF7FEFF 		bl	turn_clk_90
- 1109              	.LVL74:
+ 1132              		.loc 1 333 5 view .LVU218
+ 1133 0052 FFF7FEFF 		bl	turn_clk_90
+ 1134              	.LVL78:
  334:Src/movement.c **** 				turn_clk_90();
- 1110              		.loc 1 334 5 view .LVU214
- 1111 0096 FFF7FEFF 		bl	fornt_wall_calibrate
- 1112              	.LVL75:
-ARM GAS  C:\Temp\ccGa7WPS.s 			page 27
-
-
+ 1135              		.loc 1 334 5 view .LVU219
+ 1136 0056 FFF7FEFF 		bl	fornt_wall_calibrate
+ 1137              	.LVL79:
  335:Src/movement.c **** 			}
- 1113              		.loc 1 335 5 view .LVU215
- 1114 009a FFF7FEFF 		bl	turn_clk_90
- 1115              	.LVL76:
- 1116 009e E8E7     		b	.L113
- 1117              	.L122:
- 338:Src/movement.c **** 				fornt_wall_calibrate();
- 1118              		.loc 1 338 5 view .LVU216
- 1119 00a0 FFF7FEFF 		bl	turn_conclk_90
- 1120              	.LVL77:
- 339:Src/movement.c **** 				turn_conclk_90();
- 1121              		.loc 1 339 5 view .LVU217
- 1122 00a4 FFF7FEFF 		bl	fornt_wall_calibrate
- 1123              	.LVL78:
+ 1138              		.loc 1 335 5 view .LVU220
+ 1139 005a FFF7FEFF 		bl	turn_clk_90
+ 1140              	.LVL80:
+ 1141 005e D9E7     		b	.L102
+ 1142              	.L113:
+ 338:Src/movement.c **** 					fornt_wall_calibrate();
+ 1143              		.loc 1 338 6 view .LVU221
+ 1144 0060 FFF7FEFF 		bl	turn_conclk_90
+ 1145              	.LVL81:
+ 339:Src/movement.c **** 					turn_conclk_90();
+ 1146              		.loc 1 339 6 view .LVU222
+ 1147 0064 FFF7FEFF 		bl	fornt_wall_calibrate
+ 1148              	.LVL82:
  340:Src/movement.c **** 			}
- 1124              		.loc 1 340 5 view .LVU218
- 1125 00a8 FFF7FEFF 		bl	turn_conclk_90
- 1126              	.LVL79:
- 1127 00ac E1E7     		b	.L113
- 1128              	.L124:
- 1129 00ae 00BF     		.align	2
- 1130              	.L123:
- 1131 00b0 00000000 		.word	.LANCHOR0
- 1132 00b4 00000000 		.word	.LANCHOR1
- 1133 00b8 00000000 		.word	.LANCHOR2
- 1134 00bc 00000000 		.word	.LANCHOR3
- 1135              		.cfi_endproc
- 1136              	.LFE21:
- 1138              		.section	.bss.front_wall_flg,"aw",%nobits
- 1139              		.set	.LANCHOR1,. + 0
- 1142              	front_wall_flg:
- 1143 0000 00       		.space	1
- 1144              		.section	.bss.left_wall_flg,"aw",%nobits
- 1145              		.set	.LANCHOR3,. + 0
- 1148              	left_wall_flg:
- 1149 0000 00       		.space	1
- 1150              		.section	.bss.right_wall_flg,"aw",%nobits
- 1151              		.set	.LANCHOR2,. + 0
- 1154              	right_wall_flg:
- 1155 0000 00       		.space	1
- 1156              		.section	.bss.run_first_flg,"aw",%nobits
- 1157              		.set	.LANCHOR0,. + 0
- 1160              	run_first_flg:
- 1161 0000 00       		.space	1
- 1162              		.text
- 1163              	.Letext0:
- 1164              		.file 2 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\machine\\_default_t
- 1165              		.file 3 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\lock.h"
- 1166              		.file 4 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\_types.h"
- 1167              		.file 5 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\lib\\gcc\\arm-none-eabi\\9.2.1\\include\\st
- 1168              		.file 6 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\reent.h"
- 1169              		.file 7 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\_stdint.h"
- 1170              		.file 8 "Inc/target.h"
- 1171              		.file 9 "Inc/movement.h"
- 1172              		.file 10 "Inc/exvol.h"
- 1173              		.file 11 "Inc/adjust.h"
- 1174              		.file 12 "Inc/mouse_state.h"
-ARM GAS  C:\Temp\ccGa7WPS.s 			page 28
+ 1149              		.loc 1 340 6 view .LVU223
+ 1150 0068 FFF7FEFF 		bl	turn_conclk_90
+ 1151              	.LVL83:
+ 1152 006c D2E7     		b	.L102
+ 1153              	.L111:
+ARM GAS  C:\Temp\ccwobR3f.s 			page 28
 
 
-ARM GAS  C:\Temp\ccGa7WPS.s 			page 29
+ 354:Src/movement.c **** 		half_deceleration();//m半区画減速で中央に停止
+ 1154              		.loc 1 354 3 view .LVU224
+ 1155 006e 0220     		movs	r0, #2
+ 1156 0070 FFF7FEFF 		bl	set_mode_ctrl
+ 1157              	.LVL84:
+ 355:Src/movement.c **** 		set_mode_ctrl(trace);
+ 1158              		.loc 1 355 3 view .LVU225
+ 1159 0074 FFF7FEFF 		bl	half_deceleration
+ 1160              	.LVL85:
+ 356:Src/movement.c **** 		if(front_wall_flg == wall){
+ 1161              		.loc 1 356 3 view .LVU226
+ 1162 0078 0020     		movs	r0, #0
+ 1163 007a FFF7FEFF 		bl	set_mode_ctrl
+ 1164              	.LVL86:
+ 357:Src/movement.c **** 			fornt_wall_calibrate();
+ 1165              		.loc 1 357 3 view .LVU227
+ 357:Src/movement.c **** 			fornt_wall_calibrate();
+ 1166              		.loc 1 357 21 is_stmt 0 view .LVU228
+ 1167 007e 164B     		ldr	r3, .L117+4
+ 1168 0080 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 357:Src/movement.c **** 			fornt_wall_calibrate();
+ 1169              		.loc 1 357 5 view .LVU229
+ 1170 0082 012B     		cmp	r3, #1
+ 1171 0084 0AD0     		beq	.L114
+ 374:Src/movement.c **** 		}
+ 1172              		.loc 1 374 4 is_stmt 1 view .LVU230
+ 1173 0086 FFF7FEFF 		bl	turn_conclk_180
+ 1174              	.LVL87:
+ 1175              	.L107:
+ 376:Src/movement.c **** 		half_acceleration();//半区画加速
+ 1176              		.loc 1 376 3 view .LVU231
+ 1177 008a 0220     		movs	r0, #2
+ 1178 008c FFF7FEFF 		bl	set_mode_ctrl
+ 1179              	.LVL88:
+ 377:Src/movement.c **** 		set_mode_ctrl(trace);
+ 1180              		.loc 1 377 3 view .LVU232
+ 1181 0090 FFF7FEFF 		bl	half_acceleration
+ 1182              	.LVL89:
+ 378:Src/movement.c **** 	}
+ 1183              		.loc 1 378 3 view .LVU233
+ 1184 0094 0020     		movs	r0, #0
+ 1185 0096 FFF7FEFF 		bl	set_mode_ctrl
+ 1186              	.LVL90:
+ 1187 009a C7E7     		b	.L104
+ 1188              	.L114:
+ 358:Src/movement.c **** 			if(right_wall_flg == wall){
+ 1189              		.loc 1 358 4 view .LVU234
+ 1190 009c FFF7FEFF 		bl	fornt_wall_calibrate
+ 1191              	.LVL91:
+ 359:Src/movement.c **** 				turn_clk_90();
+ 1192              		.loc 1 359 4 view .LVU235
+ 359:Src/movement.c **** 				turn_clk_90();
+ 1193              		.loc 1 359 22 is_stmt 0 view .LVU236
+ 1194 00a0 0E4B     		ldr	r3, .L117+8
+ 1195 00a2 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 359:Src/movement.c **** 				turn_clk_90();
+ 1196              		.loc 1 359 6 view .LVU237
+ARM GAS  C:\Temp\ccwobR3f.s 			page 29
+
+
+ 1197 00a4 012B     		cmp	r3, #1
+ 1198 00a6 06D0     		beq	.L115
+ 364:Src/movement.c **** 				turn_conclk_90();
+ 1199              		.loc 1 364 9 is_stmt 1 view .LVU238
+ 364:Src/movement.c **** 				turn_conclk_90();
+ 1200              		.loc 1 364 26 is_stmt 0 view .LVU239
+ 1201 00a8 0D4B     		ldr	r3, .L117+12
+ 1202 00aa 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 364:Src/movement.c **** 				turn_conclk_90();
+ 1203              		.loc 1 364 11 view .LVU240
+ 1204 00ac 012B     		cmp	r3, #1
+ 1205 00ae 09D0     		beq	.L116
+ 370:Src/movement.c **** 			}
+ 1206              		.loc 1 370 5 is_stmt 1 view .LVU241
+ 1207 00b0 FFF7FEFF 		bl	turn_conclk_180
+ 1208              	.LVL92:
+ 1209 00b4 E9E7     		b	.L107
+ 1210              	.L115:
+ 360:Src/movement.c **** 				fornt_wall_calibrate();
+ 1211              		.loc 1 360 5 view .LVU242
+ 1212 00b6 FFF7FEFF 		bl	turn_clk_90
+ 1213              	.LVL93:
+ 361:Src/movement.c **** 				turn_clk_90();
+ 1214              		.loc 1 361 5 view .LVU243
+ 1215 00ba FFF7FEFF 		bl	fornt_wall_calibrate
+ 1216              	.LVL94:
+ 362:Src/movement.c **** 			}
+ 1217              		.loc 1 362 5 view .LVU244
+ 1218 00be FFF7FEFF 		bl	turn_clk_90
+ 1219              	.LVL95:
+ 1220 00c2 E2E7     		b	.L107
+ 1221              	.L116:
+ 365:Src/movement.c **** 				fornt_wall_calibrate();
+ 1222              		.loc 1 365 5 view .LVU245
+ 1223 00c4 FFF7FEFF 		bl	turn_conclk_90
+ 1224              	.LVL96:
+ 366:Src/movement.c **** 				turn_conclk_90();
+ 1225              		.loc 1 366 5 view .LVU246
+ 1226 00c8 FFF7FEFF 		bl	fornt_wall_calibrate
+ 1227              	.LVL97:
+ 367:Src/movement.c **** 			}
+ 1228              		.loc 1 367 5 view .LVU247
+ 1229 00cc FFF7FEFF 		bl	turn_conclk_90
+ 1230              	.LVL98:
+ 1231 00d0 DBE7     		b	.L107
+ 1232              	.L118:
+ 1233 00d2 00BF     		.align	2
+ 1234              	.L117:
+ 1235 00d4 00000000 		.word	.LANCHOR0
+ 1236 00d8 00000000 		.word	.LANCHOR1
+ 1237 00dc 00000000 		.word	.LANCHOR2
+ 1238 00e0 00000000 		.word	.LANCHOR3
+ 1239              		.cfi_endproc
+ 1240              	.LFE152:
+ 1242              		.section	.bss.front_wall_flg,"aw",%nobits
+ 1243              		.set	.LANCHOR1,. + 0
+ 1246              	front_wall_flg:
+ARM GAS  C:\Temp\ccwobR3f.s 			page 30
+
+
+ 1247 0000 00       		.space	1
+ 1248              		.section	.bss.left_wall_flg,"aw",%nobits
+ 1249              		.set	.LANCHOR3,. + 0
+ 1252              	left_wall_flg:
+ 1253 0000 00       		.space	1
+ 1254              		.section	.bss.right_wall_flg,"aw",%nobits
+ 1255              		.set	.LANCHOR2,. + 0
+ 1258              	right_wall_flg:
+ 1259 0000 00       		.space	1
+ 1260              		.section	.bss.run_first_flg,"aw",%nobits
+ 1261              		.set	.LANCHOR0,. + 0
+ 1264              	run_first_flg:
+ 1265 0000 00       		.space	1
+ 1266              		.text
+ 1267              	.Letext0:
+ 1268              		.file 2 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\machine\\_default_t
+ 1269              		.file 3 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\lock.h"
+ 1270              		.file 4 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\_types.h"
+ 1271              		.file 5 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\lib\\gcc\\arm-none-eabi\\9.2.1\\include\\st
+ 1272              		.file 6 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\reent.h"
+ 1273              		.file 7 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 1274              		.file 8 "Inc/target.h"
+ 1275              		.file 9 "Inc/movement.h"
+ 1276              		.file 10 "Inc/exvol.h"
+ 1277              		.file 11 "Drivers/CMSIS/Include/core_cm4.h"
+ 1278              		.file 12 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h"
+ 1279              		.file 13 "Inc/adjust.h"
+ 1280              		.file 14 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h"
+ 1281              		.file 15 "Inc/mouse_state.h"
+ARM GAS  C:\Temp\ccwobR3f.s 			page 31
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 movement.c
-  C:\Temp\ccGa7WPS.s:18     .text.move_comp_jud:00000000 $t
-  C:\Temp\ccGa7WPS.s:26     .text.move_comp_jud:00000000 move_comp_jud
-  C:\Temp\ccGa7WPS.s:99     .text.move_comp_jud:0000006c $d
-  C:\Temp\ccGa7WPS.s:105    .text.rotate_comp_jud:00000000 $t
-  C:\Temp\ccGa7WPS.s:112    .text.rotate_comp_jud:00000000 rotate_comp_jud
-  C:\Temp\ccGa7WPS.s:184    .text.rotate_comp_jud:0000006c $d
-  C:\Temp\ccGa7WPS.s:190    .text.start_acceleration:00000000 $t
-  C:\Temp\ccGa7WPS.s:197    .text.start_acceleration:00000000 start_acceleration
-  C:\Temp\ccGa7WPS.s:234    .text.start_acceleration:00000020 $d
-  C:\Temp\ccGa7WPS.s:239    .text.half_acceleration:00000000 $t
-  C:\Temp\ccGa7WPS.s:246    .text.half_acceleration:00000000 half_acceleration
-  C:\Temp\ccGa7WPS.s:283    .text.half_acceleration:00000020 $d
-  C:\Temp\ccGa7WPS.s:288    .text.half_deceleration:00000000 $t
-  C:\Temp\ccGa7WPS.s:295    .text.half_deceleration:00000000 half_deceleration
-  C:\Temp\ccGa7WPS.s:332    .text.half_deceleration:00000020 $d
-  C:\Temp\ccGa7WPS.s:337    .text.constant_speed:00000000 $t
-  C:\Temp\ccGa7WPS.s:344    .text.constant_speed:00000000 constant_speed
-  C:\Temp\ccGa7WPS.s:381    .text.constant_speed:00000020 $d
-  C:\Temp\ccGa7WPS.s:386    .text.turn_clk_90:00000000 $t
-  C:\Temp\ccGa7WPS.s:393    .text.turn_clk_90:00000000 turn_clk_90
-  C:\Temp\ccGa7WPS.s:426    .text.turn_clk_90:0000001c $d
-  C:\Temp\ccGa7WPS.s:431    .text.turn_conclk_90:00000000 $t
-  C:\Temp\ccGa7WPS.s:438    .text.turn_conclk_90:00000000 turn_conclk_90
-  C:\Temp\ccGa7WPS.s:471    .text.turn_conclk_90:0000001c $d
-  C:\Temp\ccGa7WPS.s:476    .text.turn_conclk_180:00000000 $t
-  C:\Temp\ccGa7WPS.s:483    .text.turn_conclk_180:00000000 turn_conclk_180
-  C:\Temp\ccGa7WPS.s:516    .text.turn_conclk_180:0000001c $d
-  C:\Temp\ccGa7WPS.s:521    .text.clr_run_first_flg:00000000 $t
-  C:\Temp\ccGa7WPS.s:528    .text.clr_run_first_flg:00000000 clr_run_first_flg
-  C:\Temp\ccGa7WPS.s:545    .text.clr_run_first_flg:00000008 $d
-  C:\Temp\ccGa7WPS.s:550    .text.set_run_first_flg:00000000 $t
-  C:\Temp\ccGa7WPS.s:557    .text.set_run_first_flg:00000000 set_run_first_flg
-  C:\Temp\ccGa7WPS.s:574    .text.set_run_first_flg:00000008 $d
-  C:\Temp\ccGa7WPS.s:579    .text.clr_wall_flg:00000000 $t
-  C:\Temp\ccGa7WPS.s:586    .text.clr_wall_flg:00000000 clr_wall_flg
-  C:\Temp\ccGa7WPS.s:611    .text.clr_wall_flg:00000010 $d
-  C:\Temp\ccGa7WPS.s:618    .text.set_front_wall_flg:00000000 $t
-  C:\Temp\ccGa7WPS.s:625    .text.set_front_wall_flg:00000000 set_front_wall_flg
-  C:\Temp\ccGa7WPS.s:642    .text.set_front_wall_flg:00000008 $d
-  C:\Temp\ccGa7WPS.s:647    .text.set_rigth_wall_flg:00000000 $t
-  C:\Temp\ccGa7WPS.s:654    .text.set_rigth_wall_flg:00000000 set_rigth_wall_flg
-  C:\Temp\ccGa7WPS.s:671    .text.set_rigth_wall_flg:00000008 $d
-  C:\Temp\ccGa7WPS.s:676    .text.set_left_wall_flg:00000000 $t
-  C:\Temp\ccGa7WPS.s:683    .text.set_left_wall_flg:00000000 set_left_wall_flg
-  C:\Temp\ccGa7WPS.s:700    .text.set_left_wall_flg:00000008 $d
-  C:\Temp\ccGa7WPS.s:705    .text.move_front:00000000 $t
-  C:\Temp\ccGa7WPS.s:712    .text.move_front:00000000 move_front
-  C:\Temp\ccGa7WPS.s:769    .text.move_front:00000034 $d
-  C:\Temp\ccGa7WPS.s:774    .text.move_right:00000000 $t
-  C:\Temp\ccGa7WPS.s:781    .text.move_right:00000000 move_right
-  C:\Temp\ccGa7WPS.s:863    .text.move_right:00000050 $d
-  C:\Temp\ccGa7WPS.s:869    .text.move_left:00000000 $t
-  C:\Temp\ccGa7WPS.s:876    .text.move_left:00000000 move_left
-  C:\Temp\ccGa7WPS.s:958    .text.move_left:00000050 $d
-  C:\Temp\ccGa7WPS.s:964    .text.move_back:00000000 $t
-ARM GAS  C:\Temp\ccGa7WPS.s 			page 30
+  C:\Temp\ccwobR3f.s:18     .text.move_comp_jud:00000000 $t
+  C:\Temp\ccwobR3f.s:26     .text.move_comp_jud:00000000 move_comp_jud
+  C:\Temp\ccwobR3f.s:70     .text.move_comp_jud_stop:00000000 $t
+  C:\Temp\ccwobR3f.s:77     .text.move_comp_jud_stop:00000000 move_comp_jud_stop
+  C:\Temp\ccwobR3f.s:132    .text.rotate_comp_jud:00000000 $t
+  C:\Temp\ccwobR3f.s:139    .text.rotate_comp_jud:00000000 rotate_comp_jud
+  C:\Temp\ccwobR3f.s:211    .text.rotate_comp_jud:0000006c $d
+  C:\Temp\ccwobR3f.s:217    .text.start_acceleration:00000000 $t
+  C:\Temp\ccwobR3f.s:224    .text.start_acceleration:00000000 start_acceleration
+  C:\Temp\ccwobR3f.s:261    .text.start_acceleration:00000020 $d
+  C:\Temp\ccwobR3f.s:266    .text.half_acceleration:00000000 $t
+  C:\Temp\ccwobR3f.s:273    .text.half_acceleration:00000000 half_acceleration
+  C:\Temp\ccwobR3f.s:310    .text.half_acceleration:00000020 $d
+  C:\Temp\ccwobR3f.s:315    .text.half_deceleration:00000000 $t
+  C:\Temp\ccwobR3f.s:322    .text.half_deceleration:00000000 half_deceleration
+  C:\Temp\ccwobR3f.s:372    .text.half_deceleration:00000034 $d
+  C:\Temp\ccwobR3f.s:377    .text.constant_speed:00000000 $t
+  C:\Temp\ccwobR3f.s:384    .text.constant_speed:00000000 constant_speed
+  C:\Temp\ccwobR3f.s:421    .text.constant_speed:00000020 $d
+  C:\Temp\ccwobR3f.s:426    .text.turn_clk_90:00000000 $t
+  C:\Temp\ccwobR3f.s:433    .text.turn_clk_90:00000000 turn_clk_90
+  C:\Temp\ccwobR3f.s:466    .text.turn_clk_90:0000001c $d
+  C:\Temp\ccwobR3f.s:471    .text.turn_conclk_90:00000000 $t
+  C:\Temp\ccwobR3f.s:478    .text.turn_conclk_90:00000000 turn_conclk_90
+  C:\Temp\ccwobR3f.s:511    .text.turn_conclk_90:0000001c $d
+  C:\Temp\ccwobR3f.s:516    .text.turn_conclk_180:00000000 $t
+  C:\Temp\ccwobR3f.s:523    .text.turn_conclk_180:00000000 turn_conclk_180
+  C:\Temp\ccwobR3f.s:556    .text.turn_conclk_180:0000001c $d
+  C:\Temp\ccwobR3f.s:561    .text.clr_run_first_flg:00000000 $t
+  C:\Temp\ccwobR3f.s:568    .text.clr_run_first_flg:00000000 clr_run_first_flg
+  C:\Temp\ccwobR3f.s:585    .text.clr_run_first_flg:00000008 $d
+  C:\Temp\ccwobR3f.s:590    .text.set_run_first_flg:00000000 $t
+  C:\Temp\ccwobR3f.s:597    .text.set_run_first_flg:00000000 set_run_first_flg
+  C:\Temp\ccwobR3f.s:614    .text.set_run_first_flg:00000008 $d
+  C:\Temp\ccwobR3f.s:619    .text.clr_wall_flg:00000000 $t
+  C:\Temp\ccwobR3f.s:626    .text.clr_wall_flg:00000000 clr_wall_flg
+  C:\Temp\ccwobR3f.s:651    .text.clr_wall_flg:00000010 $d
+  C:\Temp\ccwobR3f.s:658    .text.set_front_wall_flg:00000000 $t
+  C:\Temp\ccwobR3f.s:665    .text.set_front_wall_flg:00000000 set_front_wall_flg
+  C:\Temp\ccwobR3f.s:682    .text.set_front_wall_flg:00000008 $d
+  C:\Temp\ccwobR3f.s:687    .text.set_rigth_wall_flg:00000000 $t
+  C:\Temp\ccwobR3f.s:694    .text.set_rigth_wall_flg:00000000 set_rigth_wall_flg
+  C:\Temp\ccwobR3f.s:711    .text.set_rigth_wall_flg:00000008 $d
+  C:\Temp\ccwobR3f.s:716    .text.set_left_wall_flg:00000000 $t
+  C:\Temp\ccwobR3f.s:723    .text.set_left_wall_flg:00000000 set_left_wall_flg
+  C:\Temp\ccwobR3f.s:740    .text.set_left_wall_flg:00000008 $d
+  C:\Temp\ccwobR3f.s:745    .text.move_front:00000000 $t
+  C:\Temp\ccwobR3f.s:752    .text.move_front:00000000 move_front
+  C:\Temp\ccwobR3f.s:817    .text.move_front:00000040 $d
+  C:\Temp\ccwobR3f.s:822    .text.move_right:00000000 $t
+  C:\Temp\ccwobR3f.s:829    .text.move_right:00000000 move_right
+  C:\Temp\ccwobR3f.s:927    .text.move_right:00000068 $d
+  C:\Temp\ccwobR3f.s:933    .text.move_left:00000000 $t
+  C:\Temp\ccwobR3f.s:940    .text.move_left:00000000 move_left
+  C:\Temp\ccwobR3f.s:1038   .text.move_left:00000068 $d
+ARM GAS  C:\Temp\ccwobR3f.s 			page 32
 
 
-  C:\Temp\ccGa7WPS.s:971    .text.move_back:00000000 move_back
-  C:\Temp\ccGa7WPS.s:1131   .text.move_back:000000b0 $d
-  C:\Temp\ccGa7WPS.s:1142   .bss.front_wall_flg:00000000 front_wall_flg
-  C:\Temp\ccGa7WPS.s:1143   .bss.front_wall_flg:00000000 $d
-  C:\Temp\ccGa7WPS.s:1148   .bss.left_wall_flg:00000000 left_wall_flg
-  C:\Temp\ccGa7WPS.s:1149   .bss.left_wall_flg:00000000 $d
-  C:\Temp\ccGa7WPS.s:1154   .bss.right_wall_flg:00000000 right_wall_flg
-  C:\Temp\ccGa7WPS.s:1155   .bss.right_wall_flg:00000000 $d
-  C:\Temp\ccGa7WPS.s:1160   .bss.run_first_flg:00000000 run_first_flg
-  C:\Temp\ccGa7WPS.s:1161   .bss.run_first_flg:00000000 $d
+  C:\Temp\ccwobR3f.s:1044   .text.move_back:00000000 $t
+  C:\Temp\ccwobR3f.s:1051   .text.move_back:00000000 move_back
+  C:\Temp\ccwobR3f.s:1235   .text.move_back:000000d4 $d
+  C:\Temp\ccwobR3f.s:1246   .bss.front_wall_flg:00000000 front_wall_flg
+  C:\Temp\ccwobR3f.s:1247   .bss.front_wall_flg:00000000 $d
+  C:\Temp\ccwobR3f.s:1252   .bss.left_wall_flg:00000000 left_wall_flg
+  C:\Temp\ccwobR3f.s:1253   .bss.left_wall_flg:00000000 $d
+  C:\Temp\ccwobR3f.s:1258   .bss.right_wall_flg:00000000 right_wall_flg
+  C:\Temp\ccwobR3f.s:1259   .bss.right_wall_flg:00000000 $d
+  C:\Temp\ccwobR3f.s:1264   .bss.run_first_flg:00000000 run_first_flg
+  C:\Temp\ccwobR3f.s:1265   .bss.run_first_flg:00000000 $d
 
 UNDEFINED SYMBOLS
 get_target_length
 get_move_length
+get_target_move_speed
 get_target_angle
 get_ideal_angle
 set_direction_mode
 set_accel_mode
 set_target_length
+set_speed_under_lim_flg
+HAL_Delay
 set_rotation_mode
 set_target_angle
 set_mode_ctrl

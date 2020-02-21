@@ -21,7 +21,9 @@ static double front_sensor_rotate_D_prev = 0;   //前回偏差差微分
 static float target_vol_sum_frontwall = 0;		//前壁制御によるモータ印加電圧の和[V]
 static float target_vol_diff_frontwall = 0;		//前壁制御によるモータ印加電圧の差[V]
 
-static uint16_t fornt_wall_calibrate_tim = 0;  	//前壁補正用カウンタ
+static uint16_t fornt_wall_calibrate_tim = 0;  		//前壁補正用カウンタ
+static uint16_t fornt_wall_calibrate_tim_lim = 0;  	//前壁補正制限時間用カウンタ
+
 
 static double target_sensor_sl = 0;				//左壁距離目標値[m]
 static double target_sensor_sr = 0;				//右壁距離目標値[m]
@@ -391,6 +393,7 @@ void fornt_wall_calibrate (void)
 
 	set_mode_ctrl(front_wall); 		//制御モードを前壁補正モードに
 	fornt_wall_calibrate_tim = 0; 	//前壁制御用タイマを初期化
+	fornt_wall_calibrate_tim_lim = 0;//前壁制御最大時間用タイマを初期化
 
 	while(1)
 	{
@@ -405,14 +408,19 @@ void fornt_wall_calibrate (void)
 		 fornt_wall_calibrate_tim = 0;
 		}
 		//キャリブレーション時間を超えるとき、ブレイク
-		if(fornt_wall_calibrate_tim >= calib_tim )
+		if((fornt_wall_calibrate_tim >= calib_tim) || (fornt_wall_calibrate_tim_lim >= calib_tim_lim) )
 		{
 		 break;
 		}
 	}
 	//補正終了時、移動距離、角度に理想値を代入
-	set_move_length(get_ideal_length());
-	set_rotation_angle(get_ideal_angle());
+	set_move_length(get_target_length());
+	set_rotation_angle(get_target_angle());
+
+	set_ideal_length(get_target_length());
+	set_ideal_angle(get_target_angle());
+
+
 	
 	//制御モードを軌跡制御に変更
 	set_mode_ctrl(trace);
@@ -424,9 +432,12 @@ void fornt_wall_calibrate (void)
 void calibrate_tim (void){
 
 	fornt_wall_calibrate_tim += 1;
-
+	fornt_wall_calibrate_tim_lim += 1; 
 	if(fornt_wall_calibrate_tim > calib_tim){
 		fornt_wall_calibrate_tim = calib_tim;
+	}
+	if(fornt_wall_calibrate_tim_lim > calib_tim_lim){
+		fornt_wall_calibrate_tim_lim = calib_tim_lim;
 	}
 }
 

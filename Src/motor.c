@@ -12,8 +12,6 @@
 
 #define PCLK			(HAL_RCC_GetPCLK2Freq())	//マイコンの動作周波数[Hz]
 #define PWMFREQ			(100000)					//モータの動作周波数[Hz]
-#define MOT_DUTY_MIN	(30)						//モータの最低Duty
-#define MOT_DUTY_MAX	(150)						//モータの最大Duty
 
 //モータの向き設定
 #define MOT_SET_COMPARE_L_REVERSE(x)	__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, x)

@@ -179,17 +179,17 @@ void calc_vol2duty ( void )
 void motor_duty_adjust (void)
 {
 	if( target_duty_r > 0){
-		target_duty_r = target_duty_r + 40;  //40->30
+		target_duty_r = target_duty_r + 30;  //40->30
 	}
 	else{
-		target_duty_r = target_duty_r - 45; //45 ->35
+		target_duty_r = target_duty_r - 35; //45 ->35
 	}
 
 	if( target_duty_l > 0){
-		target_duty_l = target_duty_l + 40;  //40->30
+		target_duty_l = target_duty_l + 30;  //40->30
 	}
 	else{
-		target_duty_l = target_duty_l - 45; //45 ->35
+		target_duty_l = target_duty_l - 35; //45 ->35
 	}
 }
 

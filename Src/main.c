@@ -170,34 +170,38 @@ int main(void)
 		  break;
 
 	  case 2:
-      set_mode_ctrl(trace);
-    	set_rotation_mode(counter_clockwise);
       set_accel_mode(deceleration);
-      set_target_angle(10*2*PI);
-      HAL_Delay(15000);
+      HAL_Delay(20000);
 		  break;
 
 	  case 3:
-      set_mode_ctrl(front_wall);
-      HAL_Delay(15000);
+      // set_mode_ctrl(front_wall);
+      // HAL_Delay(5000);
+      fornt_wall_calibrate();
 		  break;
 
 	  case 4:
-      HAL_Delay(5000);
+      half_acceleration();
+      half_deceleration();
 		  break;
 
 	  case 5:
       set_mode_ctrl(trace);
       set_accel_mode(deceleration);
-      turn_conclk_180();
+      turn_conclk_90();
 		  break;
 
 	  case 6:
-      set_mode_ctrl(side_wall);
-      set_accel_mode(deceleration);
-      set_target_length(1.35);
-      HAL_Delay(10000);
-		  break;
+    //右折テスト
+      set_mode_ctrl(trace);
+      start_acceleration();
+      for(int i = 0; i<9 ; i++){
+      half_acceleration();
+      constant_speed();
+      half_deceleration();
+      turn_clk_90();
+      }
+      break;
 
 	  case 7:
       module_test();

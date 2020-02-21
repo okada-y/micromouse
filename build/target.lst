@@ -1,4 +1,4 @@
-ARM GAS  C:\Temp\ccHU6vXK.s 			page 1
+ARM GAS  C:\Temp\ccHYQKog.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -39,53 +39,56 @@ ARM GAS  C:\Temp\ccHU6vXK.s 			page 1
    8:Src/target.c  **** #include "param.h"
    9:Src/target.c  **** #include "ir_sensor.h"
   10:Src/target.c  **** #include "target.h"
-  11:Src/target.c  **** 
+  11:Src/target.c  **** #include "mouse_state.h"
   12:Src/target.c  **** 
-  13:Src/target.c  **** static float target_move_speed = 0;			//目標移動速度[m/s]
-  14:Src/target.c  **** static float target_move_speed_fin = 0;		//目標終端速度[m/s]
-  15:Src/target.c  **** static float target_rotation_speed = 0;		//目標角速度[rad/s]
-  16:Src/target.c  **** static float target_move_accel = 0;			//目標移動加速度[m/s2]
-  17:Src/target.c  **** static float target_rotation_accel = 0;		//目標角加速度[rad/s2]
-  18:Src/target.c  **** static float target_length = 0;				//目標移動距離[m]
-  19:Src/target.c  **** static float target_angle = 0;				//目標回転角度[rad]
-  20:Src/target.c  **** static float ideal_length = 0;				//理想移動距離[m]
-  21:Src/target.c  **** static float ideal_angle = 0;				//理想回転角度[rad]
-  22:Src/target.c  **** 
-  23:Src/target.c  **** static direction_mode move_dir_flg = forward_mode;			//移動方向フラグ　0:前進 1:後進
-  24:Src/target.c  **** static rotation_mode rotation_dir_flg = counter_clockwise;	//回転方向フラグ　0:反時計周
-  25:Src/target.c  **** static accel_mode accel_dir_flg = acceleration;		   		//加減速フラグ　　0:加速 1:減速
-  26:Src/target.c  **** 
-  27:Src/target.c  **** //機能	: traget.cの1msタスクのまとめ
-  28:Src/target.c  **** //引数	: なし
-  29:Src/target.c  **** //返り値	: なし
-ARM GAS  C:\Temp\ccHU6vXK.s 			page 2
+  13:Src/target.c  **** 
+  14:Src/target.c  **** static float target_move_speed = 0;			//目標移動速度[m/s]
+  15:Src/target.c  **** static float target_move_speed_fin = 0;		//目標終端速度[m/s]
+  16:Src/target.c  **** static float target_rotation_speed = 0;		//目標角速度[rad/s]
+  17:Src/target.c  **** static float target_move_accel = 0;			//目標移動加速度[m/s2]
+  18:Src/target.c  **** static float target_rotation_accel = 0;		//目標角加速度[rad/s2]
+  19:Src/target.c  **** static float target_length = 0;				//目標移動距離[m]
+  20:Src/target.c  **** static float target_angle = 0;				//目標回転角度[rad]
+  21:Src/target.c  **** static float ideal_length = 0;				//理想移動距離[m]
+  22:Src/target.c  **** static float ideal_angle = 0;				//理想回転角度[rad]
+  23:Src/target.c  **** 
+  24:Src/target.c  **** static direction_mode move_dir_flg = forward_mode;			//移動方向フラグ　0:前進 1:後進
+  25:Src/target.c  **** static rotation_mode rotation_dir_flg = counter_clockwise;	//回転方向フラグ　0:反時計周
+  26:Src/target.c  **** static accel_mode accel_dir_flg = acceleration;		   		//加減速フラグ　　0:加速 1:減速
+  27:Src/target.c  **** static speed_under_lim_mode speed_under_lim_flg = zero;		//下限速度フラグ
+  28:Src/target.c  **** 
+  29:Src/target.c  **** 
+ARM GAS  C:\Temp\ccHYQKog.s 			page 2
 
 
-  30:Src/target.c  **** void target_1ms ( void )
-  31:Src/target.c  **** {
-  32:Src/target.c  **** 	calc_target_move_accel();		//移動加速度更新
-  33:Src/target.c  **** 	calc_rotate_accel();			//回転角速度更新
-  34:Src/target.c  **** 	calc_target_move_speed();		//目標移動速度更新
-  35:Src/target.c  **** 	calc_target_rotation_speed();	//目標角速度更新
-  36:Src/target.c  **** }
-  37:Src/target.c  **** 
-  38:Src/target.c  **** //機能	: 移動方向モードをセットする
-  39:Src/target.c  **** //引数	: 移動方向モード(forward,back)
-  40:Src/target.c  **** //返り値	: なし
-  41:Src/target.c  **** void set_direction_mode ( direction_mode dmode )
-  42:Src/target.c  **** {
-  30              		.loc 1 42 1 view -0
+  30:Src/target.c  **** //機能	: traget.cの1msタスクのまとめ
+  31:Src/target.c  **** //引数	: なし
+  32:Src/target.c  **** //返り値	: なし
+  33:Src/target.c  **** void target_1ms ( void )
+  34:Src/target.c  **** {
+  35:Src/target.c  **** 	calc_target_move_accel();		//移動加速度更新
+  36:Src/target.c  **** 	calc_rotate_accel();			//回転角速度更新
+  37:Src/target.c  **** 	calc_target_move_speed();		//目標移動速度更新
+  38:Src/target.c  **** 	calc_target_rotation_speed();	//目標角速度更新
+  39:Src/target.c  **** }
+  40:Src/target.c  **** 
+  41:Src/target.c  **** //機能	: 移動方向モードをセットする
+  42:Src/target.c  **** //引数	: 移動方向モード(forward,back)
+  43:Src/target.c  **** //返り値	: なし
+  44:Src/target.c  **** void set_direction_mode ( direction_mode dmode )
+  45:Src/target.c  **** {
+  30              		.loc 1 45 1 view -0
   31              		.cfi_startproc
   32              		@ args = 0, pretend = 0, frame = 0
   33              		@ frame_needed = 0, uses_anonymous_args = 0
   34              		@ link register save eliminated.
-  43:Src/target.c  **** 	move_dir_flg = dmode;
-  35              		.loc 1 43 2 view .LVU1
-  36              		.loc 1 43 15 is_stmt 0 view .LVU2
+  46:Src/target.c  **** 	move_dir_flg = dmode;
+  35              		.loc 1 46 2 view .LVU1
+  36              		.loc 1 46 15 is_stmt 0 view .LVU2
   37 0000 014B     		ldr	r3, .L2
   38 0002 1870     		strb	r0, [r3]
-  44:Src/target.c  **** }
-  39              		.loc 1 44 1 view .LVU3
+  47:Src/target.c  **** }
+  39              		.loc 1 47 1 view .LVU3
   40 0004 7047     		bx	lr
   41              	.L3:
   42 0006 00BF     		.align	2
@@ -103,27 +106,27 @@ ARM GAS  C:\Temp\ccHU6vXK.s 			page 1
   56              	set_rotation_mode:
   57              	.LVL1:
   58              	.LFB5:
-  45:Src/target.c  **** 
-  46:Src/target.c  **** //機能	: 回転方向モードをセットする
-  47:Src/target.c  **** //引数	: 回転方向モード(counter_clocwise,clockwise)
-  48:Src/target.c  **** //返り値	: なし
-  49:Src/target.c  **** void set_rotation_mode ( rotation_mode rmode )
-  50:Src/target.c  **** {
-  59              		.loc 1 50 1 is_stmt 1 view -0
+  48:Src/target.c  **** 
+  49:Src/target.c  **** //機能	: 回転方向モードをセットする
+  50:Src/target.c  **** //引数	: 回転方向モード(counter_clocwise,clockwise)
+  51:Src/target.c  **** //返り値	: なし
+  52:Src/target.c  **** void set_rotation_mode ( rotation_mode rmode )
+  53:Src/target.c  **** {
+  59              		.loc 1 53 1 is_stmt 1 view -0
   60              		.cfi_startproc
   61              		@ args = 0, pretend = 0, frame = 0
   62              		@ frame_needed = 0, uses_anonymous_args = 0
   63              		@ link register save eliminated.
-  51:Src/target.c  **** 	rotation_dir_flg = rmode;
-  64              		.loc 1 51 2 view .LVU5
-  65              		.loc 1 51 19 is_stmt 0 view .LVU6
+  54:Src/target.c  **** 	rotation_dir_flg = rmode;
+ARM GAS  C:\Temp\ccHYQKog.s 			page 3
+
+
+  64              		.loc 1 54 2 view .LVU5
+  65              		.loc 1 54 19 is_stmt 0 view .LVU6
   66 0000 014B     		ldr	r3, .L5
-ARM GAS  C:\Temp\ccHU6vXK.s 			page 3
-
-
   67 0002 1870     		strb	r0, [r3]
-  52:Src/target.c  **** }
-  68              		.loc 1 52 1 view .LVU7
+  55:Src/target.c  **** }
+  68              		.loc 1 55 1 view .LVU7
   69 0004 7047     		bx	lr
   70              	.L6:
   71 0006 00BF     		.align	2
@@ -141,24 +144,24 @@ ARM GAS  C:\Temp\ccHU6vXK.s 			page 1
   85              	set_accel_mode:
   86              	.LVL2:
   87              	.LFB6:
-  53:Src/target.c  **** 
-  54:Src/target.c  **** //機能	: 加速モードをセットする
-  55:Src/target.c  **** //引数	: 加速モード(acceleration,deceleration)
-  56:Src/target.c  **** //返り値	: なし
-  57:Src/target.c  **** void set_accel_mode ( accel_mode amode )
-  58:Src/target.c  **** {
-  88              		.loc 1 58 1 is_stmt 1 view -0
+  56:Src/target.c  **** 
+  57:Src/target.c  **** //機能	: 加速モードをセットする
+  58:Src/target.c  **** //引数	: 加速モード(acceleration,deceleration)
+  59:Src/target.c  **** //返り値	: なし
+  60:Src/target.c  **** void set_accel_mode ( accel_mode amode )
+  61:Src/target.c  **** {
+  88              		.loc 1 61 1 is_stmt 1 view -0
   89              		.cfi_startproc
   90              		@ args = 0, pretend = 0, frame = 0
   91              		@ frame_needed = 0, uses_anonymous_args = 0
   92              		@ link register save eliminated.
-  59:Src/target.c  **** 	accel_dir_flg = amode;
-  93              		.loc 1 59 2 view .LVU9
-  94              		.loc 1 59 16 is_stmt 0 view .LVU10
+  62:Src/target.c  **** 	accel_dir_flg = amode;
+  93              		.loc 1 62 2 view .LVU9
+  94              		.loc 1 62 16 is_stmt 0 view .LVU10
   95 0000 014B     		ldr	r3, .L8
   96 0002 1870     		strb	r0, [r3]
-  60:Src/target.c  **** }
-  97              		.loc 1 60 1 view .LVU11
+  63:Src/target.c  **** }
+  97              		.loc 1 63 1 view .LVU11
   98 0004 7047     		bx	lr
   99              	.L9:
  100 0006 00BF     		.align	2
@@ -166,1358 +169,1605 @@ ARM GAS  C:\Temp\ccHU6vXK.s 			page 1
  102 0008 00000000 		.word	.LANCHOR2
  103              		.cfi_endproc
  104              	.LFE6:
- 106              		.section	.text.get_target_move_speed,"ax",%progbits
+ 106              		.section	.text.set_speed_under_lim_flg,"ax",%progbits
  107              		.align	1
- 108              		.global	get_target_move_speed
+ 108              		.global	set_speed_under_lim_flg
  109              		.syntax unified
  110              		.thumb
  111              		.thumb_func
  112              		.fpu fpv4-sp-d16
- 114              	get_target_move_speed:
- 115              	.LFB7:
-  61:Src/target.c  **** 
-  62:Src/target.c  **** 
-  63:Src/target.c  **** //機能	: 目標移動速度[m/s]取得
-ARM GAS  C:\Temp\ccHU6vXK.s 			page 4
+ 114              	set_speed_under_lim_flg:
+ 115              	.LVL3:
+ARM GAS  C:\Temp\ccHYQKog.s 			page 4
 
 
-  64:Src/target.c  **** //引数	: なし
-  65:Src/target.c  **** //返り値	: 目標移動速度[m/s]
-  66:Src/target.c  **** float get_target_move_speed ( void )
-  67:Src/target.c  **** {
- 116              		.loc 1 67 1 is_stmt 1 view -0
- 117              		.cfi_startproc
- 118              		@ args = 0, pretend = 0, frame = 0
- 119              		@ frame_needed = 0, uses_anonymous_args = 0
- 120              		@ link register save eliminated.
-  68:Src/target.c  **** 	return target_move_speed;
- 121              		.loc 1 68 2 view .LVU13
-  69:Src/target.c  **** }
- 122              		.loc 1 69 1 is_stmt 0 view .LVU14
- 123 0000 014B     		ldr	r3, .L11
- 124 0002 93ED000A 		vldr.32	s0, [r3]
- 125 0006 7047     		bx	lr
- 126              	.L12:
- 127              		.align	2
- 128              	.L11:
- 129 0008 00000000 		.word	.LANCHOR3
- 130              		.cfi_endproc
- 131              	.LFE7:
- 133              		.section	.text.get_target_rotation_speed,"ax",%progbits
- 134              		.align	1
- 135              		.global	get_target_rotation_speed
- 136              		.syntax unified
- 137              		.thumb
- 138              		.thumb_func
- 139              		.fpu fpv4-sp-d16
- 141              	get_target_rotation_speed:
- 142              	.LFB8:
-  70:Src/target.c  **** 
-  71:Src/target.c  **** //機能	: 目標角速度[m/s]取得
-  72:Src/target.c  **** //引数	: なし
-  73:Src/target.c  **** //返り値	: 目標角速度[m/s]
-  74:Src/target.c  **** float get_target_rotation_speed ( void )
-  75:Src/target.c  **** {
- 143              		.loc 1 75 1 is_stmt 1 view -0
- 144              		.cfi_startproc
- 145              		@ args = 0, pretend = 0, frame = 0
- 146              		@ frame_needed = 0, uses_anonymous_args = 0
- 147              		@ link register save eliminated.
-  76:Src/target.c  **** 	return target_rotation_speed;
- 148              		.loc 1 76 2 view .LVU16
-  77:Src/target.c  **** }
- 149              		.loc 1 77 1 is_stmt 0 view .LVU17
- 150 0000 014B     		ldr	r3, .L14
- 151 0002 93ED000A 		vldr.32	s0, [r3]
- 152 0006 7047     		bx	lr
- 153              	.L15:
- 154              		.align	2
- 155              	.L14:
- 156 0008 00000000 		.word	.LANCHOR4
- 157              		.cfi_endproc
- 158              	.LFE8:
- 160              		.section	.text.get_target_length,"ax",%progbits
- 161              		.align	1
-ARM GAS  C:\Temp\ccHU6vXK.s 			page 5
+ 116              	.LFB7:
+  64:Src/target.c  **** 
+  65:Src/target.c  **** 
+  66:Src/target.c  **** //機能	: 下限速度モードをセットする
+  67:Src/target.c  **** //引数	: 下限速度モード(zero,slow)
+  68:Src/target.c  **** //返り値	: なし
+  69:Src/target.c  **** void set_speed_under_lim_flg ( speed_under_lim_mode smode  )
+  70:Src/target.c  **** {
+ 117              		.loc 1 70 1 is_stmt 1 view -0
+ 118              		.cfi_startproc
+ 119              		@ args = 0, pretend = 0, frame = 0
+ 120              		@ frame_needed = 0, uses_anonymous_args = 0
+ 121              		@ link register save eliminated.
+  71:Src/target.c  **** 	speed_under_lim_flg = smode;
+ 122              		.loc 1 71 2 view .LVU13
+ 123              		.loc 1 71 22 is_stmt 0 view .LVU14
+ 124 0000 014B     		ldr	r3, .L11
+ 125 0002 1870     		strb	r0, [r3]
+  72:Src/target.c  **** }
+ 126              		.loc 1 72 1 view .LVU15
+ 127 0004 7047     		bx	lr
+ 128              	.L12:
+ 129 0006 00BF     		.align	2
+ 130              	.L11:
+ 131 0008 00000000 		.word	.LANCHOR3
+ 132              		.cfi_endproc
+ 133              	.LFE7:
+ 135              		.section	.text.get_target_move_speed,"ax",%progbits
+ 136              		.align	1
+ 137              		.global	get_target_move_speed
+ 138              		.syntax unified
+ 139              		.thumb
+ 140              		.thumb_func
+ 141              		.fpu fpv4-sp-d16
+ 143              	get_target_move_speed:
+ 144              	.LFB8:
+  73:Src/target.c  **** 
+  74:Src/target.c  **** //機能	: 目標移動速度[m/s]取得
+  75:Src/target.c  **** //引数	: なし
+  76:Src/target.c  **** //返り値	: 目標移動速度[m/s]
+  77:Src/target.c  **** float get_target_move_speed ( void )
+  78:Src/target.c  **** {
+ 145              		.loc 1 78 1 is_stmt 1 view -0
+ 146              		.cfi_startproc
+ 147              		@ args = 0, pretend = 0, frame = 0
+ 148              		@ frame_needed = 0, uses_anonymous_args = 0
+ 149              		@ link register save eliminated.
+  79:Src/target.c  **** 	return target_move_speed;
+ 150              		.loc 1 79 2 view .LVU17
+  80:Src/target.c  **** }
+ 151              		.loc 1 80 1 is_stmt 0 view .LVU18
+ 152 0000 014B     		ldr	r3, .L14
+ 153 0002 93ED000A 		vldr.32	s0, [r3]
+ 154 0006 7047     		bx	lr
+ 155              	.L15:
+ 156              		.align	2
+ 157              	.L14:
+ARM GAS  C:\Temp\ccHYQKog.s 			page 5
 
 
- 162              		.global	get_target_length
- 163              		.syntax unified
- 164              		.thumb
- 165              		.thumb_func
- 166              		.fpu fpv4-sp-d16
- 168              	get_target_length:
- 169              	.LFB9:
-  78:Src/target.c  **** 
-  79:Src/target.c  **** //機能	: 目標移動距離取得
-  80:Src/target.c  **** //引数	: なし
-  81:Src/target.c  **** //返り値	: 目標移動距離
-  82:Src/target.c  **** float get_target_length ( void )
-  83:Src/target.c  **** {
- 170              		.loc 1 83 1 is_stmt 1 view -0
- 171              		.cfi_startproc
- 172              		@ args = 0, pretend = 0, frame = 0
- 173              		@ frame_needed = 0, uses_anonymous_args = 0
- 174              		@ link register save eliminated.
-  84:Src/target.c  **** 	return target_length;
- 175              		.loc 1 84 2 view .LVU19
-  85:Src/target.c  **** }
- 176              		.loc 1 85 1 is_stmt 0 view .LVU20
- 177 0000 014B     		ldr	r3, .L17
- 178 0002 93ED000A 		vldr.32	s0, [r3]
- 179 0006 7047     		bx	lr
- 180              	.L18:
- 181              		.align	2
- 182              	.L17:
- 183 0008 00000000 		.word	.LANCHOR5
- 184              		.cfi_endproc
- 185              	.LFE9:
- 187              		.section	.text.get_ideal_length,"ax",%progbits
- 188              		.align	1
- 189              		.global	get_ideal_length
- 190              		.syntax unified
- 191              		.thumb
- 192              		.thumb_func
- 193              		.fpu fpv4-sp-d16
- 195              	get_ideal_length:
- 196              	.LFB10:
-  86:Src/target.c  **** 
-  87:Src/target.c  **** //機能	: 理想移動距離取得
-  88:Src/target.c  **** //引数	: なし
-  89:Src/target.c  **** //返り値	: 理想移動距離
-  90:Src/target.c  **** float get_ideal_length ( void )
-  91:Src/target.c  **** {
- 197              		.loc 1 91 1 is_stmt 1 view -0
- 198              		.cfi_startproc
- 199              		@ args = 0, pretend = 0, frame = 0
- 200              		@ frame_needed = 0, uses_anonymous_args = 0
- 201              		@ link register save eliminated.
-  92:Src/target.c  **** 	return ideal_length;
- 202              		.loc 1 92 2 view .LVU22
-  93:Src/target.c  **** }
- 203              		.loc 1 93 1 is_stmt 0 view .LVU23
- 204 0000 014B     		ldr	r3, .L20
- 205 0002 93ED000A 		vldr.32	s0, [r3]
-ARM GAS  C:\Temp\ccHU6vXK.s 			page 6
+ 158 0008 00000000 		.word	.LANCHOR4
+ 159              		.cfi_endproc
+ 160              	.LFE8:
+ 162              		.section	.text.get_target_rotation_speed,"ax",%progbits
+ 163              		.align	1
+ 164              		.global	get_target_rotation_speed
+ 165              		.syntax unified
+ 166              		.thumb
+ 167              		.thumb_func
+ 168              		.fpu fpv4-sp-d16
+ 170              	get_target_rotation_speed:
+ 171              	.LFB9:
+  81:Src/target.c  **** 
+  82:Src/target.c  **** //機能	: 目標角速度[m/s]取得
+  83:Src/target.c  **** //引数	: なし
+  84:Src/target.c  **** //返り値	: 目標角速度[m/s]
+  85:Src/target.c  **** float get_target_rotation_speed ( void )
+  86:Src/target.c  **** {
+ 172              		.loc 1 86 1 is_stmt 1 view -0
+ 173              		.cfi_startproc
+ 174              		@ args = 0, pretend = 0, frame = 0
+ 175              		@ frame_needed = 0, uses_anonymous_args = 0
+ 176              		@ link register save eliminated.
+  87:Src/target.c  **** 	return target_rotation_speed;
+ 177              		.loc 1 87 2 view .LVU20
+  88:Src/target.c  **** }
+ 178              		.loc 1 88 1 is_stmt 0 view .LVU21
+ 179 0000 014B     		ldr	r3, .L17
+ 180 0002 93ED000A 		vldr.32	s0, [r3]
+ 181 0006 7047     		bx	lr
+ 182              	.L18:
+ 183              		.align	2
+ 184              	.L17:
+ 185 0008 00000000 		.word	.LANCHOR5
+ 186              		.cfi_endproc
+ 187              	.LFE9:
+ 189              		.section	.text.get_target_length,"ax",%progbits
+ 190              		.align	1
+ 191              		.global	get_target_length
+ 192              		.syntax unified
+ 193              		.thumb
+ 194              		.thumb_func
+ 195              		.fpu fpv4-sp-d16
+ 197              	get_target_length:
+ 198              	.LFB10:
+  89:Src/target.c  **** 
+  90:Src/target.c  **** //機能	: 目標移動距離取得
+  91:Src/target.c  **** //引数	: なし
+  92:Src/target.c  **** //返り値	: 目標移動距離
+  93:Src/target.c  **** float get_target_length ( void )
+  94:Src/target.c  **** {
+ 199              		.loc 1 94 1 is_stmt 1 view -0
+ 200              		.cfi_startproc
+ 201              		@ args = 0, pretend = 0, frame = 0
+ 202              		@ frame_needed = 0, uses_anonymous_args = 0
+ 203              		@ link register save eliminated.
+  95:Src/target.c  **** 	return target_length;
+ARM GAS  C:\Temp\ccHYQKog.s 			page 6
 
 
- 206 0006 7047     		bx	lr
- 207              	.L21:
- 208              		.align	2
- 209              	.L20:
- 210 0008 00000000 		.word	.LANCHOR6
- 211              		.cfi_endproc
- 212              	.LFE10:
- 214              		.section	.text.get_target_angle,"ax",%progbits
- 215              		.align	1
- 216              		.global	get_target_angle
- 217              		.syntax unified
- 218              		.thumb
- 219              		.thumb_func
- 220              		.fpu fpv4-sp-d16
- 222              	get_target_angle:
- 223              	.LFB11:
-  94:Src/target.c  **** 
-  95:Src/target.c  **** //機能	: 目標角度取得
-  96:Src/target.c  **** //引数	: なし
-  97:Src/target.c  **** //返り値	: 目標角度
-  98:Src/target.c  **** float get_target_angle ( void )
-  99:Src/target.c  **** {
- 224              		.loc 1 99 1 is_stmt 1 view -0
- 225              		.cfi_startproc
- 226              		@ args = 0, pretend = 0, frame = 0
- 227              		@ frame_needed = 0, uses_anonymous_args = 0
- 228              		@ link register save eliminated.
- 100:Src/target.c  **** 	return target_angle;
- 229              		.loc 1 100 2 view .LVU25
- 101:Src/target.c  **** }
- 230              		.loc 1 101 1 is_stmt 0 view .LVU26
- 231 0000 014B     		ldr	r3, .L23
- 232 0002 93ED000A 		vldr.32	s0, [r3]
- 233 0006 7047     		bx	lr
- 234              	.L24:
- 235              		.align	2
- 236              	.L23:
- 237 0008 00000000 		.word	.LANCHOR7
- 238              		.cfi_endproc
- 239              	.LFE11:
- 241              		.section	.text.get_ideal_angle,"ax",%progbits
- 242              		.align	1
- 243              		.global	get_ideal_angle
- 244              		.syntax unified
- 245              		.thumb
- 246              		.thumb_func
- 247              		.fpu fpv4-sp-d16
- 249              	get_ideal_angle:
- 250              	.LFB12:
- 102:Src/target.c  **** 
- 103:Src/target.c  **** //機能	: 理想角度取得
- 104:Src/target.c  **** //引数	: なし
- 105:Src/target.c  **** //返り値	: 理想角度
- 106:Src/target.c  **** float get_ideal_angle ( void )
- 107:Src/target.c  **** {
- 251              		.loc 1 107 1 is_stmt 1 view -0
- 252              		.cfi_startproc
-ARM GAS  C:\Temp\ccHU6vXK.s 			page 7
+ 204              		.loc 1 95 2 view .LVU23
+  96:Src/target.c  **** }
+ 205              		.loc 1 96 1 is_stmt 0 view .LVU24
+ 206 0000 014B     		ldr	r3, .L20
+ 207 0002 93ED000A 		vldr.32	s0, [r3]
+ 208 0006 7047     		bx	lr
+ 209              	.L21:
+ 210              		.align	2
+ 211              	.L20:
+ 212 0008 00000000 		.word	.LANCHOR6
+ 213              		.cfi_endproc
+ 214              	.LFE10:
+ 216              		.section	.text.set_ideal_length,"ax",%progbits
+ 217              		.align	1
+ 218              		.global	set_ideal_length
+ 219              		.syntax unified
+ 220              		.thumb
+ 221              		.thumb_func
+ 222              		.fpu fpv4-sp-d16
+ 224              	set_ideal_length:
+ 225              	.LVL4:
+ 226              	.LFB11:
+  97:Src/target.c  **** 
+  98:Src/target.c  **** //機能	: 理想移動距離セット
+  99:Src/target.c  **** //引数	: 理想移動距離
+ 100:Src/target.c  **** //返り値	: なし
+ 101:Src/target.c  **** void set_ideal_length ( float templ )
+ 102:Src/target.c  **** {
+ 227              		.loc 1 102 1 is_stmt 1 view -0
+ 228              		.cfi_startproc
+ 229              		@ args = 0, pretend = 0, frame = 0
+ 230              		@ frame_needed = 0, uses_anonymous_args = 0
+ 231              		@ link register save eliminated.
+ 103:Src/target.c  **** 	ideal_length = templ;
+ 232              		.loc 1 103 2 view .LVU26
+ 233              		.loc 1 103 15 is_stmt 0 view .LVU27
+ 234 0000 014B     		ldr	r3, .L23
+ 235 0002 83ED000A 		vstr.32	s0, [r3]
+ 104:Src/target.c  **** }
+ 236              		.loc 1 104 1 view .LVU28
+ 237 0006 7047     		bx	lr
+ 238              	.L24:
+ 239              		.align	2
+ 240              	.L23:
+ 241 0008 00000000 		.word	.LANCHOR7
+ 242              		.cfi_endproc
+ 243              	.LFE11:
+ 245              		.section	.text.set_ideal_angle,"ax",%progbits
+ 246              		.align	1
+ 247              		.global	set_ideal_angle
+ 248              		.syntax unified
+ 249              		.thumb
+ 250              		.thumb_func
+ 251              		.fpu fpv4-sp-d16
+ 253              	set_ideal_angle:
+ 254              	.LVL5:
+ 255              	.LFB12:
+ARM GAS  C:\Temp\ccHYQKog.s 			page 7
 
 
- 253              		@ args = 0, pretend = 0, frame = 0
- 254              		@ frame_needed = 0, uses_anonymous_args = 0
- 255              		@ link register save eliminated.
- 108:Src/target.c  **** 	return ideal_angle;
- 256              		.loc 1 108 2 view .LVU28
- 109:Src/target.c  **** }
- 257              		.loc 1 109 1 is_stmt 0 view .LVU29
- 258 0000 014B     		ldr	r3, .L26
- 259 0002 93ED000A 		vldr.32	s0, [r3]
- 260 0006 7047     		bx	lr
- 261              	.L27:
- 262              		.align	2
- 263              	.L26:
- 264 0008 00000000 		.word	.LANCHOR8
- 265              		.cfi_endproc
- 266              	.LFE12:
- 268              		.section	.text.set_target_length,"ax",%progbits
- 269              		.align	1
- 270              		.global	set_target_length
- 271              		.syntax unified
- 272              		.thumb
- 273              		.thumb_func
- 274              		.fpu fpv4-sp-d16
- 276              	set_target_length:
- 277              	.LVL3:
- 278              	.LFB13:
- 110:Src/target.c  **** 
- 111:Src/target.c  **** 
- 112:Src/target.c  **** 
- 113:Src/target.c  **** //機能	: 目標移動距離更新
- 114:Src/target.c  **** //引数	: 加算する移動距離[m]
- 115:Src/target.c  **** //返り値	: なし
- 116:Src/target.c  **** void set_target_length ( float set_length )
- 117:Src/target.c  **** {
- 279              		.loc 1 117 1 is_stmt 1 view -0
- 280              		.cfi_startproc
- 281              		@ args = 0, pretend = 0, frame = 0
- 282              		@ frame_needed = 0, uses_anonymous_args = 0
- 283              		@ link register save eliminated.
- 118:Src/target.c  **** 	target_length += set_length;
- 284              		.loc 1 118 2 view .LVU31
- 285              		.loc 1 118 16 is_stmt 0 view .LVU32
- 286 0000 034B     		ldr	r3, .L29
- 287 0002 D3ED007A 		vldr.32	s15, [r3]
- 288 0006 77EE807A 		vadd.f32	s15, s15, s0
- 289 000a C3ED007A 		vstr.32	s15, [r3]
- 119:Src/target.c  **** }
- 290              		.loc 1 119 1 view .LVU33
- 291 000e 7047     		bx	lr
- 292              	.L30:
- 293              		.align	2
- 294              	.L29:
- 295 0010 00000000 		.word	.LANCHOR5
- 296              		.cfi_endproc
- 297              	.LFE13:
- 299              		.section	.text.set_target_angle,"ax",%progbits
- 300              		.align	1
-ARM GAS  C:\Temp\ccHU6vXK.s 			page 8
+ 105:Src/target.c  **** 
+ 106:Src/target.c  **** //機能	: 理想角度セット
+ 107:Src/target.c  **** //引数	: 理想角度
+ 108:Src/target.c  **** //返り値	: なし
+ 109:Src/target.c  **** void set_ideal_angle ( float templ )
+ 110:Src/target.c  **** {
+ 256              		.loc 1 110 1 is_stmt 1 view -0
+ 257              		.cfi_startproc
+ 258              		@ args = 0, pretend = 0, frame = 0
+ 259              		@ frame_needed = 0, uses_anonymous_args = 0
+ 260              		@ link register save eliminated.
+ 111:Src/target.c  **** 	ideal_angle = templ;
+ 261              		.loc 1 111 2 view .LVU30
+ 262              		.loc 1 111 14 is_stmt 0 view .LVU31
+ 263 0000 014B     		ldr	r3, .L26
+ 264 0002 83ED000A 		vstr.32	s0, [r3]
+ 112:Src/target.c  **** }
+ 265              		.loc 1 112 1 view .LVU32
+ 266 0006 7047     		bx	lr
+ 267              	.L27:
+ 268              		.align	2
+ 269              	.L26:
+ 270 0008 00000000 		.word	.LANCHOR8
+ 271              		.cfi_endproc
+ 272              	.LFE12:
+ 274              		.section	.text.get_ideal_length,"ax",%progbits
+ 275              		.align	1
+ 276              		.global	get_ideal_length
+ 277              		.syntax unified
+ 278              		.thumb
+ 279              		.thumb_func
+ 280              		.fpu fpv4-sp-d16
+ 282              	get_ideal_length:
+ 283              	.LFB13:
+ 113:Src/target.c  **** 
+ 114:Src/target.c  **** //機能	: 理想移動距離取得
+ 115:Src/target.c  **** //引数	: なし
+ 116:Src/target.c  **** //返り値	: 理想移動距離
+ 117:Src/target.c  **** float get_ideal_length ( void )
+ 118:Src/target.c  **** {
+ 284              		.loc 1 118 1 is_stmt 1 view -0
+ 285              		.cfi_startproc
+ 286              		@ args = 0, pretend = 0, frame = 0
+ 287              		@ frame_needed = 0, uses_anonymous_args = 0
+ 288              		@ link register save eliminated.
+ 119:Src/target.c  **** 	return ideal_length;
+ 289              		.loc 1 119 2 view .LVU34
+ 120:Src/target.c  **** }
+ 290              		.loc 1 120 1 is_stmt 0 view .LVU35
+ 291 0000 014B     		ldr	r3, .L29
+ 292 0002 93ED000A 		vldr.32	s0, [r3]
+ 293 0006 7047     		bx	lr
+ 294              	.L30:
+ 295              		.align	2
+ 296              	.L29:
+ 297 0008 00000000 		.word	.LANCHOR7
+ 298              		.cfi_endproc
+ARM GAS  C:\Temp\ccHYQKog.s 			page 8
 
 
- 301              		.global	set_target_angle
- 302              		.syntax unified
- 303              		.thumb
- 304              		.thumb_func
- 305              		.fpu fpv4-sp-d16
- 307              	set_target_angle:
- 308              	.LVL4:
- 309              	.LFB14:
- 120:Src/target.c  **** 
- 121:Src/target.c  **** //機能	: 目標角度更新
- 122:Src/target.c  **** //引数	: 加算する角度[rad]
- 123:Src/target.c  **** //返り値	: なし
- 124:Src/target.c  **** void set_target_angle ( float set_angle )
- 125:Src/target.c  **** {
- 310              		.loc 1 125 1 is_stmt 1 view -0
- 311              		.cfi_startproc
- 312              		@ args = 0, pretend = 0, frame = 0
- 313              		@ frame_needed = 0, uses_anonymous_args = 0
- 314              		@ link register save eliminated.
- 126:Src/target.c  **** 	target_angle += set_angle;
- 315              		.loc 1 126 2 view .LVU35
- 316              		.loc 1 126 15 is_stmt 0 view .LVU36
- 317 0000 034B     		ldr	r3, .L32
- 318 0002 D3ED007A 		vldr.32	s15, [r3]
- 319 0006 77EE807A 		vadd.f32	s15, s15, s0
- 320 000a C3ED007A 		vstr.32	s15, [r3]
- 127:Src/target.c  **** }
- 321              		.loc 1 127 1 view .LVU37
- 322 000e 7047     		bx	lr
- 323              	.L33:
- 324              		.align	2
- 325              	.L32:
- 326 0010 00000000 		.word	.LANCHOR7
- 327              		.cfi_endproc
- 328              	.LFE14:
- 330              		.section	.text.calc_target_move_accel,"ax",%progbits
- 331              		.align	1
- 332              		.global	calc_target_move_accel
- 333              		.syntax unified
- 334              		.thumb
- 335              		.thumb_func
- 336              		.fpu fpv4-sp-d16
- 338              	calc_target_move_accel:
- 339              	.LFB15:
- 128:Src/target.c  **** 
+ 299              	.LFE13:
+ 301              		.section	.text.get_target_angle,"ax",%progbits
+ 302              		.align	1
+ 303              		.global	get_target_angle
+ 304              		.syntax unified
+ 305              		.thumb
+ 306              		.thumb_func
+ 307              		.fpu fpv4-sp-d16
+ 309              	get_target_angle:
+ 310              	.LFB14:
+ 121:Src/target.c  **** 
+ 122:Src/target.c  **** //機能	: 目標角度取得
+ 123:Src/target.c  **** //引数	: なし
+ 124:Src/target.c  **** //返り値	: 目標角度
+ 125:Src/target.c  **** float get_target_angle ( void )
+ 126:Src/target.c  **** {
+ 311              		.loc 1 126 1 is_stmt 1 view -0
+ 312              		.cfi_startproc
+ 313              		@ args = 0, pretend = 0, frame = 0
+ 314              		@ frame_needed = 0, uses_anonymous_args = 0
+ 315              		@ link register save eliminated.
+ 127:Src/target.c  **** 	return target_angle;
+ 316              		.loc 1 127 2 view .LVU37
+ 128:Src/target.c  **** }
+ 317              		.loc 1 128 1 is_stmt 0 view .LVU38
+ 318 0000 014B     		ldr	r3, .L32
+ 319 0002 93ED000A 		vldr.32	s0, [r3]
+ 320 0006 7047     		bx	lr
+ 321              	.L33:
+ 322              		.align	2
+ 323              	.L32:
+ 324 0008 00000000 		.word	.LANCHOR9
+ 325              		.cfi_endproc
+ 326              	.LFE14:
+ 328              		.section	.text.get_ideal_angle,"ax",%progbits
+ 329              		.align	1
+ 330              		.global	get_ideal_angle
+ 331              		.syntax unified
+ 332              		.thumb
+ 333              		.thumb_func
+ 334              		.fpu fpv4-sp-d16
+ 336              	get_ideal_angle:
+ 337              	.LFB15:
  129:Src/target.c  **** 
- 130:Src/target.c  **** //機能	: 移動加速度の更新
- 131:Src/target.c  **** //引数	: なし
- 132:Src/target.c  **** //返り値	: なし
- 133:Src/target.c  **** //備考	: 現在移動距離と目標移動距離に応じて、加速度をスイッチ
- 134:Src/target.c  **** //		: 1msタスク
- 135:Src/target.c  **** void calc_target_move_accel(void)
- 136:Src/target.c  **** {
- 340              		.loc 1 136 1 is_stmt 1 view -0
- 341              		.cfi_startproc
- 342              		@ args = 0, pretend = 0, frame = 0
- 343              		@ frame_needed = 0, uses_anonymous_args = 0
-ARM GAS  C:\Temp\ccHU6vXK.s 			page 9
+ 130:Src/target.c  **** //機能	: 理想角度取得
+ 131:Src/target.c  **** //引数	: なし 
+ 132:Src/target.c  **** //返り値	: 理想角度
+ 133:Src/target.c  **** float get_ideal_angle ( void )
+ 134:Src/target.c  **** {
+ 338              		.loc 1 134 1 is_stmt 1 view -0
+ 339              		.cfi_startproc
+ 340              		@ args = 0, pretend = 0, frame = 0
+ 341              		@ frame_needed = 0, uses_anonymous_args = 0
+ 342              		@ link register save eliminated.
+ 135:Src/target.c  **** 	return ideal_angle;
+ 343              		.loc 1 135 2 view .LVU40
+ 136:Src/target.c  **** }
+ARM GAS  C:\Temp\ccHYQKog.s 			page 9
 
 
- 344              		@ link register save eliminated.
+ 344              		.loc 1 136 1 is_stmt 0 view .LVU41
+ 345 0000 014B     		ldr	r3, .L35
+ 346 0002 93ED000A 		vldr.32	s0, [r3]
+ 347 0006 7047     		bx	lr
+ 348              	.L36:
+ 349              		.align	2
+ 350              	.L35:
+ 351 0008 00000000 		.word	.LANCHOR8
+ 352              		.cfi_endproc
+ 353              	.LFE15:
+ 355              		.section	.text.set_target_length,"ax",%progbits
+ 356              		.align	1
+ 357              		.global	set_target_length
+ 358              		.syntax unified
+ 359              		.thumb
+ 360              		.thumb_func
+ 361              		.fpu fpv4-sp-d16
+ 363              	set_target_length:
+ 364              	.LVL6:
+ 365              	.LFB16:
  137:Src/target.c  **** 
- 138:Src/target.c  **** 	float tm_deccel_length = 0;
- 345              		.loc 1 138 2 view .LVU39
- 346              	.LVL5:
+ 138:Src/target.c  **** 
  139:Src/target.c  **** 
- 140:Src/target.c  **** 	switch(accel_dir_flg)
- 347              		.loc 1 140 2 view .LVU40
- 348 0000 2C4B     		ldr	r3, .L50
- 349 0002 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
- 350 0004 13B1     		cbz	r3, .L35
- 351 0006 012B     		cmp	r3, #1
- 352 0008 0FD0     		beq	.L36
- 353 000a 7047     		bx	lr
- 354              	.L35:
- 141:Src/target.c  **** 	{
- 142:Src/target.c  **** 		case acceleration: //加速モード時、常に加速(リミットに引っ掛かり続ける)
- 143:Src/target.c  **** 			switch(move_dir_flg)
- 355              		.loc 1 143 4 view .LVU41
- 356 000c 2A4B     		ldr	r3, .L50+4
- 357 000e 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
- 358 0010 13B1     		cbz	r3, .L38
- 359 0012 012B     		cmp	r3, #1
- 360 0014 05D0     		beq	.L39
- 361 0016 7047     		bx	lr
- 362              	.L38:
- 144:Src/target.c  **** 			{
- 145:Src/target.c  **** 			case forward_mode:
- 146:Src/target.c  **** 				target_move_accel = 1 * move_accel;
- 363              		.loc 1 146 5 view .LVU42
- 364              		.loc 1 146 23 is_stmt 0 view .LVU43
- 365 0018 284B     		ldr	r3, .L50+8
- 366 001a 4FF07F52 		mov	r2, #1069547520
- 367 001e 1A60     		str	r2, [r3]	@ float
- 147:Src/target.c  **** 				break;
- 368              		.loc 1 147 5 is_stmt 1 view .LVU44
- 369 0020 7047     		bx	lr
- 370              	.L39:
- 148:Src/target.c  **** 			case backward_mode:
- 149:Src/target.c  **** 				target_move_accel = -1 * move_accel;
- 371              		.loc 1 149 5 view .LVU45
- 372              		.loc 1 149 23 is_stmt 0 view .LVU46
- 373 0022 264B     		ldr	r3, .L50+8
- 374 0024 264A     		ldr	r2, .L50+12
- 375 0026 1A60     		str	r2, [r3]	@ float
- 150:Src/target.c  **** 				break;
- 376              		.loc 1 150 5 is_stmt 1 view .LVU47
- 377 0028 7047     		bx	lr
- 378              	.L36:
- 151:Src/target.c  **** 			}
- 152:Src/target.c  **** 			break;
- 153:Src/target.c  **** 
- 154:Src/target.c  **** 		case deceleration:
- 155:Src/target.c  **** 			switch(move_dir_flg)
- 379              		.loc 1 155 4 view .LVU48
- 380 002a 234B     		ldr	r3, .L50+4
- 381 002c 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
-ARM GAS  C:\Temp\ccHU6vXK.s 			page 10
+ 140:Src/target.c  **** //機能	: 目標移動距離更新
+ 141:Src/target.c  **** //引数	: 加算する移動距離[m]
+ 142:Src/target.c  **** //返り値	: なし
+ 143:Src/target.c  **** void set_target_length ( float set_length )
+ 144:Src/target.c  **** {
+ 366              		.loc 1 144 1 is_stmt 1 view -0
+ 367              		.cfi_startproc
+ 368              		@ args = 0, pretend = 0, frame = 0
+ 369              		@ frame_needed = 0, uses_anonymous_args = 0
+ 370              		@ link register save eliminated.
+ 145:Src/target.c  **** 	target_length += set_length;
+ 371              		.loc 1 145 2 view .LVU43
+ 372              		.loc 1 145 16 is_stmt 0 view .LVU44
+ 373 0000 034B     		ldr	r3, .L38
+ 374 0002 D3ED007A 		vldr.32	s15, [r3]
+ 375 0006 77EE807A 		vadd.f32	s15, s15, s0
+ 376 000a C3ED007A 		vstr.32	s15, [r3]
+ 146:Src/target.c  **** }
+ 377              		.loc 1 146 1 view .LVU45
+ 378 000e 7047     		bx	lr
+ 379              	.L39:
+ 380              		.align	2
+ 381              	.L38:
+ 382 0010 00000000 		.word	.LANCHOR6
+ 383              		.cfi_endproc
+ 384              	.LFE16:
+ 386              		.section	.text.set_target_angle,"ax",%progbits
+ 387              		.align	1
+ 388              		.global	set_target_angle
+ 389              		.syntax unified
+ 390              		.thumb
+ 391              		.thumb_func
+ 392              		.fpu fpv4-sp-d16
+ 394              	set_target_angle:
+ARM GAS  C:\Temp\ccHYQKog.s 			page 10
 
 
- 382 002e 13B1     		cbz	r3, .L40
- 383 0030 012B     		cmp	r3, #1
- 384 0032 1FD0     		beq	.L41
- 385 0034 7047     		bx	lr
- 386              	.L40:
- 156:Src/target.c  **** 			{
- 157:Src/target.c  **** 			case forward_mode:
- 158:Src/target.c  **** 				/* 減速に必要な距離算出*/
- 159:Src/target.c  **** 				tm_deccel_length = ((target_move_speed*target_move_speed)-(target_move_speed_fin*target_move_sp
- 387              		.loc 1 159 5 view .LVU49
- 388              		.loc 1 159 43 is_stmt 0 view .LVU50
- 389 0036 234B     		ldr	r3, .L50+16
- 390 0038 D3ED007A 		vldr.32	s15, [r3]
- 391 003c 67EEA77A 		vmul.f32	s15, s15, s15
- 392              		.loc 1 159 22 view .LVU51
- 393 0040 F0EE086A 		vmov.f32	s13, #3.0e+0
- 394 0044 87EEA67A 		vdiv.f32	s14, s15, s13
- 395              	.LVL6:
- 160:Src/target.c  **** 				
- 161:Src/target.c  **** 				//減速開始前
- 162:Src/target.c  **** 				if(ideal_length < (target_length - tm_deccel_length))
- 396              		.loc 1 162 5 is_stmt 1 view .LVU52
- 397              		.loc 1 162 38 is_stmt 0 view .LVU53
- 398 0048 1F4B     		ldr	r3, .L50+20
- 399 004a D3ED007A 		vldr.32	s15, [r3]
- 400 004e 77EEC77A 		vsub.f32	s15, s15, s14
- 401              		.loc 1 162 21 view .LVU54
- 402 0052 1E4B     		ldr	r3, .L50+24
- 403 0054 93ED007A 		vldr.32	s14, [r3]
- 404              	.LVL7:
- 405              		.loc 1 162 7 view .LVU55
- 406 0058 F4EEC77A 		vcmpe.f32	s15, s14
- 407 005c F1EE10FA 		vmrs	APSR_nzcv, FPSCR
- 408 0060 04DD     		ble	.L48
- 163:Src/target.c  **** 				{
- 164:Src/target.c  **** 					target_move_accel =  1 * move_accel; //リミットにかかるまで加速
- 409              		.loc 1 164 6 is_stmt 1 view .LVU56
- 410              		.loc 1 164 24 is_stmt 0 view .LVU57
- 411 0062 164B     		ldr	r3, .L50+8
- 412 0064 4FF07F52 		mov	r2, #1069547520
- 413 0068 1A60     		str	r2, [r3]	@ float
- 414 006a 7047     		bx	lr
- 415              	.L48:
- 165:Src/target.c  **** 				}
- 166:Src/target.c  **** 				else//減速開始後
- 167:Src/target.c  **** 				{																	
- 168:Src/target.c  **** 					target_move_accel = -1 * move_accel;
- 416              		.loc 1 168 6 is_stmt 1 view .LVU58
- 417              		.loc 1 168 24 is_stmt 0 view .LVU59
- 418 006c 134B     		ldr	r3, .L50+8
- 419 006e 144A     		ldr	r2, .L50+12
- 420 0070 1A60     		str	r2, [r3]	@ float
- 421 0072 7047     		bx	lr
- 422              	.LVL8:
- 423              	.L41:
- 169:Src/target.c  **** 				}
- 170:Src/target.c  **** 				break;
-ARM GAS  C:\Temp\ccHU6vXK.s 			page 11
+ 395              	.LVL7:
+ 396              	.LFB17:
+ 147:Src/target.c  **** 
+ 148:Src/target.c  **** //機能	: 目標角度更新
+ 149:Src/target.c  **** //引数	: 加算する角度[rad]
+ 150:Src/target.c  **** //返り値	: なし
+ 151:Src/target.c  **** void set_target_angle ( float set_angle )
+ 152:Src/target.c  **** {
+ 397              		.loc 1 152 1 is_stmt 1 view -0
+ 398              		.cfi_startproc
+ 399              		@ args = 0, pretend = 0, frame = 0
+ 400              		@ frame_needed = 0, uses_anonymous_args = 0
+ 401              		@ link register save eliminated.
+ 153:Src/target.c  **** 	target_angle += set_angle;
+ 402              		.loc 1 153 2 view .LVU47
+ 403              		.loc 1 153 15 is_stmt 0 view .LVU48
+ 404 0000 034B     		ldr	r3, .L41
+ 405 0002 D3ED007A 		vldr.32	s15, [r3]
+ 406 0006 77EE807A 		vadd.f32	s15, s15, s0
+ 407 000a C3ED007A 		vstr.32	s15, [r3]
+ 154:Src/target.c  **** }
+ 408              		.loc 1 154 1 view .LVU49
+ 409 000e 7047     		bx	lr
+ 410              	.L42:
+ 411              		.align	2
+ 412              	.L41:
+ 413 0010 00000000 		.word	.LANCHOR9
+ 414              		.cfi_endproc
+ 415              	.LFE17:
+ 417              		.global	__aeabi_f2d
+ 418              		.global	__aeabi_dadd
+ 419              		.global	__aeabi_dcmplt
+ 420              		.section	.text.calc_target_move_accel,"ax",%progbits
+ 421              		.align	1
+ 422              		.global	calc_target_move_accel
+ 423              		.syntax unified
+ 424              		.thumb
+ 425              		.thumb_func
+ 426              		.fpu fpv4-sp-d16
+ 428              	calc_target_move_accel:
+ 429              	.LFB18:
+ 155:Src/target.c  **** 
+ 156:Src/target.c  **** 
+ 157:Src/target.c  **** //機能	: 移動加速度の更新
+ 158:Src/target.c  **** //引数	: なし
+ 159:Src/target.c  **** //返り値	: なし
+ 160:Src/target.c  **** //備考	: 現在移動距離と目標移動距離に応じて、加速度をスイッチ
+ 161:Src/target.c  **** //		: 1msタスク
+ 162:Src/target.c  **** void calc_target_move_accel(void)
+ 163:Src/target.c  **** {
+ 430              		.loc 1 163 1 is_stmt 1 view -0
+ 431              		.cfi_startproc
+ 432              		@ args = 0, pretend = 0, frame = 0
+ 433              		@ frame_needed = 0, uses_anonymous_args = 0
+ 434 0000 38B5     		push	{r3, r4, r5, lr}
+ 435              	.LCFI0:
+ 436              		.cfi_def_cfa_offset 16
+ARM GAS  C:\Temp\ccHYQKog.s 			page 11
 
 
- 171:Src/target.c  **** 
- 172:Src/target.c  **** 			case backward_mode:
- 173:Src/target.c  **** 				/* 加速に必要な距離算出*/
- 174:Src/target.c  **** 				tm_deccel_length = ((target_move_speed*target_move_speed)-(target_move_speed_fin*target_move_sp
- 424              		.loc 1 174 5 is_stmt 1 view .LVU60
- 425              		.loc 1 174 43 is_stmt 0 view .LVU61
- 426 0074 134B     		ldr	r3, .L50+16
- 427 0076 D3ED007A 		vldr.32	s15, [r3]
- 428 007a 67EEA77A 		vmul.f32	s15, s15, s15
- 429              		.loc 1 174 22 view .LVU62
- 430 007e F0EE086A 		vmov.f32	s13, #3.0e+0
- 431 0082 87EEA67A 		vdiv.f32	s14, s15, s13
- 432              	.LVL9:
- 175:Src/target.c  **** 				
- 176:Src/target.c  **** 				//加速開始前
- 177:Src/target.c  **** 				if(ideal_length > (target_length + tm_deccel_length))
- 433              		.loc 1 177 5 is_stmt 1 view .LVU63
- 434              		.loc 1 177 38 is_stmt 0 view .LVU64
- 435 0086 104B     		ldr	r3, .L50+20
- 436 0088 D3ED007A 		vldr.32	s15, [r3]
- 437 008c 77EE277A 		vadd.f32	s15, s14, s15
- 438              		.loc 1 177 21 view .LVU65
- 439 0090 0E4B     		ldr	r3, .L50+24
- 440 0092 93ED007A 		vldr.32	s14, [r3]
- 441              	.LVL10:
- 442              		.loc 1 177 7 view .LVU66
- 443 0096 F4EEC77A 		vcmpe.f32	s15, s14
- 444 009a F1EE10FA 		vmrs	APSR_nzcv, FPSCR
- 445 009e 03D5     		bpl	.L49
- 178:Src/target.c  **** 				{			
- 179:Src/target.c  **** 					target_move_accel = -1 * move_accel; //リミットにかかるまで減速
- 446              		.loc 1 179 6 is_stmt 1 view .LVU67
- 447              		.loc 1 179 24 is_stmt 0 view .LVU68
- 448 00a0 064B     		ldr	r3, .L50+8
- 449 00a2 074A     		ldr	r2, .L50+12
- 450 00a4 1A60     		str	r2, [r3]	@ float
- 451 00a6 7047     		bx	lr
- 452              	.L49:
- 180:Src/target.c  **** 				}
- 181:Src/target.c  **** 				else//加速開始後
- 182:Src/target.c  **** 				{												
- 183:Src/target.c  **** 					target_move_accel = 1 * move_accel;
- 453              		.loc 1 183 6 is_stmt 1 view .LVU69
- 454              		.loc 1 183 24 is_stmt 0 view .LVU70
- 455 00a8 044B     		ldr	r3, .L50+8
- 456 00aa 4FF07F52 		mov	r2, #1069547520
- 457 00ae 1A60     		str	r2, [r3]	@ float
- 184:Src/target.c  **** 				}
- 185:Src/target.c  **** 				break;
- 186:Src/target.c  **** 			}
- 187:Src/target.c  **** 			break;
- 188:Src/target.c  **** 	}
- 189:Src/target.c  **** 
- 190:Src/target.c  **** }
- 458              		.loc 1 190 1 view .LVU71
- 459 00b0 7047     		bx	lr
- 460              	.L51:
-ARM GAS  C:\Temp\ccHU6vXK.s 			page 12
+ 437              		.cfi_offset 3, -16
+ 438              		.cfi_offset 4, -12
+ 439              		.cfi_offset 5, -8
+ 440              		.cfi_offset 14, -4
+ 441 0002 2DED028B 		vpush.64	{d8}
+ 442              	.LCFI1:
+ 443              		.cfi_def_cfa_offset 24
+ 444              		.cfi_offset 80, -24
+ 445              		.cfi_offset 81, -20
+ 164:Src/target.c  **** 
+ 165:Src/target.c  **** 	float tm_deccel_length = 0;
+ 446              		.loc 1 165 2 view .LVU51
+ 447              	.LVL8:
+ 166:Src/target.c  **** 
+ 167:Src/target.c  **** 	switch(accel_dir_flg)
+ 448              		.loc 1 167 2 view .LVU52
+ 449 0006 364B     		ldr	r3, .L60+8
+ 450 0008 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 451 000a 23B1     		cbz	r3, .L44
+ 452 000c 012B     		cmp	r3, #1
+ 453 000e 10D0     		beq	.L45
+ 454              	.LVL9:
+ 455              	.L43:
+ 168:Src/target.c  **** 	{
+ 169:Src/target.c  **** 		case acceleration: //加速モード時、常に加速(リミットに引っ掛かり続ける)
+ 170:Src/target.c  **** 			switch(move_dir_flg)
+ 171:Src/target.c  **** 			{
+ 172:Src/target.c  **** 			case forward_mode:
+ 173:Src/target.c  **** 				target_move_accel = 1 * move_accel;
+ 174:Src/target.c  **** 				break;
+ 175:Src/target.c  **** 			case backward_mode:
+ 176:Src/target.c  **** 				target_move_accel = -1 * move_accel;
+ 177:Src/target.c  **** 				break;
+ 178:Src/target.c  **** 			}
+ 179:Src/target.c  **** 			break;
+ 180:Src/target.c  **** 
+ 181:Src/target.c  **** 		case deceleration:
+ 182:Src/target.c  **** 			switch(move_dir_flg)
+ 183:Src/target.c  **** 			{
+ 184:Src/target.c  **** 			case forward_mode:
+ 185:Src/target.c  **** 				/* 減速に必要な距離算出*/
+ 186:Src/target.c  **** 				tm_deccel_length = ((target_move_speed*target_move_speed)-(target_move_speed_fin*target_move_sp
+ 187:Src/target.c  **** 				
+ 188:Src/target.c  **** 				//減速開始前
+ 189:Src/target.c  **** 				if(ideal_length + 0.03  < (target_length - tm_deccel_length))
+ 190:Src/target.c  **** 				{
+ 191:Src/target.c  **** 					target_move_accel =  1 * move_accel; //リミットにかかるまで加速
+ 192:Src/target.c  **** 				}
+ 193:Src/target.c  **** 				else//減速開始後
+ 194:Src/target.c  **** 				{																	
+ 195:Src/target.c  **** 					target_move_accel = -1 * move_accel;
+ 196:Src/target.c  **** 				}
+ 197:Src/target.c  **** 				break;
+ 198:Src/target.c  **** 
+ 199:Src/target.c  **** 			case backward_mode:
+ 200:Src/target.c  **** 				/* 加速に必要な距離算出*/
+ 201:Src/target.c  **** 				tm_deccel_length = ((target_move_speed*target_move_speed)-(target_move_speed_fin*target_move_sp
+ARM GAS  C:\Temp\ccHYQKog.s 			page 12
 
 
- 461 00b2 00BF     		.align	2
- 462              	.L50:
- 463 00b4 00000000 		.word	.LANCHOR2
- 464 00b8 00000000 		.word	.LANCHOR0
- 465 00bc 00000000 		.word	.LANCHOR9
- 466 00c0 0000C0BF 		.word	-1077936128
- 467 00c4 00000000 		.word	.LANCHOR3
- 468 00c8 00000000 		.word	.LANCHOR5
- 469 00cc 00000000 		.word	.LANCHOR6
- 470              		.cfi_endproc
- 471              	.LFE15:
- 473              		.global	__aeabi_f2d
- 474              		.global	__aeabi_dmul
- 475              		.global	__aeabi_ddiv
- 476              		.global	__aeabi_d2f
- 477              		.section	.text.calc_rotate_accel,"ax",%progbits
- 478              		.align	1
- 479              		.global	calc_rotate_accel
- 480              		.syntax unified
- 481              		.thumb
- 482              		.thumb_func
- 483              		.fpu fpv4-sp-d16
- 485              	calc_rotate_accel:
- 486              	.LFB16:
- 191:Src/target.c  **** 
- 192:Src/target.c  **** //機能	: 角加速度の更新
- 193:Src/target.c  **** //引数	: なし
- 194:Src/target.c  **** //返り値	: なし
- 195:Src/target.c  **** //備考	: 現在角度と目標角度に応じて、加速度をスイッチ
- 196:Src/target.c  **** //		: 1msタスク
- 197:Src/target.c  **** void calc_rotate_accel(void)
- 198:Src/target.c  **** {
- 487              		.loc 1 198 1 is_stmt 1 view -0
- 488              		.cfi_startproc
- 489              		@ args = 0, pretend = 0, frame = 0
- 490              		@ frame_needed = 0, uses_anonymous_args = 0
- 491 0000 38B5     		push	{r3, r4, r5, lr}
- 492              	.LCFI0:
- 493              		.cfi_def_cfa_offset 16
- 494              		.cfi_offset 3, -16
- 495              		.cfi_offset 4, -12
- 496              		.cfi_offset 5, -8
- 497              		.cfi_offset 14, -4
- 199:Src/target.c  **** 
- 200:Src/target.c  **** 	float tm_deccel_angle = 0;
- 498              		.loc 1 200 2 view .LVU73
- 499              	.LVL11:
- 201:Src/target.c  **** 
- 202:Src/target.c  **** 	switch(rotation_dir_flg)
- 500              		.loc 1 202 2 view .LVU74
- 501 0002 334B     		ldr	r3, .L65+8
- 502 0004 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
- 503 0006 13B1     		cbz	r3, .L53
- 504 0008 012B     		cmp	r3, #1
- 505 000a 2ED0     		beq	.L54
- 506              	.LVL12:
- 507              	.L52:
-ARM GAS  C:\Temp\ccHU6vXK.s 			page 13
+ 202:Src/target.c  **** 				
+ 203:Src/target.c  **** 				//加速開始前
+ 204:Src/target.c  **** 				if(ideal_length > (target_length + tm_deccel_length))
+ 205:Src/target.c  **** 				{			
+ 206:Src/target.c  **** 					target_move_accel = -1 * move_accel; //リミットにかかるまで減速
+ 207:Src/target.c  **** 				}
+ 208:Src/target.c  **** 				else//加速開始後
+ 209:Src/target.c  **** 				{												
+ 210:Src/target.c  **** 					target_move_accel = 1 * move_accel;
+ 211:Src/target.c  **** 				}
+ 212:Src/target.c  **** 				break;
+ 213:Src/target.c  **** 			}
+ 214:Src/target.c  **** 			break;
+ 215:Src/target.c  **** 	}
+ 216:Src/target.c  **** 
+ 217:Src/target.c  **** }
+ 456              		.loc 1 217 1 is_stmt 0 view .LVU53
+ 457 0010 BDEC028B 		vldm	sp!, {d8}
+ 458              	.LCFI2:
+ 459              		.cfi_remember_state
+ 460              		.cfi_restore 80
+ 461              		.cfi_restore 81
+ 462              		.cfi_def_cfa_offset 16
+ 463 0014 38BD     		pop	{r3, r4, r5, pc}
+ 464              	.LVL10:
+ 465              	.L44:
+ 466              	.LCFI3:
+ 467              		.cfi_restore_state
+ 170:Src/target.c  **** 			{
+ 468              		.loc 1 170 4 is_stmt 1 view .LVU54
+ 469 0016 334B     		ldr	r3, .L60+12
+ 470 0018 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 471 001a 2BB1     		cbz	r3, .L47
+ 472 001c 012B     		cmp	r3, #1
+ 473 001e F7D1     		bne	.L43
+ 176:Src/target.c  **** 				break;
+ 474              		.loc 1 176 5 view .LVU55
+ 176:Src/target.c  **** 				break;
+ 475              		.loc 1 176 23 is_stmt 0 view .LVU56
+ 476 0020 314B     		ldr	r3, .L60+16
+ 477 0022 324A     		ldr	r2, .L60+20
+ 478 0024 1A60     		str	r2, [r3]	@ float
+ 177:Src/target.c  **** 			}
+ 479              		.loc 1 177 5 is_stmt 1 view .LVU57
+ 480 0026 F3E7     		b	.L43
+ 481              	.L47:
+ 173:Src/target.c  **** 				break;
+ 482              		.loc 1 173 5 view .LVU58
+ 173:Src/target.c  **** 				break;
+ 483              		.loc 1 173 23 is_stmt 0 view .LVU59
+ 484 0028 2F4B     		ldr	r3, .L60+16
+ 485 002a 4FF07F52 		mov	r2, #1069547520
+ 486 002e 1A60     		str	r2, [r3]	@ float
+ 174:Src/target.c  **** 			case backward_mode:
+ 487              		.loc 1 174 5 is_stmt 1 view .LVU60
+ 488 0030 EEE7     		b	.L43
+ 489              	.L45:
+ARM GAS  C:\Temp\ccHYQKog.s 			page 13
 
 
- 203:Src/target.c  **** 	{
- 204:Src/target.c  **** 	case counter_clockwise:
- 205:Src/target.c  **** 		/*減速に必要な角度算出*/
- 206:Src/target.c  **** 		tm_deccel_angle = 0.5 * target_rotation_speed * target_rotation_speed / rotat_accel;
- 207:Src/target.c  **** 		
- 208:Src/target.c  **** 		//減速開始前
- 209:Src/target.c  **** 		if(ideal_angle < (target_angle - tm_deccel_angle))
- 210:Src/target.c  **** 		{			
- 211:Src/target.c  **** 			target_rotation_accel =  1 * rotat_accel;
- 212:Src/target.c  **** 		}
- 213:Src/target.c  **** 		else//減速開始後
- 214:Src/target.c  **** 		{																	
- 215:Src/target.c  **** 			target_rotation_accel = -1 * rotat_accel;
- 216:Src/target.c  **** 		}
- 217:Src/target.c  **** 		break;
+ 182:Src/target.c  **** 			{
+ 490              		.loc 1 182 4 view .LVU61
+ 491 0032 2C4B     		ldr	r3, .L60+12
+ 492 0034 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 493 0036 DBB1     		cbz	r3, .L49
+ 494 0038 012B     		cmp	r3, #1
+ 495 003a E9D1     		bne	.L43
+ 201:Src/target.c  **** 				
+ 496              		.loc 1 201 5 view .LVU62
+ 201:Src/target.c  **** 				
+ 497              		.loc 1 201 43 is_stmt 0 view .LVU63
+ 498 003c 2C4B     		ldr	r3, .L60+24
+ 499 003e D3ED007A 		vldr.32	s15, [r3]
+ 500 0042 67EEA77A 		vmul.f32	s15, s15, s15
+ 201:Src/target.c  **** 				
+ 501              		.loc 1 201 22 view .LVU64
+ 502 0046 F0EE086A 		vmov.f32	s13, #3.0e+0
+ 503 004a 87EEA67A 		vdiv.f32	s14, s15, s13
+ 504              	.LVL11:
+ 204:Src/target.c  **** 				{			
+ 505              		.loc 1 204 5 is_stmt 1 view .LVU65
+ 204:Src/target.c  **** 				{			
+ 506              		.loc 1 204 38 is_stmt 0 view .LVU66
+ 507 004e 294B     		ldr	r3, .L60+28
+ 508 0050 D3ED007A 		vldr.32	s15, [r3]
+ 509 0054 77EE277A 		vadd.f32	s15, s14, s15
+ 204:Src/target.c  **** 				{			
+ 510              		.loc 1 204 21 view .LVU67
+ 511 0058 274B     		ldr	r3, .L60+32
+ 512 005a 93ED007A 		vldr.32	s14, [r3]
+ 513              	.LVL12:
+ 204:Src/target.c  **** 				{			
+ 514              		.loc 1 204 7 view .LVU68
+ 515 005e F4EEC77A 		vcmpe.f32	s15, s14
+ 516 0062 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 517 0066 30D5     		bpl	.L58
+ 206:Src/target.c  **** 				}
+ 518              		.loc 1 206 6 is_stmt 1 view .LVU69
+ 206:Src/target.c  **** 				}
+ 519              		.loc 1 206 24 is_stmt 0 view .LVU70
+ 520 0068 1F4B     		ldr	r3, .L60+16
+ 521 006a 204A     		ldr	r2, .L60+20
+ 522 006c 1A60     		str	r2, [r3]	@ float
+ 523 006e CFE7     		b	.L43
+ 524              	.LVL13:
+ 525              	.L49:
+ 186:Src/target.c  **** 				
+ 526              		.loc 1 186 5 is_stmt 1 view .LVU71
+ 186:Src/target.c  **** 				
+ 527              		.loc 1 186 43 is_stmt 0 view .LVU72
+ 528 0070 1F4B     		ldr	r3, .L60+24
+ 529 0072 D3ED007A 		vldr.32	s15, [r3]
+ 530 0076 67EEA77A 		vmul.f32	s15, s15, s15
+ 186:Src/target.c  **** 				
+ 531              		.loc 1 186 22 view .LVU73
+ 532 007a B0EE087A 		vmov.f32	s14, #3.0e+0
+ 533 007e 87EE878A 		vdiv.f32	s16, s15, s14
+ARM GAS  C:\Temp\ccHYQKog.s 			page 14
+
+
+ 534              	.LVL14:
+ 189:Src/target.c  **** 				{
+ 535              		.loc 1 189 5 is_stmt 1 view .LVU74
+ 189:Src/target.c  **** 				{
+ 536              		.loc 1 189 21 is_stmt 0 view .LVU75
+ 537 0082 1D4B     		ldr	r3, .L60+32
+ 538 0084 1868     		ldr	r0, [r3]	@ float
+ 539 0086 FFF7FEFF 		bl	__aeabi_f2d
+ 540              	.LVL15:
+ 541 008a 13A3     		adr	r3, .L60
+ 542 008c D3E90023 		ldrd	r2, [r3]
+ 543 0090 FFF7FEFF 		bl	__aeabi_dadd
+ 544              	.LVL16:
+ 545 0094 0446     		mov	r4, r0
+ 546 0096 0D46     		mov	r5, r1
+ 189:Src/target.c  **** 				{
+ 547              		.loc 1 189 46 view .LVU76
+ 548 0098 164B     		ldr	r3, .L60+28
+ 549 009a D3ED007A 		vldr.32	s15, [r3]
+ 550 009e 77EEC87A 		vsub.f32	s15, s15, s16
+ 551 00a2 17EE900A 		vmov	r0, s15
+ 552 00a6 FFF7FEFF 		bl	__aeabi_f2d
+ 553              	.LVL17:
+ 554 00aa 0246     		mov	r2, r0
+ 555 00ac 0B46     		mov	r3, r1
+ 189:Src/target.c  **** 				{
+ 556              		.loc 1 189 7 view .LVU77
+ 557 00ae 2046     		mov	r0, r4
+ 558 00b0 2946     		mov	r1, r5
+ 559 00b2 FFF7FEFF 		bl	__aeabi_dcmplt
+ 560              	.LVL18:
+ 561 00b6 20B1     		cbz	r0, .L57
+ 191:Src/target.c  **** 				}
+ 562              		.loc 1 191 6 is_stmt 1 view .LVU78
+ 191:Src/target.c  **** 				}
+ 563              		.loc 1 191 24 is_stmt 0 view .LVU79
+ 564 00b8 0B4B     		ldr	r3, .L60+16
+ 565 00ba 4FF07F52 		mov	r2, #1069547520
+ 566 00be 1A60     		str	r2, [r3]	@ float
+ 567 00c0 A6E7     		b	.L43
+ 568              	.L57:
+ 195:Src/target.c  **** 				}
+ 569              		.loc 1 195 6 is_stmt 1 view .LVU80
+ 195:Src/target.c  **** 				}
+ 570              		.loc 1 195 24 is_stmt 0 view .LVU81
+ 571 00c2 094B     		ldr	r3, .L60+16
+ 572 00c4 094A     		ldr	r2, .L60+20
+ 573 00c6 1A60     		str	r2, [r3]	@ float
+ 574 00c8 A2E7     		b	.L43
+ 575              	.LVL19:
+ 576              	.L58:
+ 210:Src/target.c  **** 				}
+ 577              		.loc 1 210 6 is_stmt 1 view .LVU82
+ 210:Src/target.c  **** 				}
+ 578              		.loc 1 210 24 is_stmt 0 view .LVU83
+ 579 00ca 074B     		ldr	r3, .L60+16
+ 580 00cc 4FF07F52 		mov	r2, #1069547520
+ARM GAS  C:\Temp\ccHYQKog.s 			page 15
+
+
+ 581 00d0 1A60     		str	r2, [r3]	@ float
+ 582              		.loc 1 217 1 view .LVU84
+ 583 00d2 9DE7     		b	.L43
+ 584              	.L61:
+ 585 00d4 AFF30080 		.align	3
+ 586              	.L60:
+ 587 00d8 B81E85EB 		.word	-343597384
+ 588 00dc 51B89E3F 		.word	1067366481
+ 589 00e0 00000000 		.word	.LANCHOR2
+ 590 00e4 00000000 		.word	.LANCHOR0
+ 591 00e8 00000000 		.word	.LANCHOR10
+ 592 00ec 0000C0BF 		.word	-1077936128
+ 593 00f0 00000000 		.word	.LANCHOR4
+ 594 00f4 00000000 		.word	.LANCHOR6
+ 595 00f8 00000000 		.word	.LANCHOR7
+ 596              		.cfi_endproc
+ 597              	.LFE18:
+ 599              		.global	__aeabi_dmul
+ 600              		.global	__aeabi_ddiv
+ 601              		.global	__aeabi_d2f
+ 602              		.section	.text.calc_rotate_accel,"ax",%progbits
+ 603              		.align	1
+ 604              		.global	calc_rotate_accel
+ 605              		.syntax unified
+ 606              		.thumb
+ 607              		.thumb_func
+ 608              		.fpu fpv4-sp-d16
+ 610              	calc_rotate_accel:
+ 611              	.LFB19:
  218:Src/target.c  **** 
- 219:Src/target.c  **** 	case clockwise:
- 220:Src/target.c  **** 		/*加速に必要な角度算出*/
- 221:Src/target.c  **** 		tm_deccel_angle = 0.5 * target_rotation_speed * target_rotation_speed / rotat_accel;
- 222:Src/target.c  **** 		
- 223:Src/target.c  **** 		//加速開始前
- 224:Src/target.c  **** 		if(ideal_angle > (target_angle + tm_deccel_angle))
- 225:Src/target.c  **** 		{
- 226:Src/target.c  **** 			target_rotation_accel =  -1 * rotat_accel;
- 227:Src/target.c  **** 		}
- 228:Src/target.c  **** 		else//加速開始後
- 229:Src/target.c  **** 		{
- 230:Src/target.c  **** 			target_rotation_accel = 1 * rotat_accel;
- 231:Src/target.c  **** 		}
- 232:Src/target.c  **** 		break;
- 233:Src/target.c  **** 	}
- 234:Src/target.c  **** 
- 235:Src/target.c  **** }
- 508              		.loc 1 235 1 is_stmt 0 view .LVU75
- 509 000c 38BD     		pop	{r3, r4, r5, pc}
- 510              	.LVL13:
- 511              	.L53:
- 206:Src/target.c  **** 		
- 512              		.loc 1 206 3 is_stmt 1 view .LVU76
- 206:Src/target.c  **** 		
- 513              		.loc 1 206 25 is_stmt 0 view .LVU77
- 514 000e 314B     		ldr	r3, .L65+12
- 515 0010 1868     		ldr	r0, [r3]	@ float
- 516 0012 FFF7FEFF 		bl	__aeabi_f2d
- 517              	.LVL14:
- 518 0016 0446     		mov	r4, r0
- 519 0018 0D46     		mov	r5, r1
- 520 001a 0022     		movs	r2, #0
- 521 001c 2E4B     		ldr	r3, .L65+16
- 522 001e FFF7FEFF 		bl	__aeabi_dmul
- 523              	.LVL15:
- 524 0022 0246     		mov	r2, r0
- 525 0024 0B46     		mov	r3, r1
- 206:Src/target.c  **** 		
- 526              		.loc 1 206 49 view .LVU78
- 527 0026 2046     		mov	r0, r4
- 528 0028 2946     		mov	r1, r5
-ARM GAS  C:\Temp\ccHU6vXK.s 			page 14
+ 219:Src/target.c  **** //機能	: 角加速度の更新
+ 220:Src/target.c  **** //引数	: なし
+ 221:Src/target.c  **** //返り値	: なし
+ 222:Src/target.c  **** //備考	: 現在角度と目標角度に応じて、加速度をスイッチ
+ 223:Src/target.c  **** //		: 1msタスク
+ 224:Src/target.c  **** void calc_rotate_accel(void)
+ 225:Src/target.c  **** {
+ 612              		.loc 1 225 1 is_stmt 1 view -0
+ 613              		.cfi_startproc
+ 614              		@ args = 0, pretend = 0, frame = 0
+ 615              		@ frame_needed = 0, uses_anonymous_args = 0
+ 616 0000 38B5     		push	{r3, r4, r5, lr}
+ 617              	.LCFI4:
+ 618              		.cfi_def_cfa_offset 16
+ 619              		.cfi_offset 3, -16
+ 620              		.cfi_offset 4, -12
+ 621              		.cfi_offset 5, -8
+ 622              		.cfi_offset 14, -4
+ 226:Src/target.c  **** 
+ 227:Src/target.c  **** 	float tm_deccel_angle = 0;
+ 623              		.loc 1 227 2 view .LVU86
+ 624              	.LVL20:
+ 228:Src/target.c  **** 
+ 229:Src/target.c  **** 	switch(rotation_dir_flg)
+ 625              		.loc 1 229 2 view .LVU87
+ 626 0002 334B     		ldr	r3, .L75+8
+ 627 0004 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ARM GAS  C:\Temp\ccHYQKog.s 			page 16
 
 
- 529 002a FFF7FEFF 		bl	__aeabi_dmul
- 530              	.LVL16:
- 206:Src/target.c  **** 		
- 531              		.loc 1 206 73 view .LVU79
- 532 002e 26A3     		adr	r3, .L65
- 533 0030 D3E90023 		ldrd	r2, [r3]
- 534 0034 FFF7FEFF 		bl	__aeabi_ddiv
- 535              	.LVL17:
- 206:Src/target.c  **** 		
- 536              		.loc 1 206 19 view .LVU80
- 537 0038 FFF7FEFF 		bl	__aeabi_d2f
- 538              	.LVL18:
- 539 003c 07EE100A 		vmov	s14, r0
- 540              	.LVL19:
- 209:Src/target.c  **** 		{			
- 541              		.loc 1 209 3 is_stmt 1 view .LVU81
- 209:Src/target.c  **** 		{			
- 542              		.loc 1 209 34 is_stmt 0 view .LVU82
- 543 0040 264B     		ldr	r3, .L65+20
- 544 0042 D3ED007A 		vldr.32	s15, [r3]
- 545 0046 77EEC77A 		vsub.f32	s15, s15, s14
- 209:Src/target.c  **** 		{			
- 546              		.loc 1 209 18 view .LVU83
- 547 004a 254B     		ldr	r3, .L65+24
- 548 004c 93ED007A 		vldr.32	s14, [r3]
- 209:Src/target.c  **** 		{			
- 549              		.loc 1 209 5 view .LVU84
- 550 0050 F4EEC77A 		vcmpe.f32	s15, s14
- 551 0054 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
- 552 0058 03DD     		ble	.L62
- 211:Src/target.c  **** 		}
- 553              		.loc 1 211 4 is_stmt 1 view .LVU85
- 211:Src/target.c  **** 		}
- 554              		.loc 1 211 26 is_stmt 0 view .LVU86
- 555 005a 224B     		ldr	r3, .L65+28
- 556 005c 224A     		ldr	r2, .L65+32
- 557 005e 1A60     		str	r2, [r3]	@ float
- 558 0060 D4E7     		b	.L52
- 559              	.L62:
- 215:Src/target.c  **** 		}
- 560              		.loc 1 215 4 is_stmt 1 view .LVU87
- 215:Src/target.c  **** 		}
- 561              		.loc 1 215 26 is_stmt 0 view .LVU88
- 562 0062 204B     		ldr	r3, .L65+28
- 563 0064 214A     		ldr	r2, .L65+36
- 564 0066 1A60     		str	r2, [r3]	@ float
- 565 0068 D0E7     		b	.L52
- 566              	.LVL20:
- 567              	.L54:
- 221:Src/target.c  **** 		
- 568              		.loc 1 221 3 is_stmt 1 view .LVU89
- 221:Src/target.c  **** 		
- 569              		.loc 1 221 25 is_stmt 0 view .LVU90
- 570 006a 1A4B     		ldr	r3, .L65+12
- 571 006c 1868     		ldr	r0, [r3]	@ float
- 572 006e FFF7FEFF 		bl	__aeabi_f2d
- 573              	.LVL21:
-ARM GAS  C:\Temp\ccHU6vXK.s 			page 15
+ 628 0006 13B1     		cbz	r3, .L63
+ 629 0008 012B     		cmp	r3, #1
+ 630 000a 2ED0     		beq	.L64
+ 631              	.LVL21:
+ 632              	.L62:
+ 230:Src/target.c  **** 	{
+ 231:Src/target.c  **** 	case counter_clockwise:
+ 232:Src/target.c  **** 		/*減速に必要な角度算出*/
+ 233:Src/target.c  **** 		tm_deccel_angle = 0.5 * target_rotation_speed * target_rotation_speed / rotat_accel;
+ 234:Src/target.c  **** 		
+ 235:Src/target.c  **** 		//減速開始前
+ 236:Src/target.c  **** 		if(ideal_angle < (target_angle - tm_deccel_angle))
+ 237:Src/target.c  **** 		{			
+ 238:Src/target.c  **** 			target_rotation_accel =  1 * rotat_accel;
+ 239:Src/target.c  **** 		}
+ 240:Src/target.c  **** 		else//減速開始後
+ 241:Src/target.c  **** 		{																	
+ 242:Src/target.c  **** 			target_rotation_accel = -1 * rotat_accel;
+ 243:Src/target.c  **** 		}
+ 244:Src/target.c  **** 		break;
+ 245:Src/target.c  **** 
+ 246:Src/target.c  **** 	case clockwise:
+ 247:Src/target.c  **** 		/*加速に必要な角度算出*/
+ 248:Src/target.c  **** 		tm_deccel_angle = 0.5 * target_rotation_speed * target_rotation_speed / rotat_accel;
+ 249:Src/target.c  **** 		
+ 250:Src/target.c  **** 		//加速開始前
+ 251:Src/target.c  **** 		if(ideal_angle > (target_angle + tm_deccel_angle))
+ 252:Src/target.c  **** 		{
+ 253:Src/target.c  **** 			target_rotation_accel =  -1 * rotat_accel;
+ 254:Src/target.c  **** 		}
+ 255:Src/target.c  **** 		else//加速開始後
+ 256:Src/target.c  **** 		{
+ 257:Src/target.c  **** 			target_rotation_accel = 1 * rotat_accel;
+ 258:Src/target.c  **** 		}
+ 259:Src/target.c  **** 		break;
+ 260:Src/target.c  **** 	}
+ 261:Src/target.c  **** 
+ 262:Src/target.c  **** }
+ 633              		.loc 1 262 1 is_stmt 0 view .LVU88
+ 634 000c 38BD     		pop	{r3, r4, r5, pc}
+ 635              	.LVL22:
+ 636              	.L63:
+ 233:Src/target.c  **** 		
+ 637              		.loc 1 233 3 is_stmt 1 view .LVU89
+ 233:Src/target.c  **** 		
+ 638              		.loc 1 233 25 is_stmt 0 view .LVU90
+ 639 000e 314B     		ldr	r3, .L75+12
+ 640 0010 1868     		ldr	r0, [r3]	@ float
+ 641 0012 FFF7FEFF 		bl	__aeabi_f2d
+ 642              	.LVL23:
+ 643 0016 0446     		mov	r4, r0
+ 644 0018 0D46     		mov	r5, r1
+ 645 001a 0022     		movs	r2, #0
+ 646 001c 2E4B     		ldr	r3, .L75+16
+ 647 001e FFF7FEFF 		bl	__aeabi_dmul
+ 648              	.LVL24:
+ 649 0022 0246     		mov	r2, r0
+ARM GAS  C:\Temp\ccHYQKog.s 			page 17
 
 
- 574 0072 0446     		mov	r4, r0
- 575 0074 0D46     		mov	r5, r1
- 576 0076 0022     		movs	r2, #0
- 577 0078 174B     		ldr	r3, .L65+16
- 578 007a FFF7FEFF 		bl	__aeabi_dmul
- 579              	.LVL22:
- 580 007e 0246     		mov	r2, r0
- 581 0080 0B46     		mov	r3, r1
- 221:Src/target.c  **** 		
- 582              		.loc 1 221 49 view .LVU91
- 583 0082 2046     		mov	r0, r4
- 584 0084 2946     		mov	r1, r5
- 585 0086 FFF7FEFF 		bl	__aeabi_dmul
- 586              	.LVL23:
- 221:Src/target.c  **** 		
- 587              		.loc 1 221 73 view .LVU92
- 588 008a 0FA3     		adr	r3, .L65
- 589 008c D3E90023 		ldrd	r2, [r3]
- 590 0090 FFF7FEFF 		bl	__aeabi_ddiv
- 591              	.LVL24:
- 221:Src/target.c  **** 		
- 592              		.loc 1 221 19 view .LVU93
- 593 0094 FFF7FEFF 		bl	__aeabi_d2f
- 594              	.LVL25:
- 595 0098 07EE900A 		vmov	s15, r0
- 596              	.LVL26:
- 224:Src/target.c  **** 		{
- 597              		.loc 1 224 3 is_stmt 1 view .LVU94
- 224:Src/target.c  **** 		{
- 598              		.loc 1 224 34 is_stmt 0 view .LVU95
- 599 009c 0F4B     		ldr	r3, .L65+20
- 600 009e 93ED007A 		vldr.32	s14, [r3]
- 601 00a2 77EE877A 		vadd.f32	s15, s15, s14
- 224:Src/target.c  **** 		{
- 602              		.loc 1 224 18 view .LVU96
- 603 00a6 0E4B     		ldr	r3, .L65+24
- 604 00a8 93ED007A 		vldr.32	s14, [r3]
- 224:Src/target.c  **** 		{
- 605              		.loc 1 224 5 view .LVU97
- 606 00ac F4EEC77A 		vcmpe.f32	s15, s14
- 607 00b0 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
- 608 00b4 03D5     		bpl	.L63
- 226:Src/target.c  **** 		}
- 609              		.loc 1 226 4 is_stmt 1 view .LVU98
- 226:Src/target.c  **** 		}
- 610              		.loc 1 226 26 is_stmt 0 view .LVU99
- 611 00b6 0B4B     		ldr	r3, .L65+28
- 612 00b8 0C4A     		ldr	r2, .L65+36
- 613 00ba 1A60     		str	r2, [r3]	@ float
- 614 00bc A6E7     		b	.L52
- 615              	.L63:
- 230:Src/target.c  **** 		}
- 616              		.loc 1 230 4 is_stmt 1 view .LVU100
- 230:Src/target.c  **** 		}
- 617              		.loc 1 230 26 is_stmt 0 view .LVU101
- 618 00be 094B     		ldr	r3, .L65+28
- 619 00c0 094A     		ldr	r2, .L65+32
-ARM GAS  C:\Temp\ccHU6vXK.s 			page 16
+ 650 0024 0B46     		mov	r3, r1
+ 233:Src/target.c  **** 		
+ 651              		.loc 1 233 49 view .LVU91
+ 652 0026 2046     		mov	r0, r4
+ 653 0028 2946     		mov	r1, r5
+ 654 002a FFF7FEFF 		bl	__aeabi_dmul
+ 655              	.LVL25:
+ 233:Src/target.c  **** 		
+ 656              		.loc 1 233 73 view .LVU92
+ 657 002e 26A3     		adr	r3, .L75
+ 658 0030 D3E90023 		ldrd	r2, [r3]
+ 659 0034 FFF7FEFF 		bl	__aeabi_ddiv
+ 660              	.LVL26:
+ 233:Src/target.c  **** 		
+ 661              		.loc 1 233 19 view .LVU93
+ 662 0038 FFF7FEFF 		bl	__aeabi_d2f
+ 663              	.LVL27:
+ 664 003c 07EE100A 		vmov	s14, r0
+ 665              	.LVL28:
+ 236:Src/target.c  **** 		{			
+ 666              		.loc 1 236 3 is_stmt 1 view .LVU94
+ 236:Src/target.c  **** 		{			
+ 667              		.loc 1 236 34 is_stmt 0 view .LVU95
+ 668 0040 264B     		ldr	r3, .L75+20
+ 669 0042 D3ED007A 		vldr.32	s15, [r3]
+ 670 0046 77EEC77A 		vsub.f32	s15, s15, s14
+ 236:Src/target.c  **** 		{			
+ 671              		.loc 1 236 18 view .LVU96
+ 672 004a 254B     		ldr	r3, .L75+24
+ 673 004c 93ED007A 		vldr.32	s14, [r3]
+ 236:Src/target.c  **** 		{			
+ 674              		.loc 1 236 5 view .LVU97
+ 675 0050 F4EEC77A 		vcmpe.f32	s15, s14
+ 676 0054 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 677 0058 03DD     		ble	.L72
+ 238:Src/target.c  **** 		}
+ 678              		.loc 1 238 4 is_stmt 1 view .LVU98
+ 238:Src/target.c  **** 		}
+ 679              		.loc 1 238 26 is_stmt 0 view .LVU99
+ 680 005a 224B     		ldr	r3, .L75+28
+ 681 005c 224A     		ldr	r2, .L75+32
+ 682 005e 1A60     		str	r2, [r3]	@ float
+ 683 0060 D4E7     		b	.L62
+ 684              	.L72:
+ 242:Src/target.c  **** 		}
+ 685              		.loc 1 242 4 is_stmt 1 view .LVU100
+ 242:Src/target.c  **** 		}
+ 686              		.loc 1 242 26 is_stmt 0 view .LVU101
+ 687 0062 204B     		ldr	r3, .L75+28
+ 688 0064 214A     		ldr	r2, .L75+36
+ 689 0066 1A60     		str	r2, [r3]	@ float
+ 690 0068 D0E7     		b	.L62
+ 691              	.LVL29:
+ 692              	.L64:
+ 248:Src/target.c  **** 		
+ 693              		.loc 1 248 3 is_stmt 1 view .LVU102
+ 248:Src/target.c  **** 		
+ARM GAS  C:\Temp\ccHYQKog.s 			page 18
 
 
- 620 00c2 1A60     		str	r2, [r3]	@ float
- 621              		.loc 1 235 1 view .LVU102
- 622 00c4 A2E7     		b	.L52
- 623              	.L66:
- 624 00c6 00BF     		.align	3
- 625              	.L65:
- 626 00c8 00000080 		.word	-2147483648
- 627 00cc 7CD92240 		.word	1076025724
- 628 00d0 00000000 		.word	.LANCHOR1
- 629 00d4 00000000 		.word	.LANCHOR4
- 630 00d8 0000E03F 		.word	1071644672
- 631 00dc 00000000 		.word	.LANCHOR7
- 632 00e0 00000000 		.word	.LANCHOR8
- 633 00e4 00000000 		.word	.LANCHOR10
- 634 00e8 E4CB1641 		.word	1092013028
- 635 00ec E4CB16C1 		.word	-1055470620
- 636              		.cfi_endproc
- 637              	.LFE16:
- 639              		.global	__aeabi_dadd
- 640              		.section	.text.calc_target_move_speed,"ax",%progbits
- 641              		.align	1
- 642              		.global	calc_target_move_speed
- 643              		.syntax unified
- 644              		.thumb
- 645              		.thumb_func
- 646              		.fpu fpv4-sp-d16
- 648              	calc_target_move_speed:
- 649              	.LFB17:
- 236:Src/target.c  **** 
- 237:Src/target.c  **** 
- 238:Src/target.c  **** //機能	: 目標速度更新
- 239:Src/target.c  **** //引数	: なし
- 240:Src/target.c  **** //返り値	: なし
- 241:Src/target.c  **** //備考	:1msタスク
- 242:Src/target.c  **** void calc_target_move_speed(void)
- 243:Src/target.c  **** {
- 650              		.loc 1 243 1 is_stmt 1 view -0
- 651              		.cfi_startproc
- 652              		@ args = 0, pretend = 0, frame = 0
- 653              		@ frame_needed = 0, uses_anonymous_args = 0
- 654 0000 70B5     		push	{r4, r5, r6, lr}
- 655              	.LCFI1:
- 656              		.cfi_def_cfa_offset 16
- 657              		.cfi_offset 4, -16
- 658              		.cfi_offset 5, -12
- 659              		.cfi_offset 6, -8
- 660              		.cfi_offset 14, -4
- 244:Src/target.c  **** 
- 245:Src/target.c  **** 	/*m加速処理*/
- 246:Src/target.c  **** 	target_move_speed += target_move_accel * 0.001; //1ms分の加速加算
- 661              		.loc 1 246 2 view .LVU104
- 662              		.loc 1 246 41 is_stmt 0 view .LVU105
- 663 0002 314B     		ldr	r3, .L85+8
- 664 0004 1868     		ldr	r0, [r3]	@ float
- 665 0006 FFF7FEFF 		bl	__aeabi_f2d
- 666              	.LVL27:
- 667 000a 2DA3     		adr	r3, .L85
-ARM GAS  C:\Temp\ccHU6vXK.s 			page 17
+ 694              		.loc 1 248 25 is_stmt 0 view .LVU103
+ 695 006a 1A4B     		ldr	r3, .L75+12
+ 696 006c 1868     		ldr	r0, [r3]	@ float
+ 697 006e FFF7FEFF 		bl	__aeabi_f2d
+ 698              	.LVL30:
+ 699 0072 0446     		mov	r4, r0
+ 700 0074 0D46     		mov	r5, r1
+ 701 0076 0022     		movs	r2, #0
+ 702 0078 174B     		ldr	r3, .L75+16
+ 703 007a FFF7FEFF 		bl	__aeabi_dmul
+ 704              	.LVL31:
+ 705 007e 0246     		mov	r2, r0
+ 706 0080 0B46     		mov	r3, r1
+ 248:Src/target.c  **** 		
+ 707              		.loc 1 248 49 view .LVU104
+ 708 0082 2046     		mov	r0, r4
+ 709 0084 2946     		mov	r1, r5
+ 710 0086 FFF7FEFF 		bl	__aeabi_dmul
+ 711              	.LVL32:
+ 248:Src/target.c  **** 		
+ 712              		.loc 1 248 73 view .LVU105
+ 713 008a 0FA3     		adr	r3, .L75
+ 714 008c D3E90023 		ldrd	r2, [r3]
+ 715 0090 FFF7FEFF 		bl	__aeabi_ddiv
+ 716              	.LVL33:
+ 248:Src/target.c  **** 		
+ 717              		.loc 1 248 19 view .LVU106
+ 718 0094 FFF7FEFF 		bl	__aeabi_d2f
+ 719              	.LVL34:
+ 720 0098 07EE900A 		vmov	s15, r0
+ 721              	.LVL35:
+ 251:Src/target.c  **** 		{
+ 722              		.loc 1 251 3 is_stmt 1 view .LVU107
+ 251:Src/target.c  **** 		{
+ 723              		.loc 1 251 34 is_stmt 0 view .LVU108
+ 724 009c 0F4B     		ldr	r3, .L75+20
+ 725 009e 93ED007A 		vldr.32	s14, [r3]
+ 726 00a2 77EE877A 		vadd.f32	s15, s15, s14
+ 251:Src/target.c  **** 		{
+ 727              		.loc 1 251 18 view .LVU109
+ 728 00a6 0E4B     		ldr	r3, .L75+24
+ 729 00a8 93ED007A 		vldr.32	s14, [r3]
+ 251:Src/target.c  **** 		{
+ 730              		.loc 1 251 5 view .LVU110
+ 731 00ac F4EEC77A 		vcmpe.f32	s15, s14
+ 732 00b0 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 733 00b4 03D5     		bpl	.L73
+ 253:Src/target.c  **** 		}
+ 734              		.loc 1 253 4 is_stmt 1 view .LVU111
+ 253:Src/target.c  **** 		}
+ 735              		.loc 1 253 26 is_stmt 0 view .LVU112
+ 736 00b6 0B4B     		ldr	r3, .L75+28
+ 737 00b8 0C4A     		ldr	r2, .L75+36
+ 738 00ba 1A60     		str	r2, [r3]	@ float
+ 739 00bc A6E7     		b	.L62
+ 740              	.L73:
+ 257:Src/target.c  **** 		}
+ARM GAS  C:\Temp\ccHYQKog.s 			page 19
 
 
- 668 000c D3E90023 		ldrd	r2, [r3]
- 669 0010 FFF7FEFF 		bl	__aeabi_dmul
- 670              	.LVL28:
- 671 0014 0446     		mov	r4, r0
- 672 0016 0D46     		mov	r5, r1
- 673              		.loc 1 246 20 view .LVU106
- 674 0018 2C4E     		ldr	r6, .L85+12
- 675 001a 3068     		ldr	r0, [r6]	@ float
- 676 001c FFF7FEFF 		bl	__aeabi_f2d
- 677              	.LVL29:
- 678 0020 2246     		mov	r2, r4
- 679 0022 2B46     		mov	r3, r5
- 680 0024 FFF7FEFF 		bl	__aeabi_dadd
- 681              	.LVL30:
- 682 0028 FFF7FEFF 		bl	__aeabi_d2f
- 683              	.LVL31:
- 684 002c 07EE900A 		vmov	s15, r0
- 685 0030 3060     		str	r0, [r6]	@ float
- 247:Src/target.c  **** 
- 248:Src/target.c  **** 	/*limit処理*/
- 249:Src/target.c  **** 	switch(move_dir_flg)
- 686              		.loc 1 249 2 is_stmt 1 view .LVU107
- 687 0032 274B     		ldr	r3, .L85+16
- 688 0034 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
- 689 0036 C3B1     		cbz	r3, .L68
- 690 0038 012B     		cmp	r3, #1
- 691 003a 2AD0     		beq	.L69
- 692              	.L70:
- 250:Src/target.c  **** 	{
- 251:Src/target.c  **** 		case forward_mode:
- 252:Src/target.c  **** 
- 253:Src/target.c  **** 			if (target_move_speed < 0)	//下限スピード処理
- 254:Src/target.c  **** 					{
- 255:Src/target.c  **** 						target_move_speed = 0;
- 256:Src/target.c  **** 					}
- 257:Src/target.c  **** 					else if (target_move_speed > move_speed_max)//上限スピード処理
- 258:Src/target.c  **** 					{
- 259:Src/target.c  **** 						target_move_speed = move_speed_max;
- 260:Src/target.c  **** 					}
- 261:Src/target.c  **** 			break;
- 262:Src/target.c  **** 
- 263:Src/target.c  **** 		case backward_mode:
- 264:Src/target.c  **** 			if (target_move_speed > 0)	//上限スピード処理
- 265:Src/target.c  **** 				{
- 266:Src/target.c  **** 					target_move_speed = 0;
- 267:Src/target.c  **** 				}
- 268:Src/target.c  **** 				else if (target_move_speed < -1 * move_speed_max)//下限スピード処理
- 269:Src/target.c  **** 				{
- 270:Src/target.c  **** 					target_move_speed = -1 * move_speed_max;
- 271:Src/target.c  **** 				}
- 272:Src/target.c  **** 			break;
- 273:Src/target.c  **** 	}
+ 741              		.loc 1 257 4 is_stmt 1 view .LVU113
+ 257:Src/target.c  **** 		}
+ 742              		.loc 1 257 26 is_stmt 0 view .LVU114
+ 743 00be 094B     		ldr	r3, .L75+28
+ 744 00c0 094A     		ldr	r2, .L75+32
+ 745 00c2 1A60     		str	r2, [r3]	@ float
+ 746              		.loc 1 262 1 view .LVU115
+ 747 00c4 A2E7     		b	.L62
+ 748              	.L76:
+ 749 00c6 00BF     		.align	3
+ 750              	.L75:
+ 751 00c8 00000080 		.word	-2147483648
+ 752 00cc 7CD92240 		.word	1076025724
+ 753 00d0 00000000 		.word	.LANCHOR1
+ 754 00d4 00000000 		.word	.LANCHOR5
+ 755 00d8 0000E03F 		.word	1071644672
+ 756 00dc 00000000 		.word	.LANCHOR9
+ 757 00e0 00000000 		.word	.LANCHOR8
+ 758 00e4 00000000 		.word	.LANCHOR11
+ 759 00e8 E4CB1641 		.word	1092013028
+ 760 00ec E4CB16C1 		.word	-1055470620
+ 761              		.cfi_endproc
+ 762              	.LFE19:
+ 764              		.section	.text.calc_target_move_speed,"ax",%progbits
+ 765              		.align	1
+ 766              		.global	calc_target_move_speed
+ 767              		.syntax unified
+ 768              		.thumb
+ 769              		.thumb_func
+ 770              		.fpu fpv4-sp-d16
+ 772              	calc_target_move_speed:
+ 773              	.LFB20:
+ 263:Src/target.c  **** 
+ 264:Src/target.c  **** 
+ 265:Src/target.c  **** //機能	: 目標速度更新
+ 266:Src/target.c  **** //引数	: なし
+ 267:Src/target.c  **** //返り値	: なし
+ 268:Src/target.c  **** //備考	:1msタスク
+ 269:Src/target.c  **** void calc_target_move_speed(void)
+ 270:Src/target.c  **** {
+ 774              		.loc 1 270 1 is_stmt 1 view -0
+ 775              		.cfi_startproc
+ 776              		@ args = 0, pretend = 0, frame = 0
+ 777              		@ frame_needed = 0, uses_anonymous_args = 0
+ 778 0000 70B5     		push	{r4, r5, r6, lr}
+ 779              	.LCFI5:
+ 780              		.cfi_def_cfa_offset 16
+ 781              		.cfi_offset 4, -16
+ 782              		.cfi_offset 5, -12
+ 783              		.cfi_offset 6, -8
+ 784              		.cfi_offset 14, -4
+ 271:Src/target.c  **** 
+ 272:Src/target.c  **** 	/*m加速処理*/
+ 273:Src/target.c  **** 	target_move_speed += target_move_accel * 0.001; //1ms分の加速加算
+ 785              		.loc 1 273 2 view .LVU117
+ 786              		.loc 1 273 41 is_stmt 0 view .LVU118
+ 787 0002 3D4B     		ldr	r3, .L97+16
+ARM GAS  C:\Temp\ccHYQKog.s 			page 20
+
+
+ 788 0004 1868     		ldr	r0, [r3]	@ float
+ 789 0006 FFF7FEFF 		bl	__aeabi_f2d
+ 790              	.LVL36:
+ 791 000a 37A3     		adr	r3, .L97
+ 792 000c D3E90023 		ldrd	r2, [r3]
+ 793 0010 FFF7FEFF 		bl	__aeabi_dmul
+ 794              	.LVL37:
+ 795 0014 0446     		mov	r4, r0
+ 796 0016 0D46     		mov	r5, r1
+ 797              		.loc 1 273 20 view .LVU119
+ 798 0018 384E     		ldr	r6, .L97+20
+ 799 001a 3068     		ldr	r0, [r6]	@ float
+ 800 001c FFF7FEFF 		bl	__aeabi_f2d
+ 801              	.LVL38:
+ 802 0020 2246     		mov	r2, r4
+ 803 0022 2B46     		mov	r3, r5
+ 804 0024 FFF7FEFF 		bl	__aeabi_dadd
+ 805              	.LVL39:
+ 806 0028 FFF7FEFF 		bl	__aeabi_d2f
+ 807              	.LVL40:
+ 808 002c 07EE900A 		vmov	s15, r0
+ 809 0030 3060     		str	r0, [r6]	@ float
  274:Src/target.c  **** 
- 275:Src/target.c  **** 	//理想移動距離算出
- 276:Src/target.c  **** 	ideal_length += target_move_speed * 0.001;
- 693              		.loc 1 276 2 view .LVU108
- 694              		.loc 1 276 36 is_stmt 0 view .LVU109
-ARM GAS  C:\Temp\ccHU6vXK.s 			page 18
+ 275:Src/target.c  **** 	/*limit処理*/
+ 276:Src/target.c  **** 	switch(move_dir_flg)
+ 810              		.loc 1 276 2 is_stmt 1 view .LVU120
+ 811 0032 334B     		ldr	r3, .L97+24
+ 812 0034 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 813 0036 C3B1     		cbz	r3, .L78
+ 814 0038 012B     		cmp	r3, #1
+ 815 003a 3ED0     		beq	.L79
+ 816              	.L80:
+ 277:Src/target.c  **** 	{
+ 278:Src/target.c  **** 		case forward_mode:
+ 279:Src/target.c  **** 			//下限処理
+ 280:Src/target.c  **** 			switch(speed_under_lim_flg){
+ 281:Src/target.c  **** 				case zero :
+ 282:Src/target.c  **** 					if (target_move_speed < 0){	
+ 283:Src/target.c  **** 						target_move_speed = 0;
+ 284:Src/target.c  **** 						}
+ 285:Src/target.c  **** 					break;
+ 286:Src/target.c  **** 				case slow :
+ 287:Src/target.c  **** 					if (target_move_speed < move_speed_slow){	
+ 288:Src/target.c  **** 						target_move_speed = move_speed_slow;
+ 289:Src/target.c  **** 						}
+ 290:Src/target.c  **** 					break;
+ 291:Src/target.c  **** 			}
+ 292:Src/target.c  **** 			//上限スピード処理
+ 293:Src/target.c  **** 			if (target_move_speed > move_speed_max)
+ 294:Src/target.c  **** 			{
+ 295:Src/target.c  **** 				target_move_speed = move_speed_max;
+ 296:Src/target.c  **** 			}
+ 297:Src/target.c  **** 			break;
+ 298:Src/target.c  **** 
+ 299:Src/target.c  **** 		case backward_mode:
+ 300:Src/target.c  **** 			if (target_move_speed > 0)	//上限スピード処理
+ 301:Src/target.c  **** 				{
+ARM GAS  C:\Temp\ccHYQKog.s 			page 21
 
 
- 695 003c 234B     		ldr	r3, .L85+12
- 696 003e 1868     		ldr	r0, [r3]	@ float
- 697 0040 FFF7FEFF 		bl	__aeabi_f2d
- 698              	.LVL32:
- 699 0044 1EA3     		adr	r3, .L85
- 700 0046 D3E90023 		ldrd	r2, [r3]
- 701 004a FFF7FEFF 		bl	__aeabi_dmul
- 702              	.LVL33:
- 703 004e 0446     		mov	r4, r0
- 704 0050 0D46     		mov	r5, r1
- 705              		.loc 1 276 15 view .LVU110
- 706 0052 204E     		ldr	r6, .L85+20
- 707 0054 3068     		ldr	r0, [r6]	@ float
- 708 0056 FFF7FEFF 		bl	__aeabi_f2d
- 709              	.LVL34:
- 710 005a 2246     		mov	r2, r4
- 711 005c 2B46     		mov	r3, r5
- 712 005e FFF7FEFF 		bl	__aeabi_dadd
- 713              	.LVL35:
- 714 0062 FFF7FEFF 		bl	__aeabi_d2f
- 715              	.LVL36:
- 716 0066 3060     		str	r0, [r6]	@ float
- 277:Src/target.c  **** 
- 278:Src/target.c  **** }
- 717              		.loc 1 278 1 view .LVU111
- 718 0068 70BD     		pop	{r4, r5, r6, pc}
- 719              	.L68:
- 253:Src/target.c  **** 					{
- 720              		.loc 1 253 4 is_stmt 1 view .LVU112
- 253:Src/target.c  **** 					{
- 721              		.loc 1 253 7 is_stmt 0 view .LVU113
- 722 006a F5EEC07A 		vcmpe.f32	s15, #0
- 723 006e F1EE10FA 		vmrs	APSR_nzcv, FPSCR
- 724 0072 0AD4     		bmi	.L84
- 257:Src/target.c  **** 					{
- 725              		.loc 1 257 11 is_stmt 1 view .LVU114
- 257:Src/target.c  **** 					{
- 726              		.loc 1 257 14 is_stmt 0 view .LVU115
- 727 0074 9FED187A 		vldr.32	s14, .L85+24
- 728 0078 F4EEC77A 		vcmpe.f32	s15, s14
- 729 007c F1EE10FA 		vmrs	APSR_nzcv, FPSCR
- 730 0080 DCDD     		ble	.L70
- 259:Src/target.c  **** 					}
- 731              		.loc 1 259 7 is_stmt 1 view .LVU116
- 259:Src/target.c  **** 					}
- 732              		.loc 1 259 25 is_stmt 0 view .LVU117
- 733 0082 124B     		ldr	r3, .L85+12
- 734 0084 83ED007A 		vstr.32	s14, [r3]
- 735 0088 D8E7     		b	.L70
- 736              	.L84:
- 255:Src/target.c  **** 					}
- 737              		.loc 1 255 7 is_stmt 1 view .LVU118
- 255:Src/target.c  **** 					}
- 738              		.loc 1 255 25 is_stmt 0 view .LVU119
- 739 008a 104B     		ldr	r3, .L85+12
- 740 008c 0022     		movs	r2, #0
- 741 008e 1A60     		str	r2, [r3]	@ float
-ARM GAS  C:\Temp\ccHU6vXK.s 			page 19
-
-
- 742 0090 D4E7     		b	.L70
- 743              	.L69:
- 264:Src/target.c  **** 				{
- 744              		.loc 1 264 4 is_stmt 1 view .LVU120
- 264:Src/target.c  **** 				{
- 745              		.loc 1 264 7 is_stmt 0 view .LVU121
- 746 0092 F5EEC07A 		vcmpe.f32	s15, #0
- 747 0096 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
- 748 009a 03DD     		ble	.L82
- 266:Src/target.c  **** 				}
- 749              		.loc 1 266 6 is_stmt 1 view .LVU122
- 266:Src/target.c  **** 				}
- 750              		.loc 1 266 24 is_stmt 0 view .LVU123
- 751 009c 0B4B     		ldr	r3, .L85+12
- 752 009e 0022     		movs	r2, #0
- 753 00a0 1A60     		str	r2, [r3]	@ float
- 754 00a2 CBE7     		b	.L70
- 755              	.L82:
- 268:Src/target.c  **** 				{
- 756              		.loc 1 268 10 is_stmt 1 view .LVU124
- 268:Src/target.c  **** 				{
- 757              		.loc 1 268 13 is_stmt 0 view .LVU125
- 758 00a4 9FED0D7A 		vldr.32	s14, .L85+28
- 759 00a8 F4EEC77A 		vcmpe.f32	s15, s14
- 760 00ac F1EE10FA 		vmrs	APSR_nzcv, FPSCR
- 761 00b0 C4D5     		bpl	.L70
- 270:Src/target.c  **** 				}
- 762              		.loc 1 270 6 is_stmt 1 view .LVU126
- 270:Src/target.c  **** 				}
- 763              		.loc 1 270 24 is_stmt 0 view .LVU127
- 764 00b2 064B     		ldr	r3, .L85+12
- 765 00b4 83ED007A 		vstr.32	s14, [r3]
- 766 00b8 C0E7     		b	.L70
- 767              	.L86:
- 768 00ba 00BFAFF3 		.align	3
- 768      0080
- 769              	.L85:
- 770 00c0 FCA9F1D2 		.word	-755914244
- 771 00c4 4D62503F 		.word	1062232653
- 772 00c8 00000000 		.word	.LANCHOR9
- 773 00cc 00000000 		.word	.LANCHOR3
- 774 00d0 00000000 		.word	.LANCHOR0
- 775 00d4 00000000 		.word	.LANCHOR6
- 776 00d8 9A99993E 		.word	1050253722
- 777 00dc 9A9999BE 		.word	-1097229926
- 778              		.cfi_endproc
- 779              	.LFE17:
- 781              		.section	.text.calc_target_rotation_speed,"ax",%progbits
- 782              		.align	1
- 783              		.global	calc_target_rotation_speed
- 784              		.syntax unified
- 785              		.thumb
- 786              		.thumb_func
- 787              		.fpu fpv4-sp-d16
- 789              	calc_target_rotation_speed:
- 790              	.LFB18:
- 279:Src/target.c  **** 
-ARM GAS  C:\Temp\ccHU6vXK.s 			page 20
-
-
- 280:Src/target.c  **** //機能	: 目標角速度を更新する
- 281:Src/target.c  **** //引数	: なし:
- 282:Src/target.c  **** //返り値	: なし
- 283:Src/target.c  **** //備考	:1msタスク
- 284:Src/target.c  **** void calc_target_rotation_speed ( void )
- 285:Src/target.c  **** {
- 791              		.loc 1 285 1 is_stmt 1 view -0
- 792              		.cfi_startproc
- 793              		@ args = 0, pretend = 0, frame = 0
- 794              		@ frame_needed = 0, uses_anonymous_args = 0
- 795 0000 70B5     		push	{r4, r5, r6, lr}
- 796              	.LCFI2:
- 797              		.cfi_def_cfa_offset 16
- 798              		.cfi_offset 4, -16
- 799              		.cfi_offset 5, -12
- 800              		.cfi_offset 6, -8
- 801              		.cfi_offset 14, -4
- 286:Src/target.c  **** 	target_rotation_speed += target_rotation_accel * 0.001; //1ms分の角加速度加算
- 802              		.loc 1 286 2 view .LVU129
- 803              		.loc 1 286 49 is_stmt 0 view .LVU130
- 804 0002 314B     		ldr	r3, .L105+8
- 805 0004 1868     		ldr	r0, [r3]	@ float
- 806 0006 FFF7FEFF 		bl	__aeabi_f2d
- 807              	.LVL37:
- 808 000a 2DA3     		adr	r3, .L105
- 809 000c D3E90023 		ldrd	r2, [r3]
- 810 0010 FFF7FEFF 		bl	__aeabi_dmul
- 811              	.LVL38:
- 812 0014 0446     		mov	r4, r0
- 813 0016 0D46     		mov	r5, r1
- 814              		.loc 1 286 24 view .LVU131
- 815 0018 2C4E     		ldr	r6, .L105+12
- 816 001a 3068     		ldr	r0, [r6]	@ float
- 817 001c FFF7FEFF 		bl	__aeabi_f2d
- 818              	.LVL39:
- 819 0020 2246     		mov	r2, r4
- 820 0022 2B46     		mov	r3, r5
- 821 0024 FFF7FEFF 		bl	__aeabi_dadd
- 822              	.LVL40:
- 823 0028 FFF7FEFF 		bl	__aeabi_d2f
- 824              	.LVL41:
- 825 002c 07EE900A 		vmov	s15, r0
- 826 0030 3060     		str	r0, [r6]	@ float
- 287:Src/target.c  **** 
- 288:Src/target.c  **** 	switch(rotation_dir_flg)
- 827              		.loc 1 288 2 is_stmt 1 view .LVU132
- 828 0032 274B     		ldr	r3, .L105+16
- 829 0034 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
- 830 0036 C3B1     		cbz	r3, .L88
- 831 0038 012B     		cmp	r3, #1
- 832 003a 2AD0     		beq	.L89
- 833              	.L90:
- 289:Src/target.c  **** 		{
- 290:Src/target.c  **** 			case counter_clockwise:
- 291:Src/target.c  **** 
- 292:Src/target.c  **** 				if (target_rotation_speed < 0)	//m 下限スピード処理
- 293:Src/target.c  **** 						{
-ARM GAS  C:\Temp\ccHU6vXK.s 			page 21
-
-
- 294:Src/target.c  **** 							target_rotation_speed = 0;
- 295:Src/target.c  **** 						}
- 296:Src/target.c  **** 						else if (target_rotation_speed > rotat_speed_max)//上限スピード処理
- 297:Src/target.c  **** 						{
- 298:Src/target.c  **** 							target_rotation_speed = rotat_speed_max;
- 299:Src/target.c  **** 						}
- 300:Src/target.c  **** 				break;
- 301:Src/target.c  **** 
- 302:Src/target.c  **** 			case clockwise:
- 303:Src/target.c  **** 				if (target_rotation_speed > 0)	//m 上限スピード処理
- 304:Src/target.c  **** 					{
- 305:Src/target.c  **** 						target_rotation_speed = 0;
- 306:Src/target.c  **** 					}
- 307:Src/target.c  **** 					else if (target_rotation_speed < -1 * rotat_speed_max)//下限スピード処理
- 308:Src/target.c  **** 					{
- 309:Src/target.c  **** 						target_rotation_speed = -1 * rotat_speed_max;
- 310:Src/target.c  **** 					}
- 311:Src/target.c  **** 				break;
- 312:Src/target.c  **** 		}
+ 302:Src/target.c  **** 					target_move_speed = 0;
+ 303:Src/target.c  **** 				}
+ 304:Src/target.c  **** 				else if (target_move_speed < -1 * move_speed_max)//下限スピード処理
+ 305:Src/target.c  **** 				{
+ 306:Src/target.c  **** 					target_move_speed = -1 * move_speed_max;
+ 307:Src/target.c  **** 				}
+ 308:Src/target.c  **** 			break;
+ 309:Src/target.c  **** 	}
+ 310:Src/target.c  **** 
+ 311:Src/target.c  **** 	//理想移動距離算出
+ 312:Src/target.c  **** 	ideal_length += target_move_speed * 0.001;
+ 817              		.loc 1 312 2 view .LVU121
+ 818              		.loc 1 312 36 is_stmt 0 view .LVU122
+ 819 003c 2F4B     		ldr	r3, .L97+20
+ 820 003e 1868     		ldr	r0, [r3]	@ float
+ 821 0040 FFF7FEFF 		bl	__aeabi_f2d
+ 822              	.LVL41:
+ 823 0044 28A3     		adr	r3, .L97
+ 824 0046 D3E90023 		ldrd	r2, [r3]
+ 825 004a FFF7FEFF 		bl	__aeabi_dmul
+ 826              	.LVL42:
+ 827 004e 0446     		mov	r4, r0
+ 828 0050 0D46     		mov	r5, r1
+ 829              		.loc 1 312 15 view .LVU123
+ 830 0052 2C4E     		ldr	r6, .L97+28
+ 831 0054 3068     		ldr	r0, [r6]	@ float
+ 832 0056 FFF7FEFF 		bl	__aeabi_f2d
+ 833              	.LVL43:
+ 834 005a 2246     		mov	r2, r4
+ 835 005c 2B46     		mov	r3, r5
+ 836 005e FFF7FEFF 		bl	__aeabi_dadd
+ 837              	.LVL44:
+ 838 0062 FFF7FEFF 		bl	__aeabi_d2f
+ 839              	.LVL45:
+ 840 0066 3060     		str	r0, [r6]	@ float
  313:Src/target.c  **** 
- 314:Src/target.c  **** 	ideal_angle += target_rotation_speed * 0.001;
- 834              		.loc 1 314 2 view .LVU133
- 835              		.loc 1 314 39 is_stmt 0 view .LVU134
- 836 003c 234B     		ldr	r3, .L105+12
- 837 003e 1868     		ldr	r0, [r3]	@ float
- 838 0040 FFF7FEFF 		bl	__aeabi_f2d
- 839              	.LVL42:
- 840 0044 1EA3     		adr	r3, .L105
- 841 0046 D3E90023 		ldrd	r2, [r3]
- 842 004a FFF7FEFF 		bl	__aeabi_dmul
- 843              	.LVL43:
- 844 004e 0446     		mov	r4, r0
- 845 0050 0D46     		mov	r5, r1
- 846              		.loc 1 314 14 view .LVU135
- 847 0052 204E     		ldr	r6, .L105+20
- 848 0054 3068     		ldr	r0, [r6]	@ float
- 849 0056 FFF7FEFF 		bl	__aeabi_f2d
- 850              	.LVL44:
- 851 005a 2246     		mov	r2, r4
- 852 005c 2B46     		mov	r3, r5
- 853 005e FFF7FEFF 		bl	__aeabi_dadd
- 854              	.LVL45:
- 855 0062 FFF7FEFF 		bl	__aeabi_d2f
- 856              	.LVL46:
- 857 0066 3060     		str	r0, [r6]	@ float
+ 314:Src/target.c  **** }
+ 841              		.loc 1 314 1 view .LVU124
+ 842 0068 70BD     		pop	{r4, r5, r6, pc}
+ 843              	.L78:
+ 280:Src/target.c  **** 				case zero :
+ 844              		.loc 1 280 4 is_stmt 1 view .LVU125
+ 845 006a 274B     		ldr	r3, .L97+32
+ 846 006c 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 847 006e 73B1     		cbz	r3, .L81
+ 848 0070 012B     		cmp	r3, #1
+ 849 0072 15D0     		beq	.L82
+ 850              	.L83:
+ 293:Src/target.c  **** 			{
+ 851              		.loc 1 293 4 view .LVU126
+ 293:Src/target.c  **** 			{
+ 852              		.loc 1 293 26 is_stmt 0 view .LVU127
+ 853 0074 214B     		ldr	r3, .L97+20
+ 854 0076 93ED007A 		vldr.32	s14, [r3]
+ 293:Src/target.c  **** 			{
+ 855              		.loc 1 293 7 view .LVU128
+ 856 007a DFED247A 		vldr.32	s15, .L97+36
+ARM GAS  C:\Temp\ccHYQKog.s 			page 22
+
+
+ 857 007e B4EEE77A 		vcmpe.f32	s14, s15
+ 858 0082 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 859 0086 D9DD     		ble	.L80
+ 295:Src/target.c  **** 			}
+ 860              		.loc 1 295 5 is_stmt 1 view .LVU129
+ 295:Src/target.c  **** 			}
+ 861              		.loc 1 295 23 is_stmt 0 view .LVU130
+ 862 0088 C3ED007A 		vstr.32	s15, [r3]
+ 863 008c D6E7     		b	.L80
+ 864              	.L81:
+ 282:Src/target.c  **** 						target_move_speed = 0;
+ 865              		.loc 1 282 6 is_stmt 1 view .LVU131
+ 282:Src/target.c  **** 						target_move_speed = 0;
+ 866              		.loc 1 282 9 is_stmt 0 view .LVU132
+ 867 008e F5EEC07A 		vcmpe.f32	s15, #0
+ 868 0092 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 869 0096 EDD5     		bpl	.L83
+ 283:Src/target.c  **** 						}
+ 870              		.loc 1 283 7 is_stmt 1 view .LVU133
+ 283:Src/target.c  **** 						}
+ 871              		.loc 1 283 25 is_stmt 0 view .LVU134
+ 872 0098 184B     		ldr	r3, .L97+20
+ 873 009a 0022     		movs	r2, #0
+ 874 009c 1A60     		str	r2, [r3]	@ float
+ 875 009e E9E7     		b	.L83
+ 876              	.L82:
+ 287:Src/target.c  **** 						target_move_speed = move_speed_slow;
+ 877              		.loc 1 287 6 is_stmt 1 view .LVU135
+ 287:Src/target.c  **** 						target_move_speed = move_speed_slow;
+ 878              		.loc 1 287 28 is_stmt 0 view .LVU136
+ 879 00a0 FFF7FEFF 		bl	__aeabi_f2d
+ 880              	.LVL46:
+ 287:Src/target.c  **** 						target_move_speed = move_speed_slow;
+ 881              		.loc 1 287 9 view .LVU137
+ 882 00a4 12A3     		adr	r3, .L97+8
+ 883 00a6 D3E90023 		ldrd	r2, [r3]
+ 884 00aa FFF7FEFF 		bl	__aeabi_dcmplt
+ 885              	.LVL47:
+ 886 00ae 0028     		cmp	r0, #0
+ 887 00b0 E0D0     		beq	.L83
+ 288:Src/target.c  **** 						}
+ 888              		.loc 1 288 7 is_stmt 1 view .LVU138
+ 288:Src/target.c  **** 						}
+ 889              		.loc 1 288 25 is_stmt 0 view .LVU139
+ 890 00b2 124B     		ldr	r3, .L97+20
+ 891 00b4 164A     		ldr	r2, .L97+40
+ 892 00b6 1A60     		str	r2, [r3]	@ float
+ 893 00b8 DCE7     		b	.L83
+ 894              	.L79:
+ 300:Src/target.c  **** 				{
+ 895              		.loc 1 300 4 is_stmt 1 view .LVU140
+ 300:Src/target.c  **** 				{
+ 896              		.loc 1 300 7 is_stmt 0 view .LVU141
+ 897 00ba F5EEC07A 		vcmpe.f32	s15, #0
+ 898 00be F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 899 00c2 03DD     		ble	.L95
+ 302:Src/target.c  **** 				}
+ARM GAS  C:\Temp\ccHYQKog.s 			page 23
+
+
+ 900              		.loc 1 302 6 is_stmt 1 view .LVU142
+ 302:Src/target.c  **** 				}
+ 901              		.loc 1 302 24 is_stmt 0 view .LVU143
+ 902 00c4 0D4B     		ldr	r3, .L97+20
+ 903 00c6 0022     		movs	r2, #0
+ 904 00c8 1A60     		str	r2, [r3]	@ float
+ 905 00ca B7E7     		b	.L80
+ 906              	.L95:
+ 304:Src/target.c  **** 				{
+ 907              		.loc 1 304 10 is_stmt 1 view .LVU144
+ 304:Src/target.c  **** 				{
+ 908              		.loc 1 304 13 is_stmt 0 view .LVU145
+ 909 00cc 9FED117A 		vldr.32	s14, .L97+44
+ 910 00d0 F4EEC77A 		vcmpe.f32	s15, s14
+ 911 00d4 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 912 00d8 B0D5     		bpl	.L80
+ 306:Src/target.c  **** 				}
+ 913              		.loc 1 306 6 is_stmt 1 view .LVU146
+ 306:Src/target.c  **** 				}
+ 914              		.loc 1 306 24 is_stmt 0 view .LVU147
+ 915 00da 084B     		ldr	r3, .L97+20
+ 916 00dc 83ED007A 		vstr.32	s14, [r3]
+ 917 00e0 ACE7     		b	.L80
+ 918              	.L98:
+ 919 00e2 00BFAFF3 		.align	3
+ 919      0080
+ 920              	.L97:
+ 921 00e8 FCA9F1D2 		.word	-755914244
+ 922 00ec 4D62503F 		.word	1062232653
+ 923 00f0 B81E85EB 		.word	-343597384
+ 924 00f4 51B89E3F 		.word	1067366481
+ 925 00f8 00000000 		.word	.LANCHOR10
+ 926 00fc 00000000 		.word	.LANCHOR4
+ 927 0100 00000000 		.word	.LANCHOR0
+ 928 0104 00000000 		.word	.LANCHOR7
+ 929 0108 00000000 		.word	.LANCHOR3
+ 930 010c 9A99993E 		.word	1050253722
+ 931 0110 8FC2F53C 		.word	1022739087
+ 932 0114 9A9999BE 		.word	-1097229926
+ 933              		.cfi_endproc
+ 934              	.LFE20:
+ 936              		.section	.text.calc_target_rotation_speed,"ax",%progbits
+ 937              		.align	1
+ 938              		.global	calc_target_rotation_speed
+ 939              		.syntax unified
+ 940              		.thumb
+ 941              		.thumb_func
+ 942              		.fpu fpv4-sp-d16
+ 944              	calc_target_rotation_speed:
+ 945              	.LFB21:
  315:Src/target.c  **** 
- 316:Src/target.c  **** }
- 858              		.loc 1 316 1 view .LVU136
- 859 0068 70BD     		pop	{r4, r5, r6, pc}
- 860              	.L88:
- 292:Src/target.c  **** 						{
- 861              		.loc 1 292 5 is_stmt 1 view .LVU137
- 292:Src/target.c  **** 						{
- 862              		.loc 1 292 8 is_stmt 0 view .LVU138
- 863 006a F5EEC07A 		vcmpe.f32	s15, #0
- 864 006e F1EE10FA 		vmrs	APSR_nzcv, FPSCR
- 865 0072 0AD4     		bmi	.L104
-ARM GAS  C:\Temp\ccHU6vXK.s 			page 22
+ 316:Src/target.c  **** //機能	: 目標角速度を更新する
+ 317:Src/target.c  **** //引数	: なし:
+ 318:Src/target.c  **** //返り値	: なし
+ 319:Src/target.c  **** //備考	:1msタスク
+ 320:Src/target.c  **** void calc_target_rotation_speed ( void )
+ 321:Src/target.c  **** {
+ARM GAS  C:\Temp\ccHYQKog.s 			page 24
 
 
- 296:Src/target.c  **** 						{
- 866              		.loc 1 296 12 is_stmt 1 view .LVU139
- 296:Src/target.c  **** 						{
- 867              		.loc 1 296 15 is_stmt 0 view .LVU140
- 868 0074 9FED187A 		vldr.32	s14, .L105+24
- 869 0078 F4EEC77A 		vcmpe.f32	s15, s14
- 870 007c F1EE10FA 		vmrs	APSR_nzcv, FPSCR
- 871 0080 DCDD     		ble	.L90
- 298:Src/target.c  **** 						}
- 872              		.loc 1 298 8 is_stmt 1 view .LVU141
- 298:Src/target.c  **** 						}
- 873              		.loc 1 298 30 is_stmt 0 view .LVU142
- 874 0082 124B     		ldr	r3, .L105+12
- 875 0084 83ED007A 		vstr.32	s14, [r3]
- 876 0088 D8E7     		b	.L90
- 877              	.L104:
- 294:Src/target.c  **** 						}
- 878              		.loc 1 294 8 is_stmt 1 view .LVU143
- 294:Src/target.c  **** 						}
- 879              		.loc 1 294 30 is_stmt 0 view .LVU144
- 880 008a 104B     		ldr	r3, .L105+12
- 881 008c 0022     		movs	r2, #0
- 882 008e 1A60     		str	r2, [r3]	@ float
- 883 0090 D4E7     		b	.L90
- 884              	.L89:
- 303:Src/target.c  **** 					{
- 885              		.loc 1 303 5 is_stmt 1 view .LVU145
- 303:Src/target.c  **** 					{
- 886              		.loc 1 303 8 is_stmt 0 view .LVU146
- 887 0092 F5EEC07A 		vcmpe.f32	s15, #0
- 888 0096 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
- 889 009a 03DD     		ble	.L102
- 305:Src/target.c  **** 					}
- 890              		.loc 1 305 7 is_stmt 1 view .LVU147
- 305:Src/target.c  **** 					}
- 891              		.loc 1 305 29 is_stmt 0 view .LVU148
- 892 009c 0B4B     		ldr	r3, .L105+12
- 893 009e 0022     		movs	r2, #0
- 894 00a0 1A60     		str	r2, [r3]	@ float
- 895 00a2 CBE7     		b	.L90
- 896              	.L102:
- 307:Src/target.c  **** 					{
- 897              		.loc 1 307 11 is_stmt 1 view .LVU149
- 307:Src/target.c  **** 					{
- 898              		.loc 1 307 14 is_stmt 0 view .LVU150
- 899 00a4 9FED0D7A 		vldr.32	s14, .L105+28
- 900 00a8 F4EEC77A 		vcmpe.f32	s15, s14
- 901 00ac F1EE10FA 		vmrs	APSR_nzcv, FPSCR
- 902 00b0 C4D5     		bpl	.L90
- 309:Src/target.c  **** 					}
- 903              		.loc 1 309 7 is_stmt 1 view .LVU151
- 309:Src/target.c  **** 					}
- 904              		.loc 1 309 29 is_stmt 0 view .LVU152
- 905 00b2 064B     		ldr	r3, .L105+12
- 906 00b4 83ED007A 		vstr.32	s14, [r3]
- 907 00b8 C0E7     		b	.L90
- 908              	.L106:
-ARM GAS  C:\Temp\ccHU6vXK.s 			page 23
+ 946              		.loc 1 321 1 is_stmt 1 view -0
+ 947              		.cfi_startproc
+ 948              		@ args = 0, pretend = 0, frame = 0
+ 949              		@ frame_needed = 0, uses_anonymous_args = 0
+ 950 0000 70B5     		push	{r4, r5, r6, lr}
+ 951              	.LCFI6:
+ 952              		.cfi_def_cfa_offset 16
+ 953              		.cfi_offset 4, -16
+ 954              		.cfi_offset 5, -12
+ 955              		.cfi_offset 6, -8
+ 956              		.cfi_offset 14, -4
+ 322:Src/target.c  **** 	target_rotation_speed += target_rotation_accel * 0.001; //1ms分の角加速度加算
+ 957              		.loc 1 322 2 view .LVU149
+ 958              		.loc 1 322 49 is_stmt 0 view .LVU150
+ 959 0002 314B     		ldr	r3, .L117+8
+ 960 0004 1868     		ldr	r0, [r3]	@ float
+ 961 0006 FFF7FEFF 		bl	__aeabi_f2d
+ 962              	.LVL48:
+ 963 000a 2DA3     		adr	r3, .L117
+ 964 000c D3E90023 		ldrd	r2, [r3]
+ 965 0010 FFF7FEFF 		bl	__aeabi_dmul
+ 966              	.LVL49:
+ 967 0014 0446     		mov	r4, r0
+ 968 0016 0D46     		mov	r5, r1
+ 969              		.loc 1 322 24 view .LVU151
+ 970 0018 2C4E     		ldr	r6, .L117+12
+ 971 001a 3068     		ldr	r0, [r6]	@ float
+ 972 001c FFF7FEFF 		bl	__aeabi_f2d
+ 973              	.LVL50:
+ 974 0020 2246     		mov	r2, r4
+ 975 0022 2B46     		mov	r3, r5
+ 976 0024 FFF7FEFF 		bl	__aeabi_dadd
+ 977              	.LVL51:
+ 978 0028 FFF7FEFF 		bl	__aeabi_d2f
+ 979              	.LVL52:
+ 980 002c 07EE900A 		vmov	s15, r0
+ 981 0030 3060     		str	r0, [r6]	@ float
+ 323:Src/target.c  **** 
+ 324:Src/target.c  **** 	switch(rotation_dir_flg)
+ 982              		.loc 1 324 2 is_stmt 1 view .LVU152
+ 983 0032 274B     		ldr	r3, .L117+16
+ 984 0034 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 985 0036 C3B1     		cbz	r3, .L100
+ 986 0038 012B     		cmp	r3, #1
+ 987 003a 2AD0     		beq	.L101
+ 988              	.L102:
+ 325:Src/target.c  **** 		{
+ 326:Src/target.c  **** 			case counter_clockwise:
+ 327:Src/target.c  **** 
+ 328:Src/target.c  **** 				if (target_rotation_speed < 0)	//m 下限スピード処理
+ 329:Src/target.c  **** 						{
+ 330:Src/target.c  **** 							target_rotation_speed = 0;
+ 331:Src/target.c  **** 						}
+ 332:Src/target.c  **** 						else if (target_rotation_speed > rotat_speed_max)//上限スピード処理
+ 333:Src/target.c  **** 						{
+ 334:Src/target.c  **** 							target_rotation_speed = rotat_speed_max;
+ 335:Src/target.c  **** 						}
+ARM GAS  C:\Temp\ccHYQKog.s 			page 25
 
 
- 909 00ba 00BFAFF3 		.align	3
- 909      0080
- 910              	.L105:
- 911 00c0 FCA9F1D2 		.word	-755914244
- 912 00c4 4D62503F 		.word	1062232653
- 913 00c8 00000000 		.word	.LANCHOR10
- 914 00cc 00000000 		.word	.LANCHOR4
- 915 00d0 00000000 		.word	.LANCHOR1
- 916 00d4 00000000 		.word	.LANCHOR8
- 917 00d8 E4CB1641 		.word	1092013028
- 918 00dc E4CB16C1 		.word	-1055470620
- 919              		.cfi_endproc
- 920              	.LFE18:
- 922              		.section	.text.target_1ms,"ax",%progbits
- 923              		.align	1
- 924              		.global	target_1ms
- 925              		.syntax unified
- 926              		.thumb
- 927              		.thumb_func
- 928              		.fpu fpv4-sp-d16
- 930              	target_1ms:
- 931              	.LFB3:
-  31:Src/target.c  **** 	calc_target_move_accel();		//移動加速度更新
- 932              		.loc 1 31 1 is_stmt 1 view -0
- 933              		.cfi_startproc
- 934              		@ args = 0, pretend = 0, frame = 0
- 935              		@ frame_needed = 0, uses_anonymous_args = 0
- 936 0000 08B5     		push	{r3, lr}
- 937              	.LCFI3:
- 938              		.cfi_def_cfa_offset 8
- 939              		.cfi_offset 3, -8
- 940              		.cfi_offset 14, -4
-  32:Src/target.c  **** 	calc_rotate_accel();			//回転角速度更新
- 941              		.loc 1 32 2 view .LVU154
- 942 0002 FFF7FEFF 		bl	calc_target_move_accel
- 943              	.LVL47:
-  33:Src/target.c  **** 	calc_target_move_speed();		//目標移動速度更新
- 944              		.loc 1 33 2 view .LVU155
- 945 0006 FFF7FEFF 		bl	calc_rotate_accel
- 946              	.LVL48:
-  34:Src/target.c  **** 	calc_target_rotation_speed();	//目標角速度更新
- 947              		.loc 1 34 2 view .LVU156
- 948 000a FFF7FEFF 		bl	calc_target_move_speed
- 949              	.LVL49:
-  35:Src/target.c  **** }
- 950              		.loc 1 35 2 view .LVU157
- 951 000e FFF7FEFF 		bl	calc_target_rotation_speed
- 952              	.LVL50:
-  36:Src/target.c  **** 
- 953              		.loc 1 36 1 is_stmt 0 view .LVU158
- 954 0012 08BD     		pop	{r3, pc}
- 955              		.cfi_endproc
- 956              	.LFE3:
- 958              		.section	.bss.accel_dir_flg,"aw",%nobits
- 959              		.set	.LANCHOR2,. + 0
- 962              	accel_dir_flg:
- 963 0000 00       		.space	1
-ARM GAS  C:\Temp\ccHU6vXK.s 			page 24
+ 336:Src/target.c  **** 				break;
+ 337:Src/target.c  **** 
+ 338:Src/target.c  **** 			case clockwise:
+ 339:Src/target.c  **** 				if (target_rotation_speed > 0)	//m 上限スピード処理
+ 340:Src/target.c  **** 					{
+ 341:Src/target.c  **** 						target_rotation_speed = 0;
+ 342:Src/target.c  **** 					}
+ 343:Src/target.c  **** 					else if (target_rotation_speed < -1 * rotat_speed_max)//下限スピード処理
+ 344:Src/target.c  **** 					{
+ 345:Src/target.c  **** 						target_rotation_speed = -1 * rotat_speed_max;
+ 346:Src/target.c  **** 					}
+ 347:Src/target.c  **** 				break;
+ 348:Src/target.c  **** 		}
+ 349:Src/target.c  **** 
+ 350:Src/target.c  **** 	ideal_angle += target_rotation_speed * 0.001;
+ 989              		.loc 1 350 2 view .LVU153
+ 990              		.loc 1 350 39 is_stmt 0 view .LVU154
+ 991 003c 234B     		ldr	r3, .L117+12
+ 992 003e 1868     		ldr	r0, [r3]	@ float
+ 993 0040 FFF7FEFF 		bl	__aeabi_f2d
+ 994              	.LVL53:
+ 995 0044 1EA3     		adr	r3, .L117
+ 996 0046 D3E90023 		ldrd	r2, [r3]
+ 997 004a FFF7FEFF 		bl	__aeabi_dmul
+ 998              	.LVL54:
+ 999 004e 0446     		mov	r4, r0
+ 1000 0050 0D46     		mov	r5, r1
+ 1001              		.loc 1 350 14 view .LVU155
+ 1002 0052 204E     		ldr	r6, .L117+20
+ 1003 0054 3068     		ldr	r0, [r6]	@ float
+ 1004 0056 FFF7FEFF 		bl	__aeabi_f2d
+ 1005              	.LVL55:
+ 1006 005a 2246     		mov	r2, r4
+ 1007 005c 2B46     		mov	r3, r5
+ 1008 005e FFF7FEFF 		bl	__aeabi_dadd
+ 1009              	.LVL56:
+ 1010 0062 FFF7FEFF 		bl	__aeabi_d2f
+ 1011              	.LVL57:
+ 1012 0066 3060     		str	r0, [r6]	@ float
+ 351:Src/target.c  **** 
+ 352:Src/target.c  **** }
+ 1013              		.loc 1 352 1 view .LVU156
+ 1014 0068 70BD     		pop	{r4, r5, r6, pc}
+ 1015              	.L100:
+ 328:Src/target.c  **** 						{
+ 1016              		.loc 1 328 5 is_stmt 1 view .LVU157
+ 328:Src/target.c  **** 						{
+ 1017              		.loc 1 328 8 is_stmt 0 view .LVU158
+ 1018 006a F5EEC07A 		vcmpe.f32	s15, #0
+ 1019 006e F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 1020 0072 0AD4     		bmi	.L116
+ 332:Src/target.c  **** 						{
+ 1021              		.loc 1 332 12 is_stmt 1 view .LVU159
+ 332:Src/target.c  **** 						{
+ 1022              		.loc 1 332 15 is_stmt 0 view .LVU160
+ 1023 0074 9FED187A 		vldr.32	s14, .L117+24
+ 1024 0078 F4EEC77A 		vcmpe.f32	s15, s14
+ARM GAS  C:\Temp\ccHYQKog.s 			page 26
 
 
- 964              		.section	.bss.ideal_angle,"aw",%nobits
- 965              		.align	2
- 966              		.set	.LANCHOR8,. + 0
- 969              	ideal_angle:
- 970 0000 00000000 		.space	4
- 971              		.section	.bss.ideal_length,"aw",%nobits
- 972              		.align	2
- 973              		.set	.LANCHOR6,. + 0
- 976              	ideal_length:
- 977 0000 00000000 		.space	4
- 978              		.section	.bss.move_dir_flg,"aw",%nobits
- 979              		.set	.LANCHOR0,. + 0
- 982              	move_dir_flg:
- 983 0000 00       		.space	1
- 984              		.section	.bss.rotation_dir_flg,"aw",%nobits
- 985              		.set	.LANCHOR1,. + 0
- 988              	rotation_dir_flg:
- 989 0000 00       		.space	1
- 990              		.section	.bss.target_angle,"aw",%nobits
- 991              		.align	2
- 992              		.set	.LANCHOR7,. + 0
- 995              	target_angle:
- 996 0000 00000000 		.space	4
- 997              		.section	.bss.target_length,"aw",%nobits
- 998              		.align	2
- 999              		.set	.LANCHOR5,. + 0
- 1002              	target_length:
- 1003 0000 00000000 		.space	4
- 1004              		.section	.bss.target_move_accel,"aw",%nobits
- 1005              		.align	2
- 1006              		.set	.LANCHOR9,. + 0
- 1009              	target_move_accel:
- 1010 0000 00000000 		.space	4
- 1011              		.section	.bss.target_move_speed,"aw",%nobits
- 1012              		.align	2
- 1013              		.set	.LANCHOR3,. + 0
- 1016              	target_move_speed:
- 1017 0000 00000000 		.space	4
- 1018              		.section	.bss.target_rotation_accel,"aw",%nobits
- 1019              		.align	2
- 1020              		.set	.LANCHOR10,. + 0
- 1023              	target_rotation_accel:
- 1024 0000 00000000 		.space	4
- 1025              		.section	.bss.target_rotation_speed,"aw",%nobits
- 1026              		.align	2
- 1027              		.set	.LANCHOR4,. + 0
- 1030              	target_rotation_speed:
- 1031 0000 00000000 		.space	4
- 1032              		.text
- 1033              	.Letext0:
- 1034              		.file 2 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\lock.h"
- 1035              		.file 3 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\_types.h"
- 1036              		.file 4 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\lib\\gcc\\arm-none-eabi\\9.2.1\\include\\st
- 1037              		.file 5 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\reent.h"
- 1038              		.file 6 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\math.h"
- 1039              		.file 7 "Inc/target.h"
-ARM GAS  C:\Temp\ccHU6vXK.s 			page 25
+ 1025 007c F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 1026 0080 DCDD     		ble	.L102
+ 334:Src/target.c  **** 						}
+ 1027              		.loc 1 334 8 is_stmt 1 view .LVU161
+ 334:Src/target.c  **** 						}
+ 1028              		.loc 1 334 30 is_stmt 0 view .LVU162
+ 1029 0082 124B     		ldr	r3, .L117+12
+ 1030 0084 83ED007A 		vstr.32	s14, [r3]
+ 1031 0088 D8E7     		b	.L102
+ 1032              	.L116:
+ 330:Src/target.c  **** 						}
+ 1033              		.loc 1 330 8 is_stmt 1 view .LVU163
+ 330:Src/target.c  **** 						}
+ 1034              		.loc 1 330 30 is_stmt 0 view .LVU164
+ 1035 008a 104B     		ldr	r3, .L117+12
+ 1036 008c 0022     		movs	r2, #0
+ 1037 008e 1A60     		str	r2, [r3]	@ float
+ 1038 0090 D4E7     		b	.L102
+ 1039              	.L101:
+ 339:Src/target.c  **** 					{
+ 1040              		.loc 1 339 5 is_stmt 1 view .LVU165
+ 339:Src/target.c  **** 					{
+ 1041              		.loc 1 339 8 is_stmt 0 view .LVU166
+ 1042 0092 F5EEC07A 		vcmpe.f32	s15, #0
+ 1043 0096 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 1044 009a 03DD     		ble	.L114
+ 341:Src/target.c  **** 					}
+ 1045              		.loc 1 341 7 is_stmt 1 view .LVU167
+ 341:Src/target.c  **** 					}
+ 1046              		.loc 1 341 29 is_stmt 0 view .LVU168
+ 1047 009c 0B4B     		ldr	r3, .L117+12
+ 1048 009e 0022     		movs	r2, #0
+ 1049 00a0 1A60     		str	r2, [r3]	@ float
+ 1050 00a2 CBE7     		b	.L102
+ 1051              	.L114:
+ 343:Src/target.c  **** 					{
+ 1052              		.loc 1 343 11 is_stmt 1 view .LVU169
+ 343:Src/target.c  **** 					{
+ 1053              		.loc 1 343 14 is_stmt 0 view .LVU170
+ 1054 00a4 9FED0D7A 		vldr.32	s14, .L117+28
+ 1055 00a8 F4EEC77A 		vcmpe.f32	s15, s14
+ 1056 00ac F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 1057 00b0 C4D5     		bpl	.L102
+ 345:Src/target.c  **** 					}
+ 1058              		.loc 1 345 7 is_stmt 1 view .LVU171
+ 345:Src/target.c  **** 					}
+ 1059              		.loc 1 345 29 is_stmt 0 view .LVU172
+ 1060 00b2 064B     		ldr	r3, .L117+12
+ 1061 00b4 83ED007A 		vstr.32	s14, [r3]
+ 1062 00b8 C0E7     		b	.L102
+ 1063              	.L118:
+ 1064 00ba 00BFAFF3 		.align	3
+ 1064      0080
+ 1065              	.L117:
+ 1066 00c0 FCA9F1D2 		.word	-755914244
+ 1067 00c4 4D62503F 		.word	1062232653
+ 1068 00c8 00000000 		.word	.LANCHOR11
+ARM GAS  C:\Temp\ccHYQKog.s 			page 27
+
+
+ 1069 00cc 00000000 		.word	.LANCHOR5
+ 1070 00d0 00000000 		.word	.LANCHOR1
+ 1071 00d4 00000000 		.word	.LANCHOR8
+ 1072 00d8 E4CB1641 		.word	1092013028
+ 1073 00dc E4CB16C1 		.word	-1055470620
+ 1074              		.cfi_endproc
+ 1075              	.LFE21:
+ 1077              		.section	.text.target_1ms,"ax",%progbits
+ 1078              		.align	1
+ 1079              		.global	target_1ms
+ 1080              		.syntax unified
+ 1081              		.thumb
+ 1082              		.thumb_func
+ 1083              		.fpu fpv4-sp-d16
+ 1085              	target_1ms:
+ 1086              	.LFB3:
+  34:Src/target.c  **** 	calc_target_move_accel();		//移動加速度更新
+ 1087              		.loc 1 34 1 is_stmt 1 view -0
+ 1088              		.cfi_startproc
+ 1089              		@ args = 0, pretend = 0, frame = 0
+ 1090              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1091 0000 08B5     		push	{r3, lr}
+ 1092              	.LCFI7:
+ 1093              		.cfi_def_cfa_offset 8
+ 1094              		.cfi_offset 3, -8
+ 1095              		.cfi_offset 14, -4
+  35:Src/target.c  **** 	calc_rotate_accel();			//回転角速度更新
+ 1096              		.loc 1 35 2 view .LVU174
+ 1097 0002 FFF7FEFF 		bl	calc_target_move_accel
+ 1098              	.LVL58:
+  36:Src/target.c  **** 	calc_target_move_speed();		//目標移動速度更新
+ 1099              		.loc 1 36 2 view .LVU175
+ 1100 0006 FFF7FEFF 		bl	calc_rotate_accel
+ 1101              	.LVL59:
+  37:Src/target.c  **** 	calc_target_rotation_speed();	//目標角速度更新
+ 1102              		.loc 1 37 2 view .LVU176
+ 1103 000a FFF7FEFF 		bl	calc_target_move_speed
+ 1104              	.LVL60:
+  38:Src/target.c  **** }
+ 1105              		.loc 1 38 2 view .LVU177
+ 1106 000e FFF7FEFF 		bl	calc_target_rotation_speed
+ 1107              	.LVL61:
+  39:Src/target.c  **** 
+ 1108              		.loc 1 39 1 is_stmt 0 view .LVU178
+ 1109 0012 08BD     		pop	{r3, pc}
+ 1110              		.cfi_endproc
+ 1111              	.LFE3:
+ 1113              		.section	.bss.accel_dir_flg,"aw",%nobits
+ 1114              		.set	.LANCHOR2,. + 0
+ 1117              	accel_dir_flg:
+ 1118 0000 00       		.space	1
+ 1119              		.section	.bss.ideal_angle,"aw",%nobits
+ 1120              		.align	2
+ 1121              		.set	.LANCHOR8,. + 0
+ 1124              	ideal_angle:
+ 1125 0000 00000000 		.space	4
+ 1126              		.section	.bss.ideal_length,"aw",%nobits
+ARM GAS  C:\Temp\ccHYQKog.s 			page 28
+
+
+ 1127              		.align	2
+ 1128              		.set	.LANCHOR7,. + 0
+ 1131              	ideal_length:
+ 1132 0000 00000000 		.space	4
+ 1133              		.section	.bss.move_dir_flg,"aw",%nobits
+ 1134              		.set	.LANCHOR0,. + 0
+ 1137              	move_dir_flg:
+ 1138 0000 00       		.space	1
+ 1139              		.section	.bss.rotation_dir_flg,"aw",%nobits
+ 1140              		.set	.LANCHOR1,. + 0
+ 1143              	rotation_dir_flg:
+ 1144 0000 00       		.space	1
+ 1145              		.section	.bss.speed_under_lim_flg,"aw",%nobits
+ 1146              		.set	.LANCHOR3,. + 0
+ 1149              	speed_under_lim_flg:
+ 1150 0000 00       		.space	1
+ 1151              		.section	.bss.target_angle,"aw",%nobits
+ 1152              		.align	2
+ 1153              		.set	.LANCHOR9,. + 0
+ 1156              	target_angle:
+ 1157 0000 00000000 		.space	4
+ 1158              		.section	.bss.target_length,"aw",%nobits
+ 1159              		.align	2
+ 1160              		.set	.LANCHOR6,. + 0
+ 1163              	target_length:
+ 1164 0000 00000000 		.space	4
+ 1165              		.section	.bss.target_move_accel,"aw",%nobits
+ 1166              		.align	2
+ 1167              		.set	.LANCHOR10,. + 0
+ 1170              	target_move_accel:
+ 1171 0000 00000000 		.space	4
+ 1172              		.section	.bss.target_move_speed,"aw",%nobits
+ 1173              		.align	2
+ 1174              		.set	.LANCHOR4,. + 0
+ 1177              	target_move_speed:
+ 1178 0000 00000000 		.space	4
+ 1179              		.section	.bss.target_rotation_accel,"aw",%nobits
+ 1180              		.align	2
+ 1181              		.set	.LANCHOR11,. + 0
+ 1184              	target_rotation_accel:
+ 1185 0000 00000000 		.space	4
+ 1186              		.section	.bss.target_rotation_speed,"aw",%nobits
+ 1187              		.align	2
+ 1188              		.set	.LANCHOR5,. + 0
+ 1191              	target_rotation_speed:
+ 1192 0000 00000000 		.space	4
+ 1193              		.text
+ 1194              	.Letext0:
+ 1195              		.file 2 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\lock.h"
+ 1196              		.file 3 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\_types.h"
+ 1197              		.file 4 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\lib\\gcc\\arm-none-eabi\\9.2.1\\include\\st
+ 1198              		.file 5 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\reent.h"
+ 1199              		.file 6 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\math.h"
+ 1200              		.file 7 "Inc/target.h"
+ARM GAS  C:\Temp\ccHYQKog.s 			page 29
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 target.c
-  C:\Temp\ccHU6vXK.s:18     .text.set_direction_mode:00000000 $t
-  C:\Temp\ccHU6vXK.s:26     .text.set_direction_mode:00000000 set_direction_mode
-  C:\Temp\ccHU6vXK.s:44     .text.set_direction_mode:00000008 $d
-  C:\Temp\ccHU6vXK.s:49     .text.set_rotation_mode:00000000 $t
-  C:\Temp\ccHU6vXK.s:56     .text.set_rotation_mode:00000000 set_rotation_mode
-  C:\Temp\ccHU6vXK.s:73     .text.set_rotation_mode:00000008 $d
-  C:\Temp\ccHU6vXK.s:78     .text.set_accel_mode:00000000 $t
-  C:\Temp\ccHU6vXK.s:85     .text.set_accel_mode:00000000 set_accel_mode
-  C:\Temp\ccHU6vXK.s:102    .text.set_accel_mode:00000008 $d
-  C:\Temp\ccHU6vXK.s:107    .text.get_target_move_speed:00000000 $t
-  C:\Temp\ccHU6vXK.s:114    .text.get_target_move_speed:00000000 get_target_move_speed
-  C:\Temp\ccHU6vXK.s:129    .text.get_target_move_speed:00000008 $d
-  C:\Temp\ccHU6vXK.s:134    .text.get_target_rotation_speed:00000000 $t
-  C:\Temp\ccHU6vXK.s:141    .text.get_target_rotation_speed:00000000 get_target_rotation_speed
-  C:\Temp\ccHU6vXK.s:156    .text.get_target_rotation_speed:00000008 $d
-  C:\Temp\ccHU6vXK.s:161    .text.get_target_length:00000000 $t
-  C:\Temp\ccHU6vXK.s:168    .text.get_target_length:00000000 get_target_length
-  C:\Temp\ccHU6vXK.s:183    .text.get_target_length:00000008 $d
-  C:\Temp\ccHU6vXK.s:188    .text.get_ideal_length:00000000 $t
-  C:\Temp\ccHU6vXK.s:195    .text.get_ideal_length:00000000 get_ideal_length
-  C:\Temp\ccHU6vXK.s:210    .text.get_ideal_length:00000008 $d
-  C:\Temp\ccHU6vXK.s:215    .text.get_target_angle:00000000 $t
-  C:\Temp\ccHU6vXK.s:222    .text.get_target_angle:00000000 get_target_angle
-  C:\Temp\ccHU6vXK.s:237    .text.get_target_angle:00000008 $d
-  C:\Temp\ccHU6vXK.s:242    .text.get_ideal_angle:00000000 $t
-  C:\Temp\ccHU6vXK.s:249    .text.get_ideal_angle:00000000 get_ideal_angle
-  C:\Temp\ccHU6vXK.s:264    .text.get_ideal_angle:00000008 $d
-  C:\Temp\ccHU6vXK.s:269    .text.set_target_length:00000000 $t
-  C:\Temp\ccHU6vXK.s:276    .text.set_target_length:00000000 set_target_length
-  C:\Temp\ccHU6vXK.s:295    .text.set_target_length:00000010 $d
-  C:\Temp\ccHU6vXK.s:300    .text.set_target_angle:00000000 $t
-  C:\Temp\ccHU6vXK.s:307    .text.set_target_angle:00000000 set_target_angle
-  C:\Temp\ccHU6vXK.s:326    .text.set_target_angle:00000010 $d
-  C:\Temp\ccHU6vXK.s:331    .text.calc_target_move_accel:00000000 $t
-  C:\Temp\ccHU6vXK.s:338    .text.calc_target_move_accel:00000000 calc_target_move_accel
-  C:\Temp\ccHU6vXK.s:463    .text.calc_target_move_accel:000000b4 $d
-  C:\Temp\ccHU6vXK.s:478    .text.calc_rotate_accel:00000000 $t
-  C:\Temp\ccHU6vXK.s:485    .text.calc_rotate_accel:00000000 calc_rotate_accel
-  C:\Temp\ccHU6vXK.s:626    .text.calc_rotate_accel:000000c8 $d
-  C:\Temp\ccHU6vXK.s:641    .text.calc_target_move_speed:00000000 $t
-  C:\Temp\ccHU6vXK.s:648    .text.calc_target_move_speed:00000000 calc_target_move_speed
-  C:\Temp\ccHU6vXK.s:770    .text.calc_target_move_speed:000000c0 $d
-  C:\Temp\ccHU6vXK.s:782    .text.calc_target_rotation_speed:00000000 $t
-  C:\Temp\ccHU6vXK.s:789    .text.calc_target_rotation_speed:00000000 calc_target_rotation_speed
-  C:\Temp\ccHU6vXK.s:911    .text.calc_target_rotation_speed:000000c0 $d
-  C:\Temp\ccHU6vXK.s:923    .text.target_1ms:00000000 $t
-  C:\Temp\ccHU6vXK.s:930    .text.target_1ms:00000000 target_1ms
-  C:\Temp\ccHU6vXK.s:962    .bss.accel_dir_flg:00000000 accel_dir_flg
-  C:\Temp\ccHU6vXK.s:963    .bss.accel_dir_flg:00000000 $d
-  C:\Temp\ccHU6vXK.s:965    .bss.ideal_angle:00000000 $d
-  C:\Temp\ccHU6vXK.s:969    .bss.ideal_angle:00000000 ideal_angle
-  C:\Temp\ccHU6vXK.s:972    .bss.ideal_length:00000000 $d
-  C:\Temp\ccHU6vXK.s:976    .bss.ideal_length:00000000 ideal_length
-  C:\Temp\ccHU6vXK.s:982    .bss.move_dir_flg:00000000 move_dir_flg
-  C:\Temp\ccHU6vXK.s:983    .bss.move_dir_flg:00000000 $d
-ARM GAS  C:\Temp\ccHU6vXK.s 			page 26
+  C:\Temp\ccHYQKog.s:18     .text.set_direction_mode:00000000 $t
+  C:\Temp\ccHYQKog.s:26     .text.set_direction_mode:00000000 set_direction_mode
+  C:\Temp\ccHYQKog.s:44     .text.set_direction_mode:00000008 $d
+  C:\Temp\ccHYQKog.s:49     .text.set_rotation_mode:00000000 $t
+  C:\Temp\ccHYQKog.s:56     .text.set_rotation_mode:00000000 set_rotation_mode
+  C:\Temp\ccHYQKog.s:73     .text.set_rotation_mode:00000008 $d
+  C:\Temp\ccHYQKog.s:78     .text.set_accel_mode:00000000 $t
+  C:\Temp\ccHYQKog.s:85     .text.set_accel_mode:00000000 set_accel_mode
+  C:\Temp\ccHYQKog.s:102    .text.set_accel_mode:00000008 $d
+  C:\Temp\ccHYQKog.s:107    .text.set_speed_under_lim_flg:00000000 $t
+  C:\Temp\ccHYQKog.s:114    .text.set_speed_under_lim_flg:00000000 set_speed_under_lim_flg
+  C:\Temp\ccHYQKog.s:131    .text.set_speed_under_lim_flg:00000008 $d
+  C:\Temp\ccHYQKog.s:136    .text.get_target_move_speed:00000000 $t
+  C:\Temp\ccHYQKog.s:143    .text.get_target_move_speed:00000000 get_target_move_speed
+  C:\Temp\ccHYQKog.s:158    .text.get_target_move_speed:00000008 $d
+  C:\Temp\ccHYQKog.s:163    .text.get_target_rotation_speed:00000000 $t
+  C:\Temp\ccHYQKog.s:170    .text.get_target_rotation_speed:00000000 get_target_rotation_speed
+  C:\Temp\ccHYQKog.s:185    .text.get_target_rotation_speed:00000008 $d
+  C:\Temp\ccHYQKog.s:190    .text.get_target_length:00000000 $t
+  C:\Temp\ccHYQKog.s:197    .text.get_target_length:00000000 get_target_length
+  C:\Temp\ccHYQKog.s:212    .text.get_target_length:00000008 $d
+  C:\Temp\ccHYQKog.s:217    .text.set_ideal_length:00000000 $t
+  C:\Temp\ccHYQKog.s:224    .text.set_ideal_length:00000000 set_ideal_length
+  C:\Temp\ccHYQKog.s:241    .text.set_ideal_length:00000008 $d
+  C:\Temp\ccHYQKog.s:246    .text.set_ideal_angle:00000000 $t
+  C:\Temp\ccHYQKog.s:253    .text.set_ideal_angle:00000000 set_ideal_angle
+  C:\Temp\ccHYQKog.s:270    .text.set_ideal_angle:00000008 $d
+  C:\Temp\ccHYQKog.s:275    .text.get_ideal_length:00000000 $t
+  C:\Temp\ccHYQKog.s:282    .text.get_ideal_length:00000000 get_ideal_length
+  C:\Temp\ccHYQKog.s:297    .text.get_ideal_length:00000008 $d
+  C:\Temp\ccHYQKog.s:302    .text.get_target_angle:00000000 $t
+  C:\Temp\ccHYQKog.s:309    .text.get_target_angle:00000000 get_target_angle
+  C:\Temp\ccHYQKog.s:324    .text.get_target_angle:00000008 $d
+  C:\Temp\ccHYQKog.s:329    .text.get_ideal_angle:00000000 $t
+  C:\Temp\ccHYQKog.s:336    .text.get_ideal_angle:00000000 get_ideal_angle
+  C:\Temp\ccHYQKog.s:351    .text.get_ideal_angle:00000008 $d
+  C:\Temp\ccHYQKog.s:356    .text.set_target_length:00000000 $t
+  C:\Temp\ccHYQKog.s:363    .text.set_target_length:00000000 set_target_length
+  C:\Temp\ccHYQKog.s:382    .text.set_target_length:00000010 $d
+  C:\Temp\ccHYQKog.s:387    .text.set_target_angle:00000000 $t
+  C:\Temp\ccHYQKog.s:394    .text.set_target_angle:00000000 set_target_angle
+  C:\Temp\ccHYQKog.s:413    .text.set_target_angle:00000010 $d
+  C:\Temp\ccHYQKog.s:421    .text.calc_target_move_accel:00000000 $t
+  C:\Temp\ccHYQKog.s:428    .text.calc_target_move_accel:00000000 calc_target_move_accel
+  C:\Temp\ccHYQKog.s:587    .text.calc_target_move_accel:000000d8 $d
+  C:\Temp\ccHYQKog.s:603    .text.calc_rotate_accel:00000000 $t
+  C:\Temp\ccHYQKog.s:610    .text.calc_rotate_accel:00000000 calc_rotate_accel
+  C:\Temp\ccHYQKog.s:751    .text.calc_rotate_accel:000000c8 $d
+  C:\Temp\ccHYQKog.s:765    .text.calc_target_move_speed:00000000 $t
+  C:\Temp\ccHYQKog.s:772    .text.calc_target_move_speed:00000000 calc_target_move_speed
+  C:\Temp\ccHYQKog.s:921    .text.calc_target_move_speed:000000e8 $d
+  C:\Temp\ccHYQKog.s:937    .text.calc_target_rotation_speed:00000000 $t
+  C:\Temp\ccHYQKog.s:944    .text.calc_target_rotation_speed:00000000 calc_target_rotation_speed
+  C:\Temp\ccHYQKog.s:1066   .text.calc_target_rotation_speed:000000c0 $d
+  C:\Temp\ccHYQKog.s:1078   .text.target_1ms:00000000 $t
+ARM GAS  C:\Temp\ccHYQKog.s 			page 30
 
 
-  C:\Temp\ccHU6vXK.s:988    .bss.rotation_dir_flg:00000000 rotation_dir_flg
-  C:\Temp\ccHU6vXK.s:989    .bss.rotation_dir_flg:00000000 $d
-  C:\Temp\ccHU6vXK.s:991    .bss.target_angle:00000000 $d
-  C:\Temp\ccHU6vXK.s:995    .bss.target_angle:00000000 target_angle
-  C:\Temp\ccHU6vXK.s:998    .bss.target_length:00000000 $d
-  C:\Temp\ccHU6vXK.s:1002   .bss.target_length:00000000 target_length
-  C:\Temp\ccHU6vXK.s:1005   .bss.target_move_accel:00000000 $d
-  C:\Temp\ccHU6vXK.s:1009   .bss.target_move_accel:00000000 target_move_accel
-  C:\Temp\ccHU6vXK.s:1012   .bss.target_move_speed:00000000 $d
-  C:\Temp\ccHU6vXK.s:1016   .bss.target_move_speed:00000000 target_move_speed
-  C:\Temp\ccHU6vXK.s:1019   .bss.target_rotation_accel:00000000 $d
-  C:\Temp\ccHU6vXK.s:1023   .bss.target_rotation_accel:00000000 target_rotation_accel
-  C:\Temp\ccHU6vXK.s:1026   .bss.target_rotation_speed:00000000 $d
-  C:\Temp\ccHU6vXK.s:1030   .bss.target_rotation_speed:00000000 target_rotation_speed
+  C:\Temp\ccHYQKog.s:1085   .text.target_1ms:00000000 target_1ms
+  C:\Temp\ccHYQKog.s:1117   .bss.accel_dir_flg:00000000 accel_dir_flg
+  C:\Temp\ccHYQKog.s:1118   .bss.accel_dir_flg:00000000 $d
+  C:\Temp\ccHYQKog.s:1120   .bss.ideal_angle:00000000 $d
+  C:\Temp\ccHYQKog.s:1124   .bss.ideal_angle:00000000 ideal_angle
+  C:\Temp\ccHYQKog.s:1127   .bss.ideal_length:00000000 $d
+  C:\Temp\ccHYQKog.s:1131   .bss.ideal_length:00000000 ideal_length
+  C:\Temp\ccHYQKog.s:1137   .bss.move_dir_flg:00000000 move_dir_flg
+  C:\Temp\ccHYQKog.s:1138   .bss.move_dir_flg:00000000 $d
+  C:\Temp\ccHYQKog.s:1143   .bss.rotation_dir_flg:00000000 rotation_dir_flg
+  C:\Temp\ccHYQKog.s:1144   .bss.rotation_dir_flg:00000000 $d
+  C:\Temp\ccHYQKog.s:1149   .bss.speed_under_lim_flg:00000000 speed_under_lim_flg
+  C:\Temp\ccHYQKog.s:1150   .bss.speed_under_lim_flg:00000000 $d
+  C:\Temp\ccHYQKog.s:1152   .bss.target_angle:00000000 $d
+  C:\Temp\ccHYQKog.s:1156   .bss.target_angle:00000000 target_angle
+  C:\Temp\ccHYQKog.s:1159   .bss.target_length:00000000 $d
+  C:\Temp\ccHYQKog.s:1163   .bss.target_length:00000000 target_length
+  C:\Temp\ccHYQKog.s:1166   .bss.target_move_accel:00000000 $d
+  C:\Temp\ccHYQKog.s:1170   .bss.target_move_accel:00000000 target_move_accel
+  C:\Temp\ccHYQKog.s:1173   .bss.target_move_speed:00000000 $d
+  C:\Temp\ccHYQKog.s:1177   .bss.target_move_speed:00000000 target_move_speed
+  C:\Temp\ccHYQKog.s:1180   .bss.target_rotation_accel:00000000 $d
+  C:\Temp\ccHYQKog.s:1184   .bss.target_rotation_accel:00000000 target_rotation_accel
+  C:\Temp\ccHYQKog.s:1187   .bss.target_rotation_speed:00000000 $d
+  C:\Temp\ccHYQKog.s:1191   .bss.target_rotation_speed:00000000 target_rotation_speed
 
 UNDEFINED SYMBOLS
 __aeabi_f2d
+__aeabi_dadd
+__aeabi_dcmplt
 __aeabi_dmul
 __aeabi_ddiv
 __aeabi_d2f
-__aeabi_dadd

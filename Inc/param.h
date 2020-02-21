@@ -26,12 +26,12 @@
 /////////////////////////////////////
 
 /*module_test*/
-#define log_count_lim		(3000)	//データ取得する期間[ms]
-#define log_count_step		(3)	    //データを取得する時間間隔[ms]
+#define log_count_lim		(20000)	//データ取得する期間[ms]
+#define log_count_step		(20)	    //データを取得する時間間隔[ms]
 
-//#define DATA_DEFAULT              //測定モード１
+#define DATA_DEFAULT              //測定モード１
 //#define DATA_SIDE                 //測定モード２
-#define DATA_MAZE                 //測定モード３
+//#define DATA_MAZE                 //測定モード３
 
 //maze
 #define x_size              (10)     //x軸方向の壁(縦壁)の枚数+1
@@ -53,17 +53,18 @@
 
 //mouse_state
 #define ave_num 			(10)	    //速度の移動平均フィルタの長さ
-#define Tire_diameter		(0.01276994f)//タイヤの直径    
+#define Tire_diameter		(0.01266698f)//タイヤの直径    
 
 //target
 #define move_accel          (1.5f)      //移動加速度[m/ss]
 #define rotat_accel         (3*PI)      //角加速度[rad/ss]
 #define move_speed_max      (0.3f)      //最大移動速度[m/s]
 #define rotat_speed_max     (3*PI)      //最大角速度[rad/s]
+#define move_speed_slow     (0.03)      //スロー走行時の速度[m/s]
 
 //control
-#define move_speed_P		(2.674f)	//移動速度制御のPゲイン
-#define move_speed_I		(39.4724f)	//移動速度制御のIゲイン
+#define move_speed_P		(20.674f)	//移動速度制御のPゲイン
+#define move_speed_I		(100.4724f)	//移動速度制御のIゲイン
 #define rotate_speed_P		(0.34802f)	//角速度制御のPゲイン
 #define rotate_speed_I		(9.1729f)	//角速度制御のIゲイン
 
@@ -73,9 +74,9 @@
 
 //adjust
 #define front_sensor_r_ref      (0.0107f)	        //前壁補正時の右前距離目標値(1cm)
-#define front_sensor_l_ref      (0.0092)	        //前壁補正時の左前距離目標値(1cm)
+#define front_sensor_l_ref      (0.0088)	        //前壁補正時の左前距離目標値(1cm)
 #define chassis_width           (0.036787f)         //シャシー幅
-#define front_sensor_move_KP	(200.412292054546f)	//前壁距離のPゲイン
+#define front_sensor_move_KP	(50.412292054546f)	//前壁距離のPゲイン
 #define front_sensor_move_KI	(26.2444668681538f)	//前壁距離のIゲイン
 #define front_sensor_move_KD	(3.28431998107001f)	//前壁距離のDゲイン
 #define front_sensor_move_fil	(23.9567963129851f)	//前壁距離フィルタ係数
@@ -83,8 +84,9 @@
 #define front_sensor_rotate_KI	(2.52037335129739f)	//前壁角度のIゲイン
 #define front_sensor_rotate_KD	(0.206728439324594f)//前壁補正のDゲイン
 #define front_sensor_rotate_fil	(44.5570260812328f)	//前壁角度フィルタ係数
-#define front_sensor_th     	(0.0005)			//前壁補正時の補正閾値(0.3mm)
+#define front_sensor_th     	(0.0002)			//前壁補正時の補正閾値(0.3mm)
 #define calib_tim               (200)				//前壁補正時間(100ms)
+#define calib_tim_lim           (500)              //前壁補正最大時間
 
 #define side_sensor_th          (0.035)               //横壁センサ値の閾値[m]
 #define side_sensor_th_add      (0.02)               //横壁センサ値の閾値変化量[m]
@@ -109,6 +111,10 @@
 
 //exvol
 #define rate_side_wall      (0.3)                 //壁制御時の壁制御による印加電圧の割合
+
+//motor
+#define MOT_DUTY_MIN	(30)						//モータの最低Duty
+#define MOT_DUTY_MAX	(300)						//モータの最大Duty
 
 
 

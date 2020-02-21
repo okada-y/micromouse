@@ -60,7 +60,7 @@ void Interrupt_Main( void )
 				 target_1ms();			//目標距離、角度から目標速度、角速度、加速度、角加速度を計算
 				 calc_motor_vol_ctrl();	//速度、角速度制御による印加電圧を計算
 				 adjust_1ms();			//壁制御による印加電圧を計算
-				 motor_1ms();			//制御モードに応じた印加電圧を出力
+				//  motor_1ms();			//制御モードに応じた印加電圧を出力
 
 				break;
 
@@ -76,6 +76,12 @@ void Interrupt_Main( void )
 
 			case 4 :
 				data_get();
+				 mouse_state_1ms();		//マウスの速度、角速度、移動距離、角度を計算
+				 target_1ms();			//目標距離、角度から目標速度、角速度、加速度、角加速度を計算
+				 calc_motor_vol_ctrl();	//速度、角速度制御による印加電圧を計算
+				 adjust_1ms();			//壁制御による印加電圧を計算
+				 motor_1ms();			//制御モードに応じた印加電圧を出力
+
 				break;
 
 			case 5 :

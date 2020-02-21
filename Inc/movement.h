@@ -13,6 +13,7 @@ typedef enum {
 } wall_flg;
 
 uint8_t move_comp_jud ( void );
+uint8_t move_comp_jud_stop ( void );
 uint8_t rotate_comp_jud ( void );
 void start_acceleration (void);
 void half_acceleration (void);

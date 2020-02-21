@@ -8,6 +8,7 @@
 #include "param.h"
 #include "ir_sensor.h"
 #include "target.h"
+#include "mouse_state.h"
 
 
 static float target_move_speed = 0;			//目標移動速度[m/s]
@@ -23,6 +24,8 @@ static float ideal_angle = 0;				//理想回転角度[rad]
 static direction_mode move_dir_flg = forward_mode;			//移動方向フラグ　0:前進 1:後進
 static rotation_mode rotation_dir_flg = counter_clockwise;	//回転方向フラグ　0:反時計周り 1:時計周り
 static accel_mode accel_dir_flg = acceleration;		   		//加減速フラグ　　0:加速 1:減速
+static speed_under_lim_mode speed_under_lim_flg = zero;		//下限速度フラグ
+
 
 //機能	: traget.cの1msタスクのまとめ
 //引数	: なし
@@ -60,6 +63,14 @@ void set_accel_mode ( accel_mode amode )
 }
 
 
+//機能	: 下限速度モードをセットする
+//引数	: 下限速度モード(zero,slow)
+//返り値	: なし
+void set_speed_under_lim_flg ( speed_under_lim_mode smode  )
+{
+	speed_under_lim_flg = smode;
+}
+
 //機能	: 目標移動速度[m/s]取得
 //引数	: なし
 //返り値	: 目標移動速度[m/s]
@@ -84,6 +95,22 @@ float get_target_length ( void )
 	return target_length;
 }
 
+//機能	: 理想移動距離セット
+//引数	: 理想移動距離
+//返り値	: なし
+void set_ideal_length ( float templ )
+{
+	ideal_length = templ;
+}
+
+//機能	: 理想角度セット
+//引数	: 理想角度
+//返り値	: なし
+void set_ideal_angle ( float templ )
+{
+	ideal_angle = templ;
+}
+
 //機能	: 理想移動距離取得
 //引数	: なし
 //返り値	: 理想移動距離
@@ -101,7 +128,7 @@ float get_target_angle ( void )
 }
 
 //機能	: 理想角度取得
-//引数	: なし
+//引数	: なし 
 //返り値	: 理想角度
 float get_ideal_angle ( void )
 {
@@ -159,7 +186,7 @@ void calc_target_move_accel(void)
 				tm_deccel_length = ((target_move_speed*target_move_speed)-(target_move_speed_fin*target_move_speed_fin)) / (2*move_accel);
 				
 				//減速開始前
-				if(ideal_length < (target_length - tm_deccel_length))
+				if(ideal_length + 0.03  < (target_length - tm_deccel_length))
 				{
 					target_move_accel =  1 * move_accel; //リミットにかかるまで加速
 				}
@@ -249,15 +276,24 @@ void calc_target_move_speed(void)
 	switch(move_dir_flg)
 	{
 		case forward_mode:
-
-			if (target_move_speed < 0)	//下限スピード処理
-					{
+			//下限処理
+			switch(speed_under_lim_flg){
+				case zero :
+					if (target_move_speed < 0){	
 						target_move_speed = 0;
-					}
-					else if (target_move_speed > move_speed_max)//上限スピード処理
-					{
-						target_move_speed = move_speed_max;
-					}
+						}
+					break;
+				case slow :
+					if (target_move_speed < move_speed_slow){	
+						target_move_speed = move_speed_slow;
+						}
+					break;
+			}
+			//上限スピード処理
+			if (target_move_speed > move_speed_max)
+			{
+				target_move_speed = move_speed_max;
+			}
 			break;
 
 		case backward_mode:

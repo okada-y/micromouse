@@ -151,10 +151,10 @@ void data_get (void)
 			log_store[i].front_sensor_l = (float)Sensor_GetValue(0);
 			log_store[i].side_sensor_r = (float)Sensor_GetValue(2);
 			log_store[i].side_sensor_l = (float)Sensor_GetValue(1);
-			log_store[i].front_r = (float)SensorValue2length(3);
-			log_store[i].front_l = (float)SensorValue2length(0);
-			log_store[i].side_r = (float)SensorValue2length(2);
-			log_store[i].side_l = (float)SensorValue2length(1);
+			log_store[i].front_r = (float)get_frontrightwall_dis_table(Sensor_GetValue(3));
+			log_store[i].front_l = (float)get_frontleftwall_dis_table(Sensor_GetValue(0));
+			log_store[i].side_r = (float)get_sidewall_dis_table(Sensor_GetValue(2));
+			log_store[i].side_l = (float)get_sidewall_dis_table(Sensor_GetValue(1));
 			log_store[i].side_vol = (float)get_target_vol_diff_sidewall();
 			log_store[i].side_mode = (float)get_side_wall_ctrl_mode();
 			log_store[i].V_battery =(float) Battery_GetVoltage();
