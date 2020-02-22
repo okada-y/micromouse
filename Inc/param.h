@@ -24,10 +24,12 @@
 /////////////////////////////////////
 //           パラメータ             //
 /////////////////////////////////////
+/*common*/
+#define Sampling_cycle      (0.001)  //サンプリング周期
 
 /*module_test*/
-#define log_count_lim		(20000)	//データ取得する期間[ms]
-#define log_count_step		(20)	    //データを取得する時間間隔[ms]
+#define log_count_lim		(1000)	//データ取得する期間[ms]
+#define log_count_step		(1)	    //データを取得する時間間隔[ms]
 
 #define DATA_DEFAULT              //測定モード１
 //#define DATA_SIDE                 //測定モード２
@@ -53,16 +55,23 @@
 
 //mouse_state
 #define ave_num 			(10)	    //速度の移動平均フィルタの長さ
+#define cut_off_w           (400)       //角速度のカットオフ周波数[Hz]
 #define Tire_diameter		(0.01266698f)//タイヤの直径    
 
 //target
 #define move_accel          (1.5f)      //移動加速度[m/ss]
-#define rotat_accel         (3*PI)      //角加速度[rad/ss]
+#define rotat_accel         (60*PI)      //角加速度[rad/ss]
 #define move_speed_max      (0.3f)      //最大移動速度[m/s]
-#define rotat_speed_max     (3*PI)      //最大角速度[rad/s]
+#define rotat_speed_max     (4*PI)      //最大角速度[rad/s]
 #define move_speed_slow     (0.03)      //スロー走行時の速度[m/s]
 
 //control
+//FF制御
+#define ff_rate_w             (0.5)       //角速度FF制御の割合
+#define ff_gain_a_w           (4000)      //角加速度に対するゲイン
+#define ff_gain_v_w           (0.04)     //角速度に対するゲイン
+
+//FB制御
 #define move_speed_P		(20.674f)	//移動速度制御のPゲイン
 #define move_speed_I		(100.4724f)	//移動速度制御のIゲイン
 #define rotate_speed_P		(0.34802f)	//角速度制御のPゲイン

@@ -21,6 +21,7 @@
 #include "adjust.h"	
 #include "maze_solve.h"
 #include "lookuptable.h"
+#include "motor.h"
 
 
 static uint16_t log_counter = 0 ; //ログ取得開始からの時間監視用カウンタ[ms]
@@ -43,6 +44,7 @@ typedef struct {	//データ格納用構造体の定義（最大２０個とす�
 	float	real_d_w;			//回転角度(rad)
 	float   target_speed_w;		//目標角速度(rad/s)
 	float	speed_w;			//実際の角速度(rad/s)
+	float	speed_w_fil;		//実際の角速度_ローパス(rad/s)
 	float   duty_r;				//右モータ操作量（duty)
 	float   duty_l;				//左モータ操作量(duty)
 	float   front_sensor_r;		//右前壁センサ値
@@ -144,9 +146,10 @@ void data_get (void)
 			log_store[i].ideal_d_w = (float)get_ideal_angle();
 			log_store[i].real_d_w = (float)get_rotation_angle();
 			log_store[i].target_speed_w = (float)get_target_rotation_speed();
-			log_store[i].speed_w = (float)get_rotation_speed();
-			log_store[i].duty_r = (float)get_target_duty_r();
-			log_store[i].duty_l = (float)get_target_duty_l();
+			log_store[i].speed_w = (float)IMU_GetGyro_Z();
+			log_store[i].speed_w_fil = (float)get_rotation_speed();
+			log_store[i].duty_r = (float)get_duty_r();
+			log_store[i].duty_l = (float)get_duty_l();
 			log_store[i].front_sensor_r = (float)Sensor_GetValue(3);
 			log_store[i].front_sensor_l = (float)Sensor_GetValue(0);
 			log_store[i].side_sensor_r = (float)Sensor_GetValue(2);
@@ -227,7 +230,7 @@ void data_read(void)
 	#ifdef DATA_DEFAULT
 	printf ("TIME[ms],target_distance[m],ideal_distance[m],current_distance[m],TARGET_SPEED_m[m/s],SPEED_m[m/s],SPEED_m_ave[m/s],"
 			"accel_m[m/s2],accel_m_ave[m/s2],target_angle[rad],ideal_angle[rad],current_angle[rad],target_speed_w[rad/s],"
-			"speed_w[rad/s],DUTY_R[%%],Duty_L[%%],front_r,front_l,side_r,side_l,front_r[m],front_l[m],side_r[m],side_l[m],side_vol,side_mode,V_battery[V]\r\n");	//パラメータ名を記述
+			"speed_w[rad/s],speed_w_fil[rad/s],DUTY_R[%%],Duty_L[%%],front_r,front_l,side_r,side_l,front_r[m],front_l[m],side_r[m],side_l[m],side_vol,side_mode,V_battery[V]\r\n");	//パラメータ名を記述
 	#endif
 
 	#ifdef DATA_SIDE
@@ -262,6 +265,7 @@ void data_read(void)
 		printf("%f,",log_store[i].real_d_w);
 		printf("%f,",log_store[i].target_speed_w);
 		printf("%f,",log_store[i].speed_w);
+		printf("%f,",log_store[i].speed_w_fil);
 		printf("%f,",log_store[i].duty_r);
 		printf("%f,",log_store[i].duty_l);
 		printf("%f,",log_store[i].front_sensor_r);

@@ -1,4 +1,4 @@
-ARM GAS  C:\Temp\ccpg6mrq.s 			page 1
+ARM GAS  C:\Temp\ccQf9rGG.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,7 +58,7 @@ ARM GAS  C:\Temp\ccpg6mrq.s 			page 1
   28:Src/interrupt.c **** static uint32_t		interrupt_duty_max = 0;
   29:Src/interrupt.c **** static float		boot_time = 0.f;
   30:Src/interrupt.c **** 
-ARM GAS  C:\Temp\ccpg6mrq.s 			page 2
+ARM GAS  C:\Temp\ccQf9rGG.s 			page 2
 
 
   31:Src/interrupt.c **** 
@@ -81,21 +81,18 @@ ARM GAS  C:\Temp\ccpg6mrq.s 			page 1
   38              		.loc 1 38 2 view .LVU1
   39 0002 FFF7FEFF 		bl	calc_move_speed
   40              	.LVL0:
-  39:Src/interrupt.c **** 	filter_move_speed();
-  41              		.loc 1 39 2 view .LVU2
-  42 0006 FFF7FEFF 		bl	filter_move_speed
-  43              	.LVL1:
-  40:Src/interrupt.c **** 
-  41:Src/interrupt.c **** 	if(get_mode_state() == process)
-  44              		.loc 1 41 2 view .LVU3
-  45              		.loc 1 41 5 is_stmt 0 view .LVU4
-  46 000a FFF7FEFF 		bl	get_mode_state
-  47              	.LVL2:
-  48              		.loc 1 41 4 view .LVU5
-  49 000e 0128     		cmp	r0, #1
-  50 0010 00D0     		beq	.L13
-  51              	.L1:
-  42:Src/interrupt.c **** 	{
+  39:Src/interrupt.c **** 
+  40:Src/interrupt.c **** 	if(get_mode_state() == process)
+  41              		.loc 1 40 2 view .LVU2
+  42              		.loc 1 40 5 is_stmt 0 view .LVU3
+  43 0006 FFF7FEFF 		bl	get_mode_state
+  44              	.LVL1:
+  45              		.loc 1 40 4 view .LVU4
+  46 000a 0128     		cmp	r0, #1
+  47 000c 00D0     		beq	.L13
+  48              	.L1:
+  41:Src/interrupt.c **** 	{
+  42:Src/interrupt.c **** 		filter_move_speed();
   43:Src/interrupt.c **** 		switch(get_mode_number())
   44:Src/interrupt.c **** 		{
   45:Src/interrupt.c **** 			case 0 ://ログ出力用
@@ -116,14 +113,14 @@ ARM GAS  C:\Temp\ccpg6mrq.s 			page 1
   60:Src/interrupt.c **** 				 target_1ms();			//目標距離、角度から目標速度、角速度、加速度、角加速�
   61:Src/interrupt.c **** 				 calc_motor_vol_ctrl();	//速度、角速度制御による印加電圧を計算
   62:Src/interrupt.c **** 				 adjust_1ms();			//壁制御による印加電圧を計算
-  63:Src/interrupt.c **** 				//  motor_1ms();			//制御モードに応じた印加電圧を出力
+  63:Src/interrupt.c **** 				 //motor_1ms();			//制御モードに応じた印加電圧を出力
   64:Src/interrupt.c **** 
-ARM GAS  C:\Temp\ccpg6mrq.s 			page 3
-
-
   65:Src/interrupt.c **** 				break;
   66:Src/interrupt.c **** 
   67:Src/interrupt.c **** 			case 3 :
+ARM GAS  C:\Temp\ccQf9rGG.s 			page 3
+
+
   68:Src/interrupt.c ****  				 data_get();
   69:Src/interrupt.c **** 				 mouse_state_1ms();		//マウスの速度、角速度、移動距離、角度を計算
   70:Src/interrupt.c **** 				 target_1ms();			//目標距離、角度から目標速度、角速度、加速度、角加速�
@@ -178,25 +175,29 @@ ARM GAS  C:\Temp\ccpg6mrq.s 			page 1
  119:Src/interrupt.c **** 				adjust_1ms();			//壁制御による印加電圧を計算
  120:Src/interrupt.c **** 				motor_1ms();			//制御モードに応じた印加電圧を出力
  121:Src/interrupt.c **** 				break;
-ARM GAS  C:\Temp\ccpg6mrq.s 			page 4
-
-
  122:Src/interrupt.c **** 
  123:Src/interrupt.c **** 		}
  124:Src/interrupt.c **** 	}
+ARM GAS  C:\Temp\ccQf9rGG.s 			page 4
+
+
  125:Src/interrupt.c **** }
-  52              		.loc 1 125 1 view .LVU6
-  53 0012 08BD     		pop	{r3, pc}
-  54              	.L13:
+  49              		.loc 1 125 1 view .LVU5
+  50 000e 08BD     		pop	{r3, pc}
+  51              	.L13:
+  42:Src/interrupt.c **** 		switch(get_mode_number())
+  52              		.loc 1 42 3 is_stmt 1 view .LVU6
+  53 0010 FFF7FEFF 		bl	filter_move_speed
+  54              	.LVL2:
   43:Src/interrupt.c **** 		{
-  55              		.loc 1 43 3 is_stmt 1 view .LVU7
+  55              		.loc 1 43 3 view .LVU7
   43:Src/interrupt.c **** 		{
   56              		.loc 1 43 10 is_stmt 0 view .LVU8
   57 0014 FFF7FEFF 		bl	get_mode_number
   58              	.LVL3:
   59 0018 0138     		subs	r0, r0, #1
   60 001a 0E28     		cmp	r0, #14
-  61 001c F9D8     		bhi	.L1
+  61 001c F7D8     		bhi	.L1
   62 001e 01A3     		adr	r3, .L4
   63 0020 53F820F0 		ldr	pc, [r3, r0, lsl #2]
   64              		.p2align 2
@@ -208,13 +209,13 @@ ARM GAS  C:\Temp\ccpg6mrq.s 			page 1
   70 0034 C5000000 		.word	.L7+1
   71 0038 DF000000 		.word	.L6+1
   72 003c F9000000 		.word	.L5+1
-  73 0040 13000000 		.word	.L1+1
-  74 0044 13000000 		.word	.L1+1
-  75 0048 13000000 		.word	.L1+1
-  76 004c 13000000 		.word	.L1+1
-  77 0050 13000000 		.word	.L1+1
-  78 0054 13000000 		.word	.L1+1
-  79 0058 13000000 		.word	.L1+1
+  73 0040 0F000000 		.word	.L1+1
+  74 0044 0F000000 		.word	.L1+1
+  75 0048 0F000000 		.word	.L1+1
+  76 004c 0F000000 		.word	.L1+1
+  77 0050 0F000000 		.word	.L1+1
+  78 0054 0F000000 		.word	.L1+1
+  79 0058 0F000000 		.word	.L1+1
   80 005c 0F010000 		.word	.L3+1
   81              		.p2align 1
   82              	.L11:
@@ -237,17 +238,17 @@ ARM GAS  C:\Temp\ccpg6mrq.s 			page 1
   53:Src/interrupt.c **** 				 motor_1ms();			//制御モードに応じた印加電圧を出力
   95              		.loc 1 53 6 view .LVU13
   96 0070 FFF7FEFF 		bl	adjust_1ms
+ARM GAS  C:\Temp\ccQf9rGG.s 			page 5
+
+
   97              	.LVL8:
-ARM GAS  C:\Temp\ccpg6mrq.s 			page 5
-
-
   54:Src/interrupt.c **** 				break;
   98              		.loc 1 54 6 view .LVU14
   99 0074 FFF7FEFF 		bl	motor_1ms
  100              	.LVL9:
   55:Src/interrupt.c **** 
  101              		.loc 1 55 5 view .LVU15
- 102 0078 CBE7     		b	.L1
+ 102 0078 C9E7     		b	.L1
  103              	.L10:
   58:Src/interrupt.c **** 				 mouse_state_1ms();		//マウスの速度、角速度、移動距離、角度を計算
  104              		.loc 1 58 6 view .LVU16
@@ -265,13 +266,13 @@ ARM GAS  C:\Temp\ccpg6mrq.s 			page 1
  113              		.loc 1 61 6 view .LVU19
  114 0086 FFF7FEFF 		bl	calc_motor_vol_ctrl
  115              	.LVL13:
-  62:Src/interrupt.c **** 				//  motor_1ms();			//制御モードに応じた印加電圧を出力
+  62:Src/interrupt.c **** 				 //motor_1ms();			//制御モードに応じた印加電圧を出力
  116              		.loc 1 62 6 view .LVU20
  117 008a FFF7FEFF 		bl	adjust_1ms
  118              	.LVL14:
   65:Src/interrupt.c **** 
  119              		.loc 1 65 5 view .LVU21
- 120 008e C0E7     		b	.L1
+ 120 008e BEE7     		b	.L1
  121              	.L9:
   68:Src/interrupt.c **** 				 mouse_state_1ms();		//マウスの速度、角速度、移動距離、角度を計算
  122              		.loc 1 68 7 view .LVU22
@@ -297,12 +298,12 @@ ARM GAS  C:\Temp\ccpg6mrq.s 			page 1
  137              		.loc 1 73 6 view .LVU27
  138 00a4 FFF7FEFF 		bl	motor_1ms
  139              	.LVL20:
+ARM GAS  C:\Temp\ccQf9rGG.s 			page 6
+
+
   75:Src/interrupt.c **** 
-ARM GAS  C:\Temp\ccpg6mrq.s 			page 6
-
-
  140              		.loc 1 75 5 view .LVU28
- 141 00a8 B3E7     		b	.L1
+ 141 00a8 B1E7     		b	.L1
  142              	.L8:
   78:Src/interrupt.c **** 				 mouse_state_1ms();		//マウスの速度、角速度、移動距離、角度を計算
  143              		.loc 1 78 5 view .LVU29
@@ -330,7 +331,7 @@ ARM GAS  C:\Temp\ccpg6mrq.s 			page 1
  160              	.LVL26:
   85:Src/interrupt.c **** 
  161              		.loc 1 85 5 view .LVU35
- 162 00c2 A6E7     		b	.L1
+ 162 00c2 A4E7     		b	.L1
  163              	.L7:
   88:Src/interrupt.c **** 				 mouse_state_1ms();		//マウスの速度、角速度、移動距離、角度を計算
  164              		.loc 1 88 6 view .LVU36
@@ -357,11 +358,11 @@ ARM GAS  C:\Temp\ccpg6mrq.s 			page 1
  180 00d8 FFF7FEFF 		bl	motor_1ms
  181              	.LVL32:
   94:Src/interrupt.c **** 
+ARM GAS  C:\Temp\ccQf9rGG.s 			page 7
+
+
  182              		.loc 1 94 5 view .LVU42
-ARM GAS  C:\Temp\ccpg6mrq.s 			page 7
-
-
- 183 00dc 99E7     		b	.L1
+ 183 00dc 97E7     		b	.L1
  184              	.L6:
   97:Src/interrupt.c **** 				 mouse_state_1ms();		//マウスの速度、角速度、移動距離、角度を計算
  185              		.loc 1 97 5 view .LVU43
@@ -389,7 +390,7 @@ ARM GAS  C:\Temp\ccpg6mrq.s 			page 1
  202              	.LVL38:
  104:Src/interrupt.c **** 
  203              		.loc 1 104 5 view .LVU49
- 204 00f6 8CE7     		b	.L1
+ 204 00f6 8AE7     		b	.L1
  205              	.L5:
  107:Src/interrupt.c **** 				mouse_state_1ms();		//マウスの速度、角速度、移動距離、角度を計算
  206              		.loc 1 107 5 view .LVU50
@@ -413,14 +414,14 @@ ARM GAS  C:\Temp\ccpg6mrq.s 			page 1
  220              	.LVL43:
  112:Src/interrupt.c **** 
  221              		.loc 1 112 5 view .LVU55
- 222 010c 81E7     		b	.L1
+ 222 010c 7FE7     		b	.L1
  223              	.L3:
  115:Src/interrupt.c **** 				mouse_state_1ms();		//マウスの速度、角速度、移動距離、角度を計算
  224              		.loc 1 115 5 view .LVU56
+ARM GAS  C:\Temp\ccQf9rGG.s 			page 8
+
+
  225 010e FFF7FEFF 		bl	data_get
-ARM GAS  C:\Temp\ccpg6mrq.s 			page 8
-
-
  226              	.LVL44:
  116:Src/interrupt.c **** 				target_1ms();			//目標距離、角度から目標速度、角速度、加速度、角加速�
  227              		.loc 1 116 5 view .LVU57
@@ -445,7 +446,7 @@ ARM GAS  C:\Temp\ccpg6mrq.s 			page 1
  121:Src/interrupt.c **** 
  242              		.loc 1 121 5 view .LVU62
  243              		.loc 1 125 1 is_stmt 0 view .LVU63
- 244 0126 74E7     		b	.L1
+ 244 0126 72E7     		b	.L1
  245              		.cfi_endproc
  246              	.LFE133:
  248              		.section	.text.Interrupt_Initialize,"ax",%progbits
@@ -477,10 +478,10 @@ ARM GAS  C:\Temp\ccpg6mrq.s 			page 1
  268 0002 0248     		ldr	r0, .L16
  269 0004 FFF7FEFF 		bl	HAL_TIM_Base_Start_IT
  270              	.LVL50:
+ARM GAS  C:\Temp\ccQf9rGG.s 			page 9
+
+
  133:Src/interrupt.c **** }
-ARM GAS  C:\Temp\ccpg6mrq.s 			page 9
-
-
  271              		.loc 1 133 1 is_stmt 0 view .LVU66
  272 0008 08BD     		pop	{r3, pc}
  273              	.L17:
@@ -537,10 +538,10 @@ ARM GAS  C:\Temp\ccpg6mrq.s 			page 1
  309              		.loc 1 150 2 is_stmt 1 view .LVU72
  310              		.loc 1 150 18 is_stmt 0 view .LVU73
  311 000c 0B4B     		ldr	r3, .L20+8
+ARM GAS  C:\Temp\ccQf9rGG.s 			page 10
+
+
  312 000e 1868     		ldr	r0, [r3]
-ARM GAS  C:\Temp\ccpg6mrq.s 			page 10
-
-
  313 0010 5968     		ldr	r1, [r3, #4]
  314 0012 0130     		adds	r0, r0, #1
  315 0014 41F10001 		adc	r1, r1, #0
@@ -597,10 +598,10 @@ ARM GAS  C:\Temp\ccpg6mrq.s 			page 1
  359 0000 0A4B     		ldr	r3, .L23
  360 0002 1968     		ldr	r1, [r3]
  361 0004 4B6A     		ldr	r3, [r1, #36]
+ARM GAS  C:\Temp\ccQf9rGG.s 			page 11
+
+
  362              		.loc 1 159 32 view .LVU82
-ARM GAS  C:\Temp\ccpg6mrq.s 			page 11
-
-
  363 0006 0A4A     		ldr	r2, .L23+4
  364 0008 1268     		ldr	r2, [r2]
  365 000a 9A1A     		subs	r2, r3, r2
@@ -657,10 +658,10 @@ ARM GAS  C:\Temp\ccpg6mrq.s 			page 1
  410              		@ frame_needed = 0, uses_anonymous_args = 0
  411              		@ link register save eliminated.
  168:Src/interrupt.c **** 	return interrupt_duty;
+ARM GAS  C:\Temp\ccQf9rGG.s 			page 12
+
+
  412              		.loc 1 168 2 view .LVU92
-ARM GAS  C:\Temp\ccpg6mrq.s 			page 12
-
-
  169:Src/interrupt.c **** }
  413              		.loc 1 169 1 is_stmt 0 view .LVU93
  414 0000 014B     		ldr	r3, .L26
@@ -717,10 +718,10 @@ ARM GAS  C:\Temp\ccpg6mrq.s 			page 1
  178:Src/interrupt.c **** 
  179:Src/interrupt.c **** /* ---------------------------------------------------------------
  180:Src/interrupt.c **** 	マイコン起動時からの経過時間を取得する関数
+ARM GAS  C:\Temp\ccQf9rGG.s 			page 13
+
+
  181:Src/interrupt.c **** --------------------------------------------------------------- */
-ARM GAS  C:\Temp\ccpg6mrq.s 			page 13
-
-
  182:Src/interrupt.c **** float Interrupt_GetBootTime( void )
  183:Src/interrupt.c **** {
  461              		.loc 1 183 1 is_stmt 1 view -0
@@ -777,10 +778,10 @@ ARM GAS  C:\Temp\ccpg6mrq.s 			page 1
  520              		.file 7 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
  521              		.file 8 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h"
  522              		.file 9 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h"
+ARM GAS  C:\Temp\ccQf9rGG.s 			page 14
+
+
  523              		.file 10 "Inc/mode.h"
-ARM GAS  C:\Temp\ccpg6mrq.s 			page 14
-
-
  524              		.file 11 "Inc/tim.h"
  525              		.file 12 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\lock.h"
  526              		.file 13 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\_types.h"
@@ -792,48 +793,48 @@ ARM GAS  C:\Temp\ccpg6mrq.s 			page 1
  532              		.file 19 "Inc/control.h"
  533              		.file 20 "Inc/adjust.h"
  534              		.file 21 "Inc/exvol.h"
-ARM GAS  C:\Temp\ccpg6mrq.s 			page 15
+ARM GAS  C:\Temp\ccQf9rGG.s 			page 15
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 interrupt.c
-  C:\Temp\ccpg6mrq.s:18     .text.Interrupt_Main:00000000 $t
-  C:\Temp\ccpg6mrq.s:26     .text.Interrupt_Main:00000000 Interrupt_Main
-  C:\Temp\ccpg6mrq.s:66     .text.Interrupt_Main:00000024 $d
-  C:\Temp\ccpg6mrq.s:81     .text.Interrupt_Main:00000060 $t
-  C:\Temp\ccpg6mrq.s:249    .text.Interrupt_Initialize:00000000 $t
-  C:\Temp\ccpg6mrq.s:256    .text.Interrupt_Initialize:00000000 Interrupt_Initialize
-  C:\Temp\ccpg6mrq.s:276    .text.Interrupt_Initialize:0000000c $d
-  C:\Temp\ccpg6mrq.s:282    .text.Interrupt_PreProcess:00000000 $t
-  C:\Temp\ccpg6mrq.s:289    .text.Interrupt_PreProcess:00000000 Interrupt_PreProcess
-  C:\Temp\ccpg6mrq.s:334    .text.Interrupt_PreProcess:00000034 $d
-  C:\Temp\ccpg6mrq.s:343    .text.Interrupt_PostProcess:00000000 $t
-  C:\Temp\ccpg6mrq.s:350    .text.Interrupt_PostProcess:00000000 Interrupt_PostProcess
-  C:\Temp\ccpg6mrq.s:390    .text.Interrupt_PostProcess:0000002c $d
-  C:\Temp\ccpg6mrq.s:398    .text.Interrupt_GetDuty:00000000 $t
-  C:\Temp\ccpg6mrq.s:405    .text.Interrupt_GetDuty:00000000 Interrupt_GetDuty
-  C:\Temp\ccpg6mrq.s:420    .text.Interrupt_GetDuty:00000008 $d
-  C:\Temp\ccpg6mrq.s:425    .text.Interrupt_GetDuty_Max:00000000 $t
-  C:\Temp\ccpg6mrq.s:432    .text.Interrupt_GetDuty_Max:00000000 Interrupt_GetDuty_Max
-  C:\Temp\ccpg6mrq.s:447    .text.Interrupt_GetDuty_Max:00000008 $d
-  C:\Temp\ccpg6mrq.s:452    .text.Interrupt_GetBootTime:00000000 $t
-  C:\Temp\ccpg6mrq.s:459    .text.Interrupt_GetBootTime:00000000 Interrupt_GetBootTime
-  C:\Temp\ccpg6mrq.s:474    .text.Interrupt_GetBootTime:00000008 $d
-  C:\Temp\ccpg6mrq.s:479    .bss.boot_time:00000000 $d
-  C:\Temp\ccpg6mrq.s:483    .bss.boot_time:00000000 boot_time
-  C:\Temp\ccpg6mrq.s:486    .bss.boot_time_count.9712:00000000 $d
-  C:\Temp\ccpg6mrq.s:490    .bss.boot_time_count.9712:00000000 boot_time_count.9712
-  C:\Temp\ccpg6mrq.s:493    .bss.interrupt_count_now:00000000 $d
-  C:\Temp\ccpg6mrq.s:497    .bss.interrupt_count_now:00000000 interrupt_count_now
-  C:\Temp\ccpg6mrq.s:500    .bss.interrupt_duty:00000000 $d
-  C:\Temp\ccpg6mrq.s:504    .bss.interrupt_duty:00000000 interrupt_duty
-  C:\Temp\ccpg6mrq.s:507    .bss.interrupt_duty_max:00000000 $d
-  C:\Temp\ccpg6mrq.s:511    .bss.interrupt_duty_max:00000000 interrupt_duty_max
+  C:\Temp\ccQf9rGG.s:18     .text.Interrupt_Main:00000000 $t
+  C:\Temp\ccQf9rGG.s:26     .text.Interrupt_Main:00000000 Interrupt_Main
+  C:\Temp\ccQf9rGG.s:66     .text.Interrupt_Main:00000024 $d
+  C:\Temp\ccQf9rGG.s:81     .text.Interrupt_Main:00000060 $t
+  C:\Temp\ccQf9rGG.s:249    .text.Interrupt_Initialize:00000000 $t
+  C:\Temp\ccQf9rGG.s:256    .text.Interrupt_Initialize:00000000 Interrupt_Initialize
+  C:\Temp\ccQf9rGG.s:276    .text.Interrupt_Initialize:0000000c $d
+  C:\Temp\ccQf9rGG.s:282    .text.Interrupt_PreProcess:00000000 $t
+  C:\Temp\ccQf9rGG.s:289    .text.Interrupt_PreProcess:00000000 Interrupt_PreProcess
+  C:\Temp\ccQf9rGG.s:334    .text.Interrupt_PreProcess:00000034 $d
+  C:\Temp\ccQf9rGG.s:343    .text.Interrupt_PostProcess:00000000 $t
+  C:\Temp\ccQf9rGG.s:350    .text.Interrupt_PostProcess:00000000 Interrupt_PostProcess
+  C:\Temp\ccQf9rGG.s:390    .text.Interrupt_PostProcess:0000002c $d
+  C:\Temp\ccQf9rGG.s:398    .text.Interrupt_GetDuty:00000000 $t
+  C:\Temp\ccQf9rGG.s:405    .text.Interrupt_GetDuty:00000000 Interrupt_GetDuty
+  C:\Temp\ccQf9rGG.s:420    .text.Interrupt_GetDuty:00000008 $d
+  C:\Temp\ccQf9rGG.s:425    .text.Interrupt_GetDuty_Max:00000000 $t
+  C:\Temp\ccQf9rGG.s:432    .text.Interrupt_GetDuty_Max:00000000 Interrupt_GetDuty_Max
+  C:\Temp\ccQf9rGG.s:447    .text.Interrupt_GetDuty_Max:00000008 $d
+  C:\Temp\ccQf9rGG.s:452    .text.Interrupt_GetBootTime:00000000 $t
+  C:\Temp\ccQf9rGG.s:459    .text.Interrupt_GetBootTime:00000000 Interrupt_GetBootTime
+  C:\Temp\ccQf9rGG.s:474    .text.Interrupt_GetBootTime:00000008 $d
+  C:\Temp\ccQf9rGG.s:479    .bss.boot_time:00000000 $d
+  C:\Temp\ccQf9rGG.s:483    .bss.boot_time:00000000 boot_time
+  C:\Temp\ccQf9rGG.s:486    .bss.boot_time_count.9712:00000000 $d
+  C:\Temp\ccQf9rGG.s:490    .bss.boot_time_count.9712:00000000 boot_time_count.9712
+  C:\Temp\ccQf9rGG.s:493    .bss.interrupt_count_now:00000000 $d
+  C:\Temp\ccQf9rGG.s:497    .bss.interrupt_count_now:00000000 interrupt_count_now
+  C:\Temp\ccQf9rGG.s:500    .bss.interrupt_duty:00000000 $d
+  C:\Temp\ccQf9rGG.s:504    .bss.interrupt_duty:00000000 interrupt_duty
+  C:\Temp\ccQf9rGG.s:507    .bss.interrupt_duty_max:00000000 $d
+  C:\Temp\ccQf9rGG.s:511    .bss.interrupt_duty_max:00000000 interrupt_duty_max
 
 UNDEFINED SYMBOLS
 calc_move_speed
-filter_move_speed
 get_mode_state
+filter_move_speed
 get_mode_number
 data_get
 mouse_state_1ms

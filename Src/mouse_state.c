@@ -276,9 +276,17 @@ void set_move_length ( float length )
 //機能	: マウスの角速度[rad/s]を算出する
 //引数	: なし
 //返り値	: なし
+//備考 :ローパスフィルタ
 void calc_rotation_speed ( void )
 {
-    rotation_speed = IMU_GetGyro_Z();
+	static float post_rotation_speed;		//前回角速度
+	float tau = 1.0/(2.0*PI*cut_off_w);		//ローパスフィルタの時定数
+	float den = tau + Sampling_cycle;
+
+    rotation_speed = (Sampling_cycle/den) * IMU_GetGyro_Z()  
+						 + (tau / den) * post_rotation_speed;
+
+	post_rotation_speed = rotation_speed; //前回値更新
 }
 
 //機能	: マウスの角速度を取得する

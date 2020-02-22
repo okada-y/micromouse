@@ -31,10 +31,10 @@ build/main.o: Src/main.c Inc/main.h \
  Inc/main.h Inc/dma.h Inc/spi.h Inc/tim.h Inc/usart.h Inc/gpio.h \
  Inc/mode.h Inc/ir_sensor.h Inc/interrupt.h Inc/imu.h Inc/motor.h \
  Inc/encorder.h Inc/target.h Inc/movement.h Inc/exvol.h Inc/control.h \
- Inc/module_test.h Inc/param.h Inc/adjust.h Inc/maze_init.h \
- Inc/rtwtypes.h Inc/matlab_code_gen_types.h Inc/maze_solve.h \
- Inc/matlab_code_gen_data.h Inc/index.h Inc/adc.h Inc/dma.h Inc/spi.h \
- Inc/tim.h Inc/usart.h Inc/gpio.h
+ Inc/module_test.h Inc/param.h Inc/adjust.h Inc/mouse_state.h \
+ Inc/maze_init.h Inc/rtwtypes.h Inc/matlab_code_gen_types.h \
+ Inc/maze_solve.h Inc/matlab_code_gen_data.h Inc/index.h Inc/adc.h \
+ Inc/dma.h Inc/spi.h Inc/tim.h Inc/usart.h Inc/gpio.h
 
 Inc/main.h:
 
@@ -139,6 +139,8 @@ Inc/module_test.h:
 Inc/param.h:
 
 Inc/adjust.h:
+
+Inc/mouse_state.h:
 
 Inc/maze_init.h:
 

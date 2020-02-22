@@ -9,6 +9,7 @@
 #include "mouse_state.h"
 #include "mode.h"
 #include "ir_sensor.h"
+#include "imu.h"
 
 typedef enum{
 	before, //モード選択中
@@ -226,7 +227,7 @@ void mode_start(void)
 	{
 		if( Sensor_GetValue(3) >= 1500)
 		{
-			HAL_Delay(500);
+		    IMU_ResetReference(); //IMUのリファレンス取得
 			mode_state = process;//モードを実行中に遷移
 			break;
 		}

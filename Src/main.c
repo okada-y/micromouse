@@ -43,6 +43,7 @@
 #include "module_test.h"
 #include "param.h"
 #include "adjust.h"
+#include "mouse_state.h"
 
 /*from matlab*/
 #include "maze_init.h"
@@ -153,8 +154,8 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 	  mode_main();//モードの選定、開始処理
-	
-	/*ここからモードごとの処理に移行*/
+
+  	/*ここからモードごとの処理に移行*/
 	  switch(get_mode_number()){
 
 	    case 0://データ吐き出し用
@@ -170,9 +171,26 @@ int main(void)
 		  break;
 
 	  case 2:
-      set_accel_mode(deceleration);
-      HAL_Delay(20000);
-		  break;
+       log_init();
+       set_accel_mode(deceleration);
+      // HAL_Delay(1000);
+ 		  for(int i=0; i<=100; i += 1){
+			  set_duty_r(i);
+			  set_duty_l(-i);
+			  HAL_Delay(5);
+		  }
+		  for(int i=100; i>=-100; i -= 1){
+			  set_duty_r(i);
+			  set_duty_l(-i);
+			  HAL_Delay(5);
+		  }
+ 		  for(int i=-100; i<0; i += 1){
+			  set_duty_r(i);
+			  set_duty_l(-i);
+			  HAL_Delay(5);
+		  }
+		  
+      break;
 
 	  case 3:
       // set_mode_ctrl(front_wall);
@@ -188,7 +206,10 @@ int main(void)
 	  case 5:
       set_mode_ctrl(trace);
       set_accel_mode(deceleration);
-      turn_conclk_90();
+      set_rotation_mode(counter_clockwise);
+      set_target_angle(PI/2);
+      //turn_conclk_90();
+      HAL_Delay(1000);
 		  break;
 
 	  case 6:

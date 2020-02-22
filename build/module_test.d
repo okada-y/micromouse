@@ -32,7 +32,7 @@ build/module_test.o: Src/module_test.c Inc/index.h Inc/main.h \
  Inc/ir_sensor.h Inc/battery.h Inc/imu.h Inc/param.h Inc/mouse_state.h \
  Inc/target.h Inc/exvol.h Inc/encorder.h Inc/interrupt.h Inc/adjust.h \
  Inc/maze_solve.h Inc/rtwtypes.h Inc/matlab_code_gen_types.h \
- Inc/lookuptable.h
+ Inc/lookuptable.h Inc/motor.h
 
 Inc/index.h:
 
@@ -141,3 +141,5 @@ Inc/rtwtypes.h:
 Inc/matlab_code_gen_types.h:
 
 Inc/lookuptable.h:
+
+Inc/motor.h:
