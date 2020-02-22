@@ -67,7 +67,7 @@
 
 //control
 //FF制御
-#define ff_rate_w             (0.5)       //角速度FF制御の割合
+#define ff_rate_w             (0.3)       //角速度FF制御の割合
 #define ff_gain_a_w           (4000)      //角加速度に対するゲイン
 #define ff_gain_v_w           (0.04)     //角速度に対するゲイン
 
@@ -75,7 +75,7 @@
 #define move_speed_P		(20.674f)	//移動速度制御のPゲイン
 #define move_speed_I		(100.4724f)	//移動速度制御のIゲイン
 #define rotate_speed_P		(0.34802f)	//角速度制御のPゲイン
-#define rotate_speed_I		(9.1729f)	//角速度制御のIゲイン
+#define rotate_speed_I		(6.1729f)	//角速度制御のIゲイン
 
 //movement
 #define move_comp_th        (0.001f)   //移動完了の閾値
