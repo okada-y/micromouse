@@ -28,8 +28,8 @@
 #define Sampling_cycle      (0.001)  //サンプリング周期
 
 /*module_test*/
-#define log_count_lim		(1000)	//データ取得する期間[ms]
-#define log_count_step		(1)	    //データを取得する時間間隔[ms]
+#define log_count_lim		(4000)	//データ取得する期間[ms]
+#define log_count_step		(4)	    //データを取得する時間間隔[ms]
 
 #define DATA_DEFAULT              //測定モード１
 //#define DATA_SIDE                 //測定モード２
@@ -60,9 +60,9 @@
 
 //target
 #define move_accel          (1.5f)      //移動加速度[m/ss]
-#define rotat_accel         (60*PI)      //角加速度[rad/ss]
-#define move_speed_max      (0.3f)      //最大移動速度[m/s]
-#define rotat_speed_max     (4*PI)      //最大角速度[rad/s]
+#define rotat_accel         (25*PI)      //角加速度[rad/ss]
+#define move_speed_max      (0.2f)      //最大移動速度[m/s]
+#define rotat_speed_max     (3*PI)      //最大角速度[rad/s]
 #define move_speed_slow     (0.03)      //スロー走行時の速度[m/s]
 
 //control
@@ -80,6 +80,16 @@
 //movement
 #define move_comp_th        (0.001f)   //移動完了の閾値
 #define rotate_comp_th      (0.001f)    //回転完了の閾値
+
+///slalom
+//90度時計周り
+#define slalom_clk_90_before_offset (0.011)      //前オフセット距離
+#define slalom_clk_90_after_offset (0.011)       //後オフセット距離
+#define slalom_clk_90_offset    (0.0573)          //ターン中の並進距離
+//90度反時計回り
+#define slalom_conclk_90_before_offset (0.011)      //前オフセット距離
+#define slalom_conclk_90_after_offset (0.011)       //後オフセット距離
+#define slalom_conclk_90_offset    (0.0573)          //ターン中の並進距離
 
 //adjust
 #define front_sensor_r_ref      (0.0107f)	        //前壁補正時の右前距離目標値(1cm)
@@ -109,7 +119,7 @@
 //imu
 #define REFFERENCE_NUM		(1000)		//何回の平均をもってジャイロのリファレンス電圧とするか
 #define GYRO_Z_SIGN			(-1.f)		//ジャイロの出力の符号（自分の座標系に合った方向に、1.0fか－1.0fを掛けて修正する）
-#define GYRO_Z_SENSITIVITY	(16.77f)	
+#define GYRO_Z_SENSITIVITY	(16.8f)	
 #define ACCEL_X_SIGN		(1.f)		//加速度計の出力の符号（自分の座標系に合った方向に、1.0fか－1.0fを掛けて修正する）
 #define ACCEL_X_SENSITIVITY	(4096.f)
 

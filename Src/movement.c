@@ -126,6 +126,26 @@ void constant_speed (void)
     }
 }
 
+//機能	: 一定距離定速
+//引数	: なし
+//返り値	: なし
+void constant_speed_offset (float offset_length)
+{
+	/*移動方向、加速モード設定*/
+	set_direction_mode(forward_mode);
+    set_accel_mode(acceleration);
+    set_target_length(offset_length);
+
+    /*一区画進むまで待機*/
+    while (1)
+    {
+    	if(move_comp_jud())
+    	{
+    		break;
+    	}
+    }
+}
+
 //機能	: 時計回りに90度回転
 //引数	: なし
 //返り値	: なし
@@ -237,9 +257,36 @@ void set_left_wall_flg ( void )
 	left_wall_flg = wall;
 }
 
+////////////////////////////////////////
+/* スラローム軌跡生成関数			   */
+////////////////////////////////////////
+
+//機能	: 時計回り90度のスラローム軌跡
+//引数	: なし
+//返り値	: なし
+void slalom_clock_90 (void)
+{
+	constant_speed_offset(slalom_clk_90_before_offset);
+	turn_clk_90();
+	set_target_length(slalom_clk_90_offset); //並進距離を目標距離に加算
+	constant_speed_offset(slalom_clk_90_after_offset);
+}
+
+//機能	: 反時計回り90度のスラローム軌跡
+//引数	: なし
+//返り値	: なし
+void slalom_conclock_90 (void)
+{
+	constant_speed_offset(slalom_conclk_90_before_offset);
+	turn_conclk_90();
+	set_target_length(slalom_conclk_90_offset); //並進距離を目標距離に加算
+	constant_speed_offset(slalom_conclk_90_after_offset);
+}
+
+
 
 ////////////////////////////////////////
-/* 軌跡生成関数						*/
+/* 軌跡生成関数						   */
 ////////////////////////////////////////
 
 
@@ -279,14 +326,15 @@ void move_right (void)
 		set_mode_ctrl(trace);
 	}
 	if(run_first_flg == already){
-		half_deceleration();//半区画減速で中央に停止
-		if(front_wall_flg == wall){
-			fornt_wall_calibrate();
-		}
-		turn_clk_90();		//時計回りに90度回転
-		set_mode_ctrl(side_wall);
-		half_acceleration();//半区画加速
-		set_mode_ctrl(trace);
+		// half_deceleration();//半区画減速で中央に停止
+		// if(front_wall_flg == wall){
+		// 	fornt_wall_calibrate();
+		// }
+		// turn_clk_90();		//時計回りに90度回転
+		// set_mode_ctrl(side_wall);
+		// half_acceleration();//半区画加速
+		// set_mode_ctrl(trace);
+		slalom_clock_90 ();
 	}
 	run_first_flg = already;
 	clr_wall_flg();
@@ -307,14 +355,15 @@ void move_left (void)
 		set_mode_ctrl(trace);
 	}
 	if(run_first_flg == already){
-		half_deceleration();//m半区画減速で中央に停止
-		if(front_wall_flg == wall){
-			fornt_wall_calibrate();
-		}
-		turn_conclk_90();	//m反時計回りに90度回転
-		set_mode_ctrl(side_wall);
-		half_acceleration();//m半区画加速
-		set_mode_ctrl(trace);
+		// half_deceleration();//m半区画減速で中央に停止
+		// if(front_wall_flg == wall){
+		// 	fornt_wall_calibrate();
+		// }
+		// turn_conclk_90();	//m反時計回りに90度回転
+		// set_mode_ctrl(side_wall);
+		// half_acceleration();//m半区画加速
+		// set_mode_ctrl(trace);
+		slalom_conclock_90 ();
 	}
 	run_first_flg = already;
 	clr_wall_flg();

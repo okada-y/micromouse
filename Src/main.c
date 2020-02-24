@@ -199,29 +199,39 @@ int main(void)
 		  break;
 
 	  case 4:
-      half_acceleration();
-      half_deceleration();
+      set_accel_mode(deceleration);
+      turn_clk_90();
+      HAL_Delay(500);
+      turn_conclk_90();
+      HAL_Delay(500);
 		  break;
 
 	  case 5:
+    //スラロームテスト
+      set_mode_ctrl(side_wall);
+      start_acceleration();
+      half_acceleration();
+      constant_speed();
+      constant_speed();
       set_mode_ctrl(trace);
-      set_accel_mode(deceleration);
-      set_rotation_mode(counter_clockwise);
-      set_target_angle(PI/2);
-      //turn_conclk_90();
-      HAL_Delay(1000);
+      //slalom_conclock_90();
+      constant_speed();
+      constant_speed();
+      half_deceleration();
 		  break;
 
 	  case 6:
-    //右折テスト
-      set_mode_ctrl(trace);
+    //スラロームテスト
+      set_mode_ctrl(side_wall);
       start_acceleration();
-      for(int i = 0; i<9 ; i++){
       half_acceleration();
       constant_speed();
+      constant_speed();
+      set_mode_ctrl(trace);
+      slalom_clock_90();
+      constant_speed();
+      constant_speed();
       half_deceleration();
-      turn_clk_90();
-      }
       break;
 
 	  case 7:

@@ -19,6 +19,7 @@ void start_acceleration (void);
 void half_acceleration (void);
 void half_deceleration (void);
 void constant_speed (void);
+void constant_speed_offset (float);
 void turn_clk_90 (void);
 void turn_conclk_90 (void);
 void turn_conclk_180 (void);
@@ -31,6 +32,10 @@ void move_front (void);
 void move_right (void);
 void move_left (void);
 void move_back (void);
+
+void slalom_clock_90 (void);
+void slalom_conclock_90 (void);
+
 
 
 #endif /* MOVEMENT_H_*/
