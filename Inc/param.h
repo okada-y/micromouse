@@ -75,7 +75,7 @@
 #define move_speed_P		(20.674f)	//移動速度制御のPゲイン
 #define move_speed_I		(100.4724f)	//移動速度制御のIゲイン
 #define rotate_speed_P		(0.34802f)	//角速度制御のPゲイン
-#define rotate_speed_I		(6.1729f)	//角速度制御のIゲイン
+#define rotate_speed_I		(60.1729f)	//角速度制御のIゲイン
 
 //movement
 #define move_comp_th        (0.001f)   //移動完了の閾値
@@ -83,12 +83,12 @@
 
 ///slalom
 //90度時計周り
-#define slalom_clk_90_before_offset (0.011)      //前オフセット距離
-#define slalom_clk_90_after_offset (0.011)       //後オフセット距離
+#define slalom_clk_90_before_offset (0.015)      //前オフセット距離
+#define slalom_clk_90_after_offset (0.012)       //後オフセット距離
 #define slalom_clk_90_offset    (0.0573)          //ターン中の並進距離
 //90度反時計回り
-#define slalom_conclk_90_before_offset (0.011)      //前オフセット距離
-#define slalom_conclk_90_after_offset (0.011)       //後オフセット距離
+#define slalom_conclk_90_before_offset (0.0165)      //前オフセット距離
+#define slalom_conclk_90_after_offset (0.013)       //後オフセット距離
 #define slalom_conclk_90_offset    (0.0573)          //ターン中の並進距離
 
 //adjust

@@ -1,4 +1,4 @@
-ARM GAS  C:\Temp\ccaVgNhh.s 			page 1
+ARM GAS  C:\Temp\ccqtcd6g.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,7 +58,7 @@ ARM GAS  C:\Temp\ccaVgNhh.s 			page 1
   27:Src/target.c  **** static speed_under_lim_mode speed_under_lim_flg = zero;		//下限速度フラグ
   28:Src/target.c  **** 
   29:Src/target.c  **** 
-ARM GAS  C:\Temp\ccaVgNhh.s 			page 2
+ARM GAS  C:\Temp\ccqtcd6g.s 			page 2
 
 
   30:Src/target.c  **** //機能	: traget.cの1msタスクのまとめ
@@ -118,7 +118,7 @@ ARM GAS  C:\Temp\ccaVgNhh.s 			page 1
   62              		@ frame_needed = 0, uses_anonymous_args = 0
   63              		@ link register save eliminated.
   54:Src/target.c  **** 	rotation_dir_flg = rmode;
-ARM GAS  C:\Temp\ccaVgNhh.s 			page 3
+ARM GAS  C:\Temp\ccqtcd6g.s 			page 3
 
 
   64              		.loc 1 54 2 view .LVU5
@@ -178,7 +178,7 @@ ARM GAS  C:\Temp\ccaVgNhh.s 			page 1
  112              		.fpu fpv4-sp-d16
  114              	set_speed_under_lim_flg:
  115              	.LVL3:
-ARM GAS  C:\Temp\ccaVgNhh.s 			page 4
+ARM GAS  C:\Temp\ccqtcd6g.s 			page 4
 
 
  116              	.LFB7:
@@ -238,7 +238,7 @@ ARM GAS  C:\Temp\ccaVgNhh.s 			page 1
  155              	.L15:
  156              		.align	2
  157              	.L14:
-ARM GAS  C:\Temp\ccaVgNhh.s 			page 5
+ARM GAS  C:\Temp\ccqtcd6g.s 			page 5
 
 
  158 0008 00000000 		.word	.LANCHOR4
@@ -298,7 +298,7 @@ ARM GAS  C:\Temp\ccaVgNhh.s 			page 1
  202              		@ frame_needed = 0, uses_anonymous_args = 0
  203              		@ link register save eliminated.
   95:Src/target.c  **** 	return target_length;
-ARM GAS  C:\Temp\ccaVgNhh.s 			page 6
+ARM GAS  C:\Temp\ccqtcd6g.s 			page 6
 
 
  204              		.loc 1 95 2 view .LVU23
@@ -358,7 +358,7 @@ ARM GAS  C:\Temp\ccaVgNhh.s 			page 1
  253              	set_ideal_angle:
  254              	.LVL5:
  255              	.LFB12:
-ARM GAS  C:\Temp\ccaVgNhh.s 			page 7
+ARM GAS  C:\Temp\ccqtcd6g.s 			page 7
 
 
  105:Src/target.c  **** 
@@ -418,7 +418,7 @@ ARM GAS  C:\Temp\ccaVgNhh.s 			page 1
  296              	.L29:
  297 0008 00000000 		.word	.LANCHOR7
  298              		.cfi_endproc
-ARM GAS  C:\Temp\ccaVgNhh.s 			page 8
+ARM GAS  C:\Temp\ccqtcd6g.s 			page 8
 
 
  299              	.LFE13:
@@ -478,7 +478,7 @@ ARM GAS  C:\Temp\ccaVgNhh.s 			page 1
  135:Src/target.c  **** 	return ideal_angle;
  343              		.loc 1 135 2 view .LVU40
  136:Src/target.c  **** }
-ARM GAS  C:\Temp\ccaVgNhh.s 			page 9
+ARM GAS  C:\Temp\ccqtcd6g.s 			page 9
 
 
  344              		.loc 1 136 1 is_stmt 0 view .LVU41
@@ -538,7 +538,7 @@ ARM GAS  C:\Temp\ccaVgNhh.s 			page 1
  391              		.thumb_func
  392              		.fpu fpv4-sp-d16
  394              	set_target_angle:
-ARM GAS  C:\Temp\ccaVgNhh.s 			page 10
+ARM GAS  C:\Temp\ccqtcd6g.s 			page 10
 
 
  395              	.LVL7:
@@ -598,7 +598,7 @@ ARM GAS  C:\Temp\ccaVgNhh.s 			page 1
  434 0000 38B5     		push	{r3, r4, r5, lr}
  435              	.LCFI0:
  436              		.cfi_def_cfa_offset 16
-ARM GAS  C:\Temp\ccaVgNhh.s 			page 11
+ARM GAS  C:\Temp\ccqtcd6g.s 			page 11
 
 
  437              		.cfi_offset 3, -16
@@ -658,7 +658,7 @@ ARM GAS  C:\Temp\ccaVgNhh.s 			page 1
  199:Src/target.c  **** 			case backward_mode:
  200:Src/target.c  **** 				/* 加速に必要な距離算出*/
  201:Src/target.c  **** 				tm_deccel_length = ((target_move_speed*target_move_speed)-(target_move_speed_fin*target_move_sp
-ARM GAS  C:\Temp\ccaVgNhh.s 			page 12
+ARM GAS  C:\Temp\ccqtcd6g.s 			page 12
 
 
  202:Src/target.c  **** 				
@@ -718,7 +718,7 @@ ARM GAS  C:\Temp\ccaVgNhh.s 			page 1
  487              		.loc 1 174 5 is_stmt 1 view .LVU60
  488 0030 EEE7     		b	.L43
  489              	.L45:
-ARM GAS  C:\Temp\ccaVgNhh.s 			page 13
+ARM GAS  C:\Temp\ccqtcd6g.s 			page 13
 
 
  182:Src/target.c  **** 			{
@@ -778,7 +778,7 @@ ARM GAS  C:\Temp\ccaVgNhh.s 			page 1
  531              		.loc 1 186 22 view .LVU73
  532 007a B0EE087A 		vmov.f32	s14, #3.0e+0
  533 007e 87EE878A 		vdiv.f32	s16, s15, s14
-ARM GAS  C:\Temp\ccaVgNhh.s 			page 14
+ARM GAS  C:\Temp\ccqtcd6g.s 			page 14
 
 
  534              	.LVL14:
@@ -838,7 +838,7 @@ ARM GAS  C:\Temp\ccaVgNhh.s 			page 1
  578              		.loc 1 210 24 is_stmt 0 view .LVU83
  579 00ca 074B     		ldr	r3, .L60+16
  580 00cc 4FF07F52 		mov	r2, #1069547520
-ARM GAS  C:\Temp\ccaVgNhh.s 			page 15
+ARM GAS  C:\Temp\ccqtcd6g.s 			page 15
 
 
  581 00d0 1A60     		str	r2, [r3]	@ float
@@ -898,7 +898,7 @@ ARM GAS  C:\Temp\ccaVgNhh.s 			page 1
  625              		.loc 1 229 2 view .LVU87
  626 0002 334B     		ldr	r3, .L75+8
  627 0004 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
-ARM GAS  C:\Temp\ccaVgNhh.s 			page 16
+ARM GAS  C:\Temp\ccqtcd6g.s 			page 16
 
 
  628 0006 13B1     		cbz	r3, .L63
@@ -958,7 +958,7 @@ ARM GAS  C:\Temp\ccaVgNhh.s 			page 1
  647 001e FFF7FEFF 		bl	__aeabi_dmul
  648              	.LVL24:
  649 0022 0246     		mov	r2, r0
-ARM GAS  C:\Temp\ccaVgNhh.s 			page 17
+ARM GAS  C:\Temp\ccqtcd6g.s 			page 17
 
 
  650 0024 0B46     		mov	r3, r1
@@ -1018,7 +1018,7 @@ ARM GAS  C:\Temp\ccaVgNhh.s 			page 1
  248:Src/target.c  **** 		
  693              		.loc 1 248 3 is_stmt 1 view .LVU102
  248:Src/target.c  **** 		
-ARM GAS  C:\Temp\ccaVgNhh.s 			page 18
+ARM GAS  C:\Temp\ccqtcd6g.s 			page 18
 
 
  694              		.loc 1 248 25 is_stmt 0 view .LVU103
@@ -1078,7 +1078,7 @@ ARM GAS  C:\Temp\ccaVgNhh.s 			page 1
  739 00bc A6E7     		b	.L62
  740              	.L73:
  257:Src/target.c  **** 		}
-ARM GAS  C:\Temp\ccaVgNhh.s 			page 19
+ARM GAS  C:\Temp\ccqtcd6g.s 			page 19
 
 
  741              		.loc 1 257 4 is_stmt 1 view .LVU113
@@ -1138,7 +1138,7 @@ ARM GAS  C:\Temp\ccaVgNhh.s 			page 1
  785              		.loc 1 273 2 view .LVU117
  786              		.loc 1 273 41 is_stmt 0 view .LVU118
  787 0002 3D4B     		ldr	r3, .L97+16
-ARM GAS  C:\Temp\ccaVgNhh.s 			page 20
+ARM GAS  C:\Temp\ccqtcd6g.s 			page 20
 
 
  788 0004 1868     		ldr	r0, [r3]	@ float
@@ -1198,7 +1198,7 @@ ARM GAS  C:\Temp\ccaVgNhh.s 			page 1
  299:Src/target.c  **** 		case backward_mode:
  300:Src/target.c  **** 			if (target_move_speed > 0)	//上限スピード処理
  301:Src/target.c  **** 				{
-ARM GAS  C:\Temp\ccaVgNhh.s 			page 21
+ARM GAS  C:\Temp\ccqtcd6g.s 			page 21
 
 
  302:Src/target.c  **** 					target_move_speed = 0;
@@ -1258,7 +1258,7 @@ ARM GAS  C:\Temp\ccaVgNhh.s 			page 1
  293:Src/target.c  **** 			{
  855              		.loc 1 293 7 view .LVU128
  856 007a DFED247A 		vldr.32	s15, .L97+36
-ARM GAS  C:\Temp\ccaVgNhh.s 			page 22
+ARM GAS  C:\Temp\ccqtcd6g.s 			page 22
 
 
  857 007e B4EEE77A 		vcmpe.f32	s14, s15
@@ -1318,7 +1318,7 @@ ARM GAS  C:\Temp\ccaVgNhh.s 			page 1
  898 00be F1EE10FA 		vmrs	APSR_nzcv, FPSCR
  899 00c2 03DD     		ble	.L95
  302:Src/target.c  **** 				}
-ARM GAS  C:\Temp\ccaVgNhh.s 			page 23
+ARM GAS  C:\Temp\ccqtcd6g.s 			page 23
 
 
  900              		.loc 1 302 6 is_stmt 1 view .LVU142
@@ -1378,7 +1378,7 @@ ARM GAS  C:\Temp\ccaVgNhh.s 			page 1
  319:Src/target.c  **** //備考	:1msタスク
  320:Src/target.c  **** void calc_target_rotation_speed ( void )
  321:Src/target.c  **** {
-ARM GAS  C:\Temp\ccaVgNhh.s 			page 24
+ARM GAS  C:\Temp\ccqtcd6g.s 			page 24
 
 
  946              		.loc 1 321 1 is_stmt 1 view -0
@@ -1438,7 +1438,7 @@ ARM GAS  C:\Temp\ccaVgNhh.s 			page 1
  333:Src/target.c  **** 						{
  334:Src/target.c  **** 							target_rotation_speed = rotat_speed_max;
  335:Src/target.c  **** 						}
-ARM GAS  C:\Temp\ccaVgNhh.s 			page 25
+ARM GAS  C:\Temp\ccqtcd6g.s 			page 25
 
 
  336:Src/target.c  **** 				break;
@@ -1498,7 +1498,7 @@ ARM GAS  C:\Temp\ccaVgNhh.s 			page 1
  1022              		.loc 1 332 15 is_stmt 0 view .LVU160
  1023 0074 9FED187A 		vldr.32	s14, .L117+24
  1024 0078 F4EEC77A 		vcmpe.f32	s15, s14
-ARM GAS  C:\Temp\ccaVgNhh.s 			page 26
+ARM GAS  C:\Temp\ccqtcd6g.s 			page 26
 
 
  1025 007c F1EE10FA 		vmrs	APSR_nzcv, FPSCR
@@ -1558,7 +1558,7 @@ ARM GAS  C:\Temp\ccaVgNhh.s 			page 1
  1066 00c0 FCA9F1D2 		.word	-755914244
  1067 00c4 4D62503F 		.word	1062232653
  1068 00c8 00000000 		.word	.LANCHOR11
-ARM GAS  C:\Temp\ccaVgNhh.s 			page 27
+ARM GAS  C:\Temp\ccqtcd6g.s 			page 27
 
 
  1069 00cc 00000000 		.word	.LANCHOR5
@@ -1618,7 +1618,7 @@ ARM GAS  C:\Temp\ccaVgNhh.s 			page 1
  1124              	ideal_angle:
  1125 0000 00000000 		.space	4
  1126              		.section	.bss.ideal_length,"aw",%nobits
-ARM GAS  C:\Temp\ccaVgNhh.s 			page 28
+ARM GAS  C:\Temp\ccqtcd6g.s 			page 28
 
 
  1127              		.align	2
@@ -1675,94 +1675,94 @@ ARM GAS  C:\Temp\ccaVgNhh.s 			page 1
  1198              		.file 5 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\sys\\reent.h"
  1199              		.file 6 "c:\\tools\\gcc-arm-none-eabi-9-2019-q4-major\\arm-none-eabi\\include\\math.h"
  1200              		.file 7 "Inc/target.h"
-ARM GAS  C:\Temp\ccaVgNhh.s 			page 29
+ARM GAS  C:\Temp\ccqtcd6g.s 			page 29
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 target.c
-  C:\Temp\ccaVgNhh.s:18     .text.set_direction_mode:00000000 $t
-  C:\Temp\ccaVgNhh.s:26     .text.set_direction_mode:00000000 set_direction_mode
-  C:\Temp\ccaVgNhh.s:44     .text.set_direction_mode:00000008 $d
-  C:\Temp\ccaVgNhh.s:49     .text.set_rotation_mode:00000000 $t
-  C:\Temp\ccaVgNhh.s:56     .text.set_rotation_mode:00000000 set_rotation_mode
-  C:\Temp\ccaVgNhh.s:73     .text.set_rotation_mode:00000008 $d
-  C:\Temp\ccaVgNhh.s:78     .text.set_accel_mode:00000000 $t
-  C:\Temp\ccaVgNhh.s:85     .text.set_accel_mode:00000000 set_accel_mode
-  C:\Temp\ccaVgNhh.s:102    .text.set_accel_mode:00000008 $d
-  C:\Temp\ccaVgNhh.s:107    .text.set_speed_under_lim_flg:00000000 $t
-  C:\Temp\ccaVgNhh.s:114    .text.set_speed_under_lim_flg:00000000 set_speed_under_lim_flg
-  C:\Temp\ccaVgNhh.s:131    .text.set_speed_under_lim_flg:00000008 $d
-  C:\Temp\ccaVgNhh.s:136    .text.get_target_move_speed:00000000 $t
-  C:\Temp\ccaVgNhh.s:143    .text.get_target_move_speed:00000000 get_target_move_speed
-  C:\Temp\ccaVgNhh.s:158    .text.get_target_move_speed:00000008 $d
-  C:\Temp\ccaVgNhh.s:163    .text.get_target_rotation_speed:00000000 $t
-  C:\Temp\ccaVgNhh.s:170    .text.get_target_rotation_speed:00000000 get_target_rotation_speed
-  C:\Temp\ccaVgNhh.s:185    .text.get_target_rotation_speed:00000008 $d
-  C:\Temp\ccaVgNhh.s:190    .text.get_target_length:00000000 $t
-  C:\Temp\ccaVgNhh.s:197    .text.get_target_length:00000000 get_target_length
-  C:\Temp\ccaVgNhh.s:212    .text.get_target_length:00000008 $d
-  C:\Temp\ccaVgNhh.s:217    .text.set_ideal_length:00000000 $t
-  C:\Temp\ccaVgNhh.s:224    .text.set_ideal_length:00000000 set_ideal_length
-  C:\Temp\ccaVgNhh.s:241    .text.set_ideal_length:00000008 $d
-  C:\Temp\ccaVgNhh.s:246    .text.set_ideal_angle:00000000 $t
-  C:\Temp\ccaVgNhh.s:253    .text.set_ideal_angle:00000000 set_ideal_angle
-  C:\Temp\ccaVgNhh.s:270    .text.set_ideal_angle:00000008 $d
-  C:\Temp\ccaVgNhh.s:275    .text.get_ideal_length:00000000 $t
-  C:\Temp\ccaVgNhh.s:282    .text.get_ideal_length:00000000 get_ideal_length
-  C:\Temp\ccaVgNhh.s:297    .text.get_ideal_length:00000008 $d
-  C:\Temp\ccaVgNhh.s:302    .text.get_target_angle:00000000 $t
-  C:\Temp\ccaVgNhh.s:309    .text.get_target_angle:00000000 get_target_angle
-  C:\Temp\ccaVgNhh.s:324    .text.get_target_angle:00000008 $d
-  C:\Temp\ccaVgNhh.s:329    .text.get_ideal_angle:00000000 $t
-  C:\Temp\ccaVgNhh.s:336    .text.get_ideal_angle:00000000 get_ideal_angle
-  C:\Temp\ccaVgNhh.s:351    .text.get_ideal_angle:00000008 $d
-  C:\Temp\ccaVgNhh.s:356    .text.set_target_length:00000000 $t
-  C:\Temp\ccaVgNhh.s:363    .text.set_target_length:00000000 set_target_length
-  C:\Temp\ccaVgNhh.s:382    .text.set_target_length:00000010 $d
-  C:\Temp\ccaVgNhh.s:387    .text.set_target_angle:00000000 $t
-  C:\Temp\ccaVgNhh.s:394    .text.set_target_angle:00000000 set_target_angle
-  C:\Temp\ccaVgNhh.s:413    .text.set_target_angle:00000010 $d
-  C:\Temp\ccaVgNhh.s:421    .text.calc_target_move_accel:00000000 $t
-  C:\Temp\ccaVgNhh.s:428    .text.calc_target_move_accel:00000000 calc_target_move_accel
-  C:\Temp\ccaVgNhh.s:587    .text.calc_target_move_accel:000000d8 $d
-  C:\Temp\ccaVgNhh.s:603    .text.calc_rotate_accel:00000000 $t
-  C:\Temp\ccaVgNhh.s:610    .text.calc_rotate_accel:00000000 calc_rotate_accel
-  C:\Temp\ccaVgNhh.s:751    .text.calc_rotate_accel:000000c8 $d
-  C:\Temp\ccaVgNhh.s:765    .text.calc_target_move_speed:00000000 $t
-  C:\Temp\ccaVgNhh.s:772    .text.calc_target_move_speed:00000000 calc_target_move_speed
-  C:\Temp\ccaVgNhh.s:921    .text.calc_target_move_speed:000000e8 $d
-  C:\Temp\ccaVgNhh.s:937    .text.calc_target_rotation_speed:00000000 $t
-  C:\Temp\ccaVgNhh.s:944    .text.calc_target_rotation_speed:00000000 calc_target_rotation_speed
-  C:\Temp\ccaVgNhh.s:1066   .text.calc_target_rotation_speed:000000c0 $d
-  C:\Temp\ccaVgNhh.s:1078   .text.target_1ms:00000000 $t
-ARM GAS  C:\Temp\ccaVgNhh.s 			page 30
+  C:\Temp\ccqtcd6g.s:18     .text.set_direction_mode:00000000 $t
+  C:\Temp\ccqtcd6g.s:26     .text.set_direction_mode:00000000 set_direction_mode
+  C:\Temp\ccqtcd6g.s:44     .text.set_direction_mode:00000008 $d
+  C:\Temp\ccqtcd6g.s:49     .text.set_rotation_mode:00000000 $t
+  C:\Temp\ccqtcd6g.s:56     .text.set_rotation_mode:00000000 set_rotation_mode
+  C:\Temp\ccqtcd6g.s:73     .text.set_rotation_mode:00000008 $d
+  C:\Temp\ccqtcd6g.s:78     .text.set_accel_mode:00000000 $t
+  C:\Temp\ccqtcd6g.s:85     .text.set_accel_mode:00000000 set_accel_mode
+  C:\Temp\ccqtcd6g.s:102    .text.set_accel_mode:00000008 $d
+  C:\Temp\ccqtcd6g.s:107    .text.set_speed_under_lim_flg:00000000 $t
+  C:\Temp\ccqtcd6g.s:114    .text.set_speed_under_lim_flg:00000000 set_speed_under_lim_flg
+  C:\Temp\ccqtcd6g.s:131    .text.set_speed_under_lim_flg:00000008 $d
+  C:\Temp\ccqtcd6g.s:136    .text.get_target_move_speed:00000000 $t
+  C:\Temp\ccqtcd6g.s:143    .text.get_target_move_speed:00000000 get_target_move_speed
+  C:\Temp\ccqtcd6g.s:158    .text.get_target_move_speed:00000008 $d
+  C:\Temp\ccqtcd6g.s:163    .text.get_target_rotation_speed:00000000 $t
+  C:\Temp\ccqtcd6g.s:170    .text.get_target_rotation_speed:00000000 get_target_rotation_speed
+  C:\Temp\ccqtcd6g.s:185    .text.get_target_rotation_speed:00000008 $d
+  C:\Temp\ccqtcd6g.s:190    .text.get_target_length:00000000 $t
+  C:\Temp\ccqtcd6g.s:197    .text.get_target_length:00000000 get_target_length
+  C:\Temp\ccqtcd6g.s:212    .text.get_target_length:00000008 $d
+  C:\Temp\ccqtcd6g.s:217    .text.set_ideal_length:00000000 $t
+  C:\Temp\ccqtcd6g.s:224    .text.set_ideal_length:00000000 set_ideal_length
+  C:\Temp\ccqtcd6g.s:241    .text.set_ideal_length:00000008 $d
+  C:\Temp\ccqtcd6g.s:246    .text.set_ideal_angle:00000000 $t
+  C:\Temp\ccqtcd6g.s:253    .text.set_ideal_angle:00000000 set_ideal_angle
+  C:\Temp\ccqtcd6g.s:270    .text.set_ideal_angle:00000008 $d
+  C:\Temp\ccqtcd6g.s:275    .text.get_ideal_length:00000000 $t
+  C:\Temp\ccqtcd6g.s:282    .text.get_ideal_length:00000000 get_ideal_length
+  C:\Temp\ccqtcd6g.s:297    .text.get_ideal_length:00000008 $d
+  C:\Temp\ccqtcd6g.s:302    .text.get_target_angle:00000000 $t
+  C:\Temp\ccqtcd6g.s:309    .text.get_target_angle:00000000 get_target_angle
+  C:\Temp\ccqtcd6g.s:324    .text.get_target_angle:00000008 $d
+  C:\Temp\ccqtcd6g.s:329    .text.get_ideal_angle:00000000 $t
+  C:\Temp\ccqtcd6g.s:336    .text.get_ideal_angle:00000000 get_ideal_angle
+  C:\Temp\ccqtcd6g.s:351    .text.get_ideal_angle:00000008 $d
+  C:\Temp\ccqtcd6g.s:356    .text.set_target_length:00000000 $t
+  C:\Temp\ccqtcd6g.s:363    .text.set_target_length:00000000 set_target_length
+  C:\Temp\ccqtcd6g.s:382    .text.set_target_length:00000010 $d
+  C:\Temp\ccqtcd6g.s:387    .text.set_target_angle:00000000 $t
+  C:\Temp\ccqtcd6g.s:394    .text.set_target_angle:00000000 set_target_angle
+  C:\Temp\ccqtcd6g.s:413    .text.set_target_angle:00000010 $d
+  C:\Temp\ccqtcd6g.s:421    .text.calc_target_move_accel:00000000 $t
+  C:\Temp\ccqtcd6g.s:428    .text.calc_target_move_accel:00000000 calc_target_move_accel
+  C:\Temp\ccqtcd6g.s:587    .text.calc_target_move_accel:000000d8 $d
+  C:\Temp\ccqtcd6g.s:603    .text.calc_rotate_accel:00000000 $t
+  C:\Temp\ccqtcd6g.s:610    .text.calc_rotate_accel:00000000 calc_rotate_accel
+  C:\Temp\ccqtcd6g.s:751    .text.calc_rotate_accel:000000c8 $d
+  C:\Temp\ccqtcd6g.s:765    .text.calc_target_move_speed:00000000 $t
+  C:\Temp\ccqtcd6g.s:772    .text.calc_target_move_speed:00000000 calc_target_move_speed
+  C:\Temp\ccqtcd6g.s:921    .text.calc_target_move_speed:000000e8 $d
+  C:\Temp\ccqtcd6g.s:937    .text.calc_target_rotation_speed:00000000 $t
+  C:\Temp\ccqtcd6g.s:944    .text.calc_target_rotation_speed:00000000 calc_target_rotation_speed
+  C:\Temp\ccqtcd6g.s:1066   .text.calc_target_rotation_speed:000000c0 $d
+  C:\Temp\ccqtcd6g.s:1078   .text.target_1ms:00000000 $t
+ARM GAS  C:\Temp\ccqtcd6g.s 			page 30
 
 
-  C:\Temp\ccaVgNhh.s:1085   .text.target_1ms:00000000 target_1ms
-  C:\Temp\ccaVgNhh.s:1117   .bss.accel_dir_flg:00000000 accel_dir_flg
-  C:\Temp\ccaVgNhh.s:1118   .bss.accel_dir_flg:00000000 $d
-  C:\Temp\ccaVgNhh.s:1120   .bss.ideal_angle:00000000 $d
-  C:\Temp\ccaVgNhh.s:1124   .bss.ideal_angle:00000000 ideal_angle
-  C:\Temp\ccaVgNhh.s:1127   .bss.ideal_length:00000000 $d
-  C:\Temp\ccaVgNhh.s:1131   .bss.ideal_length:00000000 ideal_length
-  C:\Temp\ccaVgNhh.s:1137   .bss.move_dir_flg:00000000 move_dir_flg
-  C:\Temp\ccaVgNhh.s:1138   .bss.move_dir_flg:00000000 $d
-  C:\Temp\ccaVgNhh.s:1143   .bss.rotation_dir_flg:00000000 rotation_dir_flg
-  C:\Temp\ccaVgNhh.s:1144   .bss.rotation_dir_flg:00000000 $d
-  C:\Temp\ccaVgNhh.s:1149   .bss.speed_under_lim_flg:00000000 speed_under_lim_flg
-  C:\Temp\ccaVgNhh.s:1150   .bss.speed_under_lim_flg:00000000 $d
-  C:\Temp\ccaVgNhh.s:1152   .bss.target_angle:00000000 $d
-  C:\Temp\ccaVgNhh.s:1156   .bss.target_angle:00000000 target_angle
-  C:\Temp\ccaVgNhh.s:1159   .bss.target_length:00000000 $d
-  C:\Temp\ccaVgNhh.s:1163   .bss.target_length:00000000 target_length
-  C:\Temp\ccaVgNhh.s:1166   .bss.target_move_accel:00000000 $d
-  C:\Temp\ccaVgNhh.s:1170   .bss.target_move_accel:00000000 target_move_accel
-  C:\Temp\ccaVgNhh.s:1173   .bss.target_move_speed:00000000 $d
-  C:\Temp\ccaVgNhh.s:1177   .bss.target_move_speed:00000000 target_move_speed
-  C:\Temp\ccaVgNhh.s:1180   .bss.target_rotation_accel:00000000 $d
-  C:\Temp\ccaVgNhh.s:1184   .bss.target_rotation_accel:00000000 target_rotation_accel
-  C:\Temp\ccaVgNhh.s:1187   .bss.target_rotation_speed:00000000 $d
-  C:\Temp\ccaVgNhh.s:1191   .bss.target_rotation_speed:00000000 target_rotation_speed
+  C:\Temp\ccqtcd6g.s:1085   .text.target_1ms:00000000 target_1ms
+  C:\Temp\ccqtcd6g.s:1117   .bss.accel_dir_flg:00000000 accel_dir_flg
+  C:\Temp\ccqtcd6g.s:1118   .bss.accel_dir_flg:00000000 $d
+  C:\Temp\ccqtcd6g.s:1120   .bss.ideal_angle:00000000 $d
+  C:\Temp\ccqtcd6g.s:1124   .bss.ideal_angle:00000000 ideal_angle
+  C:\Temp\ccqtcd6g.s:1127   .bss.ideal_length:00000000 $d
+  C:\Temp\ccqtcd6g.s:1131   .bss.ideal_length:00000000 ideal_length
+  C:\Temp\ccqtcd6g.s:1137   .bss.move_dir_flg:00000000 move_dir_flg
+  C:\Temp\ccqtcd6g.s:1138   .bss.move_dir_flg:00000000 $d
+  C:\Temp\ccqtcd6g.s:1143   .bss.rotation_dir_flg:00000000 rotation_dir_flg
+  C:\Temp\ccqtcd6g.s:1144   .bss.rotation_dir_flg:00000000 $d
+  C:\Temp\ccqtcd6g.s:1149   .bss.speed_under_lim_flg:00000000 speed_under_lim_flg
+  C:\Temp\ccqtcd6g.s:1150   .bss.speed_under_lim_flg:00000000 $d
+  C:\Temp\ccqtcd6g.s:1152   .bss.target_angle:00000000 $d
+  C:\Temp\ccqtcd6g.s:1156   .bss.target_angle:00000000 target_angle
+  C:\Temp\ccqtcd6g.s:1159   .bss.target_length:00000000 $d
+  C:\Temp\ccqtcd6g.s:1163   .bss.target_length:00000000 target_length
+  C:\Temp\ccqtcd6g.s:1166   .bss.target_move_accel:00000000 $d
+  C:\Temp\ccqtcd6g.s:1170   .bss.target_move_accel:00000000 target_move_accel
+  C:\Temp\ccqtcd6g.s:1173   .bss.target_move_speed:00000000 $d
+  C:\Temp\ccqtcd6g.s:1177   .bss.target_move_speed:00000000 target_move_speed
+  C:\Temp\ccqtcd6g.s:1180   .bss.target_rotation_accel:00000000 $d
+  C:\Temp\ccqtcd6g.s:1184   .bss.target_rotation_accel:00000000 target_rotation_accel
+  C:\Temp\ccqtcd6g.s:1187   .bss.target_rotation_speed:00000000 $d
+  C:\Temp\ccqtcd6g.s:1191   .bss.target_rotation_speed:00000000 target_rotation_speed
 
 UNDEFINED SYMBOLS
 __aeabi_f2d

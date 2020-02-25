@@ -214,7 +214,7 @@ int main(void)
       constant_speed();
       constant_speed();
       set_mode_ctrl(trace);
-      //slalom_conclock_90();
+      slalom_conclock_90();
       constant_speed();
       constant_speed();
       half_deceleration();

@@ -1,4 +1,4 @@
-ARM GAS  C:\Temp\ccwGUToa.s 			page 1
+ARM GAS  C:\Temp\ccth7Gwk.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,7 +58,7 @@ ARM GAS  C:\Temp\ccwGUToa.s 			page 1
   27:Src/exvol.c   **** {
   28:Src/exvol.c   **** 	set_motor_vol();		//印加電圧の和、差を制御モードに従い決定
   29:Src/exvol.c   **** 	clr_operate_history();	//各制御の操作履歴クリア
-ARM GAS  C:\Temp\ccwGUToa.s 			page 2
+ARM GAS  C:\Temp\ccth7Gwk.s 			page 2
 
 
   30:Src/exvol.c   **** 	calc_motor_vol();		//印加電圧の和、差から各モータの印加電圧を決定する。
@@ -118,7 +118,7 @@ ARM GAS  C:\Temp\ccwGUToa.s 			page 1
   58:Src/exvol.c   **** 		break;
   59:Src/exvol.c   **** 	
   60:Src/exvol.c   **** 	case side_wall:
-ARM GAS  C:\Temp\ccwGUToa.s 			page 3
+ARM GAS  C:\Temp\ccth7Gwk.s 			page 3
 
 
   61:Src/exvol.c   **** 		set_motor_vol_side_wall();
@@ -178,7 +178,7 @@ ARM GAS  C:\Temp\ccwGUToa.s 			page 1
   96              		.thumb_func
   97              		.fpu fpv4-sp-d16
   99              	set_motor_vol_front_wall:
-ARM GAS  C:\Temp\ccwGUToa.s 			page 4
+ARM GAS  C:\Temp\ccth7Gwk.s 			page 4
 
 
  100              	.LFB137:
@@ -238,7 +238,7 @@ ARM GAS  C:\Temp\ccwGUToa.s 			page 1
  147              	set_motor_vol_side_wall:
  148              	.LFB138:
   87:Src/exvol.c   **** 
-ARM GAS  C:\Temp\ccwGUToa.s 			page 5
+ARM GAS  C:\Temp\ccth7Gwk.s 			page 5
 
 
   88:Src/exvol.c   **** //機能 	:横壁制御時の印可電圧出力(差のみ)
@@ -298,7 +298,7 @@ ARM GAS  C:\Temp\ccwGUToa.s 			page 1
  193 0034 4A4B     		ldr	r3, .L24+16
  194 0036 83ED000A 		vstr.32	s0, [r3]
   98:Src/exvol.c   **** 				target_vol_diff = rate_side_wall * get_target_vol_diff_sidewall()
-ARM GAS  C:\Temp\ccwGUToa.s 			page 6
+ARM GAS  C:\Temp\ccth7Gwk.s 			page 6
 
 
  195              		.loc 1 98 5 is_stmt 1 view .LVU29
@@ -358,7 +358,7 @@ ARM GAS  C:\Temp\ccwGUToa.s 			page 1
  242              		.loc 1 104 5 is_stmt 1 view .LVU40
  243              		.loc 1 104 40 is_stmt 0 view .LVU41
  244 008a FFF7FEFF 		bl	get_target_vol_diff_sidewall
-ARM GAS  C:\Temp\ccwGUToa.s 			page 7
+ARM GAS  C:\Temp\ccth7Gwk.s 			page 7
 
 
  245              	.LVL19:
@@ -418,7 +418,7 @@ ARM GAS  C:\Temp\ccwGUToa.s 			page 1
  292              	.LVL28:
  293 00de 10EE100A 		vmov	r0, s0
  294 00e2 FFF7FEFF 		bl	__aeabi_f2d
-ARM GAS  C:\Temp\ccwGUToa.s 			page 8
+ARM GAS  C:\Temp\ccth7Gwk.s 			page 8
 
 
  295              	.LVL29:
@@ -478,7 +478,7 @@ ARM GAS  C:\Temp\ccwGUToa.s 			page 1
  342 0130 83ED000A 		vstr.32	s0, [r3]
  117:Src/exvol.c   **** 				break;
  343              		.loc 1 117 5 is_stmt 1 view .LVU65
-ARM GAS  C:\Temp\ccwGUToa.s 			page 9
+ARM GAS  C:\Temp\ccth7Gwk.s 			page 9
 
 
  344 0134 09E0     		b	.L12
@@ -538,7 +538,7 @@ ARM GAS  C:\Temp\ccwGUToa.s 			page 1
  131:Src/exvol.c   **** void clr_motor_vol(void)
  132:Src/exvol.c   **** {
  387              		.loc 1 132 1 is_stmt 1 view -0
-ARM GAS  C:\Temp\ccwGUToa.s 			page 10
+ARM GAS  C:\Temp\ccth7Gwk.s 			page 10
 
 
  388              		.cfi_startproc
@@ -598,7 +598,7 @@ ARM GAS  C:\Temp\ccwGUToa.s 			page 1
  438              		.loc 1 65 3 view .LVU81
  439 0010 FFF7FEFF 		bl	clr_motor_vol
  440              	.LVL40:
-ARM GAS  C:\Temp\ccwGUToa.s 			page 11
+ARM GAS  C:\Temp\ccth7Gwk.s 			page 11
 
 
   68:Src/exvol.c   **** 
@@ -658,7 +658,7 @@ ARM GAS  C:\Temp\ccwGUToa.s 			page 1
  483              		@ frame_needed = 0, uses_anonymous_args = 0
  484 0000 08B5     		push	{r3, lr}
  485              	.LCFI4:
-ARM GAS  C:\Temp\ccwGUToa.s 			page 12
+ARM GAS  C:\Temp\ccth7Gwk.s 			page 12
 
 
  486              		.cfi_def_cfa_offset 8
@@ -718,7 +718,7 @@ ARM GAS  C:\Temp\ccwGUToa.s 			page 1
  153:Src/exvol.c   **** 				switch(get_side_wall_ctrl_mode()){
  513              		.loc 1 153 4 view .LVU97
  153:Src/exvol.c   **** 				switch(get_side_wall_ctrl_mode()){
-ARM GAS  C:\Temp\ccwGUToa.s 			page 13
+ARM GAS  C:\Temp\ccth7Gwk.s 			page 13
 
 
  514              		.loc 1 153 7 is_stmt 0 view .LVU98
@@ -778,7 +778,7 @@ ARM GAS  C:\Temp\ccwGUToa.s 			page 1
  165:Src/exvol.c   **** 
  166:Src/exvol.c   **** //機能	: 印加電圧の和、差から各モータに印加する電圧を決定する。
  167:Src/exvol.c   **** //引数	: なし
-ARM GAS  C:\Temp\ccwGUToa.s 			page 14
+ARM GAS  C:\Temp\ccth7Gwk.s 			page 14
 
 
  168:Src/exvol.c   **** //返り値	: なし
@@ -838,7 +838,7 @@ ARM GAS  C:\Temp\ccwGUToa.s 			page 1
  176:Src/exvol.c   **** //引数 	:なし
  177:Src/exvol.c   **** //返り値:なし
  178:Src/exvol.c   **** void calc_vol2duty ( void )
-ARM GAS  C:\Temp\ccwGUToa.s 			page 15
+ARM GAS  C:\Temp\ccth7Gwk.s 			page 15
 
 
  179:Src/exvol.c   **** {
@@ -898,7 +898,7 @@ ARM GAS  C:\Temp\ccwGUToa.s 			page 1
  659 0046 BDEC028B 		vldm	sp!, {d8}
  660              	.LCFI7:
  661              		.cfi_restore 80
-ARM GAS  C:\Temp\ccwGUToa.s 			page 16
+ARM GAS  C:\Temp\ccth7Gwk.s 			page 16
 
 
  662              		.cfi_restore 81
@@ -958,7 +958,7 @@ ARM GAS  C:\Temp\ccwGUToa.s 			page 1
  198:Src/exvol.c   **** 
  199:Src/exvol.c   **** 	if( target_duty_l > 0){
  705              		.loc 1 199 2 is_stmt 1 view .LVU137
-ARM GAS  C:\Temp\ccwGUToa.s 			page 17
+ARM GAS  C:\Temp\ccth7Gwk.s 			page 17
 
 
  706              		.loc 1 199 20 is_stmt 0 view .LVU138
@@ -1018,7 +1018,7 @@ ARM GAS  C:\Temp\ccwGUToa.s 			page 1
  753              	.LFB144:
  206:Src/exvol.c   **** 
  207:Src/exvol.c   **** //機能 	:モータに印可電圧を出力
-ARM GAS  C:\Temp\ccwGUToa.s 			page 18
+ARM GAS  C:\Temp\ccth7Gwk.s 			page 18
 
 
  208:Src/exvol.c   **** //引数 	:なし
@@ -1078,7 +1078,7 @@ ARM GAS  C:\Temp\ccwGUToa.s 			page 1
   28:Src/exvol.c   **** 	clr_operate_history();	//各制御の操作履歴クリア
  802              		.loc 1 28 2 view .LVU155
  803 0002 FFF7FEFF 		bl	set_motor_vol
-ARM GAS  C:\Temp\ccwGUToa.s 			page 19
+ARM GAS  C:\Temp\ccth7Gwk.s 			page 19
 
 
  804              	.LVL56:
@@ -1138,7 +1138,7 @@ ARM GAS  C:\Temp\ccwGUToa.s 			page 1
  846              		.align	2
  847              	.L71:
  848 0008 00000000 		.word	.LANCHOR5
-ARM GAS  C:\Temp\ccwGUToa.s 			page 20
+ARM GAS  C:\Temp\ccth7Gwk.s 			page 20
 
 
  849              		.cfi_endproc
@@ -1198,7 +1198,7 @@ ARM GAS  C:\Temp\ccwGUToa.s 			page 1
  906              		.section	.bss.target_vol_l,"aw",%nobits
  907              		.align	2
  908              		.set	.LANCHOR4,. + 0
-ARM GAS  C:\Temp\ccwGUToa.s 			page 21
+ARM GAS  C:\Temp\ccth7Gwk.s 			page 21
 
 
  911              	target_vol_l:
@@ -1229,71 +1229,71 @@ ARM GAS  C:\Temp\ccwGUToa.s 			page 1
  940              		.file 13 "Inc/battery.h"
  941              		.file 14 "Inc/control.h"
  942              		.file 15 "Inc/mouse_state.h"
-ARM GAS  C:\Temp\ccwGUToa.s 			page 22
+ARM GAS  C:\Temp\ccth7Gwk.s 			page 22
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 exvol.c
-  C:\Temp\ccwGUToa.s:18     .text.set_mode_ctrl:00000000 $t
-  C:\Temp\ccwGUToa.s:26     .text.set_mode_ctrl:00000000 set_mode_ctrl
-  C:\Temp\ccwGUToa.s:44     .text.set_mode_ctrl:00000008 $d
-  C:\Temp\ccwGUToa.s:49     .text.set_motor_vol_trace:00000000 $t
-  C:\Temp\ccwGUToa.s:56     .text.set_motor_vol_trace:00000000 set_motor_vol_trace
-  C:\Temp\ccwGUToa.s:86     .text.set_motor_vol_trace:00000018 $d
-  C:\Temp\ccwGUToa.s:92     .text.set_motor_vol_front_wall:00000000 $t
-  C:\Temp\ccwGUToa.s:99     .text.set_motor_vol_front_wall:00000000 set_motor_vol_front_wall
-  C:\Temp\ccwGUToa.s:129    .text.set_motor_vol_front_wall:00000018 $d
-  C:\Temp\ccwGUToa.s:140    .text.set_motor_vol_side_wall:00000000 $t
-  C:\Temp\ccwGUToa.s:147    .text.set_motor_vol_side_wall:00000000 set_motor_vol_side_wall
-  C:\Temp\ccwGUToa.s:182    .text.set_motor_vol_side_wall:0000002c $d
-  C:\Temp\ccwGUToa.s:186    .text.set_motor_vol_side_wall:00000030 $t
-  C:\Temp\ccwGUToa.s:366    .text.set_motor_vol_side_wall:00000150 $d
-  C:\Temp\ccwGUToa.s:378    .text.clr_motor_vol:00000000 $t
-  C:\Temp\ccwGUToa.s:385    .text.clr_motor_vol:00000000 clr_motor_vol
-  C:\Temp\ccwGUToa.s:406    .text.clr_motor_vol:0000000c $d
-  C:\Temp\ccwGUToa.s:412    .text.set_motor_vol:00000000 $t
-  C:\Temp\ccwGUToa.s:419    .text.set_motor_vol:00000000 set_motor_vol
-  C:\Temp\ccwGUToa.s:466    .text.set_motor_vol:00000028 $d
-  C:\Temp\ccwGUToa.s:471    .text.clr_operate_history:00000000 $t
-  C:\Temp\ccwGUToa.s:478    .text.clr_operate_history:00000000 clr_operate_history
-  C:\Temp\ccwGUToa.s:547    .text.clr_operate_history:00000050 $d
-  C:\Temp\ccwGUToa.s:554    .text.calc_motor_vol:00000000 $t
-  C:\Temp\ccwGUToa.s:561    .text.calc_motor_vol:00000000 calc_motor_vol
-  C:\Temp\ccwGUToa.s:594    .text.calc_motor_vol:00000030 $d
-  C:\Temp\ccwGUToa.s:602    .text.calc_vol2duty:00000000 $t
-  C:\Temp\ccwGUToa.s:609    .text.calc_vol2duty:00000000 calc_vol2duty
-  C:\Temp\ccwGUToa.s:668    .text.calc_vol2duty:0000004c $d
-  C:\Temp\ccwGUToa.s:677    .text.motor_duty_adjust:00000000 $t
-  C:\Temp\ccwGUToa.s:684    .text.motor_duty_adjust:00000000 motor_duty_adjust
-  C:\Temp\ccwGUToa.s:739    .text.motor_duty_adjust:00000034 $d
-  C:\Temp\ccwGUToa.s:745    .text.set_motor_duty:00000000 $t
-  C:\Temp\ccwGUToa.s:752    .text.set_motor_duty:00000000 set_motor_duty
-  C:\Temp\ccwGUToa.s:778    .text.set_motor_duty:00000018 $d
-  C:\Temp\ccwGUToa.s:784    .text.motor_1ms:00000000 $t
-  C:\Temp\ccwGUToa.s:791    .text.motor_1ms:00000000 motor_1ms
-  C:\Temp\ccwGUToa.s:826    .text.get_target_duty_r:00000000 $t
-  C:\Temp\ccwGUToa.s:833    .text.get_target_duty_r:00000000 get_target_duty_r
-  C:\Temp\ccwGUToa.s:848    .text.get_target_duty_r:00000008 $d
-  C:\Temp\ccwGUToa.s:853    .text.get_target_duty_l:00000000 $t
-  C:\Temp\ccwGUToa.s:860    .text.get_target_duty_l:00000000 get_target_duty_l
-  C:\Temp\ccwGUToa.s:875    .text.get_target_duty_l:00000008 $d
-  C:\Temp\ccwGUToa.s:883    .bss.ctrl_mode:00000000 ctrl_mode
-  C:\Temp\ccwGUToa.s:884    .bss.ctrl_mode:00000000 $d
-  C:\Temp\ccwGUToa.s:886    .bss.target_duty_l:00000000 $d
-  C:\Temp\ccwGUToa.s:890    .bss.target_duty_l:00000000 target_duty_l
-  C:\Temp\ccwGUToa.s:893    .bss.target_duty_r:00000000 $d
-  C:\Temp\ccwGUToa.s:897    .bss.target_duty_r:00000000 target_duty_r
-  C:\Temp\ccwGUToa.s:900    .bss.target_vol_diff:00000000 $d
-  C:\Temp\ccwGUToa.s:904    .bss.target_vol_diff:00000000 target_vol_diff
-  C:\Temp\ccwGUToa.s:907    .bss.target_vol_l:00000000 $d
-  C:\Temp\ccwGUToa.s:911    .bss.target_vol_l:00000000 target_vol_l
-  C:\Temp\ccwGUToa.s:914    .bss.target_vol_r:00000000 $d
-  C:\Temp\ccwGUToa.s:918    .bss.target_vol_r:00000000 target_vol_r
-ARM GAS  C:\Temp\ccwGUToa.s 			page 23
+  C:\Temp\ccth7Gwk.s:18     .text.set_mode_ctrl:00000000 $t
+  C:\Temp\ccth7Gwk.s:26     .text.set_mode_ctrl:00000000 set_mode_ctrl
+  C:\Temp\ccth7Gwk.s:44     .text.set_mode_ctrl:00000008 $d
+  C:\Temp\ccth7Gwk.s:49     .text.set_motor_vol_trace:00000000 $t
+  C:\Temp\ccth7Gwk.s:56     .text.set_motor_vol_trace:00000000 set_motor_vol_trace
+  C:\Temp\ccth7Gwk.s:86     .text.set_motor_vol_trace:00000018 $d
+  C:\Temp\ccth7Gwk.s:92     .text.set_motor_vol_front_wall:00000000 $t
+  C:\Temp\ccth7Gwk.s:99     .text.set_motor_vol_front_wall:00000000 set_motor_vol_front_wall
+  C:\Temp\ccth7Gwk.s:129    .text.set_motor_vol_front_wall:00000018 $d
+  C:\Temp\ccth7Gwk.s:140    .text.set_motor_vol_side_wall:00000000 $t
+  C:\Temp\ccth7Gwk.s:147    .text.set_motor_vol_side_wall:00000000 set_motor_vol_side_wall
+  C:\Temp\ccth7Gwk.s:182    .text.set_motor_vol_side_wall:0000002c $d
+  C:\Temp\ccth7Gwk.s:186    .text.set_motor_vol_side_wall:00000030 $t
+  C:\Temp\ccth7Gwk.s:366    .text.set_motor_vol_side_wall:00000150 $d
+  C:\Temp\ccth7Gwk.s:378    .text.clr_motor_vol:00000000 $t
+  C:\Temp\ccth7Gwk.s:385    .text.clr_motor_vol:00000000 clr_motor_vol
+  C:\Temp\ccth7Gwk.s:406    .text.clr_motor_vol:0000000c $d
+  C:\Temp\ccth7Gwk.s:412    .text.set_motor_vol:00000000 $t
+  C:\Temp\ccth7Gwk.s:419    .text.set_motor_vol:00000000 set_motor_vol
+  C:\Temp\ccth7Gwk.s:466    .text.set_motor_vol:00000028 $d
+  C:\Temp\ccth7Gwk.s:471    .text.clr_operate_history:00000000 $t
+  C:\Temp\ccth7Gwk.s:478    .text.clr_operate_history:00000000 clr_operate_history
+  C:\Temp\ccth7Gwk.s:547    .text.clr_operate_history:00000050 $d
+  C:\Temp\ccth7Gwk.s:554    .text.calc_motor_vol:00000000 $t
+  C:\Temp\ccth7Gwk.s:561    .text.calc_motor_vol:00000000 calc_motor_vol
+  C:\Temp\ccth7Gwk.s:594    .text.calc_motor_vol:00000030 $d
+  C:\Temp\ccth7Gwk.s:602    .text.calc_vol2duty:00000000 $t
+  C:\Temp\ccth7Gwk.s:609    .text.calc_vol2duty:00000000 calc_vol2duty
+  C:\Temp\ccth7Gwk.s:668    .text.calc_vol2duty:0000004c $d
+  C:\Temp\ccth7Gwk.s:677    .text.motor_duty_adjust:00000000 $t
+  C:\Temp\ccth7Gwk.s:684    .text.motor_duty_adjust:00000000 motor_duty_adjust
+  C:\Temp\ccth7Gwk.s:739    .text.motor_duty_adjust:00000034 $d
+  C:\Temp\ccth7Gwk.s:745    .text.set_motor_duty:00000000 $t
+  C:\Temp\ccth7Gwk.s:752    .text.set_motor_duty:00000000 set_motor_duty
+  C:\Temp\ccth7Gwk.s:778    .text.set_motor_duty:00000018 $d
+  C:\Temp\ccth7Gwk.s:784    .text.motor_1ms:00000000 $t
+  C:\Temp\ccth7Gwk.s:791    .text.motor_1ms:00000000 motor_1ms
+  C:\Temp\ccth7Gwk.s:826    .text.get_target_duty_r:00000000 $t
+  C:\Temp\ccth7Gwk.s:833    .text.get_target_duty_r:00000000 get_target_duty_r
+  C:\Temp\ccth7Gwk.s:848    .text.get_target_duty_r:00000008 $d
+  C:\Temp\ccth7Gwk.s:853    .text.get_target_duty_l:00000000 $t
+  C:\Temp\ccth7Gwk.s:860    .text.get_target_duty_l:00000000 get_target_duty_l
+  C:\Temp\ccth7Gwk.s:875    .text.get_target_duty_l:00000008 $d
+  C:\Temp\ccth7Gwk.s:883    .bss.ctrl_mode:00000000 ctrl_mode
+  C:\Temp\ccth7Gwk.s:884    .bss.ctrl_mode:00000000 $d
+  C:\Temp\ccth7Gwk.s:886    .bss.target_duty_l:00000000 $d
+  C:\Temp\ccth7Gwk.s:890    .bss.target_duty_l:00000000 target_duty_l
+  C:\Temp\ccth7Gwk.s:893    .bss.target_duty_r:00000000 $d
+  C:\Temp\ccth7Gwk.s:897    .bss.target_duty_r:00000000 target_duty_r
+  C:\Temp\ccth7Gwk.s:900    .bss.target_vol_diff:00000000 $d
+  C:\Temp\ccth7Gwk.s:904    .bss.target_vol_diff:00000000 target_vol_diff
+  C:\Temp\ccth7Gwk.s:907    .bss.target_vol_l:00000000 $d
+  C:\Temp\ccth7Gwk.s:911    .bss.target_vol_l:00000000 target_vol_l
+  C:\Temp\ccth7Gwk.s:914    .bss.target_vol_r:00000000 $d
+  C:\Temp\ccth7Gwk.s:918    .bss.target_vol_r:00000000 target_vol_r
+ARM GAS  C:\Temp\ccth7Gwk.s 			page 23
 
 
-  C:\Temp\ccwGUToa.s:921    .bss.target_vol_sum:00000000 $d
-  C:\Temp\ccwGUToa.s:925    .bss.target_vol_sum:00000000 target_vol_sum
+  C:\Temp\ccth7Gwk.s:921    .bss.target_vol_sum:00000000 $d
+  C:\Temp\ccth7Gwk.s:925    .bss.target_vol_sum:00000000 target_vol_sum
 
 UNDEFINED SYMBOLS
 get_target_vol_sum_ctrl
