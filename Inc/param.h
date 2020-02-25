@@ -8,6 +8,10 @@
 #define SQRT3				(1.73205080757f)			//ルート3
 #define SQRT5				(2.2360679775f)				//ルート5
 #define SQRT7				(2.64575131106f)			//ルート7
+#define dt                  (0.001)
+#define dt2                 (0.000001)
+#define dt3                 (0.000000001)
+#define dt4                 (0.000000000001)
 
 //マクロ関数
 #define DEG2RAD(x)			(((x)/180.0f)*PI)			                //度数法からラジアンに変換
@@ -57,6 +61,12 @@
 #define ave_num 			(10)	    //速度の移動平均フィルタの長さ
 #define cut_off_w           (400)       //角速度のカットオフ周波数[Hz]
 #define Tire_diameter		(0.01266698f)//タイヤの直径    
+
+//kalman
+#define IMU_X_dispersion2     (1)         //IMUのX方向加速度分散値の二乗
+#define encorder_dispersion2  (1)         //エンコーダの速度分散値の二乗
+
+
 
 //target
 #define move_accel          (1.5f)      //移動加速度[m/ss]

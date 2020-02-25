@@ -321,3 +321,69 @@ void set_rotation_angle ( float angle )
 {
     rotation_angle = angle;
 }
+
+
+//機能	: カルマンフィルタによる速度推定
+//引数	: なし
+//返り値	: なし
+//備考	:1msタスク
+void speed_estimate_kalman ( void )
+{
+
+	static float odo_x = 0;
+	static float odo_v = 0;
+	static float est_x = 0;
+	static float est_v = 0;
+
+	float P11_before = 0;
+	float P12_before = 0;
+	float P21_before = 0;
+	float P22_before = 0;
+
+	static float P11_after = 0;
+	static float P12_after = 0;
+	static float P21_after = 0;
+	static float P22_after = 0;
+
+	float inv_vec = 0;
+	float kalman_gain_den = 0;
+	float kalman_gain_x = 0;
+	float kalman_gain_v = 0;
+
+	  ////////////////////
+	 //	 予測ステップ	//
+	////////////////////
+
+	//オドメトリによる事前推定値
+	odo_x = est_x + dt * est_v + 0.5 * dt2 * IMU_GetAccel_X();
+	odo_v = est_v + dt * IMU_GetAccel_X();
+	
+	//事前推定値の誤差分散計算
+	P11_before = P11_after + dt*P21_after + dt*P12_after + dt2*P22_after + 0.25*dt4*IMU_X_dispersion2;
+	P12_before = 0.5 * dt3 * IMU_X_dispersion2;
+	P21_before = P21_after + dt*P22_after + 0.5*dt3*IMU_X_dispersion2;
+	P22_before = P22_after + dt2*IMU_X_dispersion2;
+
+	  ///////////////////////////
+	 //	 フィルタリングステップ	//
+	///////////////////////////
+
+	//イノベーションベクトルの算出
+	inv_vec = get_move_speed() - odo_v;
+
+	//kalman filterのgain算出
+	kalman_gain_den = P22_before + encorder_dispersion2;
+	kalman_gain_x = P12_before / kalman_gain_den;
+	kalman_gain_v = P22_before / kalman_gain_den;
+
+	//状態推定値更新
+	est_x = odo_x + inv_vec * kalman_gain_x;
+	est_v = odo_v + inv_vec * kalman_gain_v;
+	
+	//推定誤差分散更新
+	P11_after = P11_before - P12_before * P21_before / kalman_gain_den;
+	P12_after = P12_before - P12_before * P22_before / kalman_gain_den;
+	P21_after = P21_before - P21_before * P22_before / kalman_gain_den;
+	P22_after = P22_before - P22_before * P22_before / kalman_gain_den;
+	
+}
