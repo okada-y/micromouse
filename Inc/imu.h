@@ -8,5 +8,7 @@ void		IMU_Initialize( void );			// 慣性センサの初期設定
 void 		IMU_ResetReference( void );		// 慣性センサのリファレンスを補正する
 float 		IMU_GetAccel_X( void );			// X軸加速度計の加速度を取得する[m/s^2]
 float 		IMU_GetGyro_Z( void );			// Z軸ジャイロの角速度を取得する[rad/s]
+int16_t get_accel_x_value ( void );
+int32_t get_accel_x_reference ( void );
 
 #endif /* IMU_H_*/
