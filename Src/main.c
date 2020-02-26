@@ -165,30 +165,31 @@ int main(void)
 	  case 1:
        log_init();
 	     set_mode_ctrl(trace);
-       set_accel_mode(deceleration);
-       set_target_length(0.63);
-       HAL_Delay(5000);
+       half_acceleration();
+       constant_speed();
+       half_deceleration();
+       HAL_Delay(1000);
 		  break;
 
 	  case 2:
        log_init();
        set_accel_mode(deceleration);
-      // HAL_Delay(1000);
- 		  for(int i=0; i<=100; i += 1){
-			  set_duty_r(i);
-			  set_duty_l(-i);
-			  HAL_Delay(5);
-		  }
-		  for(int i=100; i>=-100; i -= 1){
-			  set_duty_r(i);
-			  set_duty_l(-i);
-			  HAL_Delay(5);
-		  }
- 		  for(int i=-100; i<0; i += 1){
-			  set_duty_r(i);
-			  set_duty_l(-i);
-			  HAL_Delay(5);
-		  }
+       HAL_Delay(20000);
+ 		  // for(int i=0; i<=100; i += 1){
+			//   set_duty_r(i);
+			//   set_duty_l(-i);
+			//   HAL_Delay(5);
+		  // }
+		  // for(int i=100; i>=-100; i -= 1){
+			//   set_duty_r(i);
+			//   set_duty_l(-i);
+			//   HAL_Delay(5);
+		  // }
+ 		  // for(int i=-100; i<0; i += 1){
+			//   set_duty_r(i);
+			//   set_duty_l(-i);
+			//   HAL_Delay(5);
+		  // }
 		  
       break;
 

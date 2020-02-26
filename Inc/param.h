@@ -32,8 +32,8 @@
 #define Sampling_cycle      (0.001)  //サンプリング周期
 
 /*module_test*/
-#define log_count_lim		(4000)	//データ取得する期間[ms]
-#define log_count_step		(4)	    //データを取得する時間間隔[ms]
+#define log_count_lim		(2000)	//データ取得する期間[ms]
+#define log_count_step		(1)	    //データを取得する時間間隔[ms]
 
 #define DATA_DEFAULT              //測定モード１
 //#define DATA_SIDE                 //測定モード２
@@ -63,8 +63,8 @@
 #define Tire_diameter		(0.01266698f)//タイヤの直径    
 
 //kalman
-#define IMU_X_dispersion2     (1)         //IMUのX方向加速度分散値の二乗
-#define encorder_dispersion2  (1)         //エンコーダの速度分散値の二乗
+#define IMU_X_dispersion     (1)         //IMUのX方向加速度分散値の二乗
+#define encorder_dispersion  (1)         //エンコーダの速度分散値の二乗
 
 
 
