@@ -330,8 +330,8 @@ void set_rotation_angle ( float angle )
 void speed_estimate_kalman ( void )
 {
 
-	static float odo_x = 0;
-	static float odo_v = 0;
+	float odo_x = 0;
+	float odo_v = 0;
 	static float est_x = 0;
 	static float est_v = 0;
 
@@ -359,10 +359,10 @@ void speed_estimate_kalman ( void )
 	odo_v = est_v + dt * IMU_GetAccel_X();
 	
 	//事前推定値の誤差分散計算
-	P11_before = P11_after + dt*P21_after + dt*P12_after + dt2*P22_after + 0.25*dt4*IMU_X_dispersion2;
-	P12_before = 0.5 * dt3 * IMU_X_dispersion2;
-	P21_before = P21_after + dt*P22_after + 0.5*dt3*IMU_X_dispersion2;
-	P22_before = P22_after + dt2*IMU_X_dispersion2;
+	P11_before = P11_after + dt*P21_after + dt*P12_after + dt2*P22_after + 0.25*dt4*IMU_X_dispersion;
+	P12_before = P12_after + dt*P22_after + 0.5*dt3*IMU_X_dispersion;
+	P21_before = P21_after + dt*P22_after + 0.5*dt3*IMU_X_dispersion;
+	P22_before = P22_after + dt2*IMU_X_dispersion;
 
 	  ///////////////////////////
 	 //	 フィルタリングステップ	//
@@ -372,7 +372,7 @@ void speed_estimate_kalman ( void )
 	inv_vec = get_move_speed() - odo_v;
 
 	//kalman filterのgain算出
-	kalman_gain_den = P22_before + encorder_dispersion2;
+	kalman_gain_den = P22_before + encorder_dispersion;
 	kalman_gain_x = P12_before / kalman_gain_den;
 	kalman_gain_v = P22_before / kalman_gain_den;
 
@@ -385,5 +385,5 @@ void speed_estimate_kalman ( void )
 	P12_after = P12_before - P12_before * P22_before / kalman_gain_den;
 	P21_after = P21_before - P21_before * P22_before / kalman_gain_den;
 	P22_after = P22_before - P22_before * P22_before / kalman_gain_den;
-	
+
 }
