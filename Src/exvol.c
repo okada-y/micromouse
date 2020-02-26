@@ -29,7 +29,7 @@ void motor_1ms ( void )
 	clr_operate_history();	//各制御の操作履歴クリア
 	calc_motor_vol();		//印加電圧の和、差から各モータの印加電圧を決定する。
 	calc_vol2duty();		//印加電圧を変調率に変換
-	motor_duty_adjust();	//低変調率を避ける調整
+	//motor_duty_adjust();	//低変調率を避ける調整
 	set_motor_duty();		//モータに電圧を印加
 }
 
