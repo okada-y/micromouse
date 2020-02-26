@@ -20,7 +20,7 @@ static uint8_t  imu_address = ACCEL_XOUT_H | 0x80;	//a 加速度、ジャイロ�
 static uint8_t	imu_value[13];			// value[0]はダミーデータが入るため注意
 
 static int16_t	accel_x_value;			// X軸加速度計の生データ
-static int16_t	accel_x_reference;		// X軸加速度計のリファレンス
+static int32_t	accel_x_reference;		// X軸加速度計のリファレンス
 
 static int16_t	gyro_z_value;			// Z軸ジャイロの生データ
 static int16_t	gyro_z_reference;		// Z軸ジャイロのリファレンス
@@ -156,3 +156,13 @@ float IMU_GetGyro_Z( void )
 }
 
 
+//以下デバッグ用
+int16_t get_accel_x_value ( void )
+{
+	return accel_x_value;
+}
+
+int32_t get_accel_x_reference ( void )
+{
+	return accel_x_reference;
+}

@@ -380,6 +380,9 @@ void module_test( void )
 		// IMU（加速度計とジャイロ）の計測値表示
 		printf("<IMU> Accel_X: %5.3f[m/s^2], Gyro_Z: %6.3f[rad/s]\r\n",
 				IMU_GetAccel_X(), IMU_GetGyro_Z()); line++;
+		// IMU（加速度計とジャイロ）の計測値表示
+		printf("<IMU> Accel_X_value: %10d, Accel_X_ref: %10ld\r\n",
+				get_accel_x_value(), get_accel_x_reference()); line++;
 		// a壁センサ用タイマ
 		// printf("<IR Sensor_tim> tim: %5.8f\r\n",ABS(front_sensor_ref - SensorValue2length(3)) );line++;
 		// 壁センサ
