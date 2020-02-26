@@ -26,6 +26,8 @@ float get_rotation_angle ( void );
 float get_move_length ( void );
 void set_move_length ( float );
 void set_rotation_angle ( float );
+void speed_estimate_kalman ( void );
+
 
 
 #endif /* MOUSE_STATE_H_*/
